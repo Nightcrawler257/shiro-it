@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="SHIRO IT - Professional IT Services & Custom Gaming PC Builder in Kepala Batas, Penang. Computer repair, networking, and custom PC builds.">
+    <meta name="keywords"
+        content="computer repair Penang, gaming PC builder Kepala Batas, IT services Malaysia, custom PC build, laptop repair">
+    <title>SHIRO IT - Professional IT Services & Custom Gaming PC Builds</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Language Support -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.6.6/css/flag-icons.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="shiro-v2.css">
+</head>
+
+<body>
+
+    <!-- ========== ANIMATED BACKGROUND ========== -->
+    <div class="bg-anim" aria-hidden="true">
+      <div class="bg-orb bg-orb-1"></div>
+      <div class="bg-orb bg-orb-2"></div>
+      <div class="bg-orb bg-orb-3"></div>
+      <div class="bg-orb bg-orb-4"></div>
+      <div class="bg-orb bg-orb-5"></div>
+      <canvas id="bgCanvas"></canvas>
+    </div>
+
+
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-container">
+                <!-- Logo -->
+                <div class="logo">
+                    <a href="#home" data-page="home">
+                        <img src="SHIRO IT.png" alt="SHIRO IT Logo" class="logo-img"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="logo-fallback" style="display:none;">
+                            <div class="logo-icon"><i class="fas fa-microchip"></i></div>
+                            <span class="logo-name">SHIRO</span><span class="logo-suffix">IT</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Main Menu -->
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" data-page="home" class="active"><i class="fas fa-home"></i> <span
+                                data-translate="nav_home">Home</span></a></li>
+                    <li><a href="#build-pc" data-page="build-pc"><i class="fas fa-gamepad"></i> <span data-translate="nav_gaming">Gaming</span></a></li>
+                    <li><a href="#services" data-page="services"><i class="fas fa-laptop-code"></i> <span data-translate="nav_services">IT Services</span></a></li>
+                    <li><a href="#shop" data-page="shop"><i class="fas fa-store"></i> <span
+                                data-translate="nav_shop">Shop</span></a></li>
+                    <li><a href="#about" data-page="about"><i class="fas fa-info-circle"></i> <span
+                                data-translate="nav_about">About</span></a></li>
+                    <li><a href="#contact" data-page="contact"><i class="fas fa-envelope"></i> <span
+                                data-translate="nav_contact">Contact</span></a></li>
+                    <li><a href="#build-pc" data-page="build-pc" class="nav-cta"><i class="fas fa-tools"></i> <span
+                                data-translate="nav_build">Build PC</span></a></li>
+                </ul>
+
+                <!-- Right-side Controls -->
+                <div class="nav-controls">
+                    <!-- Language Switcher -->
+                    <div class="language-switcher" id="languageSwitcher">
+                        <button class="language-btn" id="languageToggle">
+                            <span class="fi fi-my" id="currentFlag"></span>
+                            <span id="currentLanguage">BM</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="language-dropdown" id="languageDropdown">
+                            <button class="language-option" data-lang="en">
+                                <span class="fi fi-us"></span>
+                                <span data-translate="language_english">English</span>
+                            </button>
+                            <button class="language-option" data-lang="bm">
+                                <span class="fi fi-my"></span>
+                                <span data-translate="language_bm">Bahasa Malaysia</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== SPA PAGE CONTAINER ========== -->
+    <main id="spa-container">
+
+        <!-- ========== HOME PAGE ========== -->
+        <div id="page-home" class="page active">
+
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-bg">
+                    <div class="hero-gradient"></div>
+                    <div class="hero-grid"></div>
+                    <div class="hero-particles" id="heroParticles"></div>
+                </div>
+
+                <div class="container hero-content">
+                    <div class="hero-text">
+                        <div class="hero-badge">
+                            <i class="fas fa-bolt"></i>
+                            <span data-translate="hero_badge">Malaysia's Custom PC Builder</span>
+                        </div>
+
+                        <h1 class="hero-title animate-on-load">
+                            <span data-translate="hero_title_1">Build Your Dream</span><br>
+                            <span class="gradient-text" data-translate="hero_title_2">Gaming PC</span>
+                        </h1>
+
+                        <p class="hero-desc animate-on-load" data-translate="hero_desc">
+                            From budget builds to ultimate powerhouses — we craft custom PCs
+                            that match your performance needs and style. Expert IT services
+                            in Kepala Batas, Penang.
+                        </p>
+
+                        <div class="hero-features">
+                            <div class="hero-feature"><i class="fas fa-bolt"></i> <span data-translate="hero_f1">Fast
+                                    Response</span></div>
+                            <div class="hero-feature"><i class="fas fa-shield-alt"></i> <span
+                                    data-translate="hero_f2">2-Year Warranty</span></div>
+                            <div class="hero-feature"><i class="fas fa-user-tie"></i> <span
+                                    data-translate="hero_f3">Expert Technicians</span></div>
+                        </div>
+
+                        <div class="hero-buttons animate-on-load">
+                            <a href="#build-pc" data-page="build-pc" class="btn btn-primary">
+                                <i class="fas fa-tools"></i>
+                                <span data-translate="hero_cta1">Build Your PC</span>
+                            </a>
+                            <a href="#shop" data-page="shop" class="btn btn-secondary">
+                                <i class="fas fa-store"></i>
+                                <span data-translate="hero_cta2">View Shop</span>
+                            </a>
+                        </div>
+
+                        <div class="hero-trust">
+                            <div class="trust-avatars">
+                                <div class="trust-avatar">😊</div>
+                                <div class="trust-avatar">🤩</div>
+                                <div class="trust-avatar">😎</div>
+                                <div class="trust-avatar">🥳</div>
+                                <div class="trust-avatar">💪</div>
+                            </div>
+                            <div class="trust-text"><strong>500+</strong> <span data-translate="hero_trust">customers
+                                    trust SHIRO IT</span></div>
+                        </div>
+                    </div>
+
+                    <div class="hero-visual hero-slider-container">
+                        <div class="hero-slider-wrapper">
+                            <button class="hero-slider-btn hero-slider-prev" id="heroSliderPrev" aria-label="Previous slide">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="hero-slider-viewport">
+                                <div class="hero-slider-track" id="heroSliderTrack">
+                                    <!-- Slide 1: Put your poster image here -->
+                                    <div class="hero-slide hero-slide-poster">
+                                        <img src="images/banners/slide-1.jpg" alt="Gaming PC Builds - SHIRO IT" class="slide-poster-img"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <!-- Fallback if image not found -->
+                                        <div class="slide-poster-fallback">
+                                            <div class="slide-fallback-icon"><i class="fas fa-desktop"></i></div>
+                                            <h3>Your Dream PC<br><span class="gradient-text">Starts Here</span></h3>
+                                            <p>Custom Gaming PC Builds from RM 2,499</p>
+                                            <a href="#build-pc" data-page="build-pc" class="btn btn-primary btn-sm"><i class="fas fa-gamepad"></i> Configure Now</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Slide 2: Put your poster image here -->
+                                    <div class="hero-slide hero-slide-poster">
+                                        <img src="images/banners/slide-2.jpg" alt="RTX 5000 Series - Now Available" class="slide-poster-img"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="slide-poster-fallback">
+                                            <div class="slide-fallback-icon" style="background:rgba(34,197,94,0.12);"><i class="fas fa-film" style="color:#22c55e;"></i></div>
+                                            <h3>RTX 5000 Series<br><span style="color:#22c55e;">Now Available</span></h3>
+                                            <p>DLSS 4.0 · GDDR7 · Next-Gen Performance</p>
+                                            <a href="#shop" data-page="shop" class="btn btn-primary btn-sm" style="background:#22c55e;"><i class="fas fa-shopping-cart"></i> Shop Now</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Slide 3: Put your poster image here -->
+                                    <div class="hero-slide hero-slide-poster">
+                                        <img src="images/banners/slide-3.jpg" alt="IT Services - SHIRO IT" class="slide-poster-img"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="slide-poster-fallback">
+                                            <div class="slide-fallback-icon" style="background:rgba(59,130,246,0.12);"><i class="fas fa-laptop-code" style="color:#3b82f6;"></i></div>
+                                            <h3>Complete IT<br><span style="color:#3b82f6;">Solutions</span></h3>
+                                            <p>PC Repair · Networking · Data Recovery</p>
+                                            <a href="#services" data-page="services" class="btn btn-primary btn-sm" style="background:#3b82f6;"><i class="fas fa-arrow-right"></i> View Services</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Slide 4: Put your poster image here -->
+                                    <div class="hero-slide hero-slide-poster">
+                                        <img src="images/banners/slide-4.jpg" alt="Build Your Own PC" class="slide-poster-img"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="slide-poster-fallback">
+                                            <div class="slide-fallback-icon" style="background:rgba(245,158,11,0.12);"><i class="fas fa-cog" style="color:#f59e0b;"></i></div>
+                                            <h3>Design Your<br><span style="color:#f59e0b;">Perfect Setup</span></h3>
+                                            <p>Interactive Configurator · Real-Time Pricing</p>
+                                            <a href="#build-pc" data-page="build-pc" class="btn btn-primary btn-sm" style="background:#f59e0b; color:#1a1a1a;"><i class="fas fa-tools"></i> Start Building</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Slide 5: Video slide — change the src to your video file -->
+                                    <div class="hero-slide hero-slide-poster hero-slide-video">
+                                        <video class="slide-poster-video" autoplay muted loop playsinline>
+                                            <source src="video/PC 1 video.mp4" type="video/mp4">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="hero-slider-btn hero-slider-next" id="heroSliderNext" aria-label="Next slide">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <!-- Progress bar -->
+                        <div class="hero-slider-progress" id="heroSliderProgress">
+                            <div class="hero-slider-progress-bar" id="heroSliderProgressBar"></div>
+                        </div>
+                        <!-- Dots -->
+                        <div class="hero-slider-dots" id="heroSliderDots"></div>
+                    </div>
+                </div>
+
+                <div class="hero-scroll-indicator">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </section>
+
+            <!-- Services Marquee Strip -->
+            <div class="services-marquee-section">
+                <div class="marquee-track-wrapper">
+                    <div class="marquee-track" id="servicesMarquee">
+                        <div class="marquee-item"><i class="fas fa-desktop"></i><span>Custom PC Builds</span></div>
+                        <div class="marquee-item"><i class="fas fa-tools"></i><span>PC Repair</span></div>
+                        <div class="marquee-item"><i class="fas fa-network-wired"></i><span>Networking</span></div>
+                        <div class="marquee-item"><i class="fas fa-shield-alt"></i><span>IT Support</span></div>
+                        <div class="marquee-item"><i class="fas fa-database"></i><span>Data Recovery</span></div>
+                        <div class="marquee-item"><i class="fas fa-cloud"></i><span>Cloud Solutions</span></div>
+                        <div class="marquee-item"><i class="fas fa-bolt"></i><span>Fast Response</span></div>
+                        <div class="marquee-item"><i class="fas fa-user-tie"></i><span>Expert Technicians</span></div>
+                        <!-- Duplicated for seamless loop -->
+                        <div class="marquee-item"><i class="fas fa-desktop"></i><span>Custom PC Builds</span></div>
+                        <div class="marquee-item"><i class="fas fa-tools"></i><span>PC Repair</span></div>
+                        <div class="marquee-item"><i class="fas fa-network-wired"></i><span>Networking</span></div>
+                        <div class="marquee-item"><i class="fas fa-shield-alt"></i><span>IT Support</span></div>
+                        <div class="marquee-item"><i class="fas fa-database"></i><span>Data Recovery</span></div>
+                        <div class="marquee-item"><i class="fas fa-cloud"></i><span>Cloud Solutions</span></div>
+                        <div class="marquee-item"><i class="fas fa-bolt"></i><span>Fast Response</span></div>
+                        <div class="marquee-item"><i class="fas fa-user-tie"></i><span>Expert Technicians</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Overview -->
+            <section class="section" id="home-services">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-blue"><i class="fas fa-cogs"></i> <span
+                                data-translate="svc_badge">Our Services</span></span>
+                        <h2><span data-translate="svc_title_1">What We</span> <span class="gradient-text"
+                                data-translate="svc_title_2">Offer</span></h2>
+                        <p class="section-desc" data-translate="svc_desc">From custom PC builds to comprehensive IT
+                            solutions, we've got you covered.</p>
+                    </div>
+
+                    <div class="services-grid">
+                        <div class="card service-card">
+                            <div class="service-icon"><i class="fas fa-desktop"></i></div>
+                            <h4 data-translate="svc_1_title">Custom PC Builds</h4>
+                            <p data-translate="svc_1_desc">Hand-built gaming PCs tailored to your exact needs and
+                                budget.</p>
+                        </div>
+                        <div class="card service-card">
+                            <div class="service-icon"><i class="fas fa-tools"></i></div>
+                            <h4 data-translate="svc_2_title">PC Repair</h4>
+                            <p data-translate="svc_2_desc">Expert diagnosis and repair for all PC hardware and software
+                                issues.</p>
+                        </div>
+                        <div class="card service-card">
+                            <div class="service-icon"><i class="fas fa-network-wired"></i></div>
+                            <h4 data-translate="svc_3_title">Networking</h4>
+                            <p data-translate="svc_3_desc">Professional network setup, configuration, and
+                                troubleshooting.</p>
+                        </div>
+                        <div class="card service-card">
+                            <div class="service-icon"><i class="fas fa-shield-alt"></i></div>
+                            <h4 data-translate="svc_4_title">IT Support</h4>
+                            <p data-translate="svc_4_desc">Comprehensive IT support for businesses and individuals.</p>
+                        </div>
+                        <div class="card service-card">
+                            <div class="service-icon"><i class="fas fa-database"></i></div>
+                            <h4 data-translate="svc_5_title">Data Recovery</h4>
+                            <p data-translate="svc_5_desc">Recover lost data from damaged drives and corrupted systems.
+                            </p>
+                        </div>
+                        <div class="card service-card">
+                            <div class="service-icon"><i class="fas fa-cloud"></i></div>
+                            <h4 data-translate="svc_6_title">Cloud Solutions</h4>
+                            <p data-translate="svc_6_desc">Cloud migration, setup, and management for your business.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gaming PC Tiers -->
+            <section class="section tiers-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-red"><i class="fas fa-gamepad"></i> Gaming PCs</span>
+                        <h2><span data-translate="tier_title_1">Choose Your</span> <span class="gradient-text"
+                                data-translate="tier_title_2">PC</span></h2>
+                    </div>
+
+                    <div class="tiers-grid">
+                        <!-- Phantom Lite -->
+                        <div class="tier-card" style="--tier-color: #3388FF;">
+                            <div class="tier-badge">Best Value</div>
+                            <div class="tier-name">ENTRY</div>
+                            <h3>Phantom Lite</h3>
+                            <div class="tier-price">RM 2,499</div>
+                            <div class="tier-specs">
+                                <div><i class="fas fa-film"></i> RTX 4060</div>
+                                <div><i class="fas fa-microchip"></i> Intel i5-14400F</div>
+                                <div><i class="fas fa-memory"></i> 16GB DDR5</div>
+                                <div><i class="fas fa-hdd"></i> 512GB NVMe</div>
+                            </div>
+                            <a href="#build-pc" data-page="build-pc" class="btn btn-primary tier-btn">Configure <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <!-- Phantom Pro (Featured) -->
+                        <div class="tier-card featured" style="--tier-color: #0066FF;">
+                            <div class="tier-ribbon">★ BEST SELLER</div>
+                            <div class="tier-badge">Most Popular</div>
+                            <div class="tier-name">MID</div>
+                            <h3>Phantom Pro</h3>
+                            <div class="tier-price">RM 4,999</div>
+                            <div class="tier-specs">
+                                <div><i class="fas fa-film"></i> RTX 4070 Super</div>
+                                <div><i class="fas fa-microchip"></i> AMD Ryzen 7 7800X3D</div>
+                                <div><i class="fas fa-memory"></i> 32GB DDR5</div>
+                                <div><i class="fas fa-hdd"></i> 1TB NVMe Gen4</div>
+                            </div>
+                            <a href="#build-pc" data-page="build-pc" class="btn btn-primary tier-btn">Configure <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <!-- Phantom Ultra -->
+                        <div class="tier-card" style="--tier-color: #FF0033;">
+                            <div class="tier-badge">Ultimate Power</div>
+                            <div class="tier-name">HIGH-END</div>
+                            <h3>Phantom Ultra</h3>
+                            <div class="tier-price">RM 8,999</div>
+                            <div class="tier-specs">
+                                <div><i class="fas fa-film"></i> RTX 5080</div>
+                                <div><i class="fas fa-microchip"></i> AMD Ryzen 9 9900X</div>
+                                <div><i class="fas fa-memory"></i> 64GB DDR5</div>
+                                <div><i class="fas fa-hdd"></i> 2TB NVMe Gen5</div>
+                            </div>
+                            <a href="#build-pc" data-page="build-pc" class="btn btn-primary tier-btn">Configure <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats -->
+            <section class="stats-section">
+                <div class="container stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="500" data-suffix="+">0+</div>
+                        <div class="stat-label" data-translate="stat_1">PCs Built</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="98" data-suffix="%">0%</div>
+                        <div class="stat-label" data-translate="stat_2">Satisfaction</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="5" data-suffix="+">0+</div>
+                        <div class="stat-label" data-translate="stat_3">Years Experience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" data-count="24" data-suffix="/7">0/7</div>
+                        <div class="stat-label" data-translate="stat_4">Support</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Slider -->
+            <section class="section testimonials-slider-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-blue"><i class="fas fa-star"></i> Testimonials</span>
+                        <h2><span data-translate="test_title_1">What Customers</span> <span class="gradient-text"
+                                data-translate="test_title_2">Say</span></h2>
+                    </div>
+                    <div class="testimonials-slider-wrapper">
+                        <button class="tslider-btn tslider-prev" id="tsliderPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                        <div class="testimonials-slider-viewport">
+                            <div class="testimonials-slider-track" id="tsliderTrack">
+                                <!-- Slide 1 -->
+                                <div class="card testimonial-card tslide">
+                                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                    <p>"SHIRO IT built me the perfect gaming rig. RTX 5070 running everything on ultra settings. The configurator made choosing parts so easy!"</p>
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">A</div>
+                                        <div><strong>Ahmad R.</strong><span>Gamer</span></div>
+                                    </div>
+                                </div>
+                                <!-- Slide 2 -->
+                                <div class="card testimonial-card tslide">
+                                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                    <p>"Needed a workstation for video editing. They recommended the perfect specs and delivered within 3 days. Amazing service!"</p>
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">S</div>
+                                        <div><strong>Sarah L.</strong><span>Content Creator</span></div>
+                                    </div>
+                                </div>
+                                <!-- Slide 3 -->
+                                <div class="card testimonial-card tslide">
+                                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                    <p>"They set up our entire office network. Professional, fast, and very affordable. Will definitely use again for our expansion."</p>
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">D</div>
+                                        <div><strong>David T.</strong><span>Business Owner</span></div>
+                                    </div>
+                                </div>
+                                <!-- Slide 4 -->
+                                <div class="card testimonial-card tslide">
+                                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                    <p>"Brought my laptop in for repair — fixed within 2 hours! Incredibly fast and the price was very reasonable. Highly recommend!"</p>
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">F</div>
+                                        <div><strong>Farid H.</strong><span>Student</span></div>
+                                    </div>
+                                </div>
+                                <!-- Slide 5 -->
+                                <div class="card testimonial-card tslide">
+                                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                    <p>"SHIRO IT set up our entire SME office network from scratch. Reliable, clean cable management, and great after-service support."</p>
+                                    <div class="testimonial-author">
+                                        <div class="author-avatar">N</div>
+                                        <div><strong>Nurul A.</strong><span>SME Owner</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="tslider-btn tslider-next" id="tsliderNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <!-- Dots -->
+                    <div class="tslider-dots" id="tsliderDots"></div>
+                </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="cta-section">
+                <div class="container cta-content">
+                    <h2><span data-translate="cta_1">Ready to Build Your</span> <span class="gradient-text"
+                            data-translate="cta_2">Dream PC</span>?</h2>
+                    <p data-translate="cta_desc">Use our interactive configurator to design your perfect gaming PC.
+                        Choose from the latest components and get an instant quote.</p>
+                    <div class="cta-buttons">
+                        <a href="#build-pc" data-page="build-pc" class="btn btn-primary"><i class="fas fa-tools"></i>
+                            Start Building</a>
+                        <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-secondary"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========== ABOUT PAGE ========== -->
+        <div id="page-about" class="page">
+            <section class="page-hero">
+                <div class="page-hero-bg"></div>
+                <div class="container page-hero-content">
+                    <span class="badge badge-blue"><i class="fas fa-info-circle"></i> About Us</span>
+                    <h1><span data-translate="about_h1_1">We Build</span> <span class="gradient-text"
+                            data-translate="about_h1_2">Dreams</span></h1>
+                    <p class="page-hero-desc" data-translate="about_desc">SHIRO IT is Malaysia's passionate custom PC
+                        builder and IT services provider, dedicated to delivering high-performance systems and
+                        exceptional service.</p>
+                </div>
+            </section>
+
+            <!-- Stats Bar -->
+            <div class="about-stats-bar">
+                <div class="container about-stats-inner">
+                    <div class="about-stat"><strong>500+</strong><span>PCs Built</span></div>
+                    <div class="about-stat"><strong>5+</strong><span>Years</span></div>
+                    <div class="about-stat"><strong>98%</strong><span>Satisfaction</span></div>
+                    <div class="about-stat"><strong>Penang</strong><span>Based</span></div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-blue"><i class="fas fa-clock"></i> Our Journey</span>
+                        <h2>The SHIRO IT <span class="gradient-text">Story</span></h2>
+                    </div>
+                    <div class="timeline">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-item left">
+                            <div class="timeline-dot"></div>
+                            <div class="card timeline-card">
+                                <span class="timeline-year">2019</span>
+                                <h4>The Beginning</h4>
+                                <p>SHIRO IT was founded with a passion for building high-performance custom PCs.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item right">
+                            <div class="timeline-dot"></div>
+                            <div class="card timeline-card">
+                                <span class="timeline-year">2020</span>
+                                <h4>Growing Strong</h4>
+                                <p>Expanded into IT services, offering repair, networking, and cloud solutions.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item left">
+                            <div class="timeline-dot"></div>
+                            <div class="card timeline-card">
+                                <span class="timeline-year">2021</span>
+                                <h4>Online Presence</h4>
+                                <p>Launched our e-commerce platform and interactive PC configurator.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item right">
+                            <div class="timeline-dot"></div>
+                            <div class="card timeline-card">
+                                <span class="timeline-year">2022</span>
+                                <h4>Community Impact</h4>
+                                <p>Partnered with local schools and universities for tech education programs.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item left">
+                            <div class="timeline-dot"></div>
+                            <div class="card timeline-card">
+                                <span class="timeline-year">2023</span>
+                                <h4>Expansion</h4>
+                                <p>Opened our Penang showroom and grew to serve over 500 customers.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item right">
+                            <div class="timeline-dot"></div>
+                            <div class="card timeline-card">
+                                <span class="timeline-year">2024</span>
+                                <h4>Innovation</h4>
+                                <p>Introduced AI-powered build recommendations and real-time compatibility checking.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Values -->
+            <section class="section values-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-red"><i class="fas fa-flag"></i> Our Values</span>
+                        <h2>What Drives <span class="gradient-text">Us</span></h2>
+                    </div>
+                    <div class="values-grid">
+                        <div class="card value-card">
+                            <div class="value-icon"><i class="fas fa-heart"></i></div>
+                            <h4>Passion</h4>
+                            <p>Every build is crafted with genuine love for technology and gaming.</p>
+                        </div>
+                        <div class="card value-card">
+                            <div class="value-icon"><i class="fas fa-handshake"></i></div>
+                            <h4>Trust</h4>
+                            <p>Transparent pricing, honest recommendations, and reliable after-sales support.</p>
+                        </div>
+                        <div class="card value-card">
+                            <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
+                            <h4>Innovation</h4>
+                            <p>Always adopting the latest tech to give our customers the best experience.</p>
+                        </div>
+                        <div class="card value-card">
+                            <div class="value-icon"><i class="fas fa-users"></i></div>
+                            <h4>Community</h4>
+                            <p>Building a community of gamers and tech enthusiasts across Malaysia.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Team -->
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-blue"><i class="fas fa-users"></i> Our Team</span>
+                        <h2>Meet The <span class="gradient-text">Team</span></h2>
+                    </div>
+                    <div class="team-grid">
+                        <div class="card team-card">
+                            <div class="team-avatar">
+                                <img src="images/shiro.jpg" alt="Founder & CEO">
+                            </div>
+                            <h4>Muhammad Syahirul Ammar @ SHIRO</h4>
+                            <span class="team-role">Founder & CEO</span>
+                            <p>With 12+ years in IT industry, founded SHIRO IT to bring quality tech services to Kepala Batas. Certified in Microsoft, CompTIA, and networking.</p>
+                            <div class="team-social">
+                            </div>  
+                        </div>
+                        <div class="card team-card">
+                            <div class="team-avatar">
+                                <img src="images/ammar.jpg" alt="Lead Technician">
+                            </div>
+                            <h4>Ammar</h4>
+                            <span class="team-role">Lead Technician</span>
+                            <p>Specializes in custom PC builds and hardware repairs. Gaming enthusiast with extensive knowledge of PC components and performance optimization.</p>
+                            <div class="team-social">
+                            </div>
+                        </div>
+                        <div class="card team-card">
+                            <div class="team-avatar">
+                                <img src="images/daniel.jpg" alt="Supervisor">
+                            </div>
+                            <h4>Muhammad Daniel Zhafran</h4>
+                            <span class="team-role">Supervisor</span>
+                            <p>CCNA certified with expertise in business networking, server setup, and cybersecurity solutions for small to medium businesses.</p>
+                            <div class="team-social">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========== SERVICES PAGE ========== -->
+        <div id="page-services" class="page">
+            <section class="page-hero">
+                <div class="page-hero-bg"></div>
+                <div class="container page-hero-content">
+                    <span class="badge badge-blue"><i class="fas fa-cogs"></i> Our Services</span>
+                    <h1>Professional <span class="gradient-text">IT Solutions</span></h1>
+                    <p class="page-hero-desc">From custom PC builds to enterprise IT support — we deliver reliable,
+                        high-quality technology services tailored to your needs.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <div class="services-detail-grid">
+                        <div class="card service-detail-card">
+                            <div class="svc-icon" style="color:#0066FF;"><i class="fas fa-desktop"></i></div>
+                            <h3>Custom PC Builds</h3>
+                            <p>Hand-crafted gaming PCs and workstations built to your exact specifications with premium
+                                components and cable management.</p>
+                            <div class="svc-features">
+                                <span><i class="fas fa-check"></i> Component selection</span>
+                                <span><i class="fas fa-check"></i> Cable management</span>
+                                <span><i class="fas fa-check"></i> Performance testing</span>
+                                <span><i class="fas fa-check"></i> Overclocking</span>
+                            </div>
+                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="card service-detail-card">
+                            <div class="svc-icon" style="color:#FF0033;"><i class="fas fa-tools"></i></div>
+                            <h3>PC Repair & Maintenance</h3>
+                            <p>Expert diagnosis and repair for all hardware and software issues. We fix desktops,
+                                laptops, and gaming rigs.</p>
+                            <div class="svc-features">
+                                <span><i class="fas fa-check"></i> Hardware diagnosis</span>
+                                <span><i class="fas fa-check"></i> OS reinstallation</span>
+                                <span><i class="fas fa-check"></i> Virus removal</span>
+                                <span><i class="fas fa-check"></i> Component swap</span>
+                            </div>
+                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="card service-detail-card">
+                            <div class="svc-icon" style="color:#0066FF;"><i class="fas fa-network-wired"></i></div>
+                            <h3>Networking Solutions</h3>
+                            <p>Professional network setup and optimization for homes and businesses, including WiFi, LAN,
+                                and security.</p>
+                            <div class="svc-features">
+                                <span><i class="fas fa-check"></i> WiFi optimization</span>
+                                <span><i class="fas fa-check"></i> LAN setup</span>
+                                <span><i class="fas fa-check"></i> Router config</span>
+                                <span><i class="fas fa-check"></i> Network security</span>
+                            </div>
+                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="card service-detail-card">
+                            <div class="svc-icon" style="color:#FF0033;"><i class="fas fa-database"></i></div>
+                            <h3>Data Recovery</h3>
+                            <p>Recover lost or deleted data from damaged hard drives, SSDs, and corrupted storage
+                                devices.</p>
+                            <div class="svc-features">
+                                <span><i class="fas fa-check"></i> HDD recovery</span>
+                                <span><i class="fas fa-check"></i> SSD recovery</span>
+                                <span><i class="fas fa-check"></i> RAID recovery</span>
+                                <span><i class="fas fa-check"></i> Forensic analysis</span>
+                            </div>
+                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="card service-detail-card">
+                            <div class="svc-icon" style="color:#0066FF;"><i class="fas fa-shield-alt"></i></div>
+                            <h3>Cybersecurity</h3>
+                            <p>Protect your business with enterprise-grade security solutions, firewall setup, and
+                                vulnerability assessments.</p>
+                            <div class="svc-features">
+                                <span><i class="fas fa-check"></i> Firewall setup</span>
+                                <span><i class="fas fa-check"></i> Antivirus</span>
+                                <span><i class="fas fa-check"></i> Security audits</span>
+                                <span><i class="fas fa-check"></i> Training</span>
+                            </div>
+                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="card service-detail-card">
+                            <div class="svc-icon" style="color:#FF0033;"><i class="fas fa-cloud"></i></div>
+                            <h3>Cloud Solutions</h3>
+                            <p>Migrate your business to the cloud with our expert setup and management services.</p>
+                            <div class="svc-features">
+                                <span><i class="fas fa-check"></i> Cloud migration</span>
+                                <span><i class="fas fa-check"></i> Backup solutions</span>
+                                <span><i class="fas fa-check"></i> SaaS setup</span>
+                                <span><i class="fas fa-check"></i> Cost optimization</span>
+                            </div>
+                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Process -->
+            <section class="section process-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-red"><i class="fas fa-route"></i> How It Works</span>
+                        <h2>Our <span class="gradient-text">Process</span></h2>
+                    </div>
+                    <div class="process-grid">
+                        <div class="process-card">
+                            <div class="process-step">01</div>
+                            <div class="process-icon"><i class="fas fa-comments"></i></div>
+                            <h4>Consultation</h4>
+                            <p>Tell us what you need — we listen and recommend the best solution.</p>
+                        </div>
+                        <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="process-card">
+                            <div class="process-step">02</div>
+                            <div class="process-icon"><i class="fas fa-clipboard-list"></i></div>
+                            <h4>Planning</h4>
+                            <p>We design a tailored solution with transparent pricing.</p>
+                        </div>
+                        <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="process-card">
+                            <div class="process-step">03</div>
+                            <div class="process-icon"><i class="fas fa-cog"></i></div>
+                            <h4>Execution</h4>
+                            <p>Our expert technicians build, install, or repair with precision.</p>
+                        </div>
+                        <div class="process-arrow"><i class="fas fa-arrow-right"></i></div>
+                        <div class="process-card">
+                            <div class="process-step">04</div>
+                            <div class="process-icon"><i class="fas fa-check-circle"></i></div>
+                            <h4>Delivery</h4>
+                            <p>Quality-tested and delivered with full warranty and support.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Warranty Banner -->
+            <section class="section">
+                <div class="container">
+                    <div class="warranty-banner">
+                        <div class="warranty-content">
+                            <div class="warranty-icon"><i class="fas fa-shield-alt"></i></div>
+                            <div>
+                                <h3>2-Year Full Warranty</h3>
+                                <p>All custom builds include a comprehensive 2-year warranty on labor, plus individual
+                                    manufacturer warranties on every component.</p>
+                            </div>
+                        </div>
+                        <a href="#contact" data-page="contact" class="btn btn-primary">Contact Us</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="section faq-section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-blue"><i class="fas fa-question-circle"></i> FAQ</span>
+                        <h2>Frequently <span class="gradient-text">Asked</span></h2>
+                    </div>
+                    <div class="faq-list">
+                        <details class="faq-item">
+                            <summary>How long does a custom PC build take?</summary>
+                            <p>Typically 3-5 business days from order confirmation. Rush builds available within 24-48
+                                hours for an additional fee.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>Do you offer warranty on builds?</summary>
+                            <p>Yes! All custom builds come with a full 2-year warranty on labor and individual component
+                                warranties from manufacturers.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>Can I upgrade my existing PC?</summary>
+                            <p>Absolutely! We offer upgrade services for CPUs, GPUs, RAM, storage, and more. Bring your
+                                PC in for a free assessment.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>Do you offer on-site services?</summary>
+                            <p>Yes, we provide on-site services within the Penang area for networking setups, PC
+                                repairs, and corporate IT support.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>What payment methods do you accept?</summary>
+                            <p>We accept cash, bank transfer, online banking (FPX), and major credit/debit cards.
+                                Installment plans available.</p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========== SHOP PAGE ========== -->
+        <div id="page-shop" class="page">
+            <section class="page-hero">
+                <div class="page-hero-bg"></div>
+                <div class="container page-hero-content">
+                    <span class="badge badge-blue"><i class="fas fa-store"></i> Shop</span>
+                    <h1>SHIRO IT <span class="gradient-text">Store</span></h1>
+                    <p class="page-hero-desc">Pre-built gaming PCs, workstations, components, and accessories — all
+                        curated by SHIRO IT.</p>
+                </div>
+            </section>
+
+            <!-- Filters -->
+            <div class="shop-filters">
+                <div class="container filters-inner">
+                    <div class="category-tabs" id="categoryTabs">
+                        <button class="cat-tab active" data-category="All">All</button>
+                        <button class="cat-tab" data-category="Gaming PCs">Gaming PCs</button>
+                        <button class="cat-tab" data-category="Workstations">Workstations</button>
+                        <button class="cat-tab" data-category="Components">Components</button>
+                        <button class="cat-tab" data-category="Peripherals">Peripherals</button>
+                        <button class="cat-tab" data-category="Accessories">Accessories</button>
+                    </div>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low → High</option>
+                        <option value="price-high">Price: High → Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <section class="section">
+                <div class="container">
+                    <div class="products-grid" id="productsGrid">
+                        <!-- Products are inserted by JS -->
+                    </div>
+                    <div class="empty-state" id="emptyState" style="display:none;">
+                        <i class="fas fa-box-open"></i>
+                        <p>No products found in this category.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Shop CTA -->
+            <section class="shop-cta">
+                <div class="container" style="text-align:center;">
+                    <h2>Can't Find What You Need?</h2>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem;">We can source any component or build a
+                        custom PC just for you.</p>
+                    <div class="cta-buttons">
+                        <a href="#build-pc" data-page="build-pc" class="btn btn-primary"><i class="fas fa-tools"></i>
+                            Custom Build</a>
+                        <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-secondary"><i class="fab fa-whatsapp"></i> Ask Us</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========== BUILD PC PAGE ========== -->
+        <div id="page-build-pc" class="page">
+            <section class="page-hero">
+                <div class="page-hero-bg"></div>
+                <div class="container page-hero-content">
+                    <span class="badge badge-blue"><i class="fas fa-tools"></i> PC Configurator</span>
+                    <h1>Build Your <span class="gradient-text">Dream PC</span></h1>
+                    <p class="page-hero-desc">Select your components below and get an instant price estimate. Order via
+                        WhatsApp!</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container build-layout">
+                    <div class="components-list" id="componentsList">
+                        <!-- Component groups are inserted by JS -->
+                    </div>
+                    <div class="build-summary">
+                        <div class="card summary-card">
+                            <h3>Your Build</h3>
+                            <div class="summary-items" id="summaryItems"></div>
+                            <div class="summary-total">
+                                <span>Total Estimate</span>
+                                <strong id="summaryTotal">RM 0</strong>
+                            </div>
+                            <div class="summary-note"><i class="fas fa-info-circle"></i> Prices are estimates. Final
+                                pricing confirmed via WhatsApp.</div>
+                            <a id="whatsappOrder" href="#" target="_blank" rel="noopener noreferrer"
+                                class="btn btn-whatsapp summary-btn">
+                                <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                            </a>
+                            <div class="summary-extras">
+                                <div class="extra"><i class="fas fa-shield-alt"></i> 2-Year Warranty</div>
+                                <div class="extra"><i class="fas fa-truck"></i> Free Delivery (Penang)</div>
+                                <div class="extra"><i class="fas fa-tools"></i> Free Assembly & Testing</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ========== CONTACT PAGE ========== -->
+        <div id="page-contact" class="page">
+            <section class="page-hero">
+                <div class="page-hero-bg"></div>
+                <div class="container page-hero-content">
+                    <span class="badge badge-blue"><i class="fas fa-envelope"></i> Contact Us</span>
+                    <h1>Get In <span class="gradient-text">Touch</span></h1>
+                    <p class="page-hero-desc">Have a question or need a quote? Reach out to us through any of the
+                        channels below.</p>
+                </div>
+            </section>
+
+            <!-- Contact Methods -->
+            <section class="section">
+                <div class="container">
+                    <div class="contact-methods">
+                        <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
+                            class="card contact-method">
+                            <div class="method-icon" style="background:rgba(37,211,102,0.15); color:#25D366;"><i
+                                    class="fab fa-whatsapp"></i></div>
+                            <span class="method-label">WhatsApp</span>
+                            <strong>+60 17-761 7672</strong>
+                        </a>
+                        <a href="mailto:erateknologiglobal@gmail.com" class="card contact-method">
+                            <div class="method-icon" style="background:rgba(0,102,255,0.15); color:#0066FF;"><i
+                                    class="fas fa-envelope"></i></div>
+                            <span class="method-label">Email</span>
+                            <strong>erateknologiglobal@gmail.com</strong>
+                        </a>
+                        <a href="tel:+60177617672" class="card contact-method">
+                            <div class="method-icon" style="background:rgba(255,0,51,0.15); color:#FF0033;"><i
+                                    class="fas fa-phone"></i></div>
+                            <span class="method-label">Phone</span>
+                            <strong>+60 17-761 7672</strong>
+                        </a>
+                        <div class="card contact-method">
+                            <div class="method-icon" style="background:rgba(0,102,255,0.15); color:#0066FF;"><i
+                                    class="fas fa-map-marker-alt"></i></div>
+                            <span class="method-label">Location</span>
+                            <strong>Jalan Seri Serdang 3, Taman Seri Serdang, 13200 Kepala Batas, Pulau Pinang</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Form + Info -->
+            <section class="section form-section">
+                <div class="container form-grid">
+                    <form class="card contact-form" id="contactForm">
+                        <h3>Send Us a Message</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="tel" placeholder="+60 12-345 6789">
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <select>
+                                    <option value="">Select a topic</option>
+                                    <option value="custom-build">Custom PC Build</option>
+                                    <option value="repair">PC Repair</option>
+                                    <option value="networking">Networking</option>
+                                    <option value="it-support">IT Support</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea placeholder="Tell us about your project or question..." rows="5"
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary form-submit">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+
+                    <div class="contact-info">
+                        <div class="card info-card">
+                            <h4><i class="fas fa-clock"></i> Business Hours</h4>
+                            <div class="hours-list">
+                                <div><span>Monday - Saturday</span><strong>10:00 AM - 7:00 PM</strong></div>
+                                <div><span>Sunday</span><strong>Closed</strong></div>
+                            </div>
+                        </div>
+                        <div class="card info-card">
+                            <h4><i class="fas fa-bolt"></i> Quick Response</h4>
+                            <p>For the fastest response, reach us on WhatsApp. We typically reply within 30 minutes
+                                during business hours.</p>
+                            <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
+                                class="btn btn-whatsapp" style="margin-top:1rem;">
+                                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gs -->
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-blue"><i class="fas fa-map-marked-alt"></i> Find Us</span>
+                        <h2>Our <span class="gradient-text">Location</span></h2>
+                    </div>
+                    <div class="map-container">
+                        <!-- REPLACE the src below with your actual Google Maps embed URL -->
+                        <!-- How: Go to Google Maps → Find your location → Click Share → Embed a map → Copy the src URL -->
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.440233623818!2d100.43446697364342!3d5.501461334198477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304ad1f1e6a68247%3A0x5efe09b44d91cb33!2sShiro%20It%20Computer%20%26%20Laptop%20Penang!5e0!3m2!1sen!2smy!4v1772011452780!5m2!1sen!2smy" 
+                            width="1200" height="400" style="border:0;" 
+                            allowfullscreen="" loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Careers -->
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-red"><i class="fas fa-briefcase"></i> Careers</span>
+                        <h2>Join Our <span class="gradient-text">Team</span></h2>
+                    </div>
+                    <div class="careers-grid">
+                        <div class="card career-card">
+                            <span class="badge badge-blue">Full-time</span>
+                            <h4>PC Build Technician</h4>
+                            <p>Assemble and test custom gaming PCs with attention to detail and cable management.</p>
+                            <a href="mailto:erateknologiglobal@gmail.com" class="svc-cta">Apply Now <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="card career-card">
+                            <span class="badge badge-red">Internship</span>
+                            <h4>IT Support Intern</h4>
+                            <p>Learn the ropes of IT support while assisting with real client systems.</p>
+                            <a href="mailto:erateknologiglobal@gmail.com" class="svc-cta">Apply Now <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                        <div class="card career-card">
+                            <span class="badge badge-blue">Full-time</span>
+                            <h4>Sales & Customer Service</h4>
+                            <p>Help customers choose the right PC build and provide excellent after-sales support.</p>
+                            <a href="mailto:erateknologiglobal@gmail.com" class="svc-cta">Apply Now <i
+                                    class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-glow"></div>
+        <div class="container footer-content">
+            <!-- Brand -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="SHIRO IT.png" alt="SHIRO IT Logo" class="logo-img">
+                </div>
+                <p class="footer-desc">Malaysia's premier custom PC builder and IT services provider. Building dreams
+                    one component at a time.</p>
+                <div class="footer-socials">
+                    <a href="https://facebook.com/shiroitpc" target="_blank" rel="noopener noreferrer"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="https://instagram.com/shiro_it_penang" target="_blank" rel="noopener noreferrer"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
+                        class="whatsapp-social"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://tiktok.com/@shiroit" target="_blank" rel="noopener noreferrer"><i
+                            class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="footer-links-group">
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#build-pc" data-page="build-pc">Custom PC Build</a></li>
+                        <li><a href="#services" data-page="services">IT Services</a></li>
+                        <li><a href="#services" data-page="services">PC Repair</a></li>
+                        <li><a href="#services" data-page="services">Networking</a></li>
+                        <li><a href="#services" data-page="services">Data Recovery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#about" data-page="about">About Us</a></li>
+                        <li><a href="#about" data-page="about">Our Team</a></li>
+                        <li><a href="#contact" data-page="contact">Careers</a></li>
+                        <li><a href="#contact" data-page="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="#shop" data-page="shop">Gaming PCs</a></li>
+                        <li><a href="#shop" data-page="shop">Workstations</a></li>
+                        <li><a href="#shop" data-page="shop">Components</a></li>
+                        <li><a href="#build-pc" data-page="build-pc">Build Your PC</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="footer-contact">
+                <h4>Get In Touch</h4>
+                <div class="contact-items">
+                    <div class="contact-item"><i class="fas fa-map-marker-alt"></i><span>Jalan Seri Serdang 3, Taman Seri Serdang, 13200 Kepala Batas, Pulau Pinang</span>
+                    </div>
+                    <div class="contact-item"><i class="fas fa-phone"></i><span>+60 17-761 7672/+60 17-458 2351</span></div>
+                    <div class="contact-item"><i class="fas fa-envelope"></i><span>erateknologiglobal@gmail.com</span></div>
+                    <div class="contact-item"><i class="fas fa-clock"></i><span>Mon - Sat: 10AM - 7PM</span></div>
+                    <div class="contact-item"><i class="fas fa-clock"></i><span>Sunday: Closed</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container footer-bottom-inner">
+                <p>&copy; 2026 SHIRO IT. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Warranty</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- JS -->
+    <script src="shiro-v2.js"></script>
+</body>
+
+</html>
