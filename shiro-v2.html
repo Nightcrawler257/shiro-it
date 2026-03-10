@@ -25,6 +25,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="shiro-v2.css">
+    <link rel="stylesheet" href="festivals/festival.css">
 </head>
 
 <body>
@@ -40,7 +41,8 @@
     </div>
 
 
-    <nav class="navbar">
+    <nav class="navbar festival-zone">
+        <div class="festival-particles" data-festival-zone="navbar"></div>
         <div class="container">
             <div class="nav-container">
                 <!-- Logo -->
@@ -59,7 +61,7 @@
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home" data-page="home" class="active"><i class="fas fa-home"></i> <span
                                 data-translate="nav_home">Home</span></a></li>
-                    <li><a href="#build-pc" data-page="build-pc"><i class="fas fa-gamepad"></i> <span data-translate="nav_gaming">Gaming</span></a></li>
+                    <li><a href="#tips" data-page="tips"><i class="fas fa-lightbulb"></i> <span data-translate="nav_tips">IT Tips & Tricks</span></a></li>
                     <li><a href="#services" data-page="services"><i class="fas fa-laptop-code"></i> <span data-translate="nav_services">IT Services</span></a></li>
                     <li><a href="#shop" data-page="shop"><i class="fas fa-store"></i> <span
                                 data-translate="nav_shop">Shop</span></a></li>
@@ -248,9 +250,6 @@
                     </div>
                 </div>
 
-                <div class="hero-scroll-indicator">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
             </section>
 
             <!-- Services Marquee Strip -->
@@ -499,7 +498,7 @@
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
-                    <span class="badge badge-blue"><i class="fas fa-info-circle"></i> About Us</span>
+                    <span class="badge badge-blue"><i class="fas fa-info-circle"></i> <span data-translate="about_badge">About Us</span></span>
                     <h1><span data-translate="about_h1_1">We Build</span> <span class="gradient-text"
                             data-translate="about_h1_2">Dreams</span></h1>
                     <p class="page-hero-desc" data-translate="about_desc">SHIRO IT is Malaysia's passionate custom PC
@@ -511,10 +510,10 @@
             <!-- Stats Bar -->
             <div class="about-stats-bar">
                 <div class="container about-stats-inner">
-                    <div class="about-stat"><strong>500+</strong><span>PCs Built</span></div>
-                    <div class="about-stat"><strong>5+</strong><span>Years</span></div>
-                    <div class="about-stat"><strong>98%</strong><span>Satisfaction</span></div>
-                    <div class="about-stat"><strong>Penang</strong><span>Based</span></div>
+                    <div class="about-stat"><strong>500+</strong><span data-translate="about_stat1">PCs Built</span></div>
+                    <div class="about-stat"><strong>5+</strong><span data-translate="about_stat2">Years</span></div>
+                    <div class="about-stat"><strong>98%</strong><span data-translate="about_stat3">Satisfaction</span></div>
+                    <div class="about-stat"><strong data-translate="about_stat4v">Penang</strong><span data-translate="about_stat4">Based</span></div>
                 </div>
             </div>
 
@@ -522,8 +521,8 @@
             <section class="section">
                 <div class="container">
                     <div class="section-header">
-                        <span class="badge badge-blue"><i class="fas fa-clock"></i> Our Journey</span>
-                        <h2>The SHIRO IT <span class="gradient-text">Story</span></h2>
+                        <span class="badge badge-blue"><i class="fas fa-clock"></i> <span data-translate="about_journey_badge">Our Journey</span></span>
+                        <h2><span data-translate="about_story1">The SHIRO IT</span> <span class="gradient-text" data-translate="about_story2">Story</span></h2>
                     </div>
                     <div class="timeline">
                         <div class="timeline-line"></div>
@@ -531,48 +530,48 @@
                             <div class="timeline-dot"></div>
                             <div class="card timeline-card">
                                 <span class="timeline-year">2019</span>
-                                <h4>The Beginning</h4>
-                                <p>SHIRO IT was founded with a passion for building high-performance custom PCs.</p>
+                                <h4 data-translate="about_tl1_title">The Beginning</h4>
+                                <p data-translate="about_tl1_desc">SHIRO IT was founded with a passion for building high-performance custom PCs.</p>
                             </div>
                         </div>
                         <div class="timeline-item right">
                             <div class="timeline-dot"></div>
                             <div class="card timeline-card">
                                 <span class="timeline-year">2020</span>
-                                <h4>Growing Strong</h4>
-                                <p>Expanded into IT services, offering repair, networking, and cloud solutions.</p>
+                                <h4 data-translate="about_tl2_title">Growing Strong</h4>
+                                <p data-translate="about_tl2_desc">Expanded into IT services, offering repair, networking, and cloud solutions.</p>
                             </div>
                         </div>
                         <div class="timeline-item left">
                             <div class="timeline-dot"></div>
                             <div class="card timeline-card">
                                 <span class="timeline-year">2021</span>
-                                <h4>Online Presence</h4>
-                                <p>Launched our e-commerce platform and interactive PC configurator.</p>
+                                <h4 data-translate="about_tl3_title">Online Presence</h4>
+                                <p data-translate="about_tl3_desc">Launched our e-commerce platform and interactive PC configurator.</p>
                             </div>
                         </div>
                         <div class="timeline-item right">
                             <div class="timeline-dot"></div>
                             <div class="card timeline-card">
                                 <span class="timeline-year">2022</span>
-                                <h4>Community Impact</h4>
-                                <p>Partnered with local schools and universities for tech education programs.</p>
+                                <h4 data-translate="about_tl4_title">Community Impact</h4>
+                                <p data-translate="about_tl4_desc">Partnered with local schools and universities for tech education programs.</p>
                             </div>
                         </div>
                         <div class="timeline-item left">
                             <div class="timeline-dot"></div>
                             <div class="card timeline-card">
                                 <span class="timeline-year">2023</span>
-                                <h4>Expansion</h4>
-                                <p>Opened our Penang showroom and grew to serve over 500 customers.</p>
+                                <h4 data-translate="about_tl5_title">Expansion</h4>
+                                <p data-translate="about_tl5_desc">Opened our Penang showroom and grew to serve over 500 customers.</p>
                             </div>
                         </div>
                         <div class="timeline-item right">
                             <div class="timeline-dot"></div>
                             <div class="card timeline-card">
                                 <span class="timeline-year">2024</span>
-                                <h4>Innovation</h4>
-                                <p>Introduced AI-powered build recommendations and real-time compatibility checking.</p>
+                                <h4 data-translate="about_tl6_title">Innovation</h4>
+                                <p data-translate="about_tl6_desc">Introduced AI-powered build recommendations and real-time compatibility checking.</p>
                             </div>
                         </div>
                     </div>
@@ -583,29 +582,29 @@
             <section class="section values-section">
                 <div class="container">
                     <div class="section-header">
-                        <span class="badge badge-red"><i class="fas fa-flag"></i> Our Values</span>
-                        <h2>What Drives <span class="gradient-text">Us</span></h2>
+                        <span class="badge badge-red"><i class="fas fa-flag"></i> <span data-translate="about_values_badge">Our Values</span></span>
+                        <h2><span data-translate="about_values1">What Drives</span> <span class="gradient-text" data-translate="about_values2">Us</span></h2>
                     </div>
                     <div class="values-grid">
                         <div class="card value-card">
                             <div class="value-icon"><i class="fas fa-heart"></i></div>
-                            <h4>Passion</h4>
-                            <p>Every build is crafted with genuine love for technology and gaming.</p>
+                            <h4 data-translate="val_1_title">Passion</h4>
+                            <p data-translate="val_1_desc">Every build is crafted with genuine love for technology and gaming.</p>
                         </div>
                         <div class="card value-card">
                             <div class="value-icon"><i class="fas fa-handshake"></i></div>
-                            <h4>Trust</h4>
-                            <p>Transparent pricing, honest recommendations, and reliable after-sales support.</p>
+                            <h4 data-translate="val_2_title">Trust</h4>
+                            <p data-translate="val_2_desc">Transparent pricing, honest recommendations, and reliable after-sales support.</p>
                         </div>
                         <div class="card value-card">
                             <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
-                            <h4>Innovation</h4>
-                            <p>Always adopting the latest tech to give our customers the best experience.</p>
+                            <h4 data-translate="val_3_title">Innovation</h4>
+                            <p data-translate="val_3_desc">Always adopting the latest tech to give our customers the best experience.</p>
                         </div>
                         <div class="card value-card">
                             <div class="value-icon"><i class="fas fa-users"></i></div>
-                            <h4>Community</h4>
-                            <p>Building a community of gamers and tech enthusiasts across Malaysia.</p>
+                            <h4 data-translate="val_4_title">Community</h4>
+                            <p data-translate="val_4_desc">Building a community of gamers and tech enthusiasts across Malaysia.</p>
                         </div>
                     </div>
                 </div>
@@ -615,8 +614,8 @@
             <section class="section">
                 <div class="container">
                     <div class="section-header">
-                        <span class="badge badge-blue"><i class="fas fa-users"></i> Our Team</span>
-                        <h2>Meet The <span class="gradient-text">Team</span></h2>
+                        <span class="badge badge-blue"><i class="fas fa-users"></i> <span data-translate="about_team_badge">Our Team</span></span>
+                        <h2><span data-translate="about_team1">Meet The</span> <span class="gradient-text" data-translate="about_team2">Team</span></h2>
                     </div>
                     <div class="team-grid">
                         <div class="card team-card">
@@ -654,14 +653,128 @@
             </section>
         </div>
 
+        <!-- ========== IT TIPS & TRICKS PAGE ========== -->
+        <div id="page-tips" class="page">
+            <section class="page-hero">
+                <div class="page-hero-bg"></div>
+                <div class="container page-hero-content">
+                    <span class="badge badge-blue"><i class="fas fa-lightbulb"></i> <span data-translate="tips_badge">Knowledge Base</span></span>
+                    <h1><span data-translate="tips_h1_1">IT</span> <span class="gradient-text" data-translate="tips_h1_2">Tips & Tricks</span></h1>
+                    <p class="page-hero-desc" data-translate="tips_desc">Practical tech tips to keep your PC running fast, secure, and optimized. From SHIRO IT experts to you.</p>
+                </div>
+            </section>
+
+            <!-- Featured Video -->
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-blue"><i class="fas fa-play-circle"></i> <span data-translate="tips_video_badge">Featured Video</span></span>
+                        <h2><span data-translate="tips_video1">Watch &</span> <span class="gradient-text" data-translate="tips_video2">Learn</span></h2>
+                    </div>
+                    <div class="tip-video-container">
+                        <video class="tip-video" controls preload="metadata" poster="">
+                            <source src="video/PC 2 video .mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <span class="badge badge-red"><i class="fas fa-desktop"></i> <span data-translate="tips_care_badge">PC Care</span></span>
+                        <h2><span data-translate="tips_care1">Keep Your PC</span> <span class="gradient-text" data-translate="tips_care2">Healthy</span></h2>
+                    </div>
+                    <div class="tips-grid">
+                        <!-- Tip 1 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#0066FF; background:rgba(0,102,255,0.1);"><i class="fas fa-broom"></i></div>
+                            <h4>Clean Your PC Regularly</h4>
+                            <p>Dust buildup causes overheating. Use compressed air to clean your fans, heatsinks, and filters every 3-6 months. Keep vents unblocked for proper airflow.</p>
+                            <div class="tip-tags"><span>Maintenance</span><span>Hardware</span></div>
+                        </div>
+                        <!-- Tip 2 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#FF0033; background:rgba(255,0,51,0.1);"><i class="fas fa-sync-alt"></i></div>
+                            <h4>Keep Drivers Updated</h4>
+                            <p>Outdated GPU, chipset, and network drivers cause crashes and poor performance. Update drivers monthly from the manufacturer's website — avoid third-party tools.</p>
+                            <div class="tip-tags"><span>Performance</span><span>Software</span></div>
+                        </div>
+                        <!-- Tip 3 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#0066FF; background:rgba(0,102,255,0.1);"><i class="fas fa-thermometer-half"></i></div>
+                            <h4>Monitor Temperatures</h4>
+                            <p>Use HWMonitor or Core Temp to check CPU/GPU temps. CPU should stay below 85°C under load. If temps are high, repaste thermal compound or improve case airflow.</p>
+                            <div class="tip-tags"><span>Hardware</span><span>Performance</span></div>
+                        </div>
+                        <!-- Tip 4 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#FF0033; background:rgba(255,0,51,0.1);"><i class="fas fa-shield-alt"></i></div>
+                            <h4>Enable Windows Defender</h4>
+                            <p>Windows Defender is free and effective. Keep it enabled with real-time protection on. Avoid downloading cracked software — it's the #1 source of malware.</p>
+                            <div class="tip-tags"><span>Security</span><span>Software</span></div>
+                        </div>
+                        <!-- Tip 5 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#0066FF; background:rgba(0,102,255,0.1);"><i class="fas fa-hdd"></i></div>
+                            <h4>Upgrade to SSD</h4>
+                            <p>Still on a hard drive? An SSD is the single biggest upgrade for speed. Windows boots in seconds, apps open instantly. NVMe SSDs are even faster than SATA SSDs.</p>
+                            <div class="tip-tags"><span>Hardware</span><span>Upgrade</span></div>
+                        </div>
+                        <!-- Tip 6 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#FF0033; background:rgba(255,0,51,0.1);"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <h4>Backup Your Data</h4>
+                            <p>Follow the 3-2-1 rule: 3 copies of data, on 2 different media, with 1 offsite (cloud). Use Google Drive, OneDrive, or an external drive. Don't wait until it's too late!</p>
+                            <div class="tip-tags"><span>Data</span><span>Security</span></div>
+                        </div>
+                        <!-- Tip 7 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#0066FF; background:rgba(0,102,255,0.1);"><i class="fas fa-wifi"></i></div>
+                            <h4>Optimize Your WiFi</h4>
+                            <p>Place your router centrally and elevated. Use 5GHz band for speed near the router, 2.4GHz for range. Change default passwords and use WPA3 encryption.</p>
+                            <div class="tip-tags"><span>Networking</span><span>Security</span></div>
+                        </div>
+                        <!-- Tip 8 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#FF0033; background:rgba(255,0,51,0.1);"><i class="fas fa-memory"></i></div>
+                            <h4>Check RAM Usage</h4>
+                            <p>Open Task Manager (Ctrl+Shift+Esc) to check memory usage. If you're consistently above 80%, it's time to upgrade. 16GB is the sweet spot for most users in 2025.</p>
+                            <div class="tip-tags"><span>Performance</span><span>Hardware</span></div>
+                        </div>
+                        <!-- Tip 9 -->
+                        <div class="card tip-card">
+                            <div class="tip-icon" style="color:#0066FF; background:rgba(0,102,255,0.1);"><i class="fas fa-plug"></i></div>
+                            <h4>Use a Surge Protector</h4>
+                            <p>Power surges can fry your components instantly. Always use a surge protector or UPS (Uninterruptible Power Supply) — especially in areas with unstable electricity.</p>
+                            <div class="tip-tags"><span>Hardware</span><span>Safety</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tips CTA -->
+            <section class="cta-section">
+                <div class="container cta-content">
+                    <h2><span data-translate="tips_cta1">Need</span> <span class="gradient-text" data-translate="tips_cta2">Expert Help</span>?</h2>
+                    <p data-translate="tips_cta_desc">Our technicians can diagnose and fix any PC issue. From slow performance to hardware failures — we've got you covered.</p>
+                    <div class="cta-buttons">
+                        <a href="#contact" data-page="contact" class="btn btn-primary"><i class="fas fa-envelope"></i> Contact Us</a>
+                        <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
         <!-- ========== SERVICES PAGE ========== -->
         <div id="page-services" class="page">
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
-                    <span class="badge badge-blue"><i class="fas fa-cogs"></i> Our Services</span>
-                    <h1>Professional <span class="gradient-text">IT Solutions</span></h1>
-                    <p class="page-hero-desc">From custom PC builds to enterprise IT support — we deliver reliable,
+                    <span class="badge badge-blue"><i class="fas fa-cogs"></i> <span data-translate="svcp_badge">Our Services</span></span>
+                    <h1><span data-translate="svcp_h1_1">Professional</span> <span class="gradient-text" data-translate="svcp_h1_2">IT Solutions</span></h1>
+                    <p class="page-hero-desc" data-translate="svcp_desc">From custom PC builds to enterprise IT support — we deliver reliable,
                         high-quality technology services tailored to your needs.</p>
                 </div>
             </section>
@@ -760,8 +873,8 @@
             <section class="section process-section">
                 <div class="container">
                     <div class="section-header">
-                        <span class="badge badge-red"><i class="fas fa-route"></i> How It Works</span>
-                        <h2>Our <span class="gradient-text">Process</span></h2>
+                        <span class="badge badge-red"><i class="fas fa-route"></i> <span data-translate="proc_badge">How It Works</span></span>
+                        <h2><span data-translate="proc_h2_1">Our</span> <span class="gradient-text" data-translate="proc_h2_2">Process</span></h2>
                     </div>
                     <div class="process-grid">
                         <div class="process-card">
@@ -816,8 +929,8 @@
             <section class="section faq-section">
                 <div class="container">
                     <div class="section-header">
-                        <span class="badge badge-blue"><i class="fas fa-question-circle"></i> FAQ</span>
-                        <h2>Frequently <span class="gradient-text">Asked</span></h2>
+                        <span class="badge badge-blue"><i class="fas fa-question-circle"></i> <span data-translate="faq_badge">FAQ</span></span>
+                        <h2><span data-translate="faq_h2_1">Frequently</span> <span class="gradient-text" data-translate="faq_h2_2">Asked</span></h2>
                     </div>
                     <div class="faq-list">
                         <details class="faq-item">
@@ -855,9 +968,9 @@
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
-                    <span class="badge badge-blue"><i class="fas fa-store"></i> Shop</span>
-                    <h1>SHIRO IT <span class="gradient-text">Store</span></h1>
-                    <p class="page-hero-desc">Pre-built gaming PCs, workstations, components, and accessories — all
+                    <span class="badge badge-blue"><i class="fas fa-store"></i> <span data-translate="shop_badge">Shop</span></span>
+                    <h1><span data-translate="shop_h1_1">SHIRO IT</span> <span class="gradient-text" data-translate="shop_h1_2">Store</span></h1>
+                    <p class="page-hero-desc" data-translate="shop_desc">Pre-built gaming PCs, workstations, components, and accessories — all
                         curated by SHIRO IT.</p>
                 </div>
             </section>
@@ -897,8 +1010,8 @@
             <!-- Shop CTA -->
             <section class="shop-cta">
                 <div class="container" style="text-align:center;">
-                    <h2>Can't Find What You Need?</h2>
-                    <p style="color:var(--text-secondary); margin-bottom:1.5rem;">We can source any component or build a
+                    <h2 data-translate="shop_cta_h2">Can't Find What You Need?</h2>
+                    <p style="color:var(--text-secondary); margin-bottom:1.5rem;" data-translate="shop_cta_desc">We can source any component or build a
                         custom PC just for you.</p>
                     <div class="cta-buttons">
                         <a href="#build-pc" data-page="build-pc" class="btn btn-primary"><i class="fas fa-tools"></i>
@@ -915,9 +1028,9 @@
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
-                    <span class="badge badge-blue"><i class="fas fa-tools"></i> PC Configurator</span>
-                    <h1>Build Your <span class="gradient-text">Dream PC</span></h1>
-                    <p class="page-hero-desc">Select your components below and get an instant price estimate. Order via
+                    <span class="badge badge-blue"><i class="fas fa-tools"></i> <span data-translate="build_badge">PC Configurator</span></span>
+                    <h1><span data-translate="build_h1_1">Build Your</span> <span class="gradient-text" data-translate="build_h1_2">Dream PC</span></h1>
+                    <p class="page-hero-desc" data-translate="build_desc">Select your components below and get an instant price estimate. Order via
                         WhatsApp!</p>
                 </div>
             </section>
@@ -957,9 +1070,9 @@
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
-                    <span class="badge badge-blue"><i class="fas fa-envelope"></i> Contact Us</span>
-                    <h1>Get In <span class="gradient-text">Touch</span></h1>
-                    <p class="page-hero-desc">Have a question or need a quote? Reach out to us through any of the
+                    <span class="badge badge-blue"><i class="fas fa-envelope"></i> <span data-translate="contact_badge">Contact Us</span></span>
+                    <h1><span data-translate="contact_h1_1">Get In</span> <span class="gradient-text" data-translate="contact_h1_2">Touch</span></h1>
+                    <p class="page-hero-desc" data-translate="contact_desc">Have a question or need a quote? Reach out to us through any of the
                         channels below.</p>
                 </div>
             </section>
@@ -1001,7 +1114,7 @@
             <section class="section form-section">
                 <div class="container form-grid">
                     <form class="card contact-form" id="contactForm">
-                        <h3>Send Us a Message</h3>
+                        <h3 data-translate="contact_form_title">Send Us a Message</h3>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Name</label>
@@ -1064,8 +1177,8 @@
             <section class="section">
                 <div class="container">
                     <div class="section-header">
-                        <span class="badge badge-blue"><i class="fas fa-map-marked-alt"></i> Find Us</span>
-                        <h2>Our <span class="gradient-text">Location</span></h2>
+                        <span class="badge badge-blue"><i class="fas fa-map-marked-alt"></i> <span data-translate="contact_find_badge">Find Us</span></span>
+                        <h2><span data-translate="contact_loc1">Our</span> <span class="gradient-text" data-translate="contact_loc2">Location</span></h2>
                     </div>
                     <div class="map-container">
                         <!-- REPLACE the src below with your actual Google Maps embed URL -->
@@ -1084,8 +1197,8 @@
             <section class="section">
                 <div class="container">
                     <div class="section-header">
-                        <span class="badge badge-red"><i class="fas fa-briefcase"></i> Careers</span>
-                        <h2>Join Our <span class="gradient-text">Team</span></h2>
+                        <span class="badge badge-red"><i class="fas fa-briefcase"></i> <span data-translate="careers_badge">Careers</span></span>
+                        <h2><span data-translate="careers_h2_1">Join Our</span> <span class="gradient-text" data-translate="careers_h2_2">Team</span></h2>
                     </div>
                     <div class="careers-grid">
                         <div class="card career-card">
@@ -1117,7 +1230,8 @@
     </main>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="footer">
+    <footer class="footer festival-zone">
+        <div class="festival-particles" data-festival-zone="footer"></div>
         <div class="footer-glow"></div>
         <div class="container footer-content">
             <!-- Brand -->
@@ -1197,13 +1311,33 @@
         </div>
     </footer>
 
-    <!-- Floating WhatsApp -->
-    <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer" class="whatsapp-float">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+
+    <!-- Floating Social Media -->
+    <div class="social-float">
+        <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer" class="social-float-btn social-whatsapp" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://facebook.com/shiroitpc" target="_blank" rel="noopener noreferrer" class="social-float-btn social-facebook" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://instagram.com/shiro_it_penang" target="_blank" rel="noopener noreferrer" class="social-float-btn social-instagram" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://tiktok.com/@shiroit" target="_blank" rel="noopener noreferrer" class="social-float-btn social-tiktok" aria-label="TikTok">
+            <i class="fab fa-tiktok"></i>
+        </a>
+    </div>
 
     <!-- JS -->
     <script src="shiro-v2.js"></script>
+    
+    <!-- Festival Animations (Uncomment to enable) -->
+    <!-- <script src="festivals/cny.js"></script> -->
+    <!-- <script src="festivals/raya.js"></script> -->
+    <!-- <script src="festivals/deepavali.js"></script> -->
+    <!-- <script src="festivals/christmas.js"></script> -->
+    <!-- <script src="festivals/newyear.js"></script> -->
+    <!-- <script src="festivals/national.js"></script> -->
 </body>
 
 </html>

@@ -100,7 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const translations = {
     bm: {
+      // Nav
       nav_home: "Utama",
+      nav_tips: "Tips & Trik IT",
       nav_gaming: "Gaming",
       nav_services: "Perkhidmatan",
       nav_shop: "Kedai",
@@ -113,53 +115,138 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_repair: "Baik Pulih",
       nav_maintenance: "Penyelenggaraan",
       nav_networking: "Rangkaian",
+      // Hero
       hero_badge: "Pembina PC Custom Malaysia",
       hero_title_1: "Bina Impian Anda",
       hero_title_2: "PC Gaming",
-      hero_desc:
-        "Dari bajet rendah hingga kuasa tertinggi — kami bina PC custom yang sepadan dengan keperluan prestasi dan gaya anda. Perkhidmatan IT pakar di Kepala Batas, Pulau Pinang.",
+      hero_desc: "Dari bajet rendah hingga kuasa tertinggi — kami bina PC custom yang sepadan dengan keperluan prestasi dan gaya anda. Perkhidmatan IT pakar di Kepala Batas, Pulau Pinang.",
       hero_f1: "Respon Pantas",
       hero_f2: "Jaminan 2 Tahun",
       hero_f3: "Jurutera Pakar",
       hero_cta1: "Bina PC Anda",
       hero_cta2: "Lihat Kedai",
       hero_trust: "pelanggan mempercayai SHIRO IT",
+      // Home Services
       svc_badge: "Perkhidmatan Kami",
       svc_title_1: "Apa Yang",
       svc_title_2: "Kami Tawarkan",
-      svc_desc:
-        "Dari bina PC custom hingga penyelesaian IT komprehensif, kami sedia membantu.",
+      svc_desc: "Dari bina PC custom hingga penyelesaian IT komprehensif, kami sedia membantu.",
       svc_1_title: "Bina PC Custom",
       svc_1_desc: "PC gaming dibina tangan mengikut keperluan dan bajet anda.",
       svc_2_title: "Baik Pulih PC",
-      svc_2_desc:
-        "Diagnosis pakar dan pembaikan untuk semua masalah perkakasan dan perisian PC.",
+      svc_2_desc: "Diagnosis pakar dan pembaikan untuk semua masalah perkakasan dan perisian PC.",
       svc_3_title: "Rangkaian",
-      svc_3_desc:
-        "Setup rangkaian profesional, konfigurasi, dan penyelesaian masalah.",
+      svc_3_desc: "Setup rangkaian profesional, konfigurasi, dan penyelesaian masalah.",
       svc_4_title: "Sokongan IT",
       svc_4_desc: "Sokongan IT komprehensif untuk perniagaan dan individu.",
       svc_5_title: "Pemulihan Data",
-      svc_5_desc:
-        "Pulihkan data yang hilang dari pemacu rosak dan sistem korup.",
+      svc_5_desc: "Pulihkan data yang hilang dari pemacu rosak dan sistem korup.",
       svc_6_title: "Penyelesaian Cloud",
       svc_6_desc: "Migrasi cloud, setup, dan pengurusan untuk perniagaan anda.",
+      // Tiers
       tier_title_1: "Pilih",
       tier_title_2: "PC Anda",
+      // Stats
       stat_1: "PC Dibina",
       stat_2: "Kepuasan",
       stat_3: "Tahun Pengalaman",
       stat_4: "Sokongan",
+      // Testimonials
       test_title_1: "Apa Pelanggan",
       test_title_2: "Kata",
+      // CTA
       cta_1: "Sedia Bina",
       cta_2: "PC Impian",
-      cta_desc:
-        "Gunakan konfigurator interaktif kami untuk reka PC gaming sempurna anda. Pilih dari komponen terkini dan dapatkan sebut harga segera.",
+      cta_desc: "Gunakan konfigurator interaktif kami untuk reka PC gaming sempurna anda. Pilih dari komponen terkini dan dapatkan sebut harga segera.",
+      // About Page
+      about_badge: "Tentang Kami",
       about_h1_1: "Kami Bina",
       about_h1_2: "Impian",
-      about_desc:
-        "SHIRO IT adalah pembina PC custom dan pembekal perkhidmatan IT Malaysia yang bersemangat, berdedikasi untuk menyampaikan sistem berprestasi tinggi dan perkhidmatan luar biasa.",
+      about_desc: "SHIRO IT adalah pembina PC custom dan pembekal perkhidmatan IT Malaysia yang bersemangat, berdedikasi untuk menyampaikan sistem berprestasi tinggi dan perkhidmatan luar biasa.",
+      about_stat1: "PC Dibina",
+      about_stat2: "Tahun",
+      about_stat3: "Kepuasan",
+      about_stat4v: "Pulau Pinang",
+      about_stat4: "Berpusat",
+      about_journey_badge: "Perjalanan Kami",
+      about_story1: "Kisah SHIRO IT",
+      about_story2: "Cerita",
+      about_tl1_title: "Permulaan",
+      about_tl1_desc: "SHIRO IT diasaskan dengan semangat untuk membina PC custom berprestasi tinggi.",
+      about_tl2_title: "Berkembang Maju",
+      about_tl2_desc: "Berkembang ke perkhidmatan IT, menawarkan baik pulih, rangkaian, dan penyelesaian cloud.",
+      about_tl3_title: "Kehadiran Dalam Talian",
+      about_tl3_desc: "Melancarkan platform e-dagang dan konfigurator PC interaktif.",
+      about_tl4_title: "Impak Komuniti",
+      about_tl4_desc: "Bekerjasama dengan sekolah dan universiti tempatan untuk program pendidikan teknologi.",
+      about_tl5_title: "Pengembangan",
+      about_tl5_desc: "Membuka bilik pameran Pulau Pinang dan berkembang melayani lebih 500 pelanggan.",
+      about_tl6_title: "Inovasi",
+      about_tl6_desc: "Memperkenalkan cadangan binaan berkuasa AI dan semakan keserasian masa nyata.",
+      about_values_badge: "Nilai Kami",
+      about_values1: "Apa Yang Mendorong",
+      about_values2: "Kami",
+      val_1_title: "Semangat",
+      val_1_desc: "Setiap binaan direka dengan kasih sayang tulen terhadap teknologi dan gaming.",
+      val_2_title: "Kepercayaan",
+      val_2_desc: "Harga telus, cadangan jujur, dan sokongan selepas jualan yang boleh dipercayai.",
+      val_3_title: "Inovasi",
+      val_3_desc: "Sentiasa mengamalkan teknologi terkini untuk memberikan pengalaman terbaik kepada pelanggan.",
+      val_4_title: "Komuniti",
+      val_4_desc: "Membina komuniti gamer dan peminat teknologi di seluruh Malaysia.",
+      about_team_badge: "Pasukan Kami",
+      about_team1: "Kenali",
+      about_team2: "Pasukan",
+      // IT Tips Page
+      tips_badge: "Pangkalan Ilmu",
+      tips_h1_1: "IT",
+      tips_h1_2: "Tips & Trik",
+      tips_desc: "Tips teknologi praktikal untuk pastikan PC anda pantas, selamat, dan optimum. Dari pakar SHIRO IT untuk anda.",
+      tips_video_badge: "Video Pilihan",
+      tips_video1: "Tonton &",
+      tips_video2: "Belajar",
+      tips_care_badge: "Penjagaan PC",
+      tips_care1: "Pastikan PC Anda",
+      tips_care2: "Sihat",
+      tips_cta1: "Perlukan",
+      tips_cta2: "Bantuan Pakar",
+      tips_cta_desc: "Jurutera kami boleh diagnos dan baiki sebarang masalah PC. Dari prestasi perlahan hingga kerosakan perkakasan — kami sedia membantu.",
+      // Services Page
+      svcp_badge: "Perkhidmatan Kami",
+      svcp_h1_1: "Profesional",
+      svcp_h1_2: "Penyelesaian IT",
+      svcp_desc: "Dari bina PC custom hingga sokongan IT perusahaan — kami menyampaikan perkhidmatan teknologi berkualiti tinggi dan boleh dipercayai mengikut keperluan anda.",
+      proc_badge: "Cara Ia Berfungsi",
+      proc_h2_1: "Proses",
+      proc_h2_2: "Kami",
+      faq_badge: "Soalan Lazim",
+      faq_h2_1: "Soalan",
+      faq_h2_2: "Lazim",
+      // Shop Page
+      shop_badge: "Kedai",
+      shop_h1_1: "SHIRO IT",
+      shop_h1_2: "Kedai",
+      shop_desc: "PC gaming siap bina, stesen kerja, komponen, dan aksesori — semuanya dipilih oleh SHIRO IT.",
+      shop_cta_h2: "Tak Jumpa Apa Yang Anda Cari?",
+      shop_cta_desc: "Kami boleh dapatkan sebarang komponen atau bina PC custom khas untuk anda.",
+      // Build PC Page
+      build_badge: "Konfigurator PC",
+      build_h1_1: "Bina",
+      build_h1_2: "PC Impian Anda",
+      build_desc: "Pilih komponen anda di bawah dan dapatkan anggaran harga segera. Tempah melalui WhatsApp!",
+      // Contact Page
+      contact_badge: "Hubungi Kami",
+      contact_h1_1: "Hubungi",
+      contact_h1_2: "Kami",
+      contact_desc: "Ada soalan atau perlukan sebut harga? Hubungi kami melalui mana-mana saluran di bawah.",
+      contact_form_title: "Hantar Mesej Kepada Kami",
+      contact_find_badge: "Cari Kami",
+      contact_loc1: "Lokasi",
+      contact_loc2: "Kami",
+      careers_badge: "Kerjaya",
+      careers_h2_1: "Sertai",
+      careers_h2_2: "Pasukan Kami",
+      // Language
       language_english: "English",
       language_bm: "Bahasa Malaysia",
     },
@@ -608,13 +695,18 @@ document.addEventListener("DOMContentLoaded", () => {
         .join("");
 
       group.innerHTML = `
-        ${info.image ? `
+        ${
+          info.image
+            ? `
         <div class="comp-img-wrap">
-          ${info.isSvg
-            ? info.image
-            : `<img src="${info.image}" alt="${info.label}" class="comp-img" onerror="this.parentElement.style.display='none'">`
+          ${
+            info.isSvg
+              ? info.image
+              : `<img src="${info.image}" alt="${info.label}" class="comp-img" onerror="this.parentElement.style.display='none'">`
           }
-        </div>` : ""}
+        </div>`
+            : ""
+        }
         <div class="comp-header">
           <div class="comp-icon" style="color:${info.color}; background:${info.color}20;">
             <i class="${info.icon}"></i>
@@ -764,15 +856,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== TESTIMONIALS SLIDER ===== */
   (function () {
-    const track    = document.getElementById('tsliderTrack');
-    const dotsEl   = document.getElementById('tsliderDots');
-    const btnPrev  = document.getElementById('tsliderPrev');
-    const btnNext  = document.getElementById('tsliderNext');
+    const track = document.getElementById("tsliderTrack");
+    const dotsEl = document.getElementById("tsliderDots");
+    const btnPrev = document.getElementById("tsliderPrev");
+    const btnNext = document.getElementById("tsliderNext");
     if (!track) return;
 
-    const slides   = Array.from(track.querySelectorAll('.tslide'));
-    let current    = 0;
-    let autoTimer  = null;
+    const slides = Array.from(track.querySelectorAll(".tslide"));
+    let current = 0;
+    let autoTimer = null;
 
     function slidesVisible() {
       const vw = window.innerWidth;
@@ -781,7 +873,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return 3;
     }
 
-    function maxIndex() { return Math.max(0, slides.length - slidesVisible()); }
+    function maxIndex() {
+      return Math.max(0, slides.length - slidesVisible());
+    }
 
     function goTo(idx) {
       current = Math.max(0, Math.min(idx, maxIndex()));
@@ -790,20 +884,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const gap = parseFloat(getComputedStyle(track).gap) || 24;
       track.style.transform = `translateX(-${current * (slideW + gap)}px)`;
       // Update dots
-      document.querySelectorAll('.tslider-dot').forEach((d, i) => {
-        d.classList.toggle('active', i === current);
+      document.querySelectorAll(".tslider-dot").forEach((d, i) => {
+        d.classList.toggle("active", i === current);
       });
     }
 
     function buildDots() {
       if (!dotsEl) return;
-      dotsEl.innerHTML = '';
+      dotsEl.innerHTML = "";
       const count = maxIndex() + 1;
       for (let i = 0; i < count; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'tslider-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-        dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+        const dot = document.createElement("button");
+        dot.className = "tslider-dot" + (i === 0 ? " active" : "");
+        dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+        dot.addEventListener("click", () => {
+          goTo(i);
+          resetAuto();
+        });
         dotsEl.appendChild(dot);
       }
     }
@@ -814,31 +911,54 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 4500);
     }
 
-    function resetAuto() { clearInterval(autoTimer); startAuto(); }
+    function resetAuto() {
+      clearInterval(autoTimer);
+      startAuto();
+    }
 
-    btnPrev && btnPrev.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-    btnNext && btnNext.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+    btnPrev &&
+      btnPrev.addEventListener("click", () => {
+        goTo(current - 1);
+        resetAuto();
+      });
+    btnNext &&
+      btnNext.addEventListener("click", () => {
+        goTo(current + 1);
+        resetAuto();
+      });
 
     // Pause on hover
-    const wrapper = document.querySelector('.testimonials-slider-wrapper');
+    const wrapper = document.querySelector(".testimonials-slider-wrapper");
     if (wrapper) {
-      wrapper.addEventListener('mouseenter', () => clearInterval(autoTimer));
-      wrapper.addEventListener('mouseleave', startAuto);
+      wrapper.addEventListener("mouseenter", () => clearInterval(autoTimer));
+      wrapper.addEventListener("mouseleave", startAuto);
     }
 
     // Touch swipe support
     let touchStartX = 0;
-    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
+    track.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.touches[0].clientX;
+      },
+      { passive: true },
+    );
+    track.addEventListener("touchend", (e) => {
       const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) { diff > 0 ? goTo(current + 1) : goTo(current - 1); resetAuto(); }
+      if (Math.abs(diff) > 50) {
+        diff > 0 ? goTo(current + 1) : goTo(current - 1);
+        resetAuto();
+      }
     });
 
     // Rebuild on resize
     let resizeTimer;
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { buildDots(); goTo(current); }, 150);
+      resizeTimer = setTimeout(() => {
+        buildDots();
+        goTo(current);
+      }, 150);
     });
 
     buildDots();
@@ -848,86 +968,112 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== HERO SLIDER ===== */
   (function () {
-    const track    = document.getElementById('heroSliderTrack');
-    const dotsEl   = document.getElementById('heroSliderDots');
-    const btnPrev  = document.getElementById('heroSliderPrev');
-    const btnNext  = document.getElementById('heroSliderNext');
-    const progressBar = document.getElementById('heroSliderProgressBar');
+    const track = document.getElementById("heroSliderTrack");
+    const dotsEl = document.getElementById("heroSliderDots");
+    const btnPrev = document.getElementById("heroSliderPrev");
+    const btnNext = document.getElementById("heroSliderNext");
+    const progressBar = document.getElementById("heroSliderProgressBar");
     if (!track) return;
 
-    const slides   = Array.from(track.querySelectorAll('.hero-slide'));
-    const total    = slides.length;
-    let current    = 0;
-    let autoTimer  = null;
-    let progressTimer = null;
-    const INTERVAL = 5000; // 5 seconds per slide
-    const PROGRESS_STEP = 50; // update every 50ms
+    const slides = Array.from(track.querySelectorAll(".hero-slide"));
+    const total = slides.length;
+    let current = 0;
+    let autoTimer = null;
+    const INTERVAL = 8000; // 8 seconds per slide
 
     function goTo(idx) {
       current = ((idx % total) + total) % total; // wrap around
       track.style.transform = `translateX(-${current * 100}%)`;
       // Update dots
-      document.querySelectorAll('.hero-slider-dot').forEach((d, i) => {
-        d.classList.toggle('active', i === current);
+      document.querySelectorAll(".hero-slider-dot").forEach((d, i) => {
+        d.classList.toggle("active", i === current);
       });
     }
 
     function buildDots() {
       if (!dotsEl) return;
-      dotsEl.innerHTML = '';
+      dotsEl.innerHTML = "";
       for (let i = 0; i < total; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'hero-slider-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-        dot.addEventListener('click', () => { goTo(i); resetAuto(); });
+        const dot = document.createElement("button");
+        dot.className = "hero-slider-dot" + (i === 0 ? " active" : "");
+        dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+        dot.addEventListener("click", () => {
+          goTo(i);
+          resetAuto();
+        });
         dotsEl.appendChild(dot);
       }
     }
 
     function startProgress() {
-      let elapsed = 0;
-      if (progressBar) progressBar.style.width = '0%';
-      progressTimer = setInterval(() => {
-        elapsed += PROGRESS_STEP;
-        const pct = Math.min((elapsed / INTERVAL) * 100, 100);
-        if (progressBar) progressBar.style.width = pct + '%';
-      }, PROGRESS_STEP);
+      if (!progressBar) return;
+      // Reset to 0 instantly (no transition)
+      progressBar.classList.remove("animating");
+      progressBar.style.width = "0%";
+      // Force a reflow so the browser registers the 0% state
+      void progressBar.offsetWidth;
+      // Set the CSS custom property for duration
+      progressBar.style.setProperty("--progress-duration", INTERVAL + "ms");
+      // Trigger the smooth CSS transition to 100%
+      progressBar.classList.add("animating");
+    }
+
+    function stopProgress() {
+      if (!progressBar) return;
+      // Freeze at current position
+      const computed = getComputedStyle(progressBar).width;
+      progressBar.classList.remove("animating");
+      progressBar.style.width = computed;
     }
 
     function startAuto() {
       startProgress();
       autoTimer = setInterval(() => {
         goTo(current + 1);
-        clearInterval(progressTimer);
         startProgress();
       }, INTERVAL);
     }
 
     function resetAuto() {
       clearInterval(autoTimer);
-      clearInterval(progressTimer);
+      autoTimer = null;
       startAuto();
     }
 
-    btnPrev && btnPrev.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
-    btnNext && btnNext.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+    btnPrev &&
+      btnPrev.addEventListener("click", () => {
+        goTo(current - 1);
+        resetAuto();
+      });
+    btnNext &&
+      btnNext.addEventListener("click", () => {
+        goTo(current + 1);
+        resetAuto();
+      });
 
     // Pause on hover
-    const wrapper = document.querySelector('.hero-slider-wrapper');
+    const wrapper = document.querySelector(".hero-slider-wrapper");
     if (wrapper) {
-      wrapper.addEventListener('mouseenter', () => {
+      wrapper.addEventListener("mouseenter", () => {
         clearInterval(autoTimer);
-        clearInterval(progressTimer);
+        autoTimer = null;
+        stopProgress();
       });
-      wrapper.addEventListener('mouseleave', () => {
+      wrapper.addEventListener("mouseleave", () => {
         startAuto();
       });
     }
 
     // Touch swipe support
     let touchStartX = 0;
-    track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
+    track.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.touches[0].clientX;
+      },
+      { passive: true },
+    );
+    track.addEventListener("touchend", (e) => {
       const diff = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 50) {
         diff > 0 ? goTo(current + 1) : goTo(current - 1);
@@ -941,15 +1087,15 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
   /* ===== HERO PARTICLES ===== */
-  const particlesContainer = document.getElementById('heroParticles');
+  const particlesContainer = document.getElementById("heroParticles");
   if (particlesContainer) {
     for (let i = 0; i < 30; i++) {
-      const particle = document.createElement('div');
+      const particle = document.createElement("div");
       particle.style.cssText = `
         position: absolute;
         width: ${Math.random() * 4 + 1}px;
         height: ${Math.random() * 4 + 1}px;
-        background: ${Math.random() > 0.5 ? 'rgba(37,99,235,0.3)' : 'rgba(220,38,38,0.2)'};
+        background: ${Math.random() > 0.5 ? "rgba(37,99,235,0.3)" : "rgba(220,38,38,0.2)"};
         border-radius: 50%;
         left: ${Math.random() * 100}%;
         top: ${Math.random() * 100}%;
@@ -963,7 +1109,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ===== TOAST NOTIFICATIONS ===== */
 (function () {
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     .toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.75rem; }
     .toast { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; border-radius: 12px;
@@ -980,65 +1126,74 @@ document.addEventListener("DOMContentLoaded", () => {
   document.head.appendChild(style);
 })();
 
-function showToast(message, type = 'success') {
-  let container = document.querySelector('.toast-container');
+function showToast(message, type = "success") {
+  let container = document.querySelector(".toast-container");
   if (!container) {
-    container = document.createElement('div');
-    container.className = 'toast-container';
+    container = document.createElement("div");
+    container.className = "toast-container";
     document.body.appendChild(container);
   }
-  const icon = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-  const toast = document.createElement('div');
+  const icon =
+    type === "success" ? "fas fa-check-circle" : "fas fa-exclamation-circle";
+  const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.innerHTML = `<i class="${icon}"></i><span>${message}</span>`;
   container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.4s'; setTimeout(() => toast.remove(), 400); }, 5000);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.4s";
+    setTimeout(() => toast.remove(), 400);
+  }, 5000);
 }
 
 /* ===== BACKGROUND ANIMATION ===== */
 (function () {
-  const canvas = document.getElementById('bgCanvas');
+  const canvas = document.getElementById("bgCanvas");
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext("2d");
 
-  function isLight() { return document.body.classList.contains('light'); }
+  function isLight() {
+    return document.body.classList.contains("light");
+  }
 
   function palettes() {
     if (isLight()) {
       return {
-        a: { r: 37,  g: 99,  b: 235 },
-        b: { r: 239, g: 68,  b: 68  },
+        a: { r: 37, g: 99, b: 235 },
+        b: { r: 239, g: 68, b: 68 },
       };
     } else {
       return {
-        a: { r: 239, g: 68,  b: 68  },
-        b: { r: 37,  g: 99,  b: 235 },
+        a: { r: 239, g: 68, b: 68 },
+        b: { r: 37, g: 99, b: 235 },
       };
     }
   }
 
-  function rgba(c, a) { return `rgba(${c.r},${c.g},${c.b},${a})`; }
+  function rgba(c, a) {
+    return `rgba(${c.r},${c.g},${c.b},${a})`;
+  }
 
   let W, H;
   let meteors = [];
-  let rings   = [];
-  let stars   = [];
-  let comps   = [];
+  let rings = [];
+  let stars = [];
+  let comps = [];
 
   /* -- Stars (twinkle dots) -- */
   function initStars() {
     stars = Array.from({ length: 130 }, () => ({
-      x:     Math.random() * W,
-      y:     Math.random() * H,
-      r:     Math.random() * 2.5 + 0.8,
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 2.5 + 0.8,
       phase: Math.random() * Math.PI * 2,
       speed: Math.random() * 0.025 + 0.01,
-      col:   Math.random() > 0.5 ? 'a' : 'b',
+      col: Math.random() > 0.5 ? "a" : "b",
     }));
   }
 
   /* -- PC Component icons -- */
-  const COMP_TYPES = ['cpu', 'gpu', 'ram', 'ssd', 'fan', 'psu'];
+  const COMP_TYPES = ["cpu", "gpu", "ram", "ssd", "fan", "psu"];
 
   function initComponents() {
     comps = Array.from({ length: 16 }, () => spawnComponent());
@@ -1046,15 +1201,15 @@ function showToast(message, type = 'success') {
 
   function spawnComponent() {
     return {
-      x:    Math.random() * W,
-      y:    Math.random() * H,
+      x: Math.random() * W,
+      y: Math.random() * H,
       size: Math.random() * 22 + 18,
-      vx:   (Math.random() - 0.5) * 0.28,
-      vy:   (Math.random() - 0.5) * 0.28,
-      rot:  Math.random() * Math.PI * 2,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      rot: Math.random() * Math.PI * 2,
       rotV: (Math.random() - 0.5) * 0.004,
-      life: Math.random() * 0.20 + 0.13,
-      col:  Math.random() > 0.5 ? 'a' : 'b',
+      life: Math.random() * 0.2 + 0.13,
+      col: Math.random() > 0.5 ? "a" : "b",
       type: COMP_TYPES[Math.floor(Math.random() * COMP_TYPES.length)],
     };
   }
@@ -1065,35 +1220,50 @@ function showToast(message, type = 'success') {
     ctx.translate(x, y);
     ctx.rotate(rot);
     ctx.strokeStyle = rgba(c, a);
-    ctx.fillStyle   = rgba(c, a * 0.07);
-    ctx.lineWidth   = 1.6;
+    ctx.fillStyle = rgba(c, a * 0.07);
+    ctx.lineWidth = 1.6;
 
-    if (comp.type === 'cpu') {
+    if (comp.type === "cpu") {
       // Square body
       ctx.beginPath();
       ctx.rect(-s, -s, s * 2, s * 2);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       // Inner die
       ctx.beginPath();
       ctx.rect(-s * 0.45, -s * 0.45, s * 0.9, s * 0.9);
       ctx.stroke();
       // Pins on all 4 sides
-      const pinCount = 5, pinLen = s * 0.45, pinSpacing = (s * 1.6) / (pinCount + 1);
+      const pinCount = 5,
+        pinLen = s * 0.45,
+        pinSpacing = (s * 1.6) / (pinCount + 1);
       for (let i = 0; i < pinCount; i++) {
         const offset = -s * 0.8 + pinSpacing * (i + 1);
-        ctx.beginPath(); ctx.moveTo(offset, -s); ctx.lineTo(offset, -s - pinLen); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(offset,  s); ctx.lineTo(offset,  s + pinLen); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(-s, offset); ctx.lineTo(-s - pinLen, offset); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo( s, offset); ctx.lineTo( s + pinLen, offset); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(offset, -s);
+        ctx.lineTo(offset, -s - pinLen);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(offset, s);
+        ctx.lineTo(offset, s + pinLen);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(-s, offset);
+        ctx.lineTo(-s - pinLen, offset);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(s, offset);
+        ctx.lineTo(s + pinLen, offset);
+        ctx.stroke();
       }
-
-    } else if (comp.type === 'gpu') {
+    } else if (comp.type === "gpu") {
       // PCB body
       ctx.beginPath();
       ctx.rect(-s * 1.7, -s * 0.7, s * 3.4, s * 1.4);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       // Two fan circles
-      [-s * 0.75, s * 0.75].forEach(fx => {
+      [-s * 0.75, s * 0.75].forEach((fx) => {
         ctx.beginPath();
         ctx.arc(fx, 0, s * 0.52, 0, Math.PI * 2);
         ctx.stroke();
@@ -1106,93 +1276,113 @@ function showToast(message, type = 'success') {
         }
         ctx.beginPath();
         ctx.arc(fx, 0, s * 0.14, 0, Math.PI * 2);
-        ctx.fill(); ctx.stroke();
+        ctx.fill();
+        ctx.stroke();
       });
       // PCI-e connector
       ctx.beginPath();
       ctx.rect(-s * 1.4, s * 0.7, s * 2.1, s * 0.35);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       for (let i = 0; i < 8; i++) {
         ctx.beginPath();
         ctx.moveTo(-s * 1.3 + i * s * 0.37, s * 0.7);
         ctx.lineTo(-s * 1.3 + i * s * 0.37, s * 1.05);
         ctx.stroke();
       }
-
-    } else if (comp.type === 'ram') {
+    } else if (comp.type === "ram") {
       // Stick body
       ctx.beginPath();
       ctx.rect(-s * 0.3, -s * 1.5, s * 0.6, s * 2.8);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       // Chips on front
       for (let i = 0; i < 3; i++) {
         ctx.beginPath();
         ctx.rect(-s * 0.2, -s * 1.3 + i * s * 0.8, s * 0.4, s * 0.5);
-        ctx.fill(); ctx.stroke();
+        ctx.fill();
+        ctx.stroke();
       }
       // Contact fingers
       for (let i = 0; i < 6; i++) {
         ctx.beginPath();
         ctx.rect(-s * 0.26 + i * s * 0.1, s * 1.1, s * 0.06, s * 0.3);
-        ctx.fill(); ctx.stroke();
+        ctx.fill();
+        ctx.stroke();
       }
-
-    } else if (comp.type === 'ssd') {
+    } else if (comp.type === "ssd") {
       // M.2 stick body
       ctx.beginPath();
       ctx.rect(-s * 0.45, -s * 1.2, s * 0.9, s * 2.2);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       // Controller chip
       ctx.beginPath();
       ctx.rect(-s * 0.28, -s * 0.9, s * 0.56, s * 0.56);
-      ctx.fillStyle = rgba(c, a * 0.18); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = rgba(c, a * 0.18);
+      ctx.fill();
+      ctx.stroke();
       // NAND chips
-      [-s * 0.15, s * 0.45].forEach(cy => {
+      [-s * 0.15, s * 0.45].forEach((cy) => {
         ctx.beginPath();
         ctx.rect(-s * 0.28, cy, s * 0.56, s * 0.45);
-        ctx.fillStyle = rgba(c, a * 0.12); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = rgba(c, a * 0.12);
+        ctx.fill();
+        ctx.stroke();
       });
       // Connector
       ctx.fillStyle = rgba(c, a * 0.07);
       ctx.beginPath();
       ctx.rect(-s * 0.35, s * 1.0, s * 0.7, s * 0.22);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       for (let i = 0; i < 7; i++) {
         ctx.beginPath();
         ctx.moveTo(-s * 0.3 + i * s * 0.1, s * 1.0);
         ctx.lineTo(-s * 0.3 + i * s * 0.1, s * 1.22);
         ctx.stroke();
       }
-
-    } else if (comp.type === 'fan') {
+    } else if (comp.type === "fan") {
       // Outer ring
       ctx.beginPath();
       ctx.arc(0, 0, s, 0, Math.PI * 2);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       // 5 blades
       for (let i = 0; i < 5; i++) {
-        const angle = (Math.PI * 2 / 5) * i;
+        const angle = ((Math.PI * 2) / 5) * i;
         ctx.save();
         ctx.rotate(angle);
         ctx.beginPath();
         ctx.ellipse(s * 0.45, 0, s * 0.38, s * 0.2, 0, 0, Math.PI * 2);
-        ctx.fillStyle = rgba(c, a * 0.18); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = rgba(c, a * 0.18);
+        ctx.fill();
+        ctx.stroke();
         ctx.restore();
       }
       // Hub
       ctx.beginPath();
       ctx.arc(0, 0, s * 0.22, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(c, a * 0.3); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = rgba(c, a * 0.3);
+      ctx.fill();
+      ctx.stroke();
       // Corner screw holes
-      [[-s*0.78,-s*0.78],[s*0.78,-s*0.78],[-s*0.78,s*0.78],[s*0.78,s*0.78]].forEach(([cx,cy]) => {
-        ctx.beginPath(); ctx.arc(cx, cy, s * 0.1, 0, Math.PI * 2); ctx.stroke();
+      [
+        [-s * 0.78, -s * 0.78],
+        [s * 0.78, -s * 0.78],
+        [-s * 0.78, s * 0.78],
+        [s * 0.78, s * 0.78],
+      ].forEach(([cx, cy]) => {
+        ctx.beginPath();
+        ctx.arc(cx, cy, s * 0.1, 0, Math.PI * 2);
+        ctx.stroke();
       });
-
-    } else if (comp.type === 'psu') {
+    } else if (comp.type === "psu") {
       // Main box body
       ctx.beginPath();
       ctx.rect(-s * 1.0, -s * 0.65, s * 2.0, s * 1.3);
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
+      ctx.stroke();
       // Fan grill circle
       ctx.beginPath();
       ctx.arc(-s * 0.35, 0, s * 0.48, 0, Math.PI * 2);
@@ -1201,20 +1391,31 @@ function showToast(message, type = 'success') {
         const a2 = (Math.PI / 2) * i;
         ctx.beginPath();
         ctx.moveTo(-s * 0.35, 0);
-        ctx.lineTo(-s * 0.35 + Math.cos(a2) * s * 0.48, Math.sin(a2) * s * 0.48);
+        ctx.lineTo(
+          -s * 0.35 + Math.cos(a2) * s * 0.48,
+          Math.sin(a2) * s * 0.48,
+        );
         ctx.stroke();
       }
       // Connector block
       ctx.beginPath();
       ctx.rect(s * 0.18, -s * 0.4, s * 0.58, s * 0.8);
-      ctx.fillStyle = rgba(c, a * 0.15); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = rgba(c, a * 0.15);
+      ctx.fill();
+      ctx.stroke();
       // Connector pins
       ctx.fillStyle = rgba(c, a * 0.1);
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 2; j++) {
           ctx.beginPath();
-          ctx.rect(s * 0.26 + j * s * 0.22, -s * 0.3 + i * s * 0.27, s * 0.12, s * 0.16);
-          ctx.fill(); ctx.stroke();
+          ctx.rect(
+            s * 0.26 + j * s * 0.22,
+            -s * 0.3 + i * s * 0.27,
+            s * 0.12,
+            s * 0.16,
+          );
+          ctx.fill();
+          ctx.stroke();
         }
       }
     }
@@ -1227,11 +1428,11 @@ function showToast(message, type = 'success') {
     const p = palettes();
     const col = Math.random() > 0.5 ? p.a : p.b;
     rings.push({
-      x:     Math.random() * W,
-      y:     Math.random() * H,
-      r:     0,
-      maxR:  Math.random() * 120 + 60,
-      life:  1,
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 0,
+      maxR: Math.random() * 120 + 60,
+      life: 1,
       decay: Math.random() * 0.008 + 0.005,
       color: col,
     });
@@ -1242,22 +1443,22 @@ function showToast(message, type = 'success') {
     const p = palettes();
     const col = Math.random() > 0.5 ? p.a : p.b;
     meteors.push({
-      x:     Math.random() * W,
-      y:     0,
-      vx:    (Math.random() - 0.5) * 6,
-      vy:    Math.random() * 5 + 4,
-      len:   Math.random() * 120 + 60,
-      life:  1,
+      x: Math.random() * W,
+      y: 0,
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 5 + 4,
+      len: Math.random() * 120 + 60,
+      life: 1,
       decay: Math.random() * 0.02 + 0.015,
       color: col,
     });
   }
 
   setInterval(spawnMeteor, 900);
-  setInterval(spawnRing,   1800);
+  setInterval(spawnRing, 1800);
 
   function resize() {
-    W = canvas.width  = window.innerWidth;
+    W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
     initStars();
     initComponents();
@@ -1268,7 +1469,7 @@ function showToast(message, type = 'success') {
     ctx.clearRect(0, 0, W, H);
 
     /* -- Twinkling stars -- */
-    stars.forEach(s => {
+    stars.forEach((s) => {
       s.phase += s.speed;
       const alpha = (Math.sin(s.phase) * 0.5 + 0.5) * 0.78 + 0.12;
       ctx.beginPath();
@@ -1279,7 +1480,8 @@ function showToast(message, type = 'success') {
 
     /* -- Drifting PC components -- */
     comps.forEach((h, i) => {
-      h.x   += h.vx; h.y += h.vy;
+      h.x += h.vx;
+      h.y += h.vy;
       h.rot += h.rotV;
       if (h.x < -150 || h.x > W + 150 || h.y < -150 || h.y > H + 150) {
         comps[i] = spawnComponent();
@@ -1288,54 +1490,229 @@ function showToast(message, type = 'success') {
     });
 
     /* -- Pulse rings -- */
-    rings = rings.filter(r => r.life > 0);
-    rings.forEach(r => {
-      r.r    += 1.6;
+    rings = rings.filter((r) => r.life > 0);
+    rings.forEach((r) => {
+      r.r += 1.6;
       r.life -= r.decay;
       const progress = r.r / r.maxR;
-      const alpha    = r.life * (1 - progress) * 0.65;
+      const alpha = r.life * (1 - progress) * 0.65;
       ctx.beginPath();
       ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
       ctx.strokeStyle = rgba(r.color, alpha);
-      ctx.lineWidth   = 2;
+      ctx.lineWidth = 2;
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(r.x, r.y, r.r * 0.6, 0, Math.PI * 2);
       ctx.strokeStyle = rgba(r.color, alpha * 0.5);
-      ctx.lineWidth   = 1;
+      ctx.lineWidth = 1;
       ctx.stroke();
       if (r.r >= r.maxR) r.life = 0;
     });
 
     /* -- Meteors -- */
-    meteors = meteors.filter(m => m.life > 0);
-    meteors.forEach(m => {
+    meteors = meteors.filter((m) => m.life > 0);
+    meteors.forEach((m) => {
       ctx.beginPath();
       ctx.moveTo(m.x, m.y);
-      ctx.lineTo(m.x - m.vx * m.len / 8, m.y - m.vy * m.len / 8);
+      ctx.lineTo(m.x - (m.vx * m.len) / 8, m.y - (m.vy * m.len) / 8);
       const mg = ctx.createLinearGradient(
-        m.x, m.y,
-        m.x - m.vx * m.len / 8, m.y - m.vy * m.len / 8
+        m.x,
+        m.y,
+        m.x - (m.vx * m.len) / 8,
+        m.y - (m.vy * m.len) / 8,
       );
       mg.addColorStop(0, rgba(m.color, Math.min(m.life * 1.2, 1)));
       mg.addColorStop(1, rgba(m.color, 0));
       ctx.strokeStyle = mg;
-      ctx.lineWidth   = 2.5;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(m.x, m.y);
       ctx.lineTo(m.x - m.vx * 4, m.y - m.vy * 4);
       ctx.strokeStyle = rgba(m.color, m.life * 0.6);
-      ctx.lineWidth   = 4;
+      ctx.lineWidth = 4;
       ctx.stroke();
-      m.x += m.vx; m.y += m.vy;
+      m.x += m.vx;
+      m.y += m.vy;
       m.life -= m.decay;
     });
 
     requestAnimationFrame(draw);
   }
 
-  window.addEventListener('resize', resize);
+  window.addEventListener("resize", resize);
   resize();
   draw();
+})();
+
+/* ===== FESTIVAL ANIMATIONS ===== */
+(function () {
+  const zones = document.querySelectorAll(".festival-particles");
+  const toggleBtn = document.getElementById("festivalToggleBtn");
+  const panel = document.getElementById("festivalPanel");
+  const panelClose = document.getElementById("festivalPanelClose");
+  const festSwitch = document.getElementById("festivalSwitch");
+  const festGrid = document.getElementById("festivalGrid");
+  if (!zones.length || !toggleBtn || !panel) return;
+
+  // Secret admin shortcut: Ctrl+Shift+F to show/hide festival controls
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === "F") {
+      e.preventDefault();
+      document.body.classList.toggle("festival-admin");
+    }
+  });
+
+  // Festival theme configurations
+  const festivals = {
+    cny: {
+      name: "Chinese New Year",
+      emojis: ["🏮", "🧧", "🎊", "💮", "🐉"],
+      cssClass: "fp-cny",
+      count: 8,
+      baseDur: 6,
+    },
+    raya: {
+      name: "Hari Raya",
+      emojis: ["⭐", "🌙", "✨", "🕌", "💚"],
+      cssClass: "fp-raya",
+      count: 8,
+      baseDur: 7,
+    },
+    deepavali: {
+      name: "Deepavali",
+      emojis: ["🪔", "✨", "🎇", "💛", "🔥"],
+      cssClass: "fp-deepavali",
+      count: 8,
+      baseDur: 6,
+    },
+    christmas: {
+      name: "Christmas",
+      emojis: ["❄️", "❄", "✨", "⭐", "🎄"],
+      cssClass: "fp-christmas",
+      count: 12,
+      baseDur: 5,
+    },
+    newyear: {
+      name: "New Year",
+      emojis: ["🎊", "🎉", "✨", "💫", "⭐", "🎆"],
+      cssClass: "fp-newyear",
+      count: 10,
+      baseDur: 4,
+    },
+    national: {
+      name: "Merdeka",
+      emojis: ["🇲🇾", "⭐", "🌙", "❤️", "💙"],
+      cssClass: "fp-national",
+      count: 7,
+      baseDur: 7,
+    },
+    general: {
+      name: "Party",
+      emojis: ["🎉", "✨", "💫", "⭐", "🎊"],
+      cssClass: "fp-general",
+      count: 8,
+      baseDur: 5,
+    },
+  };
+
+  // State
+  let state = loadState();
+
+  function loadState() {
+    try {
+      const saved = localStorage.getItem("shiro_festival");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return { festival: "cny", enabled: false };
+  }
+
+  function saveState() {
+    localStorage.setItem("shiro_festival", JSON.stringify(state));
+  }
+
+  // Particle spawning — fills ALL zones (navbar + footer)
+  function spawnParticles() {
+    clearParticles();
+    const fest = festivals[state.festival];
+    if (!fest) return;
+
+    zones.forEach((zone) => {
+      for (let i = 0; i < fest.count; i++) {
+        const particle = document.createElement("span");
+        particle.className = "festival-particle " + fest.cssClass;
+        particle.textContent =
+          fest.emojis[Math.floor(Math.random() * fest.emojis.length)];
+
+        const left = Math.random() * 100;
+        const dur = fest.baseDur + Math.random() * 4;
+        const delay = Math.random() * dur;
+        const sway = (Math.random() - 0.5) * 60;
+        const spin = (Math.random() - 0.5) * 30;
+        const scale = 0.5 + Math.random() * 0.6;
+
+        particle.style.left = left + "%";
+        particle.style.setProperty("--dur", dur + "s");
+        particle.style.setProperty("--delay", "-" + delay + "s");
+        particle.style.setProperty("--sway", sway + "px");
+        particle.style.setProperty("--spin", spin + "deg");
+        particle.style.transform = "scale(" + scale + ")";
+
+        zone.appendChild(particle);
+      }
+    });
+  }
+
+  function clearParticles() {
+    zones.forEach((zone) => {
+      zone.innerHTML = "";
+    });
+  }
+
+  // UI update
+  function updateUI() {
+    toggleBtn.classList.toggle("active", state.enabled);
+    festSwitch.checked = state.enabled;
+    document.querySelectorAll(".festival-option").forEach((opt) => {
+      opt.classList.toggle("selected", opt.dataset.festival === state.festival);
+    });
+    if (state.enabled) {
+      spawnParticles();
+    } else {
+      clearParticles();
+    }
+  }
+
+  // Events
+  toggleBtn.addEventListener("click", () => {
+    panel.classList.toggle("open");
+  });
+  panelClose.addEventListener("click", () => {
+    panel.classList.remove("open");
+  });
+  festSwitch.addEventListener("change", () => {
+    state.enabled = festSwitch.checked;
+    saveState();
+    updateUI();
+  });
+  festGrid.addEventListener("click", (e) => {
+    const option = e.target.closest(".festival-option");
+    if (!option) return;
+    state.festival = option.dataset.festival;
+    state.enabled = true;
+    saveState();
+    updateUI();
+  });
+  document.addEventListener("click", (e) => {
+    if (
+      !panel.contains(e.target) &&
+      !toggleBtn.contains(e.target) &&
+      panel.classList.contains("open")
+    ) {
+      panel.classList.remove("open");
+    }
+  });
+
+  // Initialize
+  updateUI();
 })();
