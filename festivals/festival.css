@@ -9,7 +9,7 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
 }
 .navbar .festival-particles {
@@ -27,13 +27,15 @@
 /* Float + sway animation (lanterns, ketupat, diyas) */
 @keyframes festivalFloat {
   0% {
-    transform: translateY(100%) translateX(0) rotate(0deg);
+    top: 110%;
+    transform: translateX(0) rotate(0deg);
     opacity: 0;
   }
   5% { opacity: 1; }
   95% { opacity: 1; }
   100% {
-    transform: translateY(-100%) translateX(var(--sway, 30px)) rotate(var(--spin, 15deg));
+    top: -20%;
+    transform: translateX(var(--sway, 30px)) rotate(var(--spin, 15deg));
     opacity: 0;
   }
 }
@@ -41,13 +43,15 @@
 /* Fall animation (snowflakes, confetti) */
 @keyframes festivalFall {
   0% {
-    transform: translateY(-100%) translateX(0) rotate(0deg);
+    top: -20%;
+    transform: translateX(0) rotate(0deg);
     opacity: 0;
   }
   5% { opacity: 1; }
   95% { opacity: 0.8; }
   100% {
-    transform: translateY(100%) translateX(var(--sway, 40px)) rotate(var(--spin, 360deg));
+    top: 110%;
+    transform: translateX(var(--sway, 40px)) rotate(var(--spin, 360deg));
     opacity: 0;
   }
 }
@@ -62,37 +66,37 @@
 .fp-cny {
   animation: festivalFloat var(--dur, 12s) var(--delay, 0s) linear infinite;
   color: #ff3333;
-  font-size: 1.8rem;
-  filter: drop-shadow(0 2px 6px rgba(255, 50, 50, 0.4));
+  font-size: 2.3rem;
+  filter: drop-shadow(0 2px 8px rgba(255, 50, 50, 0.5));
 }
 .fp-raya {
   animation: festivalFloat var(--dur, 14s) var(--delay, 0s) linear infinite;
   color: #2ecc71;
-  font-size: 1.6rem;
-  filter: drop-shadow(0 2px 6px rgba(46, 204, 113, 0.4));
+  font-size: 2.2rem;
+  filter: drop-shadow(0 2px 8px rgba(46, 204, 113, 0.5));
 }
 .fp-deepavali {
   animation: festivalFloat var(--dur, 13s) var(--delay, 0s) linear infinite, festivalGlow 2s ease-in-out infinite;
   color: #ff9800;
-  font-size: 1.5rem;
+  font-size: 2.0rem;
 }
 .fp-christmas {
   animation: festivalFall var(--dur, 10s) var(--delay, 0s) linear infinite;
   color: #fff;
-  font-size: 1.2rem;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
+  font-size: 1.8rem;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
 }
 .fp-newyear {
   animation: festivalFall var(--dur, 8s) var(--delay, 0s) linear infinite;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 .fp-national {
   animation: festivalFloat var(--dur, 15s) var(--delay, 0s) linear infinite;
-  font-size: 1.6rem;
+  font-size: 2.2rem;
 }
 .fp-general {
   animation: festivalFloat var(--dur, 11s) var(--delay, 0s) linear infinite;
   color: var(--accent);
-  font-size: 1.3rem;
-  filter: drop-shadow(0 0 6px var(--accent-glow));
+  font-size: 1.8rem;
+  filter: drop-shadow(0 0 8px var(--accent-glow));
 }

@@ -47,16 +47,41 @@
 
   // Star detail
   const starSVG = `
-    <svg viewBox="0 0 100 100" width="12" height="12" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 100 100" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
       <path d="M 50 0 L 55 45 L 100 50 L 55 55 L 50 100 L 45 55 L 0 50 L 45 45 Z" fill="#ffffff"/>
     </svg>
   `;
 
-  const shapes = [snowflakeSVG, snowflakeSVG, simpleFlakeSVG, simpleFlakeSVG, starSVG];
+  // Christmas Bauble (Ornament) SVG
+  const baubleSVG = `
+    <svg viewBox="0 0 100 100" width="35" height="45" xmlns="http://www.w3.org/2000/svg">
+      <rect x="45" y="10" width="10" height="10" fill="#ffcc00"/>
+      <path d="M 50 0 Q 60 5 50 10" stroke="#cccccc" stroke-width="2" fill="none"/>
+      <circle cx="50" cy="55" r="35" fill="#e60000"/>
+      <path d="M 15 55 Q 50 20 85 55" stroke="#ffcc00" stroke-width="4" stroke-dasharray="5,3" fill="none"/>
+      <path d="M 15 55 Q 50 90 85 55" stroke="#ffcc00" stroke-width="4" stroke-dasharray="5,3" fill="none"/>
+      <circle cx="35" cy="40" r="5" fill="#ffffff" opacity="0.6"/>
+    </svg>
+  `;
+
+  // Christmas Tree SVG
+  const treeSVG = `
+    <svg viewBox="0 0 100 100" width="40" height="50" xmlns="http://www.w3.org/2000/svg">
+      <rect x="42" y="80" width="16" height="20" fill="#5d4037"/>
+      <polygon points="50,15 20,45 40,45 10,80 90,80 60,45 80,45" fill="#2e7d32"/>
+      <polygon points="50,5 55,15 65,15 58,22 60,30 50,25 40,30 42,22 35,15 45,15" fill="#ffc107"/>
+      <circle cx="30" cy="65" r="4" fill="#e53935"/>
+      <circle cx="70" cy="65" r="4" fill="#1e88e5"/>
+      <circle cx="50" cy="50" r="4" fill="#ffb300"/>
+      <circle cx="45" cy="75" r="4" fill="#fdd835"/>
+    </svg>
+  `;
+
+  const shapes = [snowflakeSVG, snowflakeSVG, simpleFlakeSVG, simpleFlakeSVG, starSVG, baubleSVG, treeSVG];
 
   zones.forEach((zone) => {
     zone.innerHTML = "";
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 24; i++) {
       const particle = document.createElement("span");
       particle.className = "festival-particle fp-christmas";
       particle.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
@@ -66,7 +91,7 @@
       const delay = Math.random() * dur;
       const sway = (Math.random() - 0.5) * 80;
       const spin = (Math.random() - 0.5) * 180;
-      const scale = 0.4 + Math.random() * 0.8;
+      const scale = 0.8 + Math.random() * 0.9;
 
       particle.style.left = left + "%";
       particle.style.setProperty("--dur", dur + "s");

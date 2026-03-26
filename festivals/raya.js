@@ -28,16 +28,36 @@
 
   // Crescent Moon
   const crescentSVG = `
-    <svg viewBox="0 0 100 100" width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 100 100" width="45" height="45" xmlns="http://www.w3.org/2000/svg">
       <path d="M 60 10 A 40 40 0 1 0 90 60 A 30 30 0 1 1 60 10 Z" fill="#fdd835" filter="drop-shadow(0 0 5px #fdd835)"/>
     </svg>
   `;
 
-  const shapes = [ketupatSVG, ketupatSVG, crescentSVG];
+  // Mosque SVG
+  const mosqueSVG = `
+    <svg viewBox="0 0 100 100" width="55" height="55" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 50 10 Q 60 30 70 40 L 70 80 L 30 80 L 30 40 Q 40 30 50 10 Z" fill="#2ecc71" stroke="#1b5e20" stroke-width="2"/>
+      <path d="M 45 60 Q 50 50 55 60 L 55 80 L 45 80 Z" fill="#fdd835"/>
+      <circle cx="50" cy="5" r="4" fill="#fdd835"/>
+    </svg>
+  `;
+
+  // Islamic Star (Rub el Hizb)
+  const starSVG = `
+    <svg viewBox="0 0 100 100" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(50,50)">
+        <rect x="-25" y="-25" width="50" height="50" fill="none" stroke="#fdd835" stroke-width="4"/>
+        <rect x="-25" y="-25" width="50" height="50" fill="none" stroke="#fdd835" stroke-width="4" transform="rotate(45)"/>
+        <circle cx="0" cy="0" r="10" fill="#fdd835"/>
+      </g>
+    </svg>
+  `;
+
+  const shapes = [ketupatSVG, ketupatSVG, crescentSVG, mosqueSVG, starSVG];
 
   zones.forEach((zone) => {
     zone.innerHTML = "";
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 15; i++) {
       const particle = document.createElement("span");
       particle.className = "festival-particle fp-raya";
       particle.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
@@ -47,7 +67,8 @@
       const delay = Math.random() * dur;
       const sway = (Math.random() - 0.5) * 60;
       const spin = (Math.random() - 0.5) * 30;
-      const scale = 0.6 + Math.random() * 0.6;
+      // Increased scale
+      const scale = 0.9 + Math.random() * 0.8;
 
       particle.style.left = left + "%";
       particle.style.setProperty("--dur", dur + "s");

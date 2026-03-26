@@ -20,13 +20,30 @@
   `;
 
   // Supporting elements
-  const starSVG = `<svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="#fcda03"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
+  const starSVG = `<svg viewBox="0 0 24 24" width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill="#fcda03"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
 
-  const shapes = [malaysiaFlagSVG, malaysiaFlagSVG, malaysiaFlagSVG, starSVG];
+  // Hibiscus (Bunga Raya) SVG
+  const hibiscusSVG = `
+    <svg viewBox="0 0 100 100" width="55" height="55" xmlns="http://www.w3.org/2000/svg">
+      <!-- Petals -->
+      <path d="M 50 50 C 70 20 90 40 50 50 Z" fill="#e53935" stroke="#c62828" stroke-width="2"/>
+      <path d="M 50 50 C 90 60 70 90 50 50 Z" fill="#e53935" stroke="#c62828" stroke-width="2"/>
+      <path d="M 50 50 C 50 90 20 80 50 50 Z" fill="#e53935" stroke="#c62828" stroke-width="2"/>
+      <path d="M 50 50 C 10 50 20 20 50 50 Z" fill="#e53935" stroke="#c62828" stroke-width="2"/>
+      <path d="M 50 50 C 40 10 70 10 50 50 Z" fill="#e53935" stroke="#c62828" stroke-width="2"/>
+      <!-- Stamen -->
+      <path d="M 50 50 Q 60 20 70 15" fill="none" stroke="#ffeb3b" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="70" cy="15" r="4" fill="#fbc02d"/>
+      <circle cx="65" cy="20" r="2" fill="#fbc02d"/>
+      <circle cx="75" cy="22" r="2" fill="#fbc02d"/>
+    </svg>
+  `;
+
+  const shapes = [malaysiaFlagSVG, malaysiaFlagSVG, hibiscusSVG, hibiscusSVG, starSVG];
 
   zones.forEach((zone) => {
     zone.innerHTML = "";
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 15; i++) {
       const particle = document.createElement("span");
       particle.className = "festival-particle fp-national";
       particle.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
@@ -36,7 +53,7 @@
       const delay = Math.random() * dur;
       const sway = (Math.random() - 0.5) * 80;
       const spin = (Math.random() - 0.5) * 45; // Subtle flag waving
-      const scale = 0.8 + Math.random() * 0.7;
+      const scale = 1.0 + Math.random() * 0.8;
 
       particle.style.left = left + "%";
       particle.style.setProperty("--dur", dur + "s");

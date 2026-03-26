@@ -296,6 +296,8 @@ body.light .nav-menu > li > a.active {
   align-items: center;
   justify-content: space-between;
   height: var(--nav-height);
+  position: relative;
+  z-index: 2;
 }
 .logo a {
   display: flex;
@@ -2315,6 +2317,8 @@ textarea {
   display: grid;
   grid-template-columns: 1.5fr 2fr 1fr;
   gap: 3rem;
+  position: relative;
+  z-index: 2;
 }
 .footer-logo {
   display: flex;
@@ -2435,6 +2439,8 @@ textarea {
   margin-top: 3rem;
   padding: 1.25rem 0;
   border-top: 1px solid var(--border-color);
+  position: relative;
+  z-index: 2;
 }
 .footer-bottom-inner {
   display: flex;
