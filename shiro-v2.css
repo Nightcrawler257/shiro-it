@@ -1877,7 +1877,15 @@ body.light .nav-menu > li > a.active {
 .product-specs {
   font-size: 0.8rem;
   color: var(--text-secondary);
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.product-stock {
+  font-size: 0.75rem;
+  color: #22c55e;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 .product-bottom {
   display: flex;
