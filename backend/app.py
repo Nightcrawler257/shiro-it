@@ -90,11 +90,11 @@ def create_app():
     # Verify MongoDB connection
     with app.app_context():
         try:
-            mongo.cx.server_info()
+            mongo.db.command('ping')
             print("[OK] MongoDB connected")
         except Exception as e:
             print(f"[WARNING] MongoDB not available: {e}")
-            print("  Make sure MongoDB is running on localhost:27017")
+            print("  Make sure MongoDB is running or MONGO_URI is set correctly")
 
     return app
 

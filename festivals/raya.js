@@ -57,25 +57,28 @@
 
   zones.forEach((zone) => {
     zone.innerHTML = "";
-    for (let i = 0; i < 15; i++) {
+    // Travel distance = zone height + a small buffer so particles fully exit
+    const travel = (zone.offsetHeight || 80) + 40;
+    const count = 8; // fewer particles = smoother, less distracting
+    for (let i = 0; i < count; i++) {
       const particle = document.createElement("span");
       particle.className = "festival-particle fp-raya";
       particle.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
 
-      const left = Math.random() * 100;
-      const dur = 7 + Math.random() * 4;
+      const left  = Math.random() * 100;
+      const dur   = 9 + Math.random() * 5;   // slightly slower = smoother feel
       const delay = Math.random() * dur;
-      const sway = (Math.random() - 0.5) * 60;
-      const spin = (Math.random() - 0.5) * 30;
-      // Increased scale
-      const scale = 0.9 + Math.random() * 0.8;
+      const sway  = (Math.random() - 0.5) * 50;
+      const spin  = (Math.random() - 0.5) * 25;
+      const scale = 0.7 + Math.random() * 0.5;
 
       particle.style.left = left + "%";
-      particle.style.setProperty("--dur", dur + "s");
-      particle.style.setProperty("--delay", "-" + delay + "s");
-      particle.style.setProperty("--sway", sway + "px");
-      particle.style.setProperty("--spin", spin + "deg");
-      particle.style.transform = "scale(" + scale + ")";
+      particle.style.setProperty("--dur",    dur + "s");
+      particle.style.setProperty("--delay",  "-" + delay + "s");
+      particle.style.setProperty("--sway",   sway + "px");
+      particle.style.setProperty("--spin",   spin + "deg");
+      particle.style.setProperty("--scale",  scale);
+      particle.style.setProperty("--travel", travel + "px");
 
       zone.appendChild(particle);
     }

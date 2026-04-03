@@ -1,7 +1,11 @@
 /* ========== SHIRO IT v2 — Main JavaScript ========== */
 
-// Backend API base URL — when served by Flask, use relative paths
-const API_BASE = "";
+// Backend API base URL — auto-detect:
+// In production (Render/Flask serving the HTML), use the same origin.
+// For local dev with a separate Flask server, fall back to localhost:5000.
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000'
+  : window.location.origin;
 
 document.addEventListener("DOMContentLoaded", () => {
   /* ===== SPA NAVIGATION ===== */
@@ -36,7 +40,35 @@ document.addEventListener("DOMContentLoaded", () => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       const page = link.getAttribute("data-page");
-      if (page) navigateTo(page);
+      
+      if (page) {
+          navigateTo(page);
+          
+          // Custom scroll for merged page
+          if (page === 'build-pc-services') {
+              // If clicked from 'Services' link, scroll to services section
+              if (link.innerHTML.includes('nav_services') || link.getAttribute('href') === '#services') {
+                  setTimeout(() => {
+                      const servicesSection = document.getElementById('services-content');
+                      if (servicesSection) {
+                          const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
+                          window.scrollTo({
+                              top: servicesSection.offsetTop - navbarHeight,
+                              behavior: 'smooth'
+                          });
+                      }
+                  }, 350); // small delay to let page transition complete
+              } else if (link.innerHTML.includes('nav_build') || link.getAttribute('href') === '#build-pc') {
+                  // Make sure we scroll to top for Build PC
+                  setTimeout(() => {
+                      window.scrollTo({
+                          top: 0,
+                          behavior: 'smooth'
+                      });
+                  }, 350);
+              }
+          }
+      }
     });
   });
 
@@ -78,11 +110,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== THEME TOGGLE ===== */
   const themeToggle = document.getElementById("themeToggle");
-  const savedTheme = localStorage.getItem("shiro-theme");
+  let savedTheme = localStorage.getItem("shiro-theme");
+  if (!savedTheme) {
+    savedTheme = "dark";
+    localStorage.setItem("shiro-theme", "dark");
+  }
+
   if (savedTheme === "light") {
     document.body.classList.add("light");
     themeToggle.querySelector("i").className = "fas fa-sun";
+  } else {
+    document.body.classList.remove("light");
+    themeToggle.querySelector("i").className = "fas fa-moon";
   }
+
   themeToggle.addEventListener("click", () => {
     document.body.classList.toggle("light");
     const isLight = document.body.classList.contains("light");
@@ -96,7 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const langToggle = document.getElementById("languageToggle");
   const langDropdown = document.getElementById("languageDropdown");
   const langOptions = document.querySelectorAll(".language-option");
-  let currentLang = localStorage.getItem("shiro-lang") || "en";
+  let currentLang = localStorage.getItem("shiro-lang");
+  if (!currentLang) {
+    currentLang = "en";
+    localStorage.setItem("shiro-lang", "en");
+  }
 
   const translations = {
     bm: {
@@ -108,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_shop: "Kedai",
       nav_about: "Tentang",
       nav_contact: "Hubungi",
-      nav_build: "Bina PC",
+      nav_build: "Bina PC & Perkhidmatan IT",
       nav_gaming_pcs: "PC Gaming",
       nav_custom_builds: "Bina Sendiri",
       nav_prebuilt: "PC Siap",
@@ -230,9 +275,9 @@ document.addEventListener("DOMContentLoaded", () => {
       shop_cta_h2: "Tak Jumpa Apa Yang Anda Cari?",
       shop_cta_desc: "Kami boleh dapatkan sebarang komponen atau bina PC custom khas untuk anda.",
       // Build PC Page
-      build_badge: "Konfigurator PC",
-      build_h1_1: "Bina",
-      build_h1_2: "PC Impian Anda",
+      build_badge: "PC Configurator & Services",
+      build_h1_1: "Build PC &",
+      build_h1_2: "IT Services",
       build_desc: "Pilih komponen anda di bawah dan dapatkan anggaran harga segera. Tempah melalui WhatsApp!",
       // Contact Page
       contact_badge: "Hubungi Kami",
@@ -290,7 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
 
-  if (currentLang === "bm") setLanguage("bm");
+  setLanguage(currentLang);
 
   // Close language dropdown on outside click
   document.addEventListener("click", (e) => {
@@ -848,6 +893,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "error",
         );
       } finally {
+        // Always re-enable the button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
       }

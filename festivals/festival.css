@@ -20,83 +20,78 @@
   position: absolute;
   pointer-events: none;
   will-change: transform, opacity;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   opacity: 0;
+  /* Start particles at bottom so translateY brings them up */
+  top: 100%;
 }
 
-/* Float + sway animation (lanterns, ketupat, diyas) */
+/* Float up: uses only transform + opacity (GPU compositor, no layout) */
 @keyframes festivalFloat {
   0% {
-    top: 110%;
-    transform: translateX(0) rotate(0deg);
+    transform: translateX(0) translateY(0) rotate(0deg) scale(var(--scale, 1));
     opacity: 0;
   }
-  5% { opacity: 1; }
-  95% { opacity: 1; }
+  5%  { opacity: 0.9; }
+  95% { opacity: 0.9; }
   100% {
-    top: -20%;
-    transform: translateX(var(--sway, 30px)) rotate(var(--spin, 15deg));
+    transform: translateX(var(--sway, 30px)) translateY(calc(-1 * var(--travel, 250px))) rotate(var(--spin, 15deg)) scale(var(--scale, 1));
     opacity: 0;
   }
 }
 
-/* Fall animation (snowflakes, confetti) */
+/* Fall down: uses only transform + opacity */
 @keyframes festivalFall {
   0% {
-    top: -20%;
-    transform: translateX(0) rotate(0deg);
+    top: -10%;
+    transform: translateX(0) translateY(0) rotate(0deg) scale(var(--scale, 1));
     opacity: 0;
   }
-  5% { opacity: 1; }
-  95% { opacity: 0.8; }
+  5%  { opacity: 0.85; }
+  95% { opacity: 0.85; }
   100% {
-    top: 110%;
-    transform: translateX(var(--sway, 40px)) rotate(var(--spin, 360deg));
+    transform: translateX(var(--sway, 40px)) translateY(var(--travel, 250px)) rotate(var(--spin, 360deg)) scale(var(--scale, 1));
     opacity: 0;
   }
 }
 
-/* Glow pulse for diyas */
+/* Subtle glow pulse – keep filter simple to avoid layer blowup */
 @keyframes festivalGlow {
-  0%, 100% { filter: brightness(1) drop-shadow(0 0 4px currentColor); }
-  50% { filter: brightness(1.4) drop-shadow(0 0 12px currentColor); }
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.3); }
 }
 
 /* Festival particle variants */
 .fp-cny {
   animation: festivalFloat var(--dur, 12s) var(--delay, 0s) linear infinite;
   color: #ff3333;
-  font-size: 2.3rem;
-  filter: drop-shadow(0 2px 8px rgba(255, 50, 50, 0.5));
+  font-size: 2rem;
 }
 .fp-raya {
   animation: festivalFloat var(--dur, 14s) var(--delay, 0s) linear infinite;
   color: #2ecc71;
-  font-size: 2.2rem;
-  filter: drop-shadow(0 2px 8px rgba(46, 204, 113, 0.5));
+  font-size: 2rem;
 }
 .fp-deepavali {
-  animation: festivalFloat var(--dur, 13s) var(--delay, 0s) linear infinite, festivalGlow 2s ease-in-out infinite;
+  animation: festivalFloat var(--dur, 13s) var(--delay, 0s) linear infinite, festivalGlow 2.5s ease-in-out infinite;
   color: #ff9800;
-  font-size: 2.0rem;
+  font-size: 1.8rem;
 }
 .fp-christmas {
   animation: festivalFall var(--dur, 10s) var(--delay, 0s) linear infinite;
   color: #fff;
-  font-size: 1.8rem;
-  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+  font-size: 1.6rem;
 }
 .fp-newyear {
   animation: festivalFall var(--dur, 8s) var(--delay, 0s) linear infinite;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 .fp-national {
   animation: festivalFloat var(--dur, 15s) var(--delay, 0s) linear infinite;
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 .fp-general {
   animation: festivalFloat var(--dur, 11s) var(--delay, 0s) linear infinite;
   color: var(--accent);
-  font-size: 1.8rem;
-  filter: drop-shadow(0 0 8px var(--accent-glow));
+  font-size: 1.6rem;
 }

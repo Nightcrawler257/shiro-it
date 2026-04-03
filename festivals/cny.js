@@ -63,25 +63,26 @@
 
   zones.forEach((zone) => {
     zone.innerHTML = "";
-    for (let i = 0; i < 18; i++) {
+    const travel = (zone.offsetHeight || 80) + 40;
+    for (let i = 0; i < 8; i++) {
       const particle = document.createElement("span");
       particle.className = "festival-particle fp-cny";
       particle.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
 
-      const left = Math.random() * 100;
-      const dur = 6 + Math.random() * 4;
+      const left  = Math.random() * 100;
+      const dur   = 8 + Math.random() * 4;
       const delay = Math.random() * dur;
-      const sway = (Math.random() - 0.5) * 60;
-      const spin = (Math.random() - 0.5) * 20;
-      // Made base scale larger
-      const scale = 1.0 + Math.random() * 0.8;
+      const sway  = (Math.random() - 0.5) * 50;
+      const spin  = (Math.random() - 0.5) * 20;
+      const scale = 0.7 + Math.random() * 0.5;
 
       particle.style.left = left + "%";
-      particle.style.setProperty("--dur", dur + "s");
-      particle.style.setProperty("--delay", "-" + delay + "s");
-      particle.style.setProperty("--sway", sway + "px");
-      particle.style.setProperty("--spin", spin + "deg");
-      particle.style.transform = "scale(" + scale + ")";
+      particle.style.setProperty("--dur",    dur + "s");
+      particle.style.setProperty("--delay",  "-" + delay + "s");
+      particle.style.setProperty("--sway",   sway + "px");
+      particle.style.setProperty("--spin",   spin + "deg");
+      particle.style.setProperty("--scale",  scale);
+      particle.style.setProperty("--travel", travel + "px");
 
       zone.appendChild(particle);
     }
