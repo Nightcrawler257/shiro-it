@@ -404,9 +404,10 @@ def add_inventory_item():
 
     conn   = db.get_conn()
     cursor = conn.execute(
-        '''INSERT INTO pc_components (name, category, price, specs, badge, stock, featured, image, health)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+        '''INSERT INTO pc_components (name, category, brand, price, specs, badge, stock, featured, image, health)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
         (data.get('name'),     data.get('category'),
+         data.get('brand', '').strip() if isinstance(data.get('brand'), str) else '',
          data.get('price', 0), data.get('specs', ''),
          data.get('badge', ''), data.get('stock', 1),
          1 if data.get('featured') else 0,
@@ -428,7 +429,7 @@ def update_inventory_item(item_id):
 
     fields  = []
     values  = []
-    allowed = ['name', 'category', 'price', 'specs', 'badge', 'stock', 'image', 'health']
+    allowed = ['name', 'category', 'brand', 'price', 'specs', 'badge', 'stock', 'image', 'health']
     for key in allowed:
         if key in data:
             fields.append(f'{key} = ?')

@@ -120,6 +120,7 @@ def _create_tables():
             id       INTEGER PRIMARY KEY AUTOINCREMENT,
             name     TEXT    NOT NULL,
             category TEXT    NOT NULL,
+            brand    TEXT    DEFAULT '',
             price    REAL    DEFAULT 0,
             specs    TEXT,
             badge    TEXT,
@@ -157,4 +158,22 @@ def _create_tables():
         );
     """)
     conn.commit()
+
+    # --- Migrations: add new columns to existing tables safely ---
+    _migrate(conn)
+
     conn.close()
+
+
+def _migrate(conn):
+    """Apply schema migrations for existing databases (idempotent)."""
+    migrations = [
+        # Add brand column to pc_components if not present
+        'ALTER TABLE pc_components ADD COLUMN brand TEXT DEFAULT ""',
+    ]
+    for sql in migrations:
+        try:
+            conn.execute(sql)
+            conn.commit()
+        except Exception:
+            pass  # column / change already exists — safe to ignore

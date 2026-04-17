@@ -420,12 +420,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryTabs = document.querySelectorAll(".cat-tab");
   const sortSelect = document.getElementById("sortSelect");
   let activeCategory = "All";
+  let activeBrand    = "All";
 
   function renderProducts() {
     if (!productsGrid) return;
     let filtered = products.filter(
       (p) => activeCategory === "All" || p.category === activeCategory,
     );
+    // Filter by brand
+    if (activeBrand !== "All") {
+      filtered = filtered.filter((p) => p.brand === activeBrand);
+    }
     const sort = sortSelect ? sortSelect.value : "featured";
     if (sort === "price-low") filtered.sort((a, b) => a.price - b.price);
     else if (sort === "price-high") filtered.sort((a, b) => b.price - a.price);
@@ -466,11 +471,37 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(runScrollAnimations, 50);
   }
 
+  /* Render brand filter pills for the shop */
+  function renderBrandFilter(category) {
+    const bar = document.getElementById('brandFilterBar');
+    if (!bar) return;
+    const pool = category === 'All' ? products : products.filter(p => p.category === category);
+    const brands = [...new Set(pool.map(p => p.brand).filter(b => b && b.trim()))];
+    if (brands.length < 1) {
+      bar.style.display = 'none';
+      return;
+    }
+    bar.style.display = 'flex';
+    bar.innerHTML = ['All', ...brands.sort()].map(b =>
+      `<button class="brand-pill${activeBrand === b ? ' active' : ''}" data-brand="${b}">${b}</button>`
+    ).join('');
+    bar.querySelectorAll('.brand-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeBrand = btn.dataset.brand;
+        bar.querySelectorAll('.brand-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProducts();
+      });
+    });
+  }
+
   categoryTabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       categoryTabs.forEach((t) => t.classList.remove("active"));
       tab.classList.add("active");
       activeCategory = tab.dataset.category;
+      activeBrand    = "All";        // reset brand on category change
+      renderBrandFilter(activeCategory);
       renderProducts();
     });
   });
@@ -555,6 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
           id: item.id || idx,
           name: item.name,
           category: item.category,
+          brand: item.brand || '',
           price: item.price || 0,
           badge: item.stock > 0 ? (item.featured ? "Featured 🔥" : "In Stock") : "Out of Stock",
           specs: item.specs || (item.category + " | Ask for details"),
@@ -566,6 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         console.log("Inventory loaded from DB:", products.length, "items");
         renderProducts();
+        renderBrandFilter(activeCategory);
         renderBuilder();
         updateSummary();
       } else {
@@ -787,16 +820,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  function renderInlineOptions(category) {
-    const items = inventoryData
-      .filter(c => c.category === category)
-      .sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || a.name.localeCompare(b.name));
+  function renderInlineOptions(category, selectedBrand = 'All') {
+    let items = inventoryData
+      .filter(c => c.category === category);
+
+    // Derive unique brands for this category
+    const brands = [...new Set(items.map(i => i.brand || '').filter(b => b.trim()))].sort();
+    const brandFilterHtml = brands.length > 0
+      ? `<div class="brand-pills-build" style="display:flex;gap:0.4rem;flex-wrap:wrap;padding:0.5rem 0 0.75rem;">
+           ${['All', ...brands].map(b => `
+             <button onclick="filterBuildBrand('${CSS.escape(category)}', '${b}', this)" style="
+               padding:0.25rem 0.75rem;border-radius:20px;font-size:0.78rem;cursor:pointer;
+               border:1px solid ${selectedBrand===b ? 'var(--blue)' : 'rgba(255,255,255,0.15)'};
+               background:${selectedBrand===b ? 'rgba(0,102,255,0.15)' : 'transparent'};
+               color:${selectedBrand===b ? 'var(--blue)' : 'var(--text-secondary)'};
+               font-weight:${selectedBrand===b ? '600' : '400'};
+               transition:all 0.2s;">${b}</button>`).join('')}
+         </div>` : '';
+
+    if (selectedBrand !== 'All') {
+      items = items.filter(i => (i.brand || '') === selectedBrand);
+    }
+    items = items.sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || a.name.localeCompare(b.name));
 
     if (items.length === 0) {
-      return `<p style="font-size:0.8rem; color:var(--text-secondary); text-align:center; padding:1rem;">No ${category}s available at the moment.</p>`;
+      return brandFilterHtml + `<p style="font-size:0.8rem; color:var(--text-secondary); text-align:center; padding:1rem;">No ${category}s available${selectedBrand !== 'All' ? ' for ' + selectedBrand : ' at the moment'}.</p>`;
     }
 
-    return items.map(item => {
+    return brandFilterHtml + items.map(item => {
       const displayImage = item.image && item.image.includes('/') 
         ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
         : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
@@ -807,7 +858,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ${displayImage}
           <div class="inline-item-info">
             <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.7rem;'></i>" : ""}</h4>
-            <p>${item.specs || ""}</p>
+            <p>${item.brand ? '<span style="color:var(--text-secondary);font-size:0.75rem;">' + item.brand + '</span> &bull; ' : ''}${item.specs || ""}</p>
           </div>
         </div>
         <div class="inline-item-action">
@@ -817,6 +868,13 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `}).join("");
   }
+
+  /* Allow Build PC brand filter buttons to re-render inline options */
+  window.filterBuildBrand = function(category, brand) {
+    const list = document.querySelector(`#inline-${category} .inline-options-list`);
+    if (list) list.innerHTML = renderInlineOptions(category, brand);
+  };
+
 
   window.addInlineItem = function(itemId, category) {
     const item = inventoryData.find(c => (c.id || c._id) === itemId);
