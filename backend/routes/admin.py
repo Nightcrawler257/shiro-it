@@ -49,15 +49,10 @@ def admin_login():
 
 @admin_bp.route('/admin/api/register', methods=['POST'])
 def admin_register():
-    """Handle staff registration."""
+    """Handle staff registration — no registration code required."""
     data = request.get_json()
     username = data.get('username', '').strip()
     password = data.get('password', '')
-    reg_code = data.get('reg_code', '').strip()
-
-    # Validate registration code
-    if reg_code != current_app.config['STAFF_REGISTRATION_CODE']:
-        return jsonify({'success': False, 'error': 'Invalid registration code'}), 403
 
     if not username or len(username) < 3:
         return jsonify({'success': False, 'error': 'Username must be at least 3 characters'}), 400
