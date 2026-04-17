@@ -1,12 +1,11 @@
-from datetime import datetime, timezone
 from flask import Blueprint, request, jsonify, current_app
-from extensions import mongo
+import db
 from models import is_valid_email
 
 services_bp = Blueprint('services', __name__)
 
 
-# Service catalog data
+# Service catalog data (hardcoded — no database required)
 SERVICES_CATALOG = [
     {
         'category': 'Computer Repair',
@@ -66,22 +65,22 @@ def book_service():
         return jsonify({'success': False, 'error': 'Please enter a valid email address'}), 400
 
     try:
-        doc = {
-            'name': data['name'].strip(),
-            'email': data['email'].strip(),
-            'phone': data['phone'].strip(),
-            'service_name': data['service_name'].strip(),
-            'preferred_date': data.get('preferred_date', '').strip(),
-            'notes': data.get('notes', '').strip(),
-            'created_at': datetime.now(timezone.utc),
-            'status': 'New'
-        }
-        result = mongo.db.service_bookings.insert_one(doc)
+        conn = db.get_conn()
+        cursor = conn.execute(
+            '''INSERT INTO service_bookings (name, email, phone, service_name, preferred_date, notes, status)
+               VALUES (?, ?, ?, ?, ?, ?, 'New')''',
+            (data['name'].strip(), data['email'].strip(), data['phone'].strip(),
+             data['service_name'].strip(), data.get('preferred_date', '').strip(),
+             data.get('notes', '').strip())
+        )
+        conn.commit()
+        new_id = cursor.lastrowid
+        conn.close()
 
         return jsonify({
             'success': True,
-            'message': f'Booking request for "{data["service_name"]}" submitted! We\'ll contact you to confirm the details.',
-            'id': str(result.inserted_id)
+            'message': f"Booking request for \"{data['service_name']}\" submitted! We'll contact you to confirm the details.",
+            'id': new_id
         }), 201
 
     except Exception as e:
