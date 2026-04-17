@@ -1,0 +1,160 @@
+"""
+SQLite database module for SHIRO IT backend.
+Replaces MongoDB/PyMongo with Python's built-in sqlite3.
+No extra packages needed — works on PythonAnywhere free tier.
+"""
+
+import sqlite3
+import os
+
+_DB_PATH = None
+
+
+def init_db(db_path):
+    """Initialize the database at the given path and create all tables."""
+    global _DB_PATH
+    _DB_PATH = db_path
+    _create_tables()
+
+
+def get_conn():
+    """Return a database connection with Row factory enabled."""
+    if _DB_PATH is None:
+        raise RuntimeError("Database not initialized. Call init_db() first.")
+    conn = sqlite3.connect(_DB_PATH, detect_types=sqlite3.PARSE_DECLTYPES)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")   # better concurrent reads
+    conn.execute("PRAGMA foreign_keys=ON")
+    return conn
+
+
+def count(table, where=None, params=()):
+    """Return COUNT(*) from a table with an optional WHERE clause."""
+    sql = f"SELECT COUNT(*) FROM {table}"
+    if where:
+        sql += f" WHERE {where}"
+    conn = get_conn()
+    n = conn.execute(sql, params).fetchone()[0]
+    conn.close()
+    return n
+
+
+# ---------------------------------------------------------------------------
+# Table creation
+# ---------------------------------------------------------------------------
+
+def _create_tables():
+    conn = get_conn()
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS staff_users (
+            id       INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT    UNIQUE NOT NULL,
+            password TEXT    NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS contact_messages (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            name       TEXT,
+            email      TEXT,
+            phone      TEXT,
+            subject    TEXT,
+            message    TEXT,
+            is_read    INTEGER DEFAULT 0,
+            created_at TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS job_applications (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            name            TEXT,
+            email           TEXT,
+            phone           TEXT,
+            position        TEXT,
+            education       TEXT,
+            experience      TEXT,
+            cover_letter    TEXT,
+            refs            TEXT,
+            availability    TEXT,
+            resume_filename TEXT,
+            status          TEXT DEFAULT 'New',
+            created_at      TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS appointments (
+            id             INTEGER PRIMARY KEY AUTOINCREMENT,
+            name           TEXT,
+            email          TEXT,
+            phone          TEXT,
+            service_type   TEXT,
+            preferred_date TEXT,
+            preferred_time TEXT,
+            notes          TEXT,
+            status         TEXT DEFAULT 'Pending',
+            created_at     TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS quote_requests (
+            id           INTEGER PRIMARY KEY AUTOINCREMENT,
+            name         TEXT,
+            email        TEXT,
+            phone        TEXT,
+            build_config TEXT,
+            total_price  REAL DEFAULT 0,
+            notes        TEXT,
+            status       TEXT DEFAULT 'New',
+            created_at   TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS service_bookings (
+            id             INTEGER PRIMARY KEY AUTOINCREMENT,
+            name           TEXT,
+            email          TEXT,
+            phone          TEXT,
+            service_name   TEXT,
+            preferred_date TEXT,
+            notes          TEXT,
+            status         TEXT DEFAULT 'New',
+            created_at     TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS pc_components (
+            id       INTEGER PRIMARY KEY AUTOINCREMENT,
+            name     TEXT    NOT NULL,
+            category TEXT    NOT NULL,
+            price    REAL    DEFAULT 0,
+            specs    TEXT,
+            badge    TEXT,
+            stock    INTEGER DEFAULT 1,
+            featured INTEGER DEFAULT 0,
+            image    TEXT,
+            health   TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS prebuilt_pcs (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            tier_name  TEXT,
+            tier_badge TEXT,
+            name       TEXT,
+            price      TEXT,
+            discount   TEXT,
+            photo_url  TEXT,
+            specs      TEXT,
+            tier_color TEXT DEFAULT '#0066FF',
+            featured   INTEGER DEFAULT 0
+        );
+
+        CREATE TABLE IF NOT EXISTS it_tips (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            title       TEXT,
+            description TEXT,
+            media_type  TEXT DEFAULT 'video',
+            media_url   TEXT,
+            tags        TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS site_settings (
+            key   TEXT PRIMARY KEY,
+            value TEXT
+        );
+    """)
+    conn.commit()
+    conn.close()

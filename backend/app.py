@@ -1,7 +1,7 @@
 """
 SHIRO IT Backend Server
 =======================
-Flask-based backend with MongoDB for the SHIRO IT website.
+Flask-based backend with SQLite for the SHIRO IT website.
 Provides API endpoints for form submissions, file uploads,
 and an admin dashboard to manage all data.
 
@@ -18,9 +18,9 @@ import os
 from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
 from config import Config
-from extensions import mongo
+import db as database
 
-# Determine the parent directory (where static HTML files live)
+# Parent directory contains the static HTML/CSS/JS files
 PARENT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 
@@ -32,24 +32,24 @@ def create_app():
 
     app.config.from_object(Config)
 
-    # Enable CORS for all routes (important for local development)
+    # Enable CORS for all routes
     CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
 
-    # Initialize MongoDB
-    mongo.init_app(app)
+    # Initialize SQLite database (creates tables if they don't exist)
+    database.init_db(app.config['DATABASE_PATH'])
 
     # Create uploads directory
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     # Register API route blueprints
-    from routes.contact import contact_bp
-    from routes.jobs import jobs_bp
+    from routes.contact     import contact_bp
+    from routes.jobs        import jobs_bp
     from routes.appointments import appointments_bp
-    from routes.quotes import quotes_bp
-    from routes.services import services_bp
-    from routes.admin import admin_bp
-    from routes.inventory import inventory_bp
-    from routes.content import content_bp
+    from routes.quotes      import quotes_bp
+    from routes.services    import services_bp
+    from routes.admin       import admin_bp
+    from routes.inventory   import inventory_bp
+    from routes.content     import content_bp
 
     app.register_blueprint(contact_bp)
     app.register_blueprint(jobs_bp)
@@ -66,15 +66,17 @@ def create_app():
         return jsonify({
             'name': 'SHIRO IT API',
             'version': '2.0',
+            'database': 'SQLite',
             'endpoints': {
-                'POST /api/contact': 'Submit a contact message',
+                'POST /api/contact':         'Submit a contact message',
                 'POST /api/job-application': 'Submit a job application',
-                'POST /api/appointment': 'Book an appointment',
-                'POST /api/quote': 'Request a PC build quote',
-                'GET  /api/services': 'Get service catalog',
+                'POST /api/appointment':     'Book an appointment',
+                'POST /api/quote':           'Request a PC build quote',
+                'GET  /api/services':        'Get service catalog',
                 'POST /api/service-booking': 'Book a service',
             }
         })
+
     # Serve uploaded files
     @app.route('/uploads/<path:filename>')
     def serve_uploads(filename):
@@ -96,32 +98,30 @@ def create_app():
             return send_from_directory(PARENT_DIR, filename + '.html')
         return 'Page not found', 404
 
-    # Verify MongoDB connection + ensure default admin always exists
+    # Ensure a default admin account always exists on startup
     with app.app_context():
-        try:
-            mongo.db.command('ping')
-            print("[OK] MongoDB connected")
+        from werkzeug.security import generate_password_hash
+        DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'admin')
+        DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'shiro2026')
 
-            # Upsert a guaranteed fallback admin account on every startup
-            from werkzeug.security import generate_password_hash
-            DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'admin')
-            DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'shiro2026')
+        conn = database.get_conn()
+        existing = conn.execute(
+            'SELECT id FROM staff_users WHERE username = ?',
+            (DEFAULT_ADMIN_USERNAME,)
+        ).fetchone()
 
-            mongo.db.staff_users.update_one(
-                {'username': DEFAULT_ADMIN_USERNAME},
-                {'$setOnInsert': {
-                    'username': DEFAULT_ADMIN_USERNAME,
-                    'password': generate_password_hash(DEFAULT_ADMIN_PASSWORD)
-                }},
-                upsert=True
+        if not existing:
+            conn.execute(
+                'INSERT INTO staff_users (username, password) VALUES (?, ?)',
+                (DEFAULT_ADMIN_USERNAME, generate_password_hash(DEFAULT_ADMIN_PASSWORD))
             )
-            count = mongo.db.staff_users.count_documents({})
-            print(f"[OK] Staff users in DB: {count}  (fallback -> '{DEFAULT_ADMIN_USERNAME}' / '{DEFAULT_ADMIN_PASSWORD}')")
+            conn.commit()
+            print(f"[OK] Default admin created: '{DEFAULT_ADMIN_USERNAME}' / '{DEFAULT_ADMIN_PASSWORD}'")
+        else:
+            print(f"[OK] Admin account exists: '{DEFAULT_ADMIN_USERNAME}'")
 
-        except Exception as e:
-            safe_err = str(e).encode('ascii', errors='replace').decode('ascii')
-            print(f"[WARNING] MongoDB not available: {safe_err}")
-            print("  Make sure MongoDB is running or MONGO_URI is set correctly")
+        conn.close()
+        print("[OK] SQLite database ready")
 
     return app
 
@@ -138,9 +138,7 @@ if __name__ == '__main__':
 |  Admin:    http://localhost:{port}/admin         |
 |  API Base: http://localhost:{port}/api           |
 +==============================================+
-|  Database: MongoDB (shiro_it)                |
-|  Staff Registration Code:                    |
-|    Code: {Config.STAFF_REGISTRATION_CODE}                  |
+|  Database: SQLite (shiroit.db)               |
 +==============================================+
     """)
 

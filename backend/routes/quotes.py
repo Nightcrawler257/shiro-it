@@ -1,6 +1,6 @@
-from datetime import datetime, timezone
+import json
 from flask import Blueprint, request, jsonify, current_app
-from extensions import mongo
+import db
 from models import is_valid_email
 
 quotes_bp = Blueprint('quotes', __name__)
@@ -24,25 +24,23 @@ def request_quote():
         return jsonify({'success': False, 'error': 'Please enter a valid email address'}), 400
 
     try:
-        # Store build_config as-is (MongoDB handles nested docs natively)
-        build_config = data['build_config']
+        build_config_json = json.dumps(data['build_config'])
 
-        doc = {
-            'name': data['name'].strip(),
-            'email': data['email'].strip(),
-            'phone': data['phone'].strip(),
-            'build_config': build_config,
-            'total_price': data.get('total_price', 0),
-            'notes': data.get('notes', '').strip(),
-            'created_at': datetime.now(timezone.utc),
-            'status': 'New'
-        }
-        result = mongo.db.quote_requests.insert_one(doc)
+        conn = db.get_conn()
+        cursor = conn.execute(
+            '''INSERT INTO quote_requests (name, email, phone, build_config, total_price, notes, status)
+               VALUES (?, ?, ?, ?, ?, ?, 'New')''',
+            (data['name'].strip(), data['email'].strip(), data['phone'].strip(),
+             build_config_json, data.get('total_price', 0), data.get('notes', '').strip())
+        )
+        conn.commit()
+        new_id = cursor.lastrowid
+        conn.close()
 
         return jsonify({
             'success': True,
             'message': 'Quote request submitted! Our team will review your build configuration and send you a detailed quote within 24 hours.',
-            'id': str(result.inserted_id)
+            'id': new_id
         }), 201
 
     except Exception as e:

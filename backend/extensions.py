@@ -1,8 +1,5 @@
 """
-Shared Flask extensions for SHIRO IT backend.
-Import from here instead of app.py to avoid circular imports.
+Shared extensions for SHIRO IT backend.
+Import `db` from here to access the SQLite database module.
 """
-
-from flask_pymongo import PyMongo
-
-mongo = PyMongo()
+import db   # noqa: F401
