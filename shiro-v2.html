@@ -93,6 +93,12 @@
                         </div>
                     </div>
 
+                    <!-- Cart -->
+                    <button class="cart-btn" id="cartOpenBtn" aria-label="Open cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+                    </button>
+
                     <!-- Theme Toggle -->
                     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                         <i class="fas fa-moon"></i>
@@ -336,53 +342,8 @@
                                 data-translate="tier_title_2">PC</span></h2>
                     </div>
 
-                    <div class="tiers-grid">
-                        <!-- Phantom Lite -->
-                        <div class="tier-card" style="--tier-color: #3388FF;">
-                            <div class="tier-badge">Best Value</div>
-                            <div class="tier-name">ENTRY</div>
-                            <h3>Phantom Lite</h3>
-                            <div class="tier-price">RM 2,499</div>
-                            <div class="tier-specs">
-                                <div><i class="fas fa-film"></i> RTX 4060</div>
-                                <div><i class="fas fa-microchip"></i> Intel i5-14400F</div>
-                                <div><i class="fas fa-memory"></i> 16GB DDR5</div>
-                                <div><i class="fas fa-hdd"></i> 512GB NVMe</div>
-                            </div>
-                            <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary tier-btn">Configure <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
-                        <!-- Phantom Pro (Featured) -->
-                        <div class="tier-card featured" style="--tier-color: #0066FF;">
-                            <div class="tier-ribbon">★ BEST SELLER</div>
-                            <div class="tier-badge">Most Popular</div>
-                            <div class="tier-name">MID</div>
-                            <h3>Phantom Pro</h3>
-                            <div class="tier-price">RM 4,999</div>
-                            <div class="tier-specs">
-                                <div><i class="fas fa-film"></i> RTX 4070 Super</div>
-                                <div><i class="fas fa-microchip"></i> AMD Ryzen 7 7800X3D</div>
-                                <div><i class="fas fa-memory"></i> 32GB DDR5</div>
-                                <div><i class="fas fa-hdd"></i> 1TB NVMe Gen4</div>
-                            </div>
-                            <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary tier-btn">Configure <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
-                        <!-- Phantom Ultra -->
-                        <div class="tier-card" style="--tier-color: #FF0033;">
-                            <div class="tier-badge">Ultimate Power</div>
-                            <div class="tier-name">HIGH-END</div>
-                            <h3>Phantom Ultra</h3>
-                            <div class="tier-price">RM 8,999</div>
-                            <div class="tier-specs">
-                                <div><i class="fas fa-film"></i> RTX 5080</div>
-                                <div><i class="fas fa-microchip"></i> AMD Ryzen 9 9900X</div>
-                                <div><i class="fas fa-memory"></i> 64GB DDR5</div>
-                                <div><i class="fas fa-hdd"></i> 2TB NVMe Gen5</div>
-                            </div>
-                            <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary tier-btn">Configure <i
-                                    class="fas fa-arrow-right"></i></a>
-                        </div>
+                    <div class="tiers-grid" id="prebuiltPcsContainer">
+                        <!-- Dynamic PCs will be injected via shiro-v2.js -->
                     </div>
                 </div>
             </section>
@@ -678,361 +639,7 @@
                     </div>
                     
                     <div class="video-gallery-grid" id="tipsVideoGrid">
-                        <!-- Video Card 1 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none" poster="">
-                                    <source src="video/PC 1 video.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Types of computer cables</h4>
-                                <p>Learn the basics of computer cables and their uses.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Hardware</span>
-                                    <span class="video-tag">Cable</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Placeholder Video Card 2 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Integrated Graphics vs Dedicated Graphics.mp4" type="video/mp4"> 
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Integrated Graphics vs Dedicated Graphics</h4>
-                                <p>A quick guide to finding the difference between integrated graphics and dedicated graphics.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Graphics</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 3 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Windows 11 Keyboard Shortcuts.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Windows 11 Keyboard Shortcuts</h4>
-                                <p>Learn the basics of Windows 11 keyboard shortcuts.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Software</span>
-                                    <span class="video-tag">Shortcuts</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 4 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/PC 2 video .mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Router vs Switch</h4>
-                                <p>Learn the difference between a router and a switch and when to use each.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Networking</span>
-                                </div>
-                            </div>
-                        </div>
-
-                         <!-- Placeholder Video Card 5 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/CMOS Battery.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>CMOS Battery</h4>
-                                <p>Learn the basics of CMOS Battery.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Hardware</span>
-                                    <span class="video-tag">Battery</span>
-                                </div>
-                            </div>
-                        </div>
-
-                         <!-- Placeholder Video Card 6 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/How to check CMOS battery.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>How to check CMOS battery</h4>
-                                <p>Learn how to check CMOS battery.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Hardware</span>
-                                    <span class="video-tag">Battery</span>
-                                </div>
-                            </div>
-                        </div>
-
-                         <!-- Placeholder Video Card 7 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Signs Your PC Needs Thermal Paste Replacement.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Signs Your PC Needs Thermal Paste Replacement</h4>
-                                <p>Learn how to check signs your PC needs thermal paste replacement.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Thermal Paste</span>
-                                </div>
-                            </div>
-                        </div>
-
-                         <!-- Placeholder Video Card 8 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/PC No Display 7 common reasons.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>PC No Display 7 common reasons</h4>
-                                <p>Discover the 7 most common reasons your PC has no display and how to fix them.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">PC No Display</span>
-                                </div>
-                            </div>
-                        </div>
-
-                         <!-- Placeholder Video Card 9 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Why does your PC take forever to start.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Why does your PC take forever to start</h4>
-                                <p>Is your PC taking forever to start? Learn the common reasons and how to speed it up.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">PC No Display</span>
-                                </div>
-                            </div>
-                        </div>
-
-                         <!-- Placeholder Video Card 10 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Windows Activation .mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Windows Activation</h4>
-                                <p>Learn what is about Windows Activation.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Windows</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 11 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Laptop Keyboard Not Working.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Laptop Keyboard Not Working</h4>
-                                <p>Learn what is about Laptop Keyboard Not Working.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Laptop</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 12 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Types of PC fan.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Types of PC fan</h4>
-                                <p>Learn what is about Types of PC fan.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">PC Fan</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 13 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Stock vs Air vs AIO cooler.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Stock vs Air vs AIO cooler</h4>
-                                <p>Learn what is about Stock vs Air vs AIO cooler.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">PC Cooler</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 14 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/LCD Monitor vs LED Monitor.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>LCD Monitor vs LED Monitor</h4>
-                                <p>Learn what is about LCD Monitor vs LED Monitor.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Monitor</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 15 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Dirty PC.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Dirty PC</h4>
-                                <p>Learn what is about Dirty PC.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">PC Care</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 16 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/WD Hard Drvie Colors Explained.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>WD Hard Drvie Colors Explained</h4>
-                                <p>Learn what is about WD Hard Drvie Colors Explained.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">WD</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 17 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/The specs you need for video editing.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>The specs you need for video editing</h4>
-                                <p>Learn what is about The specs you need for video editing.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Video Editing</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 18 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/Computer Storage Devices.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>Computer Storage Devices</h4>
-                                <p>Learn what is about Computer Storage Devices.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">Computer Storage Devices</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 19 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/AIO LIQUID COOLER.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>AIO LIQUID COOLER</h4>
-                                <p>Learn what is about AIO LIQUID COOLER.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">AIO LIQUID COOLER</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 20 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/AIO LIQUID COOLER.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>AIO LIQUID COOLER</h4>
-                                <p>Learn what is about AIO LIQUID COOLER.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">AIO LIQUID COOLER</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 21 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/FAN HUB VS SPILLTER.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>FAN HUB VS SPILLTER</h4>
-                                <p>Learn what is about FAN HUB VS SPILLTER.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">FAN HUB VS SPILLTER</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Placeholder Video Card 22 -->
-                        <div class="video-card">
-                            <div class="video-wrapper">
-                                <video controls preload="none">
-                                    <source src="video/FAN HUB VS SPILLTER.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="video-info">
-                                <h4>FAN HUB VS SPILLTER</h4>
-                                <p>Learn what is about FAN HUB VS SPILLTER.</p>
-                                <div class="video-tags">
-                                    <span class="video-tag">FAN HUB VS SPILLTER</span>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Dynamically populated by shiro-v2.js -->
                     </div>
                 </div>
             </section>
@@ -1140,14 +747,21 @@
             <div class="shop-filters">
                 <div class="container filters-inner">
                     <div class="category-tabs" id="categoryTabs">
-                        <button class="cat-tab active" data-category="All">All</button>
-                        <button class="cat-tab" data-category="CPU">CPU</button>
-                        <button class="cat-tab" data-category="Motherboard">Motherboard</button>
-                        <button class="cat-tab" data-category="RAM">RAM Desktop</button>
-                        <button class="cat-tab" data-category="RAM Laptop">RAM Laptop</button>
-                        <button class="cat-tab" data-category="Storage">Storage</button>
-                        <button class="cat-tab" data-category="GPU">GPU</button>
+                        <button class="cat-tab active" data-category="All">All Items</button>
+                        <button class="cat-tab" data-category="CPU">CPUs</button>
+                        <button class="cat-tab" data-category="Motherboard">Motherboards</button>
+                        <button class="cat-tab" data-category="RAM">RAM</button>
+                        <button class="cat-tab" data-category="RAM Laptop">RAM (Laptop)</button>
+                        <button class="cat-tab" data-category="GPU">Graphics Cards</button>
+                        <button class="cat-tab" data-category="Storage">SSD / Storage</button>
+                        <button class="cat-tab" data-category="Case">Cases</button>
+                        <button class="cat-tab" data-category="PSU">Power Supplies</button>
                         <button class="cat-tab" data-category="AIO Cooling">AIO Cooling</button>
+                        <button class="cat-tab" data-category="Cooling">Air Cooling</button>
+                        <button class="cat-tab" data-category="Monitor">Monitors</button>
+                        <button class="cat-tab" data-category="Keyboard">Keyboards</button>
+                        <button class="cat-tab" data-category="Mouse">Mouse</button>
+                        <button class="cat-tab" data-category="Accessories">Accessories</button>
                     </div>
                     <select class="sort-select" id="sortSelect">
                         <option value="featured">Featured</option>
@@ -1161,7 +775,301 @@
             <section class="section">
                 <div class="container">
                     <div class="products-grid" id="productsGrid">
-                        <!-- Products are inserted by JS -->
+                        <!-- ==================== CPUs ==================== -->
+                        <div class="product-card featured" data-category="CPU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">⚡</div>
+                            <div class="product-category">CPU</div>
+                            <h3>AMD Ryzen 5 5600G</h3>
+                            <p class="product-specs">6C/12T | iGPU | AMD</p>
+                            <div class="product-bottom"><div class="product-price">Ask for Price</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the AMD Ryzen 5 5600G" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="CPU">
+                            <div class="product-image">⚡</div>
+                            <div class="product-category">CPU</div>
+                            <h3>Intel Core i5-12400F</h3>
+                            <p class="product-specs">Intel | 6-Core</p>
+                            <div class="product-bottom"><div class="product-price">Ask for Price</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Intel Core i5-12400F" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="CPU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">⚡</div>
+                            <div class="product-category">CPU</div>
+                            <h3>Intel Core i5-13400F</h3>
+                            <p class="product-specs">Intel | 10-Core</p>
+                            <div class="product-bottom"><div class="product-price">Ask for Price</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Intel Core i5-13400F" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="CPU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">⚡</div>
+                            <div class="product-category">CPU</div>
+                            <h3>Intel Core i7-14700K</h3>
+                            <p class="product-specs">Intel | 20-Core</p>
+                            <div class="product-bottom"><div class="product-price">Ask for Price</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Intel Core i7-14700K" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="CPU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">⚡</div>
+                            <div class="product-category">CPU</div>
+                            <h3>Intel Core Ultra 5 245KF</h3>
+                            <p class="product-specs">14 Core | 14 Thread | LGA1851</p>
+                            <div class="product-bottom"><div class="product-price">RM 1,350</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Intel Core Ultra 5 245KF" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== MOTHERBOARDS ==================== -->
+                        <div class="product-card featured" data-category="Motherboard">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image"><img src="./images/asrock_h810m_x.jpg" alt="ASRock H810M-X" style="width:100%; height:100%; object-fit:contain;"></div>
+                            <div class="product-category">Motherboard</div>
+                            <h3>ASRock H810M-X Gen 5 WiFi 6</h3>
+                            <p class="product-specs">LGA1851 | WiFi 6 | Gen 5</p>
+                            <div class="product-bottom"><div class="product-price">RM 650</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the ASRock H810M-X" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="Motherboard">
+                            <div class="product-image"><img src="./images/MSI A520M-A PRO.jpg" alt="MSI A520M-A Pro" style="width:100%; height:100%; object-fit:contain;"></div>    
+                            <div class="product-category">Motherboard</div>
+                            <h3>MSI A520M-A Pro</h3>
+                            <p class="product-specs">AM4 | DDR4</p>
+                            <div class="product-bottom"><div class="product-price">RM 350</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the MSI A520M-A Pro" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="Motherboard">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image"><img src="./images/MSI B550M-A PRO.jpg" alt="MSI B550M-A Pro" style="width:100%; height:100%; object-fit:contain;"></div>
+                            <div class="product-category">Motherboard</div>
+                            <h3>MSI B550M-A Pro</h3>
+                            <p class="product-specs">AM4 | DDR4</p>
+                            <div class="product-bottom"><div class="product-price">RM 480</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the MSI B550M-A Pro" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="Motherboard">
+                            <div class="product-image">🖥️</div>
+                            <div class="product-category">Motherboard</div>
+                            <h3>Gigabyte A620M H</h3>
+                            <p class="product-specs">AM5 | DDR5</p>
+                            <div class="product-bottom"><div class="product-price">RM 550</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Gigabyte A620M H" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== RAM ==================== -->
+                        <div class="product-card featured" data-category="RAM">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">📦</div>
+                            <div class="product-category">RAM</div>
+                            <h3>Apacer 16GB DDR4 3200MHz</h3>
+                            <p class="product-specs">DDR4 | 3200MHz</p>
+                            <div class="product-bottom"><div class="product-price">RM 185</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Apacer 16GB RAM" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="RAM">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">📦</div>
+                            <div class="product-category">RAM</div>
+                            <h3>Apacer 32GB DDR5 5600MHz</h3>
+                            <p class="product-specs">DDR5 | 5600MHz</p>
+                            <div class="product-bottom"><div class="product-price">RM 460</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Apacer 32GB RAM" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="RAM">
+                            <div class="product-image">📦</div>
+                            <div class="product-category">RAM</div>
+                            <h3>Lexar 16GB DDR4 3200MHz</h3>
+                            <p class="product-specs">DDR4 | 3200MHz | 3 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 175</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Lexar 16GB RAM" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="RAM">
+                            <div class="product-image">📦</div>
+                            <div class="product-category">RAM</div>
+                            <h3>Acer 16GB DDR5 5600MHz</h3>
+                            <p class="product-specs">DDR5 | 5600MHz</p>
+                            <div class="product-bottom"><div class="product-price">RM 290</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Acer 16GB RAM" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== STORAGE ==================== -->
+                        <div class="product-card featured" data-category="Storage">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">💿</div>
+                            <div class="product-category">Storage</div>
+                            <h3>Samsung 990 Pro 1TB NVMe</h3>
+                            <p class="product-specs">NVMe M.2 | High Speed | 24 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 480</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Samsung 990 Pro 1TB" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="Storage">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">💿</div>
+                            <div class="product-category">Storage</div>
+                            <h3>Samsung 990 Pro 2TB NVMe</h3>
+                            <p class="product-specs">NVMe M.2 | High Speed</p>
+                            <div class="product-bottom"><div class="product-price">RM 860</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Samsung 990 Pro 2TB" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== GPUs ==================== -->
+                        <div class="product-card featured" data-category="GPU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">🎮</div>
+                            <div class="product-category">GPU</div>
+                            <h3>iGame RTX 3070 Ultra W OC</h3>
+                            <p class="product-specs">NVIDIA | White | LHR</p>
+                            <div class="product-bottom"><div class="product-price">RM 2,250</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the iGame RTX 3070 Ultra" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="GPU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">🎮</div>
+                            <div class="product-category">GPU</div>
+                            <h3>PNY GeForce RTX 5070 12GB</h3>
+                            <p class="product-specs">NVIDIA | Next-Gen</p>
+                            <div class="product-bottom"><div class="product-price">RM 3,499</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the PNY RTX 5070" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="GPU">
+                            <div class="product-image">🎮</div>
+                            <div class="product-category">GPU</div>
+                            <h3>iGame RTX 3070 Advanced</h3>
+                            <p class="product-specs">NVIDIA | LHR | 2 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 2,150</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the iGame RTX 3070 Advanced" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== ACCESSORIES ==================== -->
+                        <div class="product-card featured" data-category="Accessories">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">🔌</div>
+                            <div class="product-category">Accessories</div>
+                            <h3>Logitech C922 Pro HD Webcam</h3>
+                            <p class="product-specs">1080p | 60FPS | Stream</p>
+                            <div class="product-bottom"><div class="product-price">RM 380</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Logitech C922" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="Accessories">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">🔌</div>
+                            <div class="product-category">Accessories</div>
+                            <h3>GameSir Nova Lite Controller</h3>
+                            <p class="product-specs">Multi-Platform | Wireless</p>
+                            <div class="product-bottom"><div class="product-price">RM 150</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the GameSir Nova Lite" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="Accessories">
+                            <div class="product-image">🔌</div>
+                            <div class="product-category">Accessories</div>
+                            <h3>ZT32 HDMI Cable 3m</h3>
+                            <p class="product-specs">4K | Gold-Plated</p>
+                            <div class="product-bottom"><div class="product-price">RM 25</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the ZT32 HDMI Cable" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        
+                        <!-- ==================== RAM Laptop ==================== -->
+                        <div class="product-card" data-category="RAM Laptop">
+                            <div class="product-image">💾</div>
+                            <div class="product-category">RAM Laptop</div>
+                            <h3>Value RAM 8GB DDR4 2666MHz</h3>
+                            <p class="product-specs">SODIMM | 5 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 120</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the 8GB Laptop RAM" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="RAM Laptop">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">💾</div>
+                            <div class="product-category">RAM Laptop</div>
+                            <h3>Value RAM 16GB DDR5 5600MHz</h3>
+                            <p class="product-specs">SODIMM | 5 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 320</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the 16GB DDR5 Laptop RAM" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== Cases ==================== -->
+                        <div class="product-card featured" data-category="Case">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">📦</div>
+                            <div class="product-category">Case</div>
+                            <h3>Segotep Brave W1 Black</h3>
+                            <p class="product-specs">Mid-Tower | 5 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 180</div><a href="https://wa.me/60177617672?text=Hi, I am interested in Segotep Brave W1" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="Case">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">📦</div>
+                            <div class="product-category">Case</div>
+                            <h3>NZXT H5 Flow Black</h3>
+                            <p class="product-specs">High Airflow | 2 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 380</div><a href="https://wa.me/60177617672?text=Hi, I am interested in NZXT H5 Flow" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== Power Supplies ==================== -->
+                        <div class="product-card featured" data-category="PSU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">⚡</div>
+                            <div class="product-category">PSU</div>
+                            <h3>MSI MPG A850G PCIE5 850W</h3>
+                            <p class="product-specs">80+ Gold | Fully Modular | ATX 3.0</p>
+                            <div class="product-bottom"><div class="product-price">RM 650</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the MSI A850G PSU" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="PSU">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">⚡</div>
+                            <div class="product-category">PSU</div>
+                            <h3>Corsair RM850e 850W Gold</h3>
+                            <p class="product-specs">Fully Modular | 3 Units</p>
+                            <div class="product-bottom"><div class="product-price">RM 580</div><a href="https://wa.me/60177617672?text=Hi, I am interested in Corsair RM850e" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== Cooling ==================== -->
+                        <div class="product-card featured" data-category="AIO Cooling">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">❄️</div>
+                            <div class="product-category">AIO Cooling</div>
+                            <h3>Thermalright Frozen Warframe 360</h3>
+                            <p class="product-specs">360mm | LCD | Black ARGB</p>
+                            <div class="product-bottom"><div class="product-price">RM 450</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the Warframe 360 AIO" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="Cooling">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">❄️</div>
+                            <div class="product-category">Cooling</div>
+                            <h3>Thermalright Peerless Assassin 120</h3>
+                            <p class="product-specs">Dual Tower | Air Cooler</p>
+                            <div class="product-bottom"><div class="product-price">RM 180</div><a href="https://wa.me/60177617672?text=Hi, I am interested in Peerless Assassin 120" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== Monitors ==================== -->
+                        <div class="product-card featured" data-category="Monitor">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">🖥️</div>
+                            <div class="product-category">Monitor</div>
+                            <h3>AOC AGON 27" 2K 260Hz</h3>
+                            <p class="product-specs">IPS | 0.5ms | 1440p</p>
+                            <div class="product-bottom"><div class="product-price">RM 1,450</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the AOC 260Hz Monitor" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="Monitor">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">🖥️</div>
+                            <div class="product-category">Monitor</div>
+                            <h3>MSI G244F 24" 180Hz</h3>
+                            <p class="product-specs">IPS | 1ms | 1080p</p>
+                            <div class="product-bottom"><div class="product-price">RM 540</div><a href="https://wa.me/60177617672?text=Hi, I am interested in MSI 180Hz Monitor" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== Mice & Keyboards ==================== -->
+                        <div class="product-card featured" data-category="Mouse">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">🖱️</div>
+                            <div class="product-category">Mouse</div>
+                            <h3>Logitech G502 X Plus Wireless</h3>
+                            <p class="product-specs">LIGHTSPEED | 25K HERO</p>
+                            <div class="product-bottom"><div class="product-price">RM 580</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the G502 X Plus" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card featured" data-category="Keyboard">
+                            <div class="product-badge">Featured 🔥</div>
+                            <div class="product-image">⌨️</div>
+                            <div class="product-category">Keyboard</div>
+                            <h3>Logitech G Pro X Mechanical</h3>
+                            <p class="product-specs">TKL | GX Switches</p>
+                            <div class="product-bottom"><div class="product-price">RM 450</div><a href="https://wa.me/60177617672?text=Hi, I'm interested in the G Pro X Keyboard" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+
+                        <!-- ==================== More Accessories ==================== -->
+                        <div class="product-card" data-category="Accessories">
+                            <div class="product-image">🔌</div>
+                            <div class="product-category">Accessories</div>
+                            <h3>Ugreen 5-in-1 USB-C Hub</h3>
+                            <p class="product-specs">Multifunction Adapter</p>
+                            <div class="product-bottom"><div class="product-price">RM 120</div><a href="https://wa.me/60177617672?text=Hi, I am interested in Ugreen Hub" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
+                        <div class="product-card" data-category="Accessories">
+                            <div class="product-image">🔌</div>
+                            <div class="product-category">Accessories</div>
+                            <h3>BT 5.3 Wireless Adapter</h3>
+                            <p class="product-specs">Bluetooth 5.3 Dongle</p>
+                            <div class="product-bottom"><div class="product-price">RM 35</div><a href="https://wa.me/60177617672?text=Hi, I am interested in BT 5.3 Adapter" target="_blank" class="btn btn-primary product-btn"><i class="fab fa-whatsapp"></i> Inquire</a></div>
+                        </div>
                     </div>
                     <div class="empty-state" id="emptyState" style="display:none;">
                         <i class="fas fa-box-open"></i>
@@ -1212,11 +1120,13 @@
                                 <strong id="summaryTotal">RM 0</strong>
                             </div>
                             <div class="summary-note"><i class="fas fa-info-circle"></i> Prices are estimates. Final
-                                pricing confirmed via WhatsApp.</div>
-                            <a id="whatsappOrder" href="#" target="_blank" rel="noopener noreferrer"
-                                class="btn btn-whatsapp summary-btn">
-                                <i class="fab fa-whatsapp"></i> Order via WhatsApp
-                            </a>
+                                pricing confirmed in cart.</div>
+                            
+                            <!-- Validation msg will be inserted here -->
+                            
+                            <button id="whatsappOrder" class="btn btn-primary summary-btn">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
                             <div class="summary-extras">
                                 <div class="extra"><i class="fas fa-shield-alt"></i> 2-Year Warranty</div>
                                 <div class="extra"><i class="fas fa-truck"></i> Free Delivery (Penang)</div>
@@ -1226,7 +1136,7 @@
                     </div>
                 </div>
             </section>
-        \n<!-- ========== MERGED SERVICES CONTENT ========== -->
+        <!-- ========== MERGED SERVICES CONTENT ========== -->
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
@@ -1240,88 +1150,88 @@
             <section class="section">
                 <div class="container">
                     <div class="services-detail-grid">
+                        <!-- Custom PC -->
                         <div class="card service-detail-card">
-                            <div class="svc-icon" style="color:#0066FF;"><i class="fas fa-desktop"></i></div>
+                            <div class="svc-icon" style="color:#2563eb;"><i class="fas fa-desktop"></i></div>
                             <h3>Custom PC Builds</h3>
-                            <p>Hand-crafted gaming PCs and workstations built to your exact specifications with premium
-                                components and cable management.</p>
+                            <p>Premium gaming rigs and professional workstations designed for peak performance and reliability.</p>
                             <div class="svc-features">
-                                <span><i class="fas fa-check"></i> Component selection</span>
-                                <span><i class="fas fa-check"></i> Cable management</span>
-                                <span><i class="fas fa-check"></i> Performance testing</span>
-                                <span><i class="fas fa-check"></i> Overclocking</span>
+                                <span><i class="fas fa-check"></i> High-End Parts</span>
+                                <span><i class="fas fa-check"></i> Clean Cables</span>
+                                <span><i class="fas fa-check"></i> Burn-in Testing</span>
+                                <span><i class="fas fa-check"></i> 2Y Warranty</span>
                             </div>
-                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
-                                    class="fas fa-arrow-right"></i></a>
+                            <a href="#build-pc" data-page="build-pc" class="svc-cta">Build Your Own <i class="fas fa-arrow-right"></i></a>
                         </div>
+                        
+                        <!-- Repair -->
                         <div class="card service-detail-card">
-                            <div class="svc-icon" style="color:#FF0033;"><i class="fas fa-tools"></i></div>
-                            <h3>PC Repair & Maintenance</h3>
-                            <p>Expert diagnosis and repair for all hardware and software issues. We fix desktops,
-                                laptops, and gaming rigs.</p>
+                            <div class="svc-icon" style="color:#ef4444;"><i class="fas fa-tools"></i></div>
+                            <h3>Expert Repairs</h3>
+                            <p>Fast and reliable diagnosis for desktops and laptops. We specialize in logic board and hardware fixes.</p>
                             <div class="svc-features">
-                                <span><i class="fas fa-check"></i> Hardware diagnosis</span>
-                                <span><i class="fas fa-check"></i> OS reinstallation</span>
-                                <span><i class="fas fa-check"></i> Virus removal</span>
-                                <span><i class="fas fa-check"></i> Component swap</span>
+                                <span><i class="fas fa-check"></i> Logic Board</span>
+                                <span><i class="fas fa-check"></i> Screen Swap</span>
+                                <span><i class="fas fa-check"></i> OS Cleanup</span>
+                                <span><i class="fas fa-check"></i> Water Damage</span>
                             </div>
-                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
-                                    class="fas fa-arrow-right"></i></a>
+                            <a href="https://wa.me/60177617672?text=Hi, I need help with a PC repair" target="_blank" class="svc-cta">Book Repair <i class="fas fa-arrow-right"></i></a>
                         </div>
+
+                        <!-- Networking -->
                         <div class="card service-detail-card">
-                            <div class="svc-icon" style="color:#0066FF;"><i class="fas fa-network-wired"></i></div>
-                            <h3>Networking Solutions</h3>
-                            <p>Professional network setup and optimization for homes and businesses, including WiFi, LAN,
-                                and security.</p>
+                            <div class="svc-icon" style="color:#2563eb;"><i class="fas fa-network-wired"></i></div>
+                            <h3>Networking</h3>
+                            <p>Enterprise-grade network solutions for SMEs and high-performance WiFi 6 setups for homes.</p>
                             <div class="svc-features">
-                                <span><i class="fas fa-check"></i> WiFi optimization</span>
-                                <span><i class="fas fa-check"></i> LAN setup</span>
-                                <span><i class="fas fa-check"></i> Router config</span>
-                                <span><i class="fas fa-check"></i> Network security</span>
+                                <span><i class="fas fa-check"></i> WiFi 6 Mesh</span>
+                                <span><i class="fas fa-check"></i> SME Server</span>
+                                <span><i class="fas fa-check"></i> NAS / Cloud</span>
+                                <span><i class="fas fa-check"></i> IP Camera</span>
                             </div>
-                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
-                                    class="fas fa-arrow-right"></i></a>
+                            <a href="https://wa.me/60177617672?text=Hi, I'm interested in Networking solutions" target="_blank" class="svc-cta">Get Quote <i class="fas fa-arrow-right"></i></a>
                         </div>
+
+                        <!-- Data Recovery -->
                         <div class="card service-detail-card">
-                            <div class="svc-icon" style="color:#FF0033;"><i class="fas fa-database"></i></div>
+                            <div class="svc-icon" style="color:#ef4444;"><i class="fas fa-database"></i></div>
                             <h3>Data Recovery</h3>
-                            <p>Recover lost or deleted data from damaged hard drives, SSDs, and corrupted storage
-                                devices.</p>
+                            <p>Specialized recovery service for corrupted SSDs, dead HDDs, and accidental deletions.</p>
                             <div class="svc-features">
-                                <span><i class="fas fa-check"></i> HDD recovery</span>
-                                <span><i class="fas fa-check"></i> SSD recovery</span>
-                                <span><i class="fas fa-check"></i> RAID recovery</span>
-                                <span><i class="fas fa-check"></i> Forensic analysis</span>
+                                <span><i class="fas fa-check"></i> SSD Recovery</span>
+                                <span><i class="fas fa-check"></i> HDD Mechanical</span>
+                                <span><i class="fas fa-check"></i> RAID Systems</span>
+                                <span><i class="fas fa-check"></i> Forensic Tools</span>
                             </div>
-                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
-                                    class="fas fa-arrow-right"></i></a>
+                            <a href="https://wa.me/60177617672?text=Hi, I need Data Recovery help" target="_blank" class="svc-cta">Emergency Help <i class="fas fa-arrow-right"></i></a>
                         </div>
+
+                        <!-- Cybersecurity -->
                         <div class="card service-detail-card">
-                            <div class="svc-icon" style="color:#0066FF;"><i class="fas fa-shield-alt"></i></div>
+                            <div class="svc-icon" style="color:#2563eb;"><i class="fas fa-shield-alt"></i></div>
                             <h3>Cybersecurity</h3>
-                            <p>Protect your business with enterprise-grade security solutions, firewall setup, and
-                                vulnerability assessments.</p>
+                            <p>End-to-end security audits, firewall implementation, and employee training for modern businesses.</p>
                             <div class="svc-features">
-                                <span><i class="fas fa-check"></i> Firewall setup</span>
-                                <span><i class="fas fa-check"></i> Antivirus</span>
-                                <span><i class="fas fa-check"></i> Security audits</span>
-                                <span><i class="fas fa-check"></i> Training</span>
+                                <span><i class="fas fa-check"></i> Firewall (NG)</span>
+                                <span><i class="fas fa-check"></i> EDR/XDR</span>
+                                <span><i class="fas fa-check"></i> Pen Testing</span>
+                                <span><i class="fas fa-check"></i> Access Control</span>
                             </div>
-                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
-                                    class="fas fa-arrow-right"></i></a>
+                            <a href="https://wa.me/60177617672?text=Hi, I want a Security Audit" target="_blank" class="svc-cta">Learn More <i class="fas fa-arrow-right"></i></a>
                         </div>
+
+                        <!-- Asset Management -->
                         <div class="card service-detail-card">
-                            <div class="svc-icon" style="color:#FF0033;"><i class="fas fa-cloud"></i></div>
-                            <h3>Cloud Solutions</h3>
-                            <p>Migrate your business to the cloud with our expert setup and management services.</p>
+                            <div class="svc-icon" style="color:#ef4444;"><i class="fas fa-tasks"></i></div>
+                            <h3>IT Outsourcing</h3>
+                            <p>Continuous IT support and asset management for businesses without full-time IT staff.</p>
                             <div class="svc-features">
-                                <span><i class="fas fa-check"></i> Cloud migration</span>
-                                <span><i class="fas fa-check"></i> Backup solutions</span>
-                                <span><i class="fas fa-check"></i> SaaS setup</span>
-                                <span><i class="fas fa-check"></i> Cost optimization</span>
+                                <span><i class="fas fa-check"></i> 24/7 Support</span>
+                                <span><i class="fas fa-check"></i> Remote Help</span>
+                                <span><i class="fas fa-check"></i> Asset Registry</span>
+                                <span><i class="fas fa-check"></i> Policy Setup</span>
                             </div>
-                            <a href="#contact" data-page="contact" class="svc-cta">Get Started <i
-                                    class="fas fa-arrow-right"></i></a>
+                            <a href="https://wa.me/60177617672?text=Hi, I'm interested in IT Outsourcing" target="_blank" class="svc-cta">Partner with Us <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1423,38 +1333,7 @@
                     </div>
                 </div>
             </section>
-        \n
-            <!-- Onsite Projects -->
-            <section class="section" id="section-onsite">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge badge-red"><i class="fas fa-network-wired"></i> <span data-translate="onsite_badge">Onsite Projects</span></span>
-                        <h2><span data-translate="onsite_h2_1">Expert</span> <span class="gradient-text" data-translate="onsite_h2_2">Onsite Setups</span></h2>
-                    </div>
-                    <div class="card" style="padding: 2rem; margin-bottom: 2rem; text-align: center;">
-                        <p data-translate="onsite_desc" style="font-size: 1.1rem; color: var(--text-secondary);">
-                            We provide professional onsite services including network infrastructure setup, security camera installation, and corporate IT setups. Our team ensures that your environment is equipped with reliable and secure technology solutions tailored to your specific operational needs.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Ariz Digital -->
-            <section class="section" id="section-ariz">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge badge-blue"><i class="fas fa-building"></i> <span data-translate="ariz_badge">Ariz Digital</span></span>
-                        <h2><span data-translate="ariz_h2_1">Powered by</span> <span class="gradient-text" data-translate="ariz_h2_2">Ariz Digital</span></h2>
-                    </div>
-                    <div class="card" style="padding: 2rem; text-align: center;">
-                        <p data-translate="ariz_desc" style="font-size: 1.1rem; color: var(--text-secondary);">
-                            Ariz Digital is our trusted partner in delivering comprehensive digital solutions. 
-                            [Detailed information about Ariz Digital will be updated here.]
-                        </p>
-                    </div>
-                </div>
-            </section>
-\n</div>
+</div>
 
         <!-- ========== CONTACT PAGE ========== -->
         <div id="page-contact" class="page">
@@ -1719,16 +1598,101 @@
         </a>
     </div>
 
-    <!-- JS -->
+    <!-- PC Builder Component Selector Modal -->
+    <style>
+      .builder-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 9999; opacity: 0; transition: opacity 0.2s; padding: 1rem; }
+      .builder-modal-overlay.show { display: flex; opacity: 1; }
+      .builder-modal { background: var(--bg-card); width: 100%; max-width: 600px; max-height: 80vh; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; transform: translateY(20px); transition: transform 0.2s; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+      .builder-modal-overlay.show .builder-modal { transform: translateY(0); }
+      .builder-modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
+      .builder-modal-header h3 { font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+      .builder-modal-close { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem; }
+      .builder-modal-close:hover { color: var(--text-primary); }
+      .builder-modal-search { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); }
+      .builder-modal-search input { width: 100%; padding: 0.75rem 1rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); }
+      .builder-modal-search input:focus { outline: none; border-color: var(--accent-blue); }
+      .builder-modal-body { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+      .builder-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+      .builder-item:hover { border-color: var(--accent-blue); }
+      .builder-item-info h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+      .builder-item-info p { font-size: 0.8rem; color: var(--text-secondary); margin: 0; }
+      .builder-item-price { font-weight: 600; color: var(--accent-blue); white-space: nowrap; }
+
+      /* In-line Selector Styles */
+      .inline-selector { margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem; }
+      .inline-selector-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+      .inline-selector-header h5 { font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+      .inline-options-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; padding-right: 0.5rem; }
+      .inline-item { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+      .inline-item:hover { border-color: var(--accent-blue); background: rgba(0,102,255,0.05); }
+      .inline-item-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
+      .inline-item-info p { font-size: 0.75rem; color: var(--text-secondary); margin: 0; }
+      .inline-item-action { display: flex; align-items: center; gap: 1rem; }
+      .inline-item-price { font-size: 0.9rem; font-weight: 600; color: var(--accent-blue); }
+      .inline-add-btn { background: var(--accent-blue); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+      
+      /* Hide modal if we don't need it or keep as backup */
+      .builder-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 9999; opacity: 0; transition: opacity 0.2s; padding: 1rem; }
+    </style>
+    <div class="builder-modal" id="builderModalOverlay" style="display:none;">
+      <div class="builder-modal">
+        <div class="builder-modal-header">
+          <h3 id="builderModalTitle">Select Component</h3>
+          <button class="builder-modal-close" id="builderModalClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="builder-modal-search">
+          <input type="text" id="builderModalSearch" placeholder="Search components...">
+        </div>
+        <div class="builder-modal-body" id="builderModalBody">
+          <!-- Items injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Cart Sidebar/Modal -->
+    <div class="cart-sidebar-overlay" id="cartOverlay">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+                <button class="cart-close" id="cartCloseBtn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-body" id="cartBody">
+                <!-- Cart items injected by JS -->
+                <div class="cart-empty">
+                    <i class="fas fa-shopping-basket"></i>
+                    <p>Your cart is empty</p>
+                    <a href="#shop" data-page="shop" class="btn btn-secondary btn-sm">Browse Shop</a>
+                </div>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Grand Total</span>
+                    <strong id="cartGrandTotal">RM 0</strong>
+                </div>
+                <button id="checkoutBtn" class="btn btn-whatsapp checkout-btn">
+                    <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
     <script src="shiro-v2.js"></script>
     
-    <!-- Festival Animations (Uncomment to enable) -->
-    <!-- <script src="festivals/cny.js"></script> -->
-    <!-- <script src="festivals/raya.js"></script> --> 
-    <!-- <script src="festivals/deepavali.js"></script> -->
-    <!-- <script src="festivals/christmas.js"></script> -->
-    <!-- <script src="festivals/newyear.js"></script> --> 
-    <script src="festivals/national.js"></script>
+    <!-- Festival Animations: dynamically loaded based on Site Settings in Admin -->
+    <script id="festivalLoader">
+      (async () => {
+        try {
+          const backendBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? 'http://localhost:5000' : 'http://localhost:5000';
+          const res = await fetch(backendBase + '/api/site_settings');
+          const d = await res.json();
+          if (d.success && d.data && d.data.active_festival && d.data.active_festival !== 'none') {
+            const s = document.createElement('script');
+            s.src = 'festivals/' + d.data.active_festival + '.js';
+            document.body.appendChild(s);
+          }
+        } catch(e) { console.log('Festival settings not loaded (backend may be offline).'); }
+      })();
+    </script>
 </body>
 
 </html>

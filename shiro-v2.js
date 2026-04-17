@@ -3,9 +3,17 @@
 // Backend API base URL — auto-detect:
 // In production (Render/Flask serving the HTML), use the same origin.
 // For local dev with a separate Flask server, fall back to localhost:5000.
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+// Backup API_BASE for local dev via file:// protocol
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
   ? 'http://localhost:5000'
   : window.location.origin;
+
+function resolveImagePath(path) {
+  if (!path || typeof path !== 'string' || !path.includes('/')) return path;
+  if (path.startsWith('http')) return path;
+  const cleanPath = path.startsWith('/') ? path : '/' + path;
+  return API_BASE + cleanPath;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   /* ===== SPA NAVIGATION ===== */
@@ -405,274 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (statsSection) statsObserver.observe(statsSection);
 
   /* ===== SHOP — Products ===== */
-  const products = [
-    // ── CPU ──
-    {
-      id: 1,
-      name: "AMD Ryzen 5 5600G",
-      category: "CPU",
-      price: 0,
-      badge: "In Stock",
-      specs: "AMD | 6C/12T | Integrated Radeon Graphics | AM4 | Ask for price",
-      image: "⚡",
-      featured: true,
-      stock: 1,
-    },
-
-    // ── Motherboard ──
-    {
-      id: 2,
-      name: "Gigabyte A520M K V2",
-      category: "Motherboard",
-      price: 0,
-      badge: "1 Left",
-      specs: "AMD | AM4 | Micro-ATX | DDR4 | Ask for price",
-      image: "🖥️",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 3,
-      name: "Asus A520M-K",
-      category: "Motherboard",
-      price: 0,
-      badge: "In Stock",
-      specs: "AMD | AM4 | Micro-ATX | DDR4 | Ask for price",
-      image: "🖥️",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 4,
-      name: "Gigabyte B550M",
-      category: "Motherboard",
-      price: 0,
-      badge: "1 Left",
-      specs: "AMD | AM4 | Micro-ATX | DDR4 | PCIe 4.0 | Ask for price",
-      image: "🖥️",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 5,
-      name: "ASRock B550M Pro SE",
-      category: "Motherboard",
-      price: 0,
-      badge: "1 Left",
-      specs: "AMD | AM4 | Micro-ATX | DDR4 | PCIe 4.0 | Ask for price",
-      image: "🖥️",
-      featured: false,
-      stock: 1,
-    },
-
-    // ── RAM Desktop ──
-    {
-      id: 6,
-      name: "Corsair 16GB 3600MHz DDR4",
-      category: "RAM",
-      price: 0,
-      badge: "1 Left",
-      specs: "16GB | DDR4 | 3600MHz | Heatsink Black | Ask for price",
-      image: "📦",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 7,
-      name: "V-Color 16GB 3200MHz DDR4 ARGB (2×8GB)",
-      category: "RAM",
-      price: 0,
-      badge: "1 Left",
-      specs: "16GB | 2×8GB | DDR4 | 3200MHz | ARGB | Ask for price",
-      image: "📦",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 8,
-      name: "G.Skill Trident Z Neo 8GB 3200MHz DDR4 ARGB",
-      category: "RAM",
-      price: 0,
-      badge: "3 in Stock",
-      specs: "8GB | DDR4 | 3200MHz | ARGB | Ask for price",
-      image: "📦",
-      featured: true,
-      stock: 3,
-    },
-
-    // ── RAM Laptop ──
-    {
-      id: 9,
-      name: "Value RAM 8GB DDR4 2666MHz SODIMM",
-      category: "RAM Laptop",
-      price: 0,
-      badge: "5 in Stock",
-      specs: "8GB | DDR4 | 2666MHz | SODIMM | Ask for price",
-      image: "💾",
-      featured: true,
-      stock: 5,
-    },
-    {
-      id: 10,
-      name: "Value RAM 8GB DDR4 3200MHz SODIMM",
-      category: "RAM Laptop",
-      price: 0,
-      badge: "3 in Stock",
-      specs: "8GB | DDR4 | 3200MHz | SODIMM | Ask for price",
-      image: "💾",
-      featured: false,
-      stock: 3,
-    },
-    {
-      id: 11,
-      name: "Value RAM 16GB DDR4 2666MHz SODIMM",
-      category: "RAM Laptop",
-      price: 0,
-      badge: "1 Left",
-      specs: "16GB | DDR4 | 2666MHz | SODIMM | Ask for price",
-      image: "💾",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 12,
-      name: "Value RAM 16GB DDR5 5600MHz SODIMM",
-      category: "RAM Laptop",
-      price: 0,
-      badge: "5 in Stock",
-      specs: "16GB | DDR5 | 5600MHz | SODIMM | Ask for price",
-      image: "💾",
-      featured: true,
-      stock: 5,
-    },
-
-    // ── Storage (Used SSD SATA) ──
-    {
-      id: 13,
-      name: "Apacer 240GB SATA SSD",
-      category: "Storage",
-      price: 0,
-      badge: "95% Health",
-      specs: "240GB | SATA SSD | 95% Drive Health | Ask for price",
-      image: "💿",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 14,
-      name: "Skynix 512GB SATA SSD",
-      category: "Storage",
-      price: 0,
-      badge: "95% Health",
-      specs: "512GB | SATA SSD | 95% Drive Health | Ask for price",
-      image: "💿",
-      featured: true,
-      stock: 1,
-    },
-    {
-      id: 15,
-      name: "Semsotai 120GB SATA SSD",
-      category: "Storage",
-      price: 0,
-      badge: "88% Health",
-      specs: "120GB | SATA SSD | 88% Drive Health | Ask for price",
-      image: "💿",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 16,
-      name: "Kingston 480GB SATA SSD",
-      category: "Storage",
-      price: 0,
-      badge: "98% Health",
-      specs: "480GB | SATA SSD | 98% Drive Health | Ask for price",
-      image: "💿",
-      featured: true,
-      stock: 1,
-    },
-    {
-      id: 17,
-      name: "Gigabyte 256GB SATA SSD",
-      category: "Storage",
-      price: 0,
-      badge: "94% Health",
-      specs: "256GB | SATA SSD | 94% Drive Health | Ask for price",
-      image: "💿",
-      featured: false,
-      stock: 1,
-    },
-
-    // ── GPU ──
-    {
-      id: 18,
-      name: "Sapphire RX 9060 XT 16GB",
-      category: "GPU",
-      price: 0,
-      badge: "New 🔥",
-      specs: "AMD | 16GB GDDR6 | RX 9060 XT | Sapphire | Ask for price",
-      image: "🎮",
-      featured: true,
-      stock: 1,
-    },
-    {
-      id: 19,
-      name: "Sapphire RX 9070 XT Gaming OC 16GB",
-      category: "GPU",
-      price: 0,
-      badge: "New 🔥",
-      specs: "AMD | 16GB GDDR6 | RX 9070 XT | Sapphire Gaming OC | Ask for price",
-      image: "🎮",
-      featured: true,
-      stock: 1,
-    },
-    {
-      id: 20,
-      name: "Asus RTX 2070 8GB",
-      category: "GPU",
-      price: 0,
-      badge: "In Stock",
-      specs: "NVIDIA | 8GB GDDR6 | RTX 2070 | Asus | Ask for price",
-      image: "🎮",
-      featured: false,
-      stock: 1,
-    },
-    {
-      id: 21,
-      name: "Colorful RTX 3050 8GB",
-      category: "GPU",
-      price: 0,
-      badge: "In Stock",
-      specs: "NVIDIA | 8GB GDDR6 | RTX 3050 | Colorful | Ask for price",
-      image: "🎮",
-      featured: false,
-      stock: 1,
-    },
-
-    // ── AIO Cooling ──
-    {
-      id: 22,
-      name: "Corsair Nautilus 240RS ARGB",
-      category: "AIO Cooling",
-      price: 0,
-      badge: "1 Left",
-      specs: "240mm AIO | ARGB | Corsair Nautilus 240RS | Ask for price",
-      image: "❄️",
-      featured: true,
-      stock: 1,
-    },
-    {
-      id: 23,
-      name: "ID Cooling FX360 Pro",
-      category: "AIO Cooling",
-      price: 0,
-      badge: "1 Left",
-      specs: "360mm AIO | ID Cooling FX360 Pro | Ask for price",
-      image: "❄️",
-      featured: false,
-      stock: 1,
-    },
-  ];
+  let products = [];
 
   const productsGrid = document.getElementById("productsGrid");
   const emptyState = document.getElementById("emptyState");
@@ -702,16 +443,21 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "product-card" + (p.featured ? " featured" : "");
       card.innerHTML = `
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ""}
-        <div class="product-image">${p.image}</div>
+        <div class="product-image">
+          ${p.image && (p.image.startsWith('/') || p.image.startsWith('http'))
+            ? `<img src="${resolveImagePath(p.image)}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;">`
+            : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${getCategoryIcon(p.category)}</div>`}
+        </div>
         <div class="product-category">${p.category}</div>
         <h3>${p.name}</h3>
         <p class="product-specs">${p.specs}</p>
-        ${p.stock > 1 ? `<p class="product-stock"><i class="fas fa-boxes"></i> ${p.stock} in stock</p>` : ""}
+        ${p.health ? `<p class="product-health"><i class="fas fa-heartbeat"></i> Health: ${p.health}</p>` : ""}
+        ${p.stock > 1 ? `<p class="product-stock"><i class="fas fa-boxes"></i> ${p.stock} in stock</p>` : (p.stock === 1 ? `<p class="product-stock"><i class="fas fa-box"></i> Only 1 left!</p>` : "")}
         <div class="product-bottom">
           <div class="product-price">${p.price > 0 ? "RM " + p.price.toLocaleString() : '<span style="color:var(--accent-blue);font-size:0.85em;">Ask for Price</span>'}</div>
-          <a href="https://wa.me/60177617672?text=Hi, I'm interested in the ${encodeURIComponent(p.name)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary product-btn">
-            <i class="fab fa-whatsapp"></i> Inquire
-          </a>
+          <button class="btn btn-primary product-btn" onclick="addShopItemToCart(this)">
+            <i class="fas fa-cart-plus"></i> Add to Cart
+          </button>
         </div>
       `;
       productsGrid.appendChild(card);
@@ -729,8 +475,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  if (sortSelect) sortSelect.addEventListener("change", renderProducts);
-  renderProducts();
+  if (sortSelect) sortSelect.addEventListener("change", () => {
+    // Basic alphabetical sort for static items if needed
+    const allCards = Array.from(productsGrid.querySelectorAll(".product-card"));
+    const sort = sortSelect.value;
+    
+    if (sort === "price-low" || sort === "price-high") {
+       allCards.sort((a,b) => {
+          const priceA = parseInt(a.querySelector(".product-price").innerText.replace(/[^\d]/g, '')) || 0;
+          const priceB = parseInt(b.querySelector(".product-price").innerText.replace(/[^\d]/g, '')) || 0;
+          return sort === "price-low" ? priceA - priceB : priceB - priceA;
+       });
+    } else {
+       // Featured sort: cards with .featured class first
+       allCards.sort((a,b) => (b.classList.contains("featured") ? 1 : 0) - (a.classList.contains("featured") ? 1 : 0));
+    }
+    
+    allCards.forEach(card => productsGrid.appendChild(card));
+  });
+  
+  // Initial run of animations for static content
+  setTimeout(runScrollAnimations, 100);
 
   /* ===== BUILD PC — Configurator ===== */
   // SVG data URIs for components without photo images
@@ -744,252 +509,643 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const SVG_COOLING = `<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="110" height="30" rx="3" fill="rgba(37,99,235,0.07)" stroke="rgba(37,99,235,0.4)" stroke-width="1.5"/><rect x="5" y="40" width="110" height="30" rx="3" fill="rgba(37,99,235,0.07)" stroke="rgba(37,99,235,0.4)" stroke-width="1.5"/><rect x="5" y="75" width="110" height="30" rx="3" fill="rgba(37,99,235,0.07)" stroke="rgba(37,99,235,0.4)" stroke-width="1.5"/><circle cx="60" cy="20" r="10" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.5)" stroke-width="1.5"/><circle cx="60" cy="55" r="10" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.5)" stroke-width="1.5"/><circle cx="60" cy="90" r="10" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.5)" stroke-width="1.5"/><circle cx="60" cy="20" r="3" fill="rgba(37,99,235,0.4)"/><circle cx="60" cy="55" r="3" fill="rgba(37,99,235,0.4)"/><circle cx="60" cy="90" r="3" fill="rgba(37,99,235,0.4)"/><line x1="30" y1="20" x2="45" y2="20" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/><line x1="75" y1="20" x2="90" y2="20" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/><line x1="30" y1="55" x2="45" y2="55" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/><line x1="75" y1="55" x2="90" y2="55" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/><line x1="30" y1="90" x2="45" y2="90" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/><line x1="75" y1="90" x2="90" y2="90" stroke="rgba(239,68,68,0.5)" stroke-width="1.5"/></svg>`;
 
-  const componentOptions = {
-    cpu: {
-      icon: "fas fa-microchip",
-      label: "Processor (CPU)",
-      color: "#0066FF",
-      image: SVG_CPU,
-      isSvg: true,
-      options: [
-        { name: "Intel Core i5-14400F", price: 699 },
-        { name: "AMD Ryzen 5 7600X", price: 899 },
-        { name: "AMD Ryzen 7 7800X3D", price: 1499 },
-        { name: "Intel Core i7-14700K", price: 1599 },
-        { name: "AMD Ryzen 9 9900X", price: 2199 },
-        { name: "Intel Core i9-14900K", price: 2499 },
-      ],
-    },
-    gpu: {
-      icon: "fas fa-film",
-      label: "Graphics Card (GPU)",
-      color: "#FF0033",
-      image: "images/components/gpu.jpg",
-      isSvg: false,
-      options: [
-        { name: "NVIDIA RTX 4060", price: 1299 },
-        { name: "NVIDIA RTX 4060 Ti", price: 1799 },
-        { name: "NVIDIA RTX 4070 Super", price: 2499 },
-        { name: "NVIDIA RTX 5070", price: 2899 },
-        { name: "NVIDIA RTX 5070 Ti", price: 3499 },
-        { name: "NVIDIA RTX 5080", price: 4999 },
-      ],
-    },
-    ram: {
-      icon: "fas fa-memory",
-      label: "Memory (RAM)",
-      color: "#0066FF",
-      image: "images/components/ram.jpg",
-      isSvg: false,
-      options: [
-        { name: "16GB DDR5-5200", price: 249 },
-        { name: "32GB DDR5-5600", price: 449 },
-        { name: "32GB DDR5-6000 CL30", price: 549 },
-        { name: "64GB DDR5-5600", price: 899 },
-        { name: "64GB DDR5-6000", price: 1099 },
-      ],
-    },
-    storage: {
-      icon: "fas fa-hdd",
-      label: "Storage (SSD)",
-      color: "#FF0033",
-      image: "images/components/ssd.jpg",
-      isSvg: false,
-      options: [
-        { name: "512GB NVMe Gen3", price: 179 },
-        { name: "1TB NVMe Gen4", price: 349 },
-        { name: "1TB NVMe Gen5", price: 599 },
-        { name: "2TB NVMe Gen4", price: 649 },
-        { name: "2TB NVMe Gen5", price: 999 },
-      ],
-    },
-    motherboard: {
-      icon: "fas fa-server",
-      label: "Motherboard",
-      color: "#0066FF",
-      image: SVG_MOBO,
-      isSvg: true,
-      options: [
-        { name: "B650M (AMD, Micro-ATX)", price: 499 },
-        { name: "B760M (Intel, Micro-ATX)", price: 499 },
-        { name: "X670E (AMD, ATX)", price: 999 },
-        { name: "Z790 (Intel, ATX)", price: 999 },
-        { name: "X870E (AMD, ATX)", price: 1299 },
-      ],
-    },
-    pcCase: {
-      icon: "fas fa-box",
-      label: "Case",
-      color: "#FF0033",
-      image: SVG_CASE,
-      isSvg: true,
-      options: [
-        { name: "Mid-Tower (Mesh, Black)", price: 249 },
-        { name: "Mid-Tower (Tempered Glass, White)", price: 349 },
-        { name: "Full-Tower (Premium, RGB)", price: 549 },
-        { name: "Mini-ITX (Compact)", price: 449 },
-      ],
-    },
-    psu: {
-      icon: "fas fa-bolt",
-      label: "Power Supply (PSU)",
-      color: "#0066FF",
-      image: SVG_PSU,
-      isSvg: true,
-      options: [
-        { name: "650W 80+ Bronze", price: 249 },
-        { name: "750W 80+ Gold", price: 399 },
-        { name: "850W 80+ Gold", price: 499 },
-        { name: "1000W 80+ Platinum", price: 699 },
-      ],
-    },
-    cooling: {
-      icon: "fas fa-fan",
-      label: "Cooling",
-      color: "#FF0033",
-      image: SVG_COOLING,
-      isSvg: true,
-      options: [
-        { name: "Tower Air Cooler", price: 149 },
-        { name: "240mm AIO Liquid", price: 349 },
-        { name: "360mm AIO Liquid", price: 499 },
-        { name: "Custom Loop (Basic)", price: 999 },
-      ],
-    },
-  };
+  let inventoryData = [];
+  let cartItems = []; // Current selection in PC Builder
+  let globalCart = JSON.parse(localStorage.getItem("shiro-global-cart") || "[]");
 
-  const selected = {};
-  Object.keys(componentOptions).forEach((cat) => (selected[cat] = 0));
+  const MANDATORY_COMPONENTS = ["CPU", "Motherboard", "RAM", "Storage", "GPU", "Case", "PSU"];
+  const COOLING_COMPONENTS = ["Cooling", "AIO Cooling"];
 
   const componentsList = document.getElementById("componentsList");
   const summaryItems = document.getElementById("summaryItems");
   const summaryTotal = document.getElementById("summaryTotal");
   const whatsappOrder = document.getElementById("whatsappOrder");
 
-  function buildConfigurator() {
+  // Modal elements
+  const builderModal = document.getElementById("builderModal");
+  const builderModalTitle = document.getElementById("builderModalTitle");
+  const builderModalSearch = document.getElementById("builderModalSearch");
+  const builderModalBody = document.getElementById("builderModalBody");
+
+  const categoryConfigs = [
+    { id: "CPU", icon: "fas fa-microchip", color: "#0066FF", svg: SVG_CPU },
+    { id: "Motherboard", icon: "fas fa-server", color: "#0066FF", svg: SVG_MOBO },
+    { id: "RAM", icon: "fas fa-memory", color: "#0066FF", svg: null },
+    { id: "Storage", icon: "fas fa-hdd", color: "#FF0033", svg: null },
+    { id: "GPU", icon: "fas fa-film", color: "#FF0033", svg: null },
+    { id: "Case", icon: "fas fa-box", color: "#FF0033", svg: SVG_CASE },
+    { id: "PSU", icon: "fas fa-bolt", color: "#0066FF", svg: SVG_PSU },
+    { id: "Cooling", icon: "fas fa-fan", color: "#FF0033", svg: SVG_COOLING },
+    { id: "AIO Cooling", icon: "fas fa-fan", color: "#FF0033", svg: SVG_COOLING },
+    { id: "Monitor", icon: "fas fa-desktop", color: "#0066FF", svg: null },
+    { id: "Keyboard", icon: "fas fa-keyboard", color: "#FF0033", svg: null },
+    { id: "Mouse", icon: "fas fa-mouse", color: "#0066FF", svg: null },
+    { id: "Accessories", icon: "fas fa-plus-circle", color: "#FF0033", svg: null },
+  ];
+
+  async function fetchInventory() {
+    try {
+      const res = await fetch(API_BASE + "/api/inventory");
+      const d = await res.json();
+      if (d.success && d.components && d.components.length > 0) {
+        inventoryData = d.components;
+        
+        // Also update the main Shop products
+        products = d.components.map((item, idx) => ({
+          id: item.id || idx,
+          name: item.name,
+          category: item.category,
+          price: item.price || 0,
+          badge: item.stock > 0 ? (item.featured ? "Featured 🔥" : "In Stock") : "Out of Stock",
+          specs: item.specs || (item.category + " | Ask for details"),
+          image: item.image || null,
+          featured: item.featured || false,
+          stock: item.stock || 0,
+          health: item.health || null
+        }));
+        
+        console.log("Inventory loaded from DB:", products.length, "items");
+        renderProducts();
+        renderBuilder();
+        updateSummary();
+      } else {
+        inventoryData = [];
+      }
+    } catch (err) {
+      console.error("Failed to load inventory:", err);
+      inventoryData = [];
+    }
+  }
+
+  fetchInventory();
+
+  /* ===== DYNAMIC PREBUILT PCs ===== */
+  async function loadPrebuiltPCs() {
+    const container = document.getElementById('prebuiltPcsContainer');
+    if (!container) return;
+    try {
+      const res = await fetch(API_BASE + '/api/prebuilt_pcs');
+      const d = await res.json();
+      if (d.success && d.data && d.data.length > 0) {
+        container.innerHTML = d.data.map(pc => {
+          const photoHtml = pc.photo_url
+            ? `<img src="${pc.photo_url.startsWith('http') ? pc.photo_url : API_BASE + '/' + pc.photo_url}" alt="${pc.name}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">`
+            : '';
+          const discountHtml = pc.discount ? `<div class="tier-discount"><i class="fas fa-tag"></i> ${pc.discount}</div>` : '';
+          const featuredClass = pc.featured ? ' featured' : '';
+          const ribbonHtml = pc.featured ? '<div class="tier-ribbon">★ BEST SELLER</div>' : '';
+          const specsHtml = (pc.specs || []).map(s => `<div>${s}</div>`).join('');
+          const color = pc.tier_color || '#0066FF';
+          return `
+            <div class="tier-card${featuredClass}" style="--tier-color: ${color};">
+              ${ribbonHtml}
+              <div class="tier-badge">${pc.tier_badge || ''}</div>
+              <div class="tier-name">${pc.tier_name || ''}</div>
+              ${photoHtml}
+              <h3>${pc.name}</h3>
+              <div class="tier-price">RM ${Number(pc.price || 0).toLocaleString()}</div>
+              ${discountHtml}
+              <div class="tier-specs">${specsHtml}</div>
+              <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary tier-btn">Configure <i class="fas fa-arrow-right"></i></a>
+            </div>`;
+        }).join('');
+        // Re-run nav listeners for new tier buttons
+        container.querySelectorAll('[data-page]').forEach(link => {
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            navigateTo(link.getAttribute('data-page'));
+          });
+        });
+        setTimeout(runScrollAnimations, 100);
+      } else {
+        // Fallback: show a placeholder
+        container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">PC configurations coming soon.</p>';
+      }
+    } catch (err) {
+      console.warn('Failed to load prebuilt PCs from API:', err);
+      // Leave blank — content.py may not be registered yet
+    }
+  }
+  loadPrebuiltPCs();
+
+  /* ===== DYNAMIC IT TIPS GALLERY ===== */
+  async function loadITTips() {
+    const grid = document.getElementById('tipsVideoGrid');
+    if (!grid) return;
+    try {
+      const res = await fetch(API_BASE + '/api/it_tips');
+      const d = await res.json();
+      if (d.success && d.data && d.data.length > 0) {
+        grid.innerHTML = d.data.map(tip => {
+          // Resolve relative /uploads/... paths via API_BASE
+          const resolveMedia = (url) => {
+            if (!url) return '';
+            if (url.startsWith('http')) return url;
+            return API_BASE + (url.startsWith('/') ? url : '/' + url);
+          };
+          const mediaUrl = resolveMedia(tip.media_url);
+
+          // Detect video MIME from extension for broader browser support
+          const ext = (tip.media_url || '').split('.').pop().toLowerCase();
+          const mimeMap = { mp4: 'video/mp4', webm: 'video/webm', ogg: 'video/ogg', mov: 'video/mp4', mkv: 'video/mp4' };
+          const mimeType = mimeMap[ext] || 'video/mp4';
+
+          const mediaHtml = tip.media_type === 'image'
+            ? `<div class="video-wrapper"><img src="${mediaUrl}" alt="${tip.title}"></div>`
+            : `<div class="video-wrapper"><video controls preload="metadata"><source src="${mediaUrl}" type="${mimeType}">Your browser does not support video.</video></div>`;
+          const tagsHtml = (tip.tags || []).map(t => `<span class="video-tag">${t}</span>`).join('');
+          return `
+            <div class="video-card">
+              ${mediaHtml}
+              <div class="video-info">
+                <h4>${tip.title}</h4>
+                <p>${tip.description || ''}</p>
+                <div class="video-tags">${tagsHtml}</div>
+              </div>
+            </div>`;
+        }).join('');
+      } else {
+        grid.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No tips available yet.</p>';
+      }
+    } catch (err) {
+      console.warn('Failed to load IT Tips from API:', err);
+    }
+  }
+  loadITTips();
+
+
+  function getCategoryIcon(cat) {
+    const icons = {
+      'CPU':        'fa-microchip',
+      'Motherboard':'fa-server',
+      'RAM':        'fa-memory',
+      'RAM Laptop': 'fa-memory',
+      'Storage':    'fa-hdd',
+      'GPU':        'fa-desktop',
+      'Case':       'fa-box-open',
+      'PSU':        'fa-bolt',
+      'AIO Cooling':'fa-fan',
+      'Cooling':    'fa-fan',
+      'Monitor':    'fa-tv',
+      'Keyboard':   'fa-keyboard',
+      'Mouse':      'fa-mouse',
+      'Accessories':'fa-plug',
+    };
+    const cls = icons[cat] || 'fa-cog';
+    const colors = {
+      'CPU':'#3b82f6','Motherboard':'#3b82f6','RAM':'#a855f7','RAM Laptop':'#a855f7',
+      'Storage':'#ef4444','GPU':'#f59e0b','Case':'#ef4444','PSU':'#3b82f6',
+      'AIO Cooling':'#38bdf8','Cooling':'#38bdf8','Monitor':'#22c55e',
+      'Keyboard':'#f87171','Mouse':'#38bdf8','Accessories':'#94a3b8',
+    };
+    const col = colors[cat] || '#94a3b8';
+    return `<i class="fas ${cls}" style="color:${col};"></i>`;
+  }
+
+  function getCategoryConfig(cat) {
+    return categoryConfigs.find((c) => c.id === cat) || { id: cat, icon: "fas fa-cog", color: "#888", svg: null };
+  }
+
+  function renderBuilder() {
     if (!componentsList) return;
     componentsList.innerHTML = "";
 
-    Object.entries(componentOptions).forEach(([cat, info]) => {
+    // Group cart items by category
+    const cartByCategory = {};
+    cartItems.forEach((item, index) => {
+      if (!cartByCategory[item.category]) cartByCategory[item.category] = [];
+      cartByCategory[item.category].push({ ...item, cartIndex: index });
+    });
+
+    // Default categories to show empty slots for if nothing selected
+    const initialCategories = ["CPU", "Motherboard", "RAM", "Storage", "GPU", "Case", "PSU", "AIO Cooling", "Cooling", "Monitor", "Keyboard", "Mouse", "Accessories"];
+    initialCategories.forEach((cat) => {
+      if (!cartByCategory[cat]) cartByCategory[cat] = [];
+    });
+
+    // Render each category block
+    Object.keys(cartByCategory).forEach((cat) => {
+      const itemsInCat = cartByCategory[cat];
+      const cfg = getCategoryConfig(cat);
+
       const group = document.createElement("div");
       group.className = "card component-group";
-      const selectedOption = info.options[selected[cat]];
 
-      let optionsHTML = info.options
-        .map(
-          (opt, i) => `
-        <button class="comp-option ${selected[cat] === i ? "active" : ""}" data-cat="${cat}" data-idx="${i}">
-          <span class="opt-name">${opt.name}</span>
-          <span class="opt-price">RM ${opt.price.toLocaleString()}</span>
-        </button>
-      `,
-        )
-        .join("");
+      let itemsHTML = itemsInCat.map(
+        (item) => `
+        <div class="comp-option active" style="justify-content: space-between; cursor: default;">
+          <div>
+            <span class="opt-name">${item.name}</span>
+            <span class="opt-price" style="display:block; font-size:0.8rem; margin-top:2px;">RM ${item.price.toLocaleString()}</span>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-shrink:0;">
+            <button class="btn btn-ghost" style="padding:0.4rem; font-size:0.8rem;" onclick="removeCartItem(${item.cartIndex})"><i class="fas fa-trash" style="color:var(--accent-red)"></i></button>
+          </div>
+        </div>
+      `
+      ).join("");
+
+      if (itemsInCat.length === 0) {
+        itemsHTML = `<div style="padding: 1rem; color: var(--text-secondary); font-size: 0.9rem; font-style: italic;">No ${cat} selected</div>`;
+      }
 
       group.innerHTML = `
         ${
-          info.image
-            ? `
-        <div class="comp-img-wrap">
-          ${
-            info.isSvg
-              ? info.image
-              : `<img src="${info.image}" alt="${info.label}" class="comp-img" onerror="this.parentElement.style.display='none'">`
-          }
-        </div>`
-            : ""
+          cfg.svg
+            ? `<div class="comp-img-wrap">${cfg.svg}</div>`
+            : `<div class="comp-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:${cfg.color}50;"><i class="${cfg.icon}"></i></div>`
         }
         <div class="comp-header">
-          <div class="comp-icon" style="color:${info.color}; background:${info.color}20;">
-            <i class="${info.icon}"></i>
+          <div class="comp-icon" style="color:${cfg.color}; background:${cfg.color}20;">
+            <i class="${cfg.icon}"></i>
           </div>
           <div>
-            <h4>${info.label}</h4>
-            <span class="comp-selected">${selectedOption.name}</span>
+            <h4>${cat}</h4>
           </div>
-          <span class="comp-price">RM ${selectedOption.price.toLocaleString()}</span>
+          <button class="btn btn-ghost" style="padding:0.4rem 0.8rem; font-size:0.8rem; color:${cfg.color}" onclick="toggleInline('${cat}')">
+            <i class="fas fa-search"></i> Browse
+          </button>
         </div>
-        <div class="comp-options">${optionsHTML}</div>
+        <div class="comp-options" style="grid-template-columns: 1fr; gap:0.5rem;">${itemsHTML}</div>
+        <div id="inline-${cat}" class="inline-selector" style="${itemsInCat.length === 0 ? 'display:block' : 'display:none'}">
+          <div class="inline-selector-header">
+            <h5>Available ${cat}s</h5>
+          </div>
+          <div class="inline-options-list">
+            ${renderInlineOptions(cat)}
+          </div>
+        </div>
       `;
       componentsList.appendChild(group);
     });
+  }
 
-    // Add click handlers
-    document.querySelectorAll(".comp-option").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        selected[btn.dataset.cat] = parseInt(btn.dataset.idx, 10);
-        buildConfigurator();
-        updateSummary();
+  window.toggleInline = function(category) {
+    const el = document.getElementById(`inline-${category}`);
+    if (el) {
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+  };
+
+  function renderInlineOptions(category) {
+    const items = inventoryData
+      .filter(c => c.category === category)
+      .sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || a.name.localeCompare(b.name));
+
+    if (items.length === 0) {
+      return `<p style="font-size:0.8rem; color:var(--text-secondary); text-align:center; padding:1rem;">No ${category}s available at the moment.</p>`;
+    }
+
+    return items.map(item => {
+      const displayImage = item.image && item.image.includes('/') 
+        ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
+        : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
+      
+      return `
+      <div class="inline-item" onclick="addInlineItem('${item.id || item._id}', '${category}')">
+        <div style="display:flex; align-items:center; gap:1rem;">
+          ${displayImage}
+          <div class="inline-item-info">
+            <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.7rem;'></i>" : ""}</h4>
+            <p>${item.specs || ""}</p>
+          </div>
+        </div>
+        <div class="inline-item-action">
+          <span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
+          <div class="inline-add-btn"><i class="fas fa-plus"></i></div>
+        </div>
+      </div>
+    `}).join("");
+  }
+
+  window.addInlineItem = function(itemId, category) {
+    const item = inventoryData.find(c => (c.id || c._id) === itemId);
+    if (item) {
+      cartItems.push({
+        id: item._id || item.id,
+        name: item.name,
+        category: item.category,
+        price: item.price
       });
+      renderBuilder();
+      updateSummary();
+    }
+  };
+
+  window.openSelector = function (category) {
+    if (!builderModal) return;
+    builderModalTitle.textContent = category === "All" ? "Select Component" : "Select " + category;
+    builderModal.dataset.filterCategory = category;
+    builderModalSearch.value = "";
+    
+    // Sort items so featured items show first, otherwise alphabetically
+    const filtered = inventoryData
+          .filter(c => category === "All" || c.category === category)
+          .sort((a,b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || a.name.localeCompare(b.name));
+    
+    renderSelectorItems(filtered);
+    builderModal.classList.add("show");
+  };
+
+  function renderSelectorItems(items) {
+    builderModalBody.innerHTML = "";
+    if (items.length === 0) {
+      builderModalBody.innerHTML = "<p style='color:var(--text-secondary); text-align:center;'>No components found in this category.</p>";
+      return;
+    }
+
+    items.forEach(item => {
+      const el = document.createElement("div");
+      el.className = "builder-item";
+      el.innerHTML = `
+        <div style="display:flex; align-items:center; gap:1rem;">
+          ${item.image && item.image.includes('/') 
+            ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
+            : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
+          <div class="builder-item-info">
+            <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.8rem;'></i>" : ""}</h4>
+            <p>${item.category} ${item.specs ? " | " + item.specs : ""}</p>
+          </div>
+        </div>
+        <div class="builder-item-price">RM ${item.price.toLocaleString()}</div>
+      `;
+      el.onclick = () => {
+        cartItems.push({
+          id: item._id || item.id,
+          name: item.name,
+          category: item.category,
+          price: item.price
+        });
+        builderModal.classList.remove("show");
+        renderBuilder();
+        updateSummary();
+      };
+      builderModalBody.appendChild(el);
     });
   }
+
+  if(builderModalSearch) {
+    builderModalSearch.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+        const cat = builderModal.dataset.filterCategory;
+        const filtered = inventoryData.filter(c => {
+           if(cat !== "All" && c.category !== cat) return false;
+           return c.name.toLowerCase().includes(query) || (c.specs && c.specs.toLowerCase().includes(query));
+        });
+        renderSelectorItems(filtered);
+    });
+  }
+
+  if (document.getElementById("builderModalClose")) {
+    document.getElementById("builderModalClose").addEventListener("click", () => {
+      builderModal.classList.remove("show");
+    });
+  }
+
+  window.removeCartItem = function (index) {
+    cartItems.splice(index, 1);
+    renderBuilder();
+    updateSummary();
+  };
 
   function updateSummary() {
     if (!summaryItems) return;
     summaryItems.innerHTML = "";
     let total = 0;
 
-    Object.entries(selected).forEach(([cat, idx]) => {
-      const info = componentOptions[cat];
-      const opt = info.options[idx];
+    cartItems.forEach((opt) => {
       total += opt.price;
-
       const item = document.createElement("div");
       item.className = "summary-item";
       item.innerHTML = `
-        <span class="summary-cat">${info.label}</span>
+        <span class="summary-cat">${opt.category}</span>
         <span class="summary-name">${opt.name}</span>
         <span class="summary-price">RM ${opt.price.toLocaleString()}</span>
       `;
       summaryItems.appendChild(item);
     });
 
+    if (cartItems.length === 0) {
+      summaryItems.innerHTML = `<div style="text-align:center; color:var(--text-secondary); font-size:0.9rem; padding: 1rem 0;">Selection is empty.</div>`;
+    }
+
     summaryTotal.textContent = "RM " + total.toLocaleString();
 
-    // Build WhatsApp message
-    const lines = Object.entries(selected).map(([cat, idx]) => {
-      const info = componentOptions[cat];
-      const opt = info.options[idx];
-      return `• ${info.label}: ${opt.name} (RM ${opt.price.toLocaleString()})`;
-    });
-    const msg = encodeURIComponent(
-      `Hi SHIRO IT! I'd like to order a custom PC build:\n\n${lines.join("\n")}\n\nTotal: RM ${total.toLocaleString()}\n\nPlease confirm availability and delivery time. Thank you!`,
-    );
-    whatsappOrder.href = `https://wa.me/60177617672?text=${msg}`;
+    // Validation
+    const validation = validateBuild();
+    
+    // UI Feedback for validation
+    const summaryCard = document.querySelector('.summary-card');
+    let validationEl = document.getElementById('buildValidation');
+    if (!validationEl) {
+      validationEl = document.createElement('div');
+      validationEl.id = 'buildValidation';
+      summaryCard.insertBefore(validationEl, whatsappOrder);
+    }
 
-    // Store build config for API submission
-    whatsappOrder._buildConfig = {};
-    Object.entries(selected).forEach(([cat, idx]) => {
-      const info = componentOptions[cat];
-      whatsappOrder._buildConfig[info.label] = info.options[idx].name;
-    });
-    whatsappOrder._total = total;
-  }
-
-  // Save quote to backend when WhatsApp order is clicked
-  if (whatsappOrder) {
-    whatsappOrder.addEventListener("click", async () => {
-      try {
-        await fetch(API_BASE + "/api/quote", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: "WhatsApp Customer",
-            email: "via-whatsapp@shiro.it",
-            phone: "via-whatsapp",
-            build_config: whatsappOrder._buildConfig || {},
-            total_price: whatsappOrder._total || 0,
-            notes: "Submitted via WhatsApp order button",
-          }),
-        });
-      } catch (_) {
-        /* silent — WhatsApp still opens */
+    if (validation.isValid) {
+      validationEl.innerHTML = `<div class="validation-msg success"><i class="fas fa-check-circle"></i> Complete Build! Ready to add to cart.</div>`;
+      if(whatsappOrder) {
+        whatsappOrder.innerHTML = `<i class="fas fa-cart-plus"></i> Add Build to Cart`;
+        whatsappOrder.classList.remove('disabled');
+        whatsappOrder.style.opacity = "1";
+        whatsappOrder.style.pointerEvents = "auto";
       }
+    } else {
+      validationEl.innerHTML = `
+        <div class="validation-msg error">
+          <i class="fas fa-exclamation-triangle"></i> Incomplete Build
+          <ul class="missing-list">
+            ${validation.missing.map(m => `<li>Missing ${m}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+      if(whatsappOrder) {
+        whatsappOrder.innerHTML = `<i class="fas fa-lock"></i> Incomplete Build`;
+        whatsappOrder.classList.add('disabled');
+        whatsappOrder.style.opacity = "0.5";
+        whatsappOrder.style.pointerEvents = "none";
+      }
+    }
+
+    // Build WhatsApp message (legacy or for direct order later)
+    const lines = cartItems.map((opt) => `• ${opt.category}: ${opt.name} (RM ${opt.price.toLocaleString()})`);
+    const msg = encodeURIComponent(
+      `Hi SHIRO IT! I'd like to order a custom PC build:\n\n${lines.length > 0 ? lines.join("\n") : "Empty Build"}\n\nTotal: RM ${total.toLocaleString()}\n\nPlease confirm availability and delivery time. Thank you!`
+    );
+    // We'll handle the click in the event listener instead of href
+    if(whatsappOrder) whatsappOrder.dataset.msg = msg;
+
+    // Store build config for cart
+    if(whatsappOrder) {
+      whatsappOrder._buildConfig = {
+        items: [...cartItems],
+        total: total,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  function validateBuild() {
+    const selectedCats = new Set(cartItems.map(item => item.category));
+    const missing = [];
+
+    MANDATORY_COMPONENTS.forEach(cat => {
+      if (!selectedCats.has(cat)) missing.push(cat);
+    });
+
+    const hasCooling = COOLING_COMPONENTS.some(cat => selectedCats.has(cat));
+    if (!hasCooling) missing.push("Cooling (Air or AIO)");
+
+    return {
+      isValid: missing.length === 0,
+      missing: missing
+    };
+  }
+
+  function updateCartBadge() {
+    const badge = document.getElementById('cartBadge');
+    if (badge) {
+      const itemsCount = globalCart.length;
+      badge.textContent = itemsCount;
+      badge.style.display = itemsCount > 0 ? "flex" : "none";
+    }
+  }
+
+  window.addToGlobalCart = function(item) {
+    globalCart.push(item);
+    localStorage.setItem("shiro-global-cart", JSON.stringify(globalCart));
+    updateCartBadge();
+    showToast(`${item.name} added to cart!`, "success");
+    renderGlobalCart();
+  };
+
+  // Cart UI Logic
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartOpenBtn = document.getElementById('cartOpenBtn');
+  const cartCloseBtn = document.getElementById('cartCloseBtn');
+  const cartBody = document.getElementById('cartBody');
+  const cartGrandTotal = document.getElementById('cartGrandTotal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  if (cartOpenBtn) {
+    cartOpenBtn.addEventListener('click', () => {
+      cartOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      renderGlobalCart();
     });
   }
 
-  buildConfigurator();
-  updateSummary();
+  if (cartCloseBtn) {
+    cartCloseBtn.addEventListener('click', () => {
+      cartOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (cartOverlay) {
+    cartOverlay.addEventListener('click', (e) => {
+      if (e.target === cartOverlay) cartCloseBtn.click();
+    });
+  }
+
+  function renderGlobalCart() {
+    if (!cartBody) return;
+    cartBody.innerHTML = "";
+    let grandTotal = 0;
+
+    if (globalCart.length === 0) {
+      cartBody.innerHTML = `
+        <div class="cart-empty">
+          <i class="fas fa-shopping-basket"></i>
+          <p>Your cart is empty</p>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('cartCloseBtn').click(); navigateTo('shop');">Browse Shop</button>
+        </div>
+      `;
+      cartGrandTotal.textContent = "RM 0";
+      return;
+    }
+
+    globalCart.forEach((item, index) => {
+      grandTotal += item.price;
+      const el = document.createElement('div');
+      el.className = 'cart-item';
+      
+      let itemsList = "";
+      if (item.type === 'build' && item.items) {
+        itemsList = `<div class="cart-build-list">
+          ${item.items.map(i => `<div>• ${i.category}: ${i.name}</div>`).join('')}
+        </div>`;
+      }
+
+      el.innerHTML = `
+        <div class="cart-item-header">
+          <div>
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">RM ${item.price.toLocaleString()}</div>
+          </div>
+          <div class="cart-item-remove" onclick="removeFromGlobalCart(${index})">
+            <i class="fas fa-trash"></i>
+          </div>
+        </div>
+        ${itemsList}
+      `;
+      cartBody.appendChild(el);
+    });
+
+    cartGrandTotal.textContent = "RM " + grandTotal.toLocaleString();
+  }
+
+  window.removeFromGlobalCart = function(index) {
+    globalCart.splice(index, 1);
+    localStorage.setItem("shiro-global-cart", JSON.stringify(globalCart));
+    updateCartBadge();
+    renderGlobalCart();
+  };
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+      if (globalCart.length === 0) return;
+      
+      let message = "Hi SHIRO IT! I'd like to place an order:\n\n";
+      globalCart.forEach((item, idx) => {
+        message += `${idx + 1}. ${item.name} (RM ${item.price.toLocaleString()})\n`;
+        if (item.type === 'build' && item.items) {
+          item.items.forEach(i => {
+             message += `   - ${i.category}: ${i.name}\n`;
+          });
+        }
+        message += "\n";
+      });
+      
+      const total = globalCart.reduce((sum, item) => sum + item.price, 0);
+      message += `Total: RM ${total.toLocaleString()}\n\nPlease confirm availability. Thank you!`;
+      
+      const whatsappUrl = `https://wa.me/60177617672?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    });
+  }
+
+  window.addShopItemToCart = function(btn) {
+    const card = btn.closest('.product-card');
+    if (!card) return;
+    
+    const name = card.querySelector('h3').textContent;
+    const priceText = card.querySelector('.product-price').textContent;
+    const price = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;
+    
+    addToGlobalCart({
+      type: 'product',
+      name: name,
+      price: price,
+      id: 'prod-' + Date.now()
+    });
+  };
+
+
+  // Initial updates
+  updateCartBadge();
+  fetchInventory();
 
   /* ===== CONTACT FORM ===== */
   const contactForm = document.getElementById("contactForm");
@@ -1908,4 +2064,5 @@ function showToast(message, type = "success") {
 
   // Initialize
   updateUI();
+  fetchInventory();
 })();

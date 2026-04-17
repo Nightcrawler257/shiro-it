@@ -5,416 +5,1862 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SHIRO IT — Admin Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Inherit SHIRO IT v2 design system (same CSS as main website) -->
+<link rel="stylesheet" href="/shiro-v2.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --blue: #2563eb; --red: #dc2626;
-    --bg: #0f172a; --bg2: #1e293b; --bg3: #334155;
-    --text: #f1f5f9; --text2: #94a3b8; --border: #334155;
-    --green: #22c55e; --yellow: #f59e0b;
-    --radius: 12px; --shadow: 0 4px 20px rgba(0,0,0,0.4);
+    /* ── Gaming Palette ── */
+    --blue:        #1d4ed8;
+    --blue-light:  #3b82f6;
+    --blue-neon:   #38bdf8;
+    --blue-dark:   #1e3a8a;
+    --blue-glow:   rgba(56, 189, 248, 0.4);
+
+    --red:         #dc2626;
+    --red-light:   #ef4444;
+    --red-neon:    #f87171;
+    --red-dark:    #991b1b;
+    --red-glow:    rgba(239, 68, 68, 0.4);
+
+    --green:       #22c55e;
+    --green-glow:  rgba(34, 197, 94, 0.35);
+    --yellow:      #f59e0b;
+    --yellow-glow: rgba(245, 158, 11, 0.35);
+    --purple:      #a855f7;
+    --purple-glow: rgba(168, 85, 247, 0.35);
+
+    --accent:      #ef4444;
+    --accent-glow: rgba(239, 68, 68, 0.45);
+
+    --bg-primary:   #05070f;
+    --bg-secondary: #090c18;
+    --bg-card:      rgba(10, 13, 24, 0.95);
+    --bg-sidebar:   rgba(5, 7, 15, 0.98);
+    --bg-input:     rgba(255, 255, 255, 0.04);
+    --bg-deep:      #05070f;
+
+    --text-primary:   #e8f0ff;
+    --text-secondary: rgba(200, 220, 255, 0.65);
+    --text-muted:     rgba(180, 200, 255, 0.38);
+
+    --border:        rgba(59, 130, 246, 0.12);
+    --border-hi:     rgba(59, 130, 246, 0.28);
+    --border-color:  rgba(59, 130, 246, 0.12);
+    --border-hover:  rgba(59, 130, 246, 0.4);
+
+    --shadow-blue:   0 0 24px rgba(56, 189, 248, 0.3);
+    --shadow-red:    0 0 24px rgba(239, 68, 68, 0.3);
+    --shadow-green:  0 0 24px rgba(34, 197, 94, 0.28);
+    --shadow-yellow: 0 0 24px rgba(245, 158, 11, 0.28);
+
+    --neon-blue:   #38bdf8;
+    --neon-red:    #f87171;
+    --neon-green:  #4ade80;
+    --neon-yellow: #fbbf24;
+    --neon-purple: #c084fc;
+
+    --sidebar-width: 260px;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.25s var(--ease);
+    --radius:    8px;
+    --radius-lg: 12px;
+
+    --font-head:    'Rajdhani', 'Poppins', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --font-heading: 'Rajdhani', 'Poppins', sans-serif;
+    --font-mono:    'Courier New', monospace;
   }
-  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* ===== LOGIN ===== */
-  #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
-  .login-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; width: 100%; max-width: 400px; box-shadow: var(--shadow); }
-  .login-logo { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; }
-  .login-logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg,var(--blue),var(--red)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-  .login-logo h1 { font-size: 1.4rem; font-weight: 700; }
+  /* Override shiro-v2.css page-level styles that conflict */
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 15%, rgba(56, 189, 248, 0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 85%, rgba(239, 68, 68, 0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 55% 50%, rgba(29, 78, 216, 0.04) 0%, transparent 60%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.035) 2px, rgba(0,0,0,0.035) 4px);
+    opacity: 0.55;
+  }
+  /* Hide shiro-v2 page layout elements that shouldn't appear in admin */
+  /* shiro-v2.css page elements that don't belong in admin — hide them */
+  .navbar, .page, .footer, .whatsapp-float { display: none !important; }
+  /* Allow bg-anim (background animation canvas) to show */
+  .bg-anim { display: block !important; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  #bgCanvas { display: block !important; position: absolute; inset: 0; width: 100%; height: 100%; opacity: 1; }
+  /* Ensure admin UI sits on top of the background */
+  #loginScreen, #dashboard { position: relative; z-index: 1; }
+
+  h1, h2, h3, h4, .font-head { font-family: var(--font-head); letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* ─────────────────────────────────────────
+     LOGIN
+  ───────────────────────────────────────── */
+  #loginScreen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 1rem;
+  }
+  .login-card {
+    background: rgba(10, 13, 24, 0.92);
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--border-hi);
+    border-radius: 12px; padding: 2.5rem; width: 100%; max-width: 420px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(56,189,248,0.07), 0 0 40px rgba(239,68,68,0.05);
+    position: relative; overflow: hidden;
+  }
+  /* Animated top border on login card */
+  .login-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue-neon), var(--red-neon), var(--blue-neon));
+    background-size: 200% 100%;
+    animation: nav-scan 3s linear infinite;
+  }
+  @keyframes nav-scan {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+  .login-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue) 40%, var(--red) 60%, transparent);
+  }
+  .login-logo { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; justify-content: center; }
+  .login-logo-icon {
+    width: 58px; height: 58px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.18), rgba(239,68,68,0.12));
+    border: 1px solid rgba(37,99,235,0.3);
+    border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    font-size: 1.7rem; animation: pulseGlow 3s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 12px rgba(37,99,235,0.25); }
+    50% { box-shadow: 0 0 28px rgba(37,99,235,0.45), 0 0 50px rgba(239,68,68,0.15); }
+  }
+  .login-logo h1 { font-size: 1.8rem; letter-spacing: 2px; }
   .login-logo span { color: var(--blue); }
-  .login-subtitle { color: var(--text2); font-size: 0.85rem; margin-bottom: 1.5rem; }
-  .form-group { margin-bottom: 1rem; }
-  .form-group label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--text2); margin-bottom: 0.4rem; }
-  .form-group input { width: 100%; padding: 0.75rem 1rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 0.9rem; outline: none; transition: border-color .2s; }
-  .form-group input:focus { border-color: var(--blue); }
-  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; font-size: 0.875rem; transition: all .2s; text-decoration: none; }
-  .btn-primary { background: var(--blue); color: white; }
-  .btn-primary:hover { background: #1d4ed8; }
-  .btn-danger { background: var(--red); color: white; }
-  .btn-danger:hover { background: #b91c1c; }
-  .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
-  .btn-ghost:hover { color: var(--text); border-color: var(--text2); }
-  .btn-full { width: 100%; justify-content: center; }
-  .error-msg { color: #f87171; font-size: 0.82rem; margin-top: 0.75rem; display: none; }
+  .login-subtitle {
+    color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 2.5rem;
+    text-align: center; text-transform: uppercase; letter-spacing: 2px;
+  }
+  .form-group { margin-bottom: 1.4rem; }
+  .form-group label {
+    display: block; font-size: 0.72rem; font-weight: 700;
+    color: var(--text-secondary); margin-bottom: 0.6rem;
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 0.9rem 1.2rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text-primary);
+    font-size: 0.95rem; outline: none; transition: var(--transition);
+    font-family: var(--font-body);
+  }
+  .input-wrapper { position: relative; display: block; }
+  .pwd-toggle {
+    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); cursor: pointer; padding: 0.5rem;
+    transition: color 0.2s;
+  }
+  .pwd-toggle:hover { color: var(--text-primary); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--blue);
+    background: rgba(37,99,235,0.04);
+    box-shadow: 0 0 16px rgba(37,99,235,0.12);
+  }
+  .form-group select option { background: #0f111a; }
+  .form-group textarea { resize: vertical; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-  /* ===== DASHBOARD ===== */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.8rem 1.6rem; border-radius: 10px; border: none;
+    cursor: pointer; font-weight: 700; font-size: 0.85rem;
+    transition: var(--transition); text-decoration: none;
+    text-transform: uppercase; letter-spacing: 1px;
+    font-family: var(--font-body);
+  }
+  .btn-primary {
+    background: var(--blue);
+    color: #fff; box-shadow: var(--shadow-blue);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--blue-glow); }
+  .btn-danger {
+    background: var(--red);
+    color: #fff; box-shadow: var(--shadow-red);
+  }
+  .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--red-glow); }
+  .btn-ghost {
+    background: rgba(255,255,255,0.04); color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { color: var(--text-primary); border-color: var(--border-hover); background: rgba(255,255,255,0.08); }
+  .btn-sm { padding: 0.5rem 1rem; font-size: 0.78rem; }
+  .btn-full { width: 100%; justify-content: center; margin-top: 0.8rem; }
+
+  .error-msg { color: var(--neon-red); font-size: 0.82rem; margin-top: 1rem; display: none; text-align: center; }
+
+  /* ─────────────────────────────────────────
+     LAYOUT
+  ───────────────────────────────────────── */
   #dashboard { display: none; }
-  .topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .topbar-logo { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; font-size: 1.1rem; }
-  .topbar-logo i { color: var(--blue); }
+  .dashboard-wrapper { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-width); background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    height: 100vh; position: fixed; left: 0; top: 0;
+    display: flex; flex-direction: column; z-index: 1000;
+    transition: var(--transition);
+  }
+  .sidebar-header {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-brand { display: flex; align-items: center; gap: 0.75rem; }
+  .sidebar-brand-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(239,68,68,0.12));
+    border: 1px solid rgba(37,99,235,0.25); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; color: var(--blue-light);
+  }
+  .sidebar-brand h1 { font-size: 1.1rem; letter-spacing: 2px; }
+  .sidebar-brand span { color: var(--blue-light); }
+  .sidebar-version {
+    font-size: 0.65rem; color: var(--text-secondary);
+    letter-spacing: 1px; margin-top: 0.3rem; padding-left: 0.1rem;
+  }
+
+  .sidebar-section-label {
+    font-size: 0.62rem; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 2px;
+    padding: 1.5rem 1.5rem 0.5rem; font-weight: 700;
+  }
+
+  .sidebar-nav { flex: 1; padding: 0.5rem 0.75rem; overflow-y: auto; }
+  .nav-item {
+    display: flex; align-items: center; gap: 0.85rem;
+    padding: 0.75rem 1rem; color: var(--text-secondary);
+    text-decoration: none; border-radius: 10px; margin-bottom: 2px;
+    transition: var(--transition); border: 1px solid transparent;
+    position: relative; user-select: none;
+  }
+  .nav-item i.nav-icon { width: 18px; text-align: center; font-size: 1rem; transition: var(--transition); }
+  .nav-item .nav-label { font-size: 0.88rem; font-weight: 600; flex: 1; }
+  .nav-item:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+  .nav-item.active {
+    color: var(--blue-light); background: rgba(37,99,235,0.1);
+    border-color: rgba(37,99,235,0.2);
+  }
+  .nav-item.active i.nav-icon { color: var(--blue-light); }
+  .nav-item .nav-badge {
+    background: var(--red); color: #fff;
+    font-size: 0.6rem; font-weight: 700;
+    min-width: 18px; height: 18px; border-radius: 9px;
+    display: none; align-items: center; justify-content: center;
+    padding: 0 4px; line-height: 1;
+  }
+  .nav-item .nav-badge.show { display: flex; }
+  .nav-item .nav-badge.blue { background: var(--blue); color: #fff; }
+  .nav-item .nav-badge.yellow { background: var(--yellow); color: #fff; }
+
+  .sidebar-footer { padding: 1.2rem 0.75rem; border-top: 1px solid var(--border); }
+  .sidebar-admin-info {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.75rem 0.5rem; margin-bottom: 0.75rem;
+  }
+  .admin-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--red));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .admin-meta { flex: 1; min-width: 0; }
+  .admin-name { font-size: 0.82rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-status { font-size: 0.68rem; color: var(--green); display: flex; align-items: center; gap: 0.25rem; }
+  .admin-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; animation: blink 2s infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    flex: 1; margin-left: var(--sidebar-width);
+    padding: 2rem 2.5rem;
+    max-width: calc(100vw - var(--sidebar-width));
+    display: flex; flex-direction: column; gap: 2rem;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding-bottom: 0; flex-wrap: wrap;
+  }
+  .page-title { font-size: 1.7rem; letter-spacing: 1px; line-height: 1.1; }
+  .page-subtitle { color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.35rem; letter-spacing: 0.5px; }
   .topbar-right { display: flex; align-items: center; gap: 1rem; }
-  .topbar-time { color: var(--text2); font-size: 0.82rem; }
-  .main { padding: 2rem; max-width: 1400px; margin: 0 auto; }
 
-  /* Stats */
-  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-  .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
-  .stat-card .stat-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: .05em; margin-bottom: .5rem; }
-  .stat-card .stat-number { font-size: 2rem; font-weight: 700; }
-  .stat-card .stat-sub { font-size: 0.75rem; color: var(--text2); margin-top: .25rem; }
-  .stat-card.blue .stat-number { color: var(--blue); }
-  .stat-card.red .stat-number { color: var(--red); }
-  .stat-card.green .stat-number { color: var(--green); }
-  .stat-card.yellow .stat-number { color: var(--yellow); }
+  .search-wrap { position: relative; }
+  .search-wrap i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.85rem; pointer-events: none; }
+  #globalSearch {
+    width: 260px; padding: 0.7rem 1rem 0.7rem 2.8rem;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    border-radius: 10px; color: #fff; font-family: var(--font-body);
+    font-size: 0.82rem; outline: none; transition: var(--transition);
+    letter-spacing: 0.5px;
+  }
+  #globalSearch:focus { border-color: var(--blue); background: rgba(37,99,235,0.04); box-shadow: 0 0 16px rgba(37,99,235,0.1); width: 320px; }
 
-  /* Tabs */
-  .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-  .tab-btn { padding: 0.6rem 1.25rem; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; font-size: 0.875rem; font-weight: 500; transition: all .2s; }
-  .tab-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
-  .tab-btn:hover:not(.active) { color: var(--text); border-color: var(--text2); }
+  .header-clock {
+    background: rgba(37,99,235,0.07); border: 1px solid rgba(37,99,235,0.18);
+    border-radius: 8px; padding: 0.5rem 1rem;
+    color: var(--blue-light); font-size: 0.85rem;
+    letter-spacing: 1px; white-space: nowrap; font-weight: 600;
+  }
 
-  /* Table */
-  .table-panel { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-  .table-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .table-header h3 { font-size: 1rem; font-weight: 600; }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-  th { padding: 0.75rem 1rem; text-align: left; color: var(--text2); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .sync-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    border: 1px solid var(--border); background: rgba(255,255,255,0.04);
+    color: var(--text-secondary); cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
+  }
+  .sync-btn:hover { color: var(--blue-light); border-color: rgba(37,99,235,0.35); }
+  .sync-btn.spinning i { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── STATS GRID ── */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+  }
+  .stat-card {
+    background: var(--bg-card); backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 18px;
+    padding: 1.5rem 1.75rem; position: relative; overflow: hidden;
+    transition: var(--transition); cursor: default;
+  }
+  .stat-card:hover { transform: translateY(-4px); border-color: var(--border-hi); }
+  .stat-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
+    background: var(--accent, var(--neon-blue));
+    box-shadow: 0 0 12px var(--accent, var(--neon-blue));
+  }
+  .stat-card.blue   { --accent: var(--blue-light); }
+  .stat-card.yellow { --accent: var(--yellow); }
+  .stat-card.green  { --accent: var(--green); }
+  .stat-card.red    { --accent: var(--red); }
+  .stat-card.purple { --accent: var(--purple); }
+
+  .stat-top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .stat-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+  .stat-icon { font-size: 1.1rem; opacity: 0.45; color: var(--accent, var(--blue-light)); }
+  .stat-number {
+    font-family: var(--font-head); font-size: 2.4rem; font-weight: 800;
+    color: var(--accent, var(--blue-light)); line-height: 1; margin: 0.5rem 0 0.4rem;
+    transition: all 0.6s var(--ease);
+  }
+  .stat-sub { font-size: 0.72rem; color: var(--text-secondary); display: flex; align-items: center; gap: 0.3rem; }
+  .stat-badge-new {
+    background: rgba(239,68,68,0.12); color: var(--red-light);
+    border: 1px solid rgba(239,68,68,0.2); border-radius: 4px;
+    font-size: 0.62rem; font-weight: 700; padding: 1px 5px;
+  }
+
+  /* Skeleton */
+  .skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
+    background-size: 400% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 6px;
+  }
+  @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+  .skeleton-num { width: 60px; height: 36px; display: inline-block; }
+  .skeleton-sub { width: 100px; height: 12px; display: inline-block; margin-top: 4px; }
+
+  /* ── CONTENT FRAME (table + sidebar) ── */
+  .content-frame { display: flex; gap: 2rem; align-items: flex-start; }
+  .main-column { flex: 1; min-width: 0; }
+
+  /* ── HUB ── */
+  .hub-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+  .chart-panel {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 1.5rem; height: 300px; position: relative;
+  }
+  .chart-panel h4 { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; letter-spacing: 0.5px; font-weight: 600; text-transform: uppercase; }
+  .network-panel {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .network-panel h4 { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem; letter-spacing: 0.5px; font-weight: 600; text-transform: uppercase; }
+  .net-row {
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.75rem 1rem;
+  }
+  .net-row-label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem; }
+  .net-row-value { font-size: 0.88rem; font-weight: 700; }
+
+  /* ── PANEL / TABLE ── */
+  .panel {
+    background: var(--bg-card); backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+  }
+  .panel-header {
+    padding: 1.25rem 1.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .panel-header-left { display: flex; align-items: center; gap: 0.75rem; }
+  .panel-header-left h3 { font-family: var(--font-head); font-size: 0.9rem; color: var(--text-primary); letter-spacing: 1px; }
+  .panel-header-left i { color: var(--blue-light); }
+  .row-count {
+    background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.18);
+    border-radius: 6px; padding: 2px 8px;
+    font-size: 0.68rem; color: var(--blue-light); font-weight: 700;
+  }
+  .panel-header-right { display: flex; align-items: center; gap: 0.75rem; }
+
+  .table-container { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    padding: 0.9rem 1.25rem; text-align: left;
+    color: var(--text-secondary); font-size: 0.68rem;
+    text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+    background: rgba(255,255,255,0.01);
+  }
+  td { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 0.88rem; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-  .badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.7rem; font-weight: 600; }
-  .badge-new     { background: rgba(37,99,235,.2);  color: #60a5fa; }
-  .badge-read    { background: rgba(34,197,94,.15); color: #4ade80; }
-  .badge-pending { background: rgba(245,158,11,.15); color: #fbbf24; }
-  .badge-done    { background: rgba(34,197,94,.15); color: #4ade80; }
-  .badge-rejected{ background: rgba(220,38,38,.15); color: #f87171; }
-  .actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-  .action-btn { padding: 0.3rem 0.65rem; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text2); cursor: pointer; font-size: 0.75rem; transition: all .2s; }
-  .action-btn:hover { color: var(--text); background: var(--bg3); }
-  .action-btn.del:hover { color: #f87171; border-color: #f87171; }
-  .action-btn.ok:hover  { color: #4ade80; border-color: #4ade80; }
-  .empty-row td { text-align: center; color: var(--text2); padding: 3rem; }
+  tbody tr { transition: background 0.15s; }
+  tbody tr:hover td { background: rgba(0,242,255,0.025); }
 
-  /* Build config display */
-  .build-cfg { font-size: 0.75rem; color: var(--text2); line-height: 1.6; }
+  @keyframes rowFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  tbody tr { animation: rowFadeIn 0.25s var(--ease) both; }
+
   .name-col { font-weight: 600; }
-  .contact-col { font-size: 0.78rem; color: var(--text2); }
-  .msg-col { max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text2); font-size: 0.8rem; }
+  .sub-col { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+  .msg-col { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary); cursor: help; }
+  .build-cfg { font-size: 0.75rem; color: var(--text-secondary); max-width: 200px; line-height: 1.6; }
 
-  /* Toast */
-  .toast-area { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: .5rem; }
-  .toast { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: .85rem 1.2rem; font-size: .85rem; display: flex; align-items: center; gap: .6rem; box-shadow: var(--shadow); animation: fadeIn .3s ease; }
-  .toast.ok  { border-left: 3px solid var(--green); }
-  .toast.err { border-left: 3px solid var(--red); }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  /* Badges */
+  .badge { padding: 0.3rem 0.7rem; border-radius: 6px; font-weight: 800; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-new    { background: rgba(37,99,235,0.12);  color: var(--blue-light);  border: 1px solid rgba(37,99,235,0.22); }
+  .badge-done   { background: rgba(34,197,94,0.12);  color: var(--green);       border: 1px solid rgba(34,197,94,0.22); }
+  .badge-warn   { background: rgba(245,158,11,0.12); color: var(--yellow);      border: 1px solid rgba(245,158,11,0.22); }
+  .badge-red    { background: rgba(239,68,68,0.12);  color: var(--red-light);   border: 1px solid rgba(239,68,68,0.22); }
+  .badge-cat    { background: rgba(168,85,247,0.12); color: var(--purple);      border: 1px solid rgba(168,85,247,0.22); }
+  .stock-ok     { color: var(--green);  font-weight: 700; font-size: 0.9rem; }
+  .stock-low    { color: var(--yellow); font-weight: 700; font-size: 0.9rem; }
+  .stock-out    { color: var(--red);    font-weight: 700; font-size: 0.9rem; }
 
-  /* Refresh btn */
-  .refresh-btn { background: transparent; border: 1px solid var(--border); color: var(--text2); border-radius: 8px; padding: .45rem .9rem; cursor: pointer; font-size: .8rem; transition: all .2s; }
-  .refresh-btn:hover { color: var(--text); background: var(--bg3); }
+  /* Actions */
+  .actions { display: flex; gap: 4px; }
+  .action-btn {
+    width: 30px; height: 30px; border-radius: 7px;
+    border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+    color: var(--text-secondary); cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+  }
+  .action-btn:hover { color: var(--text-primary); border-color: var(--border-hi); background: rgba(255,255,255,0.08); }
+  .action-btn.ok:hover    { color: var(--green);  border-color: rgba(34,197,94,0.4);   background: rgba(34,197,94,0.06); }
+  .action-btn.del:hover   { color: var(--red);    border-color: rgba(239,68,68,0.4);   background: rgba(239,68,68,0.06); }
+  .action-btn.wa:hover    { color: #25d366;        border-color: rgba(37,211,102,0.4); background: rgba(37,211,102,0.06); }
+  .action-btn.mail:hover  { color: var(--yellow);  border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.06); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center; padding: 4rem 2rem;
+    color: var(--text-secondary);
+  }
+  .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.3; }
+  .empty-state p { font-size: 0.88rem; }
+
+  /* ── ACTIVITY SIDEBAR ── */
+  .activity-sidebar {
+    width: 300px; flex-shrink: 0;
+    background: rgba(10,12,20,0.5); backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 18px;
+    padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;
+    position: sticky; top: 2rem; max-height: calc(100vh - 10rem); overflow: hidden;
+  }
+  .activity-sidebar-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+  }
+  .activity-sidebar-header h4 { font-size: 0.78rem; color: var(--blue-light); letter-spacing: 0.5px; font-weight: 600; }
+  .activity-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-right: 2px; }
+  .activity-item {
+    padding: 0.75rem; border-radius: 10px;
+    background: rgba(255,255,255,0.025);
+    border-left: 3px solid var(--blue);
+    font-size: 0.8rem; animation: slideInRight 0.3s var(--ease) both;
+  }
+  .activity-item.red    { border-left-color: var(--red); }
+  .activity-item.green  { border-left-color: var(--green); }
+  .activity-item.yellow { border-left-color: var(--yellow); }
+  @keyframes slideInRight { from { transform: translateX(10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  .activity-time { font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 0.2rem; }
+  .activity-desc { font-weight: 600; line-height: 1.4; }
+  .activity-type { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 0.15rem; color: var(--text-secondary); }
+
+  /* ── INVENTORY FILTER ── */
+  .inv-cat-filter {
+    padding: 0.55rem 1rem; background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border); border-radius: 8px;
+    color: var(--text-primary); font-size: 0.8rem; outline: none;
+    font-family: var(--font-body); display: none;
+  }
+  .inv-cat-filter option { background: #0f111a; }
+  #addInvBtn { display: none; }
+
+  /* ── MODALS ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 2000; padding: 1rem;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #0c0f1a; border: 1px solid var(--border-hi);
+    width: 92%; max-width: 520px; border-radius: 16px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    transform: translateY(30px) scale(0.98); opacity: 0;
+    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+    overflow: hidden;
+  }
+  .modal-overlay.show .modal { transform: translateY(0) scale(1); opacity: 1; }
+  .modal-header {
+    padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(135deg, rgba(37,99,235,0.03), transparent);
+  }
+  .modal-header h3 { font-family: var(--font-head); font-size: 0.9rem; letter-spacing: 1px; }
+  .modal-close {
+    width: 30px; height: 30px; border-radius: 8px;
+    border: 1px solid var(--border); background: rgba(255,255,255,0.04);
+    color: var(--text-secondary); cursor: pointer; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center; transition: var(--transition);
+  }
+  .modal-close:hover { color: var(--red); border-color: rgba(239,68,68,0.4); }
+  .modal-body { padding: 1.25rem 1.5rem; max-height: 60vh; overflow-y: auto; }
+  .modal-footer {
+    padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 0.75rem;
+    background: rgba(0,0,0,0.2);
+  }
+
+  /* Image upload area */
+  .upload-area {
+    border: 2px dashed var(--border); border-radius: 12px;
+    padding: 1.5rem; text-align: center; cursor: pointer;
+    transition: var(--transition); position: relative;
+  }
+  .upload-area:hover { border-color: var(--blue); background: rgba(37,99,235,0.03); }
+  .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-area-icon { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+  .upload-area-text { font-size: 0.8rem; color: var(--text-secondary); }
+  .upload-area-text span { color: var(--blue-light); }
+  #imagePreview {
+    margin-top: 0.75rem; width: 100%; height: 140px;
+    background: rgba(0,0,0,0.3); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; border: 1px solid var(--border);
+  }
+  #imagePreview img { width: 100%; height: 100%; object-fit: contain; }
+  #uploadStatus { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem; min-height: 18px; }
+
+  /* ── TOAST ── */
+  .toast-area { position: fixed; bottom: 2rem; right: 2rem; z-index: 3000; display: flex; flex-direction: column; gap: 0.5rem; }
+  .toast {
+    background: rgba(12,15,24,0.95); backdrop-filter: blur(16px);
+    border: 1px solid var(--border); border-left: 4px solid var(--neon-green);
+    border-radius: 12px; padding: 0.9rem 1.4rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.85rem; font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  .toast.ok  { border-left-color: var(--green);  color: var(--green); }
+  .toast.err { border-left-color: var(--red);    color: var(--red-light); }
+  .toast.info { border-left-color: var(--blue-light); color: var(--blue-light); }
+  .toast-bar {
+    position: absolute; bottom: 0; left: 4px; height: 3px;
+    background: currentColor; border-radius: 2px; opacity: 0.5;
+    animation: toastBar 3s linear forwards;
+  }
+  @keyframes toastBar { from { width: 100%; } to { width: 0; } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1200px) {
+    :root { --sidebar-width: 220px; }
+    .sidebar-section-label { display: none; }
+  }
+  @media (max-width: 950px) {
+    :root { --sidebar-width: 70px; }
+    .sidebar-brand h1, .sidebar-brand span, .sidebar-version,
+    .nav-item .nav-label, .sidebar-admin-info .admin-meta,
+    .sidebar-section-label { display: none; }
+    .nav-item { justify-content: center; padding: 0.85rem; }
+    .sidebar-brand { justify-content: center; }
+    .admin-avatar { margin: 0 auto; }
+    .sidebar-admin-info { justify-content: center; }
+    .main-content { padding: 1.5rem; }
+    .activity-sidebar { display: none; }
+    #globalSearch { width: 160px; }
+    #globalSearch:focus { width: 200px; }
+  }
+  @media (max-width: 640px) {
+    .hub-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 </style>
 </head>
 <body>
 
-<!-- ===== LOGIN SCREEN ===== -->
+<!-- ══════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════ -->
+<!-- ===== ANIMATED BACKGROUND (shiro-v2 canvas) ===== -->
+<div class="bg-anim" aria-hidden="true">
+  <canvas id="bgCanvas"></canvas>
+</div>
+
 <div id="loginScreen">
-  <div class="login-card">
+  <div class="login-card" style="position:relative; overflow:hidden;">
     <div class="login-logo">
-      <div class="login-logo-icon"><i class="fas fa-microchip"></i></div>
-      <h1>SHIRO<span>IT</span></h1>
+      <img src="/SHIRO IT.png" alt="SHIRO IT" style="height:64px; width:auto; object-fit:contain;"
+           onerror="this.style.display='none'; document.getElementById('loginLogoFallback').style.display='flex';">
+      <div id="loginLogoFallback" style="display:none; align-items:center; gap:0.75rem;">
+        <div class="login-logo-icon"><i class="fas fa-microchip"></i></div>
+        <h1>SHIRO<span>IT</span></h1>
+      </div>
     </div>
-    <p class="login-subtitle">Admin Dashboard — Secure Access</p>
-    <div class="form-group">
-      <label>Username</label>
-      <input type="text" id="loginUser" placeholder="admin" autocomplete="username">
+
+    <!-- LOGIN PANEL -->
+    <div id="panelLogin">
+      <p class="login-subtitle">Staff Portal — Authorization Required</p>
+      <div class="form-group">
+        <label>User Identity</label>
+        <input type="text" id="loginUser" placeholder="STAFF_ID" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>Access Key</label>
+        <div class="input-wrapper">
+          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+          <i class="fas fa-eye pwd-toggle" onclick="togglePasswordVisibility('loginPass', this)"></i>
+        </div>
+      </div>
+      <p class="error-msg" id="loginError"><i class="fas fa-exclamation-triangle"></i> Access Denied: Invalid Credentials</p>
+      <button class="btn btn-primary btn-full" id="loginBtn">
+        <i class="fas fa-power-off"></i> Initialize Session
+      </button>
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8rem; display: flex; justify-content: space-between; color: var(--text-secondary);">
+        <a href="#" onclick="toggleAuthPanel('forgot'); return false;" style="transition: color 0.2s;">Forgot Password?</a>
+        <a href="#" onclick="toggleAuthPanel('register'); return false;" style="transition: color 0.2s; color: var(--blue-light);">Create Account</a>
+      </div>
     </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+
+    <!-- REGISTER PANEL -->
+    <div id="panelRegister" style="display:none;">
+      <p class="login-subtitle">Deploy New Staff Account</p>
+      <div class="form-group">
+        <label>Staff Registration Code</label>
+        <div class="input-wrapper">
+          <input type="password" id="regSecret" placeholder="Enter Registration Code Provided By Manager">
+          <i class="fas fa-eye pwd-toggle" onclick="togglePasswordVisibility('regSecret', this)"></i>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Desired Username</label>
+        <input type="text" id="regUser" placeholder="e.g. JohnDoe">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <input type="password" id="regPass" placeholder="••••••••">
+          <i class="fas fa-eye pwd-toggle" onclick="togglePasswordVisibility('regPass', this)"></i>
+        </div>
+      </div>
+      <p class="error-msg" id="regError"><i class="fas fa-exclamation-triangle"></i> Error message here</p>
+      <p class="success-msg" id="regSuccess" style="display:none; color: var(--green); font-size: 0.8rem; margin-top: -10px; margin-bottom: 15px; text-align: center;"><i class="fas fa-check-circle"></i> Account Created! You can now log in.</p>
+      <button class="btn btn-primary btn-full" id="regBtn" onclick="doRegister()">
+        <i class="fas fa-user-plus"></i> Register Account
+      </button>
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8rem;">
+        <a href="#" onclick="toggleAuthPanel('login'); return false;" style="color: var(--text-secondary); transition: color 0.2s;"><i class="fas fa-arrow-left"></i> Back to Login</a>
+      </div>
     </div>
-    <p class="error-msg" id="loginError"><i class="fas fa-times-circle"></i> Invalid credentials</p>
-    <br>
-    <button class="btn btn-primary btn-full" id="loginBtn">
-      <i class="fas fa-unlock"></i> Sign In
-    </button>
+
+    <!-- FORGOT PASSWORD PANEL -->
+    <div id="panelForgot" style="display:none;">
+      <p class="login-subtitle">Auth Recovery Procedure</p>
+      <div style="padding: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; margin-bottom: 1.5rem;">
+        <p style="color: var(--yellow); font-size: 0.85rem; line-height: 1.5; text-align: center;">
+          <i class="fas fa-lock" style="font-size: 1.5rem; margin-bottom: 0.75rem; display: block;"></i>
+          <strong>Self-Service Reset Disabled</strong><br><br>
+          For security reasons, automated password resets are restricted in this portal.<br><br>
+          Please contact your <strong>Store Manager</strong> or <strong>IT Administrator</strong> to receive a temporary access key.
+        </p>
+      </div>
+      <div style="margin-top: 1rem; text-align: center; font-size: 0.8rem;">
+        <a href="#" onclick="toggleAuthPanel('login'); return false;" style="color: var(--text-secondary); transition: color 0.2s;"><i class="fas fa-arrow-left"></i> Back to Login</a>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- ===== DASHBOARD ===== -->
+<!-- ══════════════════════════════════════
+     DASHBOARD
+══════════════════════════════════════ -->
 <div id="dashboard">
-  <div class="topbar">
-    <div class="topbar-logo">
-      <i class="fas fa-microchip"></i>
-      <span>SHIRO IT Admin</span>
-    </div>
-    <div class="topbar-right">
-      <span class="topbar-time" id="clock"></span>
-      <button class="btn btn-ghost" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </div>
+  <div class="dashboard-wrapper">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <img src="/SHIRO IT.png" alt="SHIRO IT" style="height:40px; width:auto; object-fit:contain;"
+               onerror="this.style.display='none'; document.getElementById('sidebarLogoFallback').style.display='flex';">
+          <div id="sidebarLogoFallback" style="display:none; align-items:center; gap:0.75rem;">
+            <div class="sidebar-brand-icon"><i class="fas fa-microchip"></i></div>
+            <div>
+              <h1>SHIRO<span>IT</span></h1>
+              <div class="sidebar-version">v2.0 — ADMIN PANEL</div>
+            </div>
+          </div>
+          <div class="sidebar-version" style="margin-left:0.5rem;">ADMIN PANEL</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Navigation</div>
+        <a href="#" class="nav-item active" data-tab="hub">
+          <i class="fas fa-th-large nav-icon"></i>
+          <span class="nav-label">System Hub</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="contacts">
+          <i class="fas fa-envelope nav-icon"></i>
+          <span class="nav-label">Messages</span>
+          <span class="nav-badge" id="badge-contacts"></span>
+        </a>
+        <a href="#" class="nav-item" data-tab="quotes">
+          <i class="fas fa-rocket nav-icon"></i>
+          <span class="nav-label">PC Quotes</span>
+          <span class="nav-badge yellow" id="badge-quotes"></span>
+        </a>
+        <a href="#" class="nav-item" data-tab="bookings">
+          <i class="fas fa-microchip nav-icon"></i>
+          <span class="nav-label">Bookings</span>
+          <span class="nav-badge" id="badge-bookings"></span>
+        </a>
+        <a href="#" class="nav-item" data-tab="appointments">
+          <i class="fas fa-calendar-alt nav-icon"></i>
+          <span class="nav-label">Appointments</span>
+          <span class="nav-badge blue" id="badge-appointments"></span>
+        </a>
+        <a href="#" class="nav-item" data-tab="applications">
+          <i class="fas fa-user-plus nav-icon"></i>
+          <span class="nav-label">Applications</span>
+          <span class="nav-badge" id="badge-applications"></span>
+        </a>
+
+        <div class="sidebar-section-label" style="margin-top:0.5rem;">Store</div>
+        <a href="#" class="nav-item" data-tab="inventory">
+          <i class="fas fa-boxes nav-icon"></i>
+          <span class="nav-label">Inventory</span>
+          <span class="nav-badge yellow" id="badge-inventory"></span>
+        </a>
+
+        <div class="sidebar-section-label" style="margin-top:0.5rem;">Content Management</div>
+        <a href="#" class="nav-item" data-tab="pcs">
+          <i class="fas fa-desktop nav-icon"></i>
+          <span class="nav-label">Choose Your PC</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="tips">
+          <i class="fas fa-lightbulb nav-icon"></i>
+          <span class="nav-label">IT Tips Gallery</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="settings">
+          <i class="fas fa-cogs nav-icon"></i>
+          <span class="nav-label">Site Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-admin-info">
+          <div class="admin-avatar">A</div>
+          <div class="admin-meta">
+            <div class="admin-name">Administrator</div>
+            <div class="admin-status">Online</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-full btn-sm" id="logoutBtn">
+          <i class="fas fa-power-off"></i> <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <main class="main-content">
+
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h2 class="page-title font-head" id="pageHeading">Command Center</h2>
+          <p class="page-subtitle" id="pageSubheading">System Status Overview &amp; Communications</p>
+        </div>
+        <div class="topbar-right">
+          <div class="search-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="Search records…">
+          </div>
+          <div class="header-clock" id="clock">--:--:--</div>
+          <button class="sync-btn" id="syncBtn" title="Sync Data" onclick="syncData()">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- STATS GRID -->
+      <section class="stats-grid" id="statsGrid">
+        <div class="stat-card blue" id="sc-contacts">
+          <div class="stat-top">
+            <div class="stat-label">Messages</div>
+            <i class="fas fa-envelope stat-icon"></i>
+          </div>
+          <div class="stat-number" id="s-contacts"><span class="skeleton skeleton-num"></span></div>
+          <div class="stat-sub" id="s-contacts-sub"><span class="skeleton skeleton-sub"></span></div>
+        </div>
+        <div class="stat-card yellow" id="sc-quotes">
+          <div class="stat-top">
+            <div class="stat-label">PC Quotes</div>
+            <i class="fas fa-rocket stat-icon"></i>
+          </div>
+          <div class="stat-number" id="s-quotes"><span class="skeleton skeleton-num"></span></div>
+          <div class="stat-sub" id="s-quotes-sub"><span class="skeleton skeleton-sub"></span></div>
+        </div>
+        <div class="stat-card green" id="sc-bookings">
+          <div class="stat-top">
+            <div class="stat-label">Bookings</div>
+            <i class="fas fa-microchip stat-icon"></i>
+          </div>
+          <div class="stat-number" id="s-bookings"><span class="skeleton skeleton-num"></span></div>
+          <div class="stat-sub" id="s-bookings-sub"><span class="skeleton skeleton-sub"></span></div>
+        </div>
+        <div class="stat-card red" id="sc-apps">
+          <div class="stat-top">
+            <div class="stat-label">Applications</div>
+            <i class="fas fa-user-plus stat-icon"></i>
+          </div>
+          <div class="stat-number" id="s-apps"><span class="skeleton skeleton-num"></span></div>
+          <div class="stat-sub" id="s-apps-sub"><span class="skeleton skeleton-sub"></span></div>
+        </div>
+        <div class="stat-card purple" id="sc-inventory">
+          <div class="stat-top">
+            <div class="stat-label">Inventory</div>
+            <i class="fas fa-boxes stat-icon"></i>
+          </div>
+          <div class="stat-number" id="s-inventory"><span class="skeleton skeleton-num"></span></div>
+          <div class="stat-sub" id="s-inventory-sub"><span class="skeleton skeleton-sub"></span></div>
+        </div>
+      </section>
+
+      <!-- CONTENT FRAME -->
+      <div class="content-frame">
+        <div class="main-column">
+
+          <!-- HUB PANEL -->
+          <div id="panelHub">
+            <div class="hub-grid">
+              <div class="chart-panel">
+                <h4><i class="fas fa-chart-line"></i> &nbsp;SUBMISSION OVERVIEW</h4>
+                <canvas id="mainChart" style="height:230px;"></canvas>
+              </div>
+              <div class="network-panel">
+                <h4><i class="fas fa-satellite-dish"></i> &nbsp;SYSTEM STATUS</h4>
+                <div class="net-row">
+                  <div class="net-row-label">Database Uplink</div>
+                  <div class="net-row-value" style="color:var(--neon-green)">● CONNECTED</div>
+                </div>
+                <div class="net-row">
+                  <div class="net-row-label">Response Latency</div>
+                  <div class="net-row-value" style="color:var(--neon-blue)" id="netLatency">— ms</div>
+                </div>
+                <div class="net-row">
+                  <div class="net-row-label">Security Clearance</div>
+                  <div class="net-row-value" style="color:var(--neon-yellow)">LVL 4 — ENCRYPTED</div>
+                </div>
+                <div class="net-row">
+                  <div class="net-row-label">Session Token</div>
+                  <div class="net-row-value" style="color:var(--neon-green);font-size:0.75rem;" id="sessionToken">VALID</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE PANEL -->
+          <div class="panel" id="panelTable" style="display:none;">
+            <div class="panel-header">
+              <div class="panel-header-left">
+                <i id="panelIcon" class="fas fa-list"></i>
+                <h3 id="panelTitle">Activity Log</h3>
+                <span class="row-count" id="rowCount">0 records</span>
+              </div>
+              <div class="panel-header-right">
+                <select class="inv-cat-filter" id="invCatFilter">
+                  <option value="All">All Categories</option>
+                  <option value="CPU">CPU</option>
+                  <option value="Motherboard">Motherboard</option>
+                  <option value="RAM">RAM</option>
+                  <option value="RAM Laptop">RAM Laptop</option>
+                  <option value="Storage">Storage</option>
+                  <option value="GPU">GPU</option>
+                  <option value="AIO Cooling">AIO Cooling</option>
+                  <option value="Case">Case</option>
+                  <option value="PSU">PSU</option>
+                  <option value="Cooling">Cooling</option>
+                  <option value="Monitor">Monitor</option>
+                  <option value="Keyboard">Keyboard</option>
+                  <option value="Mouse">Mouse</option>
+                  <option value="Accessories">Accessories</option>
+                </select>
+                <button class="btn btn-primary btn-sm" id="addInvBtn" style="display:none;">
+                  <i class="fas fa-plus"></i> Add Item
+                </button>
+                <button class="btn btn-primary btn-sm" id="addPcBtn" style="display:none;">
+                  <i class="fas fa-plus"></i> Add PC
+                </button>
+                <button class="btn btn-primary btn-sm" id="addTipBtn" style="display:none;">
+                  <i class="fas fa-plus"></i> Add Tip
+                </button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table id="dataTable">
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SETTINGS PANEL -->
+          <div class="panel" id="panelSettings" style="display:none;">
+            <div class="panel-header">
+              <div class="panel-header-left">
+                <i class="fas fa-cogs"></i>
+                <h3>Site Settings</h3>
+              </div>
+            </div>
+            <div style="padding: 2rem;">
+              <form id="settingsForm" style="max-width: 600px;">
+                <div class="form-group">
+                  <label><i class="fas fa-fire" style="color:var(--neon-red)"></i> Active Festival Animation</label>
+                  <select id="setFestival">
+                    <option value="none">None (Disabled)</option>
+                    <option value="cny">Chinese New Year</option>
+                    <option value="raya">Hari Raya</option>
+                    <option value="deepavali">Deepavali</option>
+                    <option value="christmas">Christmas</option>
+                    <option value="newyear">New Year</option>
+                    <option value="national">National Day</option>
+                  </select>
+                  <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">Select the holiday effect to display on the public website (falling confetti, snow, lanterns, etc).</p>
+                </div>
+                
+                <div class="form-group" style="margin-top:2rem;">
+                  <label><i class="fas fa-th" style="color:var(--neon-blue)"></i> IT Tips Display Count (Widget Limit)</label>
+                  <input type="number" id="setTipsCount" min="0" max="50" placeholder="e.g. 4">
+                  <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">How many knowledge base widgets to show on the public page. Set to 0 to show all.</p>
+                </div>
+                
+                <button type="button" class="btn btn-primary" onclick="saveSettings()" style="margin-top: 1.5rem;"><i class="fas fa-save"></i> Save Settings</button>
+              </form>
+            </div>
+          </div>
+
+        </div><!-- /main-column -->
+
+        <!-- ACTIVITY SIDEBAR -->
+        <aside class="activity-sidebar" id="activitySidebar">
+          <div class="activity-sidebar-header">
+            <h4><i class="fas fa-stream"></i> &nbsp;LIVE LOG</h4>
+            <span class="row-count" id="activityCount">0</span>
+          </div>
+          <div class="activity-list" id="recentActivityList">
+            <!-- JS populated -->
+          </div>
+        </aside>
+
+      </div><!-- /content-frame -->
+    </main>
   </div>
+</div>
 
-  <div class="main">
-    <!-- Stats -->
-    <div class="stats-grid" id="statsGrid">
-      <div class="stat-card blue"><div class="stat-label">Contact Messages</div><div class="stat-number" id="s-contacts">-</div><div class="stat-sub" id="s-contacts-sub">loading...</div></div>
-      <div class="stat-card yellow"><div class="stat-label">PC Build Quotes</div><div class="stat-number" id="s-quotes">-</div><div class="stat-sub" id="s-quotes-sub">loading...</div></div>
-      <div class="stat-card green"><div class="stat-label">Service Bookings</div><div class="stat-number" id="s-bookings">-</div><div class="stat-sub" id="s-bookings-sub">loading...</div></div>
-      <div class="stat-card red"><div class="stat-label">Job Applications</div><div class="stat-number" id="s-apps">-</div><div class="stat-sub" id="s-apps-sub">loading...</div></div>
-      <div class="stat-card blue"><div class="stat-label">Appointments</div><div class="stat-number" id="s-appts">-</div><div class="stat-sub" id="s-appts-sub">loading...</div></div>
+<!-- ══════════════════════════════════════
+     INVENTORY MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Deploy New Component</h3>
+      <button class="modal-close" id="modalClose">&times;</button>
     </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="contacts"><i class="fas fa-envelope"></i> Messages</button>
-      <button class="tab-btn" data-tab="quotes"><i class="fas fa-desktop"></i> PC Quotes</button>
-      <button class="tab-btn" data-tab="bookings"><i class="fas fa-tools"></i> Bookings</button>
-      <button class="tab-btn" data-tab="applications"><i class="fas fa-briefcase"></i> Applications</button>
-      <button class="tab-btn" data-tab="appointments"><i class="fas fa-calendar"></i> Appointments</button>
+    <div class="modal-body">
+      <form id="inventoryForm" autocomplete="off">
+        <input type="hidden" id="editId">
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" id="itemName" required placeholder="e.g. Intel Core i9-14900K">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price (RM)</label>
+            <input type="number" id="itemPrice" required placeholder="0.00" step="0.01" min="0">
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="itemCat">
+              <option value="CPU">CPU</option>
+              <option value="Motherboard">Motherboard</option>
+              <option value="RAM">RAM</option>
+              <option value="RAM Laptop">RAM Laptop</option>
+              <option value="Storage">Storage</option>
+              <option value="GPU">GPU</option>
+              <option value="AIO Cooling">AIO Cooling</option>
+              <option value="Case">Case</option>
+              <option value="PSU">PSU</option>
+              <option value="Cooling">Cooling</option>
+              <option value="Monitor">Monitor</option>
+              <option value="Keyboard">Keyboard</option>
+              <option value="Mouse">Mouse</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stock Count</label>
+            <input type="number" id="itemStock" value="1" min="0">
+          </div>
+          <div class="form-group">
+            <label>Badge / Health (%)</label>
+            <input type="text" id="itemHealth" placeholder="e.g. 100 or Featured">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Specifications</label>
+          <textarea id="itemSpecs" rows="3" placeholder="Key specs, socket, wattage, etc."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Product Image</label>
+          <div class="upload-area" id="uploadArea">
+            <input type="file" id="itemImageFile" accept="image/*">
+            <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-area-text">Drop image here or <span>click to browse</span></div>
+          </div>
+          <div id="uploadStatus"></div>
+          <div id="imagePreview"><span style="color:var(--text-secondary);font-size:0.8rem;">No image selected</span></div>
+          <input type="hidden" id="itemImagePath">
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;gap:0.75rem;">
+          <input type="checkbox" id="itemFeatured" style="width:18px;height:18px;accent-color:var(--neon-blue);">
+          <label style="margin:0;font-size:0.88rem;">Feature this item on the main store</label>
+        </div>
+      </form>
     </div>
-
-    <!-- Panels -->
-    <div class="table-panel">
-      <div class="table-header">
-        <h3 id="panelTitle">Contact Messages</h3>
-        <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
-      </div>
-      <div class="table-wrap">
-        <table id="dataTable">
-          <thead id="tableHead"></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="saveBtn"><i class="fas fa-save"></i> Save Record</button>
     </div>
   </div>
 </div>
 
 <div class="toast-area" id="toastArea"></div>
 
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+
+<!-- PC MODAL -->
+<div class="modal-overlay" id="pcModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="pcModalTitle">Add Pre-built PC</h3>
+      <button class="modal-close" id="pcModalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="pcForm">
+        <input type="hidden" id="pcEditId">
+        <div class="form-row">
+          <div class="form-group"><label>Tier Name (e.g. ENTRY)</label><input type="text" id="pcTierName"></div>
+          <div class="form-group"><label>Badge (e.g. Best Value)</label><input type="text" id="pcTierBadge"></div>
+          <div class="form-group"><label>Theme Color</label><input type="color" id="pcColor" value="#0066FF"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Model Name (e.g. Phantom Lite)</label><input type="text" id="pcName"></div>
+          <div class="form-group"><label>Price (RM)</label><input type="number" id="pcPrice" step="0.01"></div>
+          <div class="form-group"><label>Promo text (e.g. 10% OFF)</label><input type="text" id="pcDiscount"></div>
+        </div>
+        <div class="form-group">
+          <label>Specifications (One per line)</label>
+          <textarea id="pcSpecs" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Featured Image / Photo</label>
+          <div class="upload-area">
+            <input type="file" id="pcImageFile" accept="image/*">
+            <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-area-text">Drop image or click to browse</div>
+          </div>
+          <div id="pcUploadStatus"></div>
+          <div id="pcImagePreview"></div>
+          <input type="hidden" id="pcImagePath">
+        </div>
+        <div class="form-group" style="display:flex;gap:10px;">
+          <input type="checkbox" id="pcFeatured"><label>Featured Slider (Large format)</label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="savePcBtn"><i class="fas fa-save"></i> Save PC Record</button>
+    </div>
+  </div>
+</div>
+
+<!-- TIP MODAL -->
+<div class="modal-overlay" id="tipModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="tipModalTitle">Add IT Tip / Widget</h3>
+      <button class="modal-close" id="tipModalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="tipForm">
+        <input type="hidden" id="tipEditId">
+        <div class="form-group"><label>Title</label><input type="text" id="tipTitle"></div>
+        <div class="form-group"><label>Description</label><textarea id="tipDesc" rows="2"></textarea></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Media Type</label>
+            <select id="tipMediaType">
+              <option value="video">Video</option>
+              <option value="image">Image / Photo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Media File</label>
+            <div class="upload-area" id="tipUploadArea">
+              <input type="file" id="tipMediaFile" accept="video/*,image/*">
+              <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+              <div class="upload-area-text">Drop file or click to browse</div>
+            </div>
+            <div id="tipUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
+            <div id="tipMediaPreview" style="margin-top:0.5rem;"></div>
+            <input type="hidden" id="tipMediaUrl">
+          </div>
+        </div>
+        <div class="form-group"><label>Tags (Comma separated)</label><input type="text" id="tipTags"></div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="saveTipBtn"><i class="fas fa-save"></i> Save Tip</button>
+    </div>
+  </div>
+</div>
+
+<!-- Background canvas animation (from shiro-v2 theme) -->
+<script src="/bg-animation.js"></script>
+
 <script>
-const API = '';
-let activeTab = 'contacts';
-let allData = {};
+/* ─── GLOBALS ─── */
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? '' : window.location.origin;
+let activeTab = 'hub';
+let chart = null;
+let lastData = [];
+let statsCache = {};
 
-/* ===== CLOCK ===== */
-function updateClock() {
-  document.getElementById('clock').textContent = new Date().toLocaleString('en-MY', {
-    dateStyle: 'medium', timeStyle: 'short'
-  });
+const TAB_META = {
+  hub:          { h: 'Command Center',   s: 'System overview & live activity', icon: 'fa-th-large' },
+  contacts:     { h: 'Messages',         s: 'Customer inquiries & contact submissions', icon: 'fa-envelope' },
+  quotes:       { h: 'PC Quotes',        s: 'Custom gaming PC build requests', icon: 'fa-rocket' },
+  bookings:     { h: 'Service Bookings', s: 'Workshop & repair appointments', icon: 'fa-microchip' },
+  appointments: { h: 'Appointments',     s: 'Confirmed schedule & upcoming meetings', icon: 'fa-calendar-alt' },
+  applications: { h: 'Job Applications', s: 'Recruitment pipeline & candidates', icon: 'fa-user-plus' },
+  inventory:    { h: 'Inventory',        s: 'Products, stock levels & pricing', icon: 'fa-boxes' },
+  pcs:          { h: 'Choose Your PC',   s: 'Manage the Pre-built Gaming PCs section', icon: 'fa-desktop' },
+  tips:         { h: 'IT Tips Gallery',  s: 'Manage knowledge base photos & videos', icon: 'fa-lightbulb' },
+  settings:     { h: 'Site Settings',    s: 'Manage Festival Animations and Display limits', icon: 'fa-cogs' }
+};
+
+const $ = id => document.getElementById(id);
+const apiDataMap = {
+  contacts: '/admin/api/contacts',
+  quotes: '/admin/api/quotes',
+  bookings: '/admin/api/bookings',
+  appointments: '/admin/api/appointments',
+  applications: '/admin/api/applications',
+  inventory: '/admin/api/inventory',
+  pcs: '/admin/api/prebuilt_pcs',
+  tips: '/admin/api/it_tips',
+  settings: '/admin/api/settings'
+};
+
+/* ─── AUTH ─── */
+async function checkAuth() {
+  try {
+    const res = await fetch(API + '/admin/api/stats', { credentials: 'include' });
+    if (res.ok) {
+      $('loginScreen').style.display = 'none';
+      $('dashboard').style.display = 'block';
+      initDashboard();
+    }
+    // else: stay on login screen
+  } catch(e) {
+    // Network error — stay on login screen
+  }
 }
-setInterval(updateClock, 1000);
-updateClock();
+checkAuth();
 
-/* ===== TOAST ===== */
-function toast(msg, type = 'ok') {
-  const area = document.getElementById('toastArea');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<i class="fas ${type === 'ok' ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${msg}`;
-  area.appendChild(t);
-  setTimeout(() => t.remove(), 4000);
-}
+$('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+$('loginBtn').addEventListener('click', doLogin);
 
-/* ===== LOGIN ===== */
-document.getElementById('loginBtn').addEventListener('click', async () => {
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value;
-  const errEl = document.getElementById('loginError');
+async function doLogin() {
+  const user = $('loginUser').value.trim();
+  const pass = $('loginPass').value;
+  const errEl = $('loginError');
   errEl.style.display = 'none';
-
+  $('loginBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating…';
+  $('loginBtn').disabled = true;
   try {
     const res = await fetch(API + '/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: u, password: p })
+      credentials: 'include',
+      body: JSON.stringify({ username: user, password: pass })
+
     });
-    const data = await res.json();
-    if (data.success) {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      loadStats();
-      loadTab('contacts');
+    const d = await res.json();
+    if (d.success) {
+      // Server session is now set — show dashboard directly
+      $('loginScreen').style.display = 'none';
+      $('dashboard').style.display = 'block';
+      initDashboard();
     } else {
       errEl.style.display = 'block';
     }
   } catch (e) {
-    errEl.textContent = '⚠ Cannot connect to server. Make sure Flask is running.';
     errEl.style.display = 'block';
+  } finally {
+    $('loginBtn').innerHTML = '<i class="fas fa-power-off"></i> Initialize Session';
+    $('loginBtn').disabled = false;
   }
-});
+}
 
-// Allow Enter key on login
-['loginUser','loginPass'].forEach(id =>
-  document.getElementById(id).addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('loginBtn').click();
-  })
-);
+function toggleAuthPanel(panelName) {
+  $('panelLogin').style.display = 'none';
+  $('panelRegister').style.display = 'none';
+  $('panelForgot').style.display = 'none';
+  
+  if (panelName === 'login') $('panelLogin').style.display = 'block';
+  if (panelName === 'register') $('panelRegister').style.display = 'block';
+  if (panelName === 'forgot') $('panelForgot').style.display = 'block';
+  
+  // Clear any previous error/success messages
+  $('loginError').style.display = 'none';
+  $('regError').style.display = 'none';
+  $('regSuccess').style.display = 'none';
+}
 
-// Check if already logged in (page refresh)
-(async () => {
+function togglePasswordVisibility(inputId, iconEl) {
+  const input = $(inputId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    iconEl.classList.remove('fa-eye');
+    iconEl.classList.add('fa-eye-slash');
+  } else {
+    input.type = 'password';
+    iconEl.classList.remove('fa-eye-slash');
+    iconEl.classList.add('fa-eye');
+  }
+}
+
+async function doRegister() {
+  const regCode = $('regSecret').value.trim();
+  const user = $('regUser').value.trim();
+  const pass = $('regPass').value;
+  const errEl = $('regError');
+  const sucEl = $('regSuccess');
+  
+  errEl.style.display = 'none';
+  sucEl.style.display = 'none';
+  
+  if (!regCode || !user || !pass) {
+    errEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> All fields are required';
+    errEl.style.display = 'block';
+    return;
+  }
+  
+  $('regBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+  $('regBtn').disabled = true;
+  
   try {
-    const res = await fetch(API + '/admin/api/stats');
-    if (res.ok) {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      loadStats();
-      loadTab('contacts');
+    const res = await fetch(API + '/admin/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user, password: pass, reg_code: regCode })
+    });
+    const d = await res.json();
+    if (d.success) {
+      sucEl.style.display = 'block';
+      $('regSecret').value = '';
+      $('regUser').value = '';
+      $('regPass').value = '';
+      
+      // Auto-switch to login after 2 seconds
+      setTimeout(() => {
+        toggleAuthPanel('login');
+        $('loginUser').value = user; // Pre-fill username
+      }, 2000);
+      
+    } else {
+      errEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> ' + (d.error || 'Registration failed');
+      errEl.style.display = 'block';
     }
-  } catch (_) {}
-})();
+  } catch (e) {
+    errEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Network error';
+    errEl.style.display = 'block';
+  } finally {
+    $('regBtn').innerHTML = '<i class="fas fa-user-plus"></i> Register Account';
+    $('regBtn').disabled = false;
+  }
+}
 
-/* ===== LOGOUT ===== */
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await fetch(API + '/admin/logout', { method: 'POST' });
-  location.reload();
+$('logoutBtn').addEventListener('click', async () => {
+  try {
+    await fetch(API + '/admin/logout', { method: 'POST', credentials: 'include' });
+  } catch(e) {}
+  $('dashboard').style.display = 'none';
+  $('loginScreen').style.display = 'flex';
+  // Clear inputs
+  $('loginUser').value = '';
+  $('loginPass').value = '';
+  $('loginError').style.display = 'none';
 });
 
-/* ===== STATS ===== */
+/* ─── INIT ─── */
+function initDashboard() {
+  loadStats();
+  loadTab('hub');
+  startClock();
+  initSessionToken();
+}
+
+function initSessionToken() {
+  const tok = Math.random().toString(36).slice(2, 10).toUpperCase();
+  const el = $('sessionToken');
+  if (el) el.textContent = `SHR-${tok}`;
+}
+
+/* ─── STATS ─── */
 async function loadStats() {
+  const t0 = performance.now();
   try {
     const res = await fetch(API + '/admin/api/stats');
     const d = await res.json();
-    if (!d.success) return;
-    const s = d.stats;
-    document.getElementById('s-contacts').textContent = s.contacts.total;
-    document.getElementById('s-contacts-sub').textContent = `${s.contacts.unread} unread`;
-    document.getElementById('s-quotes').textContent = s.quotes.total;
-    document.getElementById('s-quotes-sub').textContent = `${s.quotes.new} new`;
-    document.getElementById('s-bookings').textContent = s.bookings.total;
-    document.getElementById('s-bookings-sub').textContent = `${s.bookings.new} new`;
-    document.getElementById('s-apps').textContent = s.applications.total;
-    document.getElementById('s-apps-sub').textContent = `${s.applications.new} new`;
-    document.getElementById('s-appts').textContent = s.appointments.total;
-    document.getElementById('s-appts-sub').textContent = `${s.appointments.pending} pending`;
-  } catch (_) {}
+    const ping = Math.round(performance.now() - t0);
+    const latEl = $('netLatency');
+    if (latEl) latEl.textContent = `${ping} ms — STABLE`;
+
+    if (d.success) {
+      statsCache = d.stats;
+      animateNumber('s-contacts', d.stats.contacts);
+      animateNumber('s-quotes', d.stats.quotes);
+      animateNumber('s-bookings', d.stats.bookings);
+      animateNumber('s-apps', d.stats.applications);
+      animateNumber('s-inventory', d.stats.inventory);
+
+      const unread = d.stats.contacts_unread;
+      $('s-contacts-sub').innerHTML   = unread > 0
+        ? `<span class="stat-badge-new">${unread} UNREAD</span>`
+        : 'All messages read';
+      $('s-quotes-sub').innerHTML     = d.stats.quotes_new > 0
+        ? `<span class="stat-badge-new">${d.stats.quotes_new} NEW</span>`
+        : 'No new quotes';
+      $('s-bookings-sub').innerHTML   = d.stats.bookings_new > 0
+        ? `<span class="stat-badge-new">${d.stats.bookings_new} PENDING</span>`
+        : 'No new bookings';
+      $('s-apps-sub').innerHTML       = d.stats.applications_new > 0
+        ? `<span class="stat-badge-new">${d.stats.applications_new} NEW</span>`
+        : 'No new applications';
+      $('s-inventory-sub').innerHTML  = d.stats.inventory_low > 0
+        ? `<span class="stat-badge-new" style="border-color:rgba(255,238,0,0.3);color:var(--neon-yellow);background:rgba(255,238,0,0.1);">${d.stats.inventory_low} LOW STOCK</span>`
+        : 'Stock levels OK';
+
+      // Sidebar badges
+      setBadge('badge-contacts',    d.stats.contacts_unread);
+      setBadge('badge-quotes',      d.stats.quotes_new);
+      setBadge('badge-bookings',    d.stats.bookings_new);
+      setBadge('badge-appointments',d.stats.appointments_pending);
+      setBadge('badge-applications',d.stats.applications_new);
+      setBadge('badge-inventory',   d.stats.inventory_low);
+    }
+  } catch(e) { console.error('Stats load failed', e); }
 }
 
-/* ===== TABS ===== */
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeTab = btn.dataset.tab;
-    loadTab(activeTab);
-  });
-});
+function setBadge(id, count) {
+  const el = $(id);
+  if (!el) return;
+  if (count > 0) { el.textContent = count > 99 ? '99+' : count; el.classList.add('show'); }
+  else { el.classList.remove('show'); }
+}
 
-document.getElementById('refreshBtn').addEventListener('click', () => {
-  loadTab(activeTab);
-  loadStats();
+function animateNumber(id, target) {
+  const el = $(id);
+  if (!el) return;
+  const start = parseInt(el.textContent) || 0;
+  const duration = 600;
+  const t0 = performance.now();
+  function step(now) {
+    const prog = Math.min((now - t0) / duration, 1);
+    const ease = 1 - Math.pow(1 - prog, 3);
+    el.textContent = Math.round(start + (target - start) * ease);
+    if (prog < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ─── SYNC ─── */
+function syncData() {
+  const btn = $('syncBtn');
+  btn.classList.add('spinning');
+  Promise.all([loadStats(), ...(activeTab !== 'hub' ? [loadTab(activeTab)] : [renderHub()])]).finally(() => {
+    btn.classList.remove('spinning');
+    toast('Data synchronized', 'ok');
+  });
+}
+
+/* ─── TAB NAVIGATION ─── */
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', e => { e.preventDefault(); loadTab(btn.dataset.tab); });
 });
 
 async function loadTab(tab) {
-  const endpoints = {
-    contacts:     '/admin/api/contacts',
-    quotes:       '/admin/api/quotes',
-    bookings:     '/admin/api/bookings',
-    applications: '/admin/api/applications',
-    appointments: '/admin/api/appointments',
-  };
-  const titles = {
-    contacts: 'Contact Messages', quotes: 'PC Build Quotes',
-    bookings: 'Service Bookings', applications: 'Job Applications',
-    appointments: 'Appointments'
-  };
-  document.getElementById('panelTitle').textContent = titles[tab];
+  activeTab = tab;
+
+  document.querySelectorAll('.nav-item').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === tab));
+
+  const meta = TAB_META[tab];
+  $('pageHeading').textContent = meta.h;
+  $('pageSubheading').textContent = meta.s;
+
+  const hubPanel   = $('panelHub');
+  const tablePanel = $('panelTable');
+  const setPanel   = $('panelSettings');
+
+  hubPanel.style.display   = 'none';
+  tablePanel.style.display = 'none';
+  if (setPanel) setPanel.style.display = 'none';
+
+  if (tab === 'hub') {
+    hubPanel.style.display = 'block';
+    renderHub();
+    return;
+  }
+  
+  if (tab === 'settings') {
+    setPanel.style.display = 'block';
+    loadSettings();
+    return;
+  }
+
+  tablePanel.style.display = 'block';
+
+  // Update panel header icon & title
+  $('panelIcon').className = `fas ${meta.icon}`;
+  $('panelTitle').textContent = meta.h;
+  $('rowCount').textContent = '…';
+
+  // Show/hide specific controls
+  $('invCatFilter').style.display = tab === 'inventory' ? 'block' : 'none';
+  $('addInvBtn').style.display    = tab === 'inventory' ? 'flex'  : 'none';
+  if($('addPcBtn'))  $('addPcBtn').style.display  = tab === 'pcs' ? 'flex' : 'none';
+  if($('addTipBtn')) $('addTipBtn').style.display = tab === 'tips' ? 'flex' : 'none';
+
+  // Show loading state
+  const body = $('tableBody');
+  body.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:3rem;">
+    <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;color:var(--neon-blue);"></i>
+    <div style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-secondary);letter-spacing:1px;">LOADING RECORDS...</div>
+  </td></tr>`;
 
   try {
-    const res = await fetch(API + endpoints[tab]);
+    const endpoint = apiDataMap[tab];
+    const res = await fetch(API + endpoint);
     const d = await res.json();
-    if (!d.success) { renderEmpty(); return; }
-    allData[tab] = d.data;
-    renderTable(tab, d.data);
-  } catch (_) {
-    renderEmpty('Cannot connect to server.');
+    if (d.success) {
+      lastData = d.data;
+      renderTable(tab, d.data);
+    } else {
+      showTableError();
+    }
+  } catch(e) {
+    console.error('Data load failed', e);
+    showTableError();
   }
 }
 
-function renderEmpty(msg = 'No records found.') {
-  document.getElementById('tableHead').innerHTML = '';
-  document.getElementById('tableBody').innerHTML = `<tr class="empty-row"><td colspan="10"><i class="fas fa-inbox"></i> ${msg}</td></tr>`;
+function showTableError() {
+  $('tableBody').innerHTML = `<tr><td colspan="10">
+    <div class="empty-state">
+      <i class="fas fa-exclamation-triangle" style="color:var(--neon-red)"></i>
+      <p>Failed to load data. Check server connection.</p>
+    </div>
+  </td></tr>`;
 }
 
+/* ─── HUB ─── */
+async function renderHub() {
+  await loadStats();
+  buildChart();
+  loadRecentActivity();
+}
+
+function buildChart() {
+  const ctx = $('mainChart').getContext('2d');
+  if (chart) chart.destroy();
+  const s = statsCache;
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Messages', 'PC Quotes', 'Bookings', 'Appointments', 'Applications', 'Inventory'],
+      datasets: [{
+        label: 'Total Records',
+        data: [
+          s.contacts || 0,
+          s.quotes || 0,
+          s.bookings || 0,
+          s.appointments || 0,
+          s.applications || 0,
+          s.inventory || 0
+        ],
+        backgroundColor: [
+          'rgba(0,242,255,0.3)',
+          'rgba(255,238,0,0.3)',
+          'rgba(0,255,136,0.3)',
+          'rgba(0,136,255,0.3)',
+          'rgba(255,0,51,0.3)',
+          'rgba(168,85,247,0.3)',
+        ],
+        borderColor: [
+          'rgba(0,242,255,0.8)',
+          'rgba(255,238,0,0.8)',
+          'rgba(0,255,136,0.8)',
+          'rgba(0,136,255,0.8)',
+          'rgba(255,0,51,0.8)',
+          'rgba(168,85,247,0.8)',
+        ],
+        borderWidth: 2, borderRadius: 8, borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11 } },
+          beginAtZero: true
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 10 } }
+        }
+      },
+      animation: { duration: 800, easing: 'easeOutQuart' }
+    }
+  });
+}
+
+async function loadRecentActivity() {
+  const list = $('recentActivityList');
+  list.innerHTML = '';
+  const COLOR_MAP = { contacts: 'blue', quotes: 'yellow', bookings: 'green', applications: 'red' };
+  const LABEL_MAP = { contacts: 'MSG', quotes: 'QUOTE', bookings: 'BOOKING', applications: 'APPLICATION' };
+  const tabs = ['contacts', 'quotes', 'bookings', 'applications'];
+  let allItems = [];
+  for (const t of tabs) {
+    try {
+      const res = await fetch(API + apiDataMap[t]);
+      const d   = await res.json();
+      if (d.success) {
+        d.data.slice(0, 4).forEach(i => allItems.push({ ...i, _tab: t }));
+      }
+    } catch(e) {}
+  }
+  allItems.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  allItems = allItems.slice(0, 12);
+  $('activityCount').textContent = allItems.length;
+
+  if (!allItems.length) {
+    list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.8rem;">No recent activity</div>`;
+    return;
+  }
+  allItems.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = `activity-item ${COLOR_MAP[item._tab] || ''}`;
+    div.style.animationDelay = `${i * 40}ms`;
+    div.innerHTML = `
+      <div class="activity-time">${fmtDate(item.created_at)}</div>
+      <div class="activity-desc">${esc(item.name || item.applicant_name || '—')}</div>
+      <div class="activity-type">${LABEL_MAP[item._tab]}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+/* ─── TABLE RENDER ─── */
 function renderTable(tab, data) {
-  const head = document.getElementById('tableHead');
-  const body = document.getElementById('tableBody');
+  const head = $('tableHead');
+  const body = $('tableBody');
 
-  if (!data || data.length === 0) { renderEmpty(); return; }
+  if (tab === 'inventory' && $('invCatFilter').value !== 'All') {
+    data = data.filter(r => r.category === $('invCatFilter').value);
+  }
 
-  const configs = {
+  // Apply search filter
+  const term = $('globalSearch').value.toLowerCase();
+  if (term) {
+    data = data.filter(r => JSON.stringify(r).toLowerCase().includes(term));
+  }
+
+  $('rowCount').textContent = `${data.length} record${data.length !== 1 ? 's' : ''}`;
+
+  if (!data.length) {
+    body.innerHTML = `<tr><td colspan="10">
+      <div class="empty-state">
+        <i class="fas fa-database"></i>
+        <p>No records found.</p>
+      </div>
+    </td></tr>`;
+    return;
+  }
+
+  const statusBadge = (s) => {
+    if (!s) return '<span class="badge badge-new">—</span>';
+    const lower = s.toLowerCase();
+    let cls = 'badge-new';
+    if (['read','confirmed','reviewed','completed'].includes(lower)) cls = 'badge-done';
+    else if (['ordered','pending'].includes(lower)) cls = 'badge-warn';
+    else if (['rejected','cancelled'].includes(lower)) cls = 'badge-red';
+    return `<span class="badge ${cls}">${esc(s)}</span>`;
+  };
+
+  const fmtBuild = (cfg) => {
+    if (!cfg) return '<span style="color:var(--text-secondary)">—</span>';
+    try {
+      const c = typeof cfg === 'string' ? JSON.parse(cfg) : cfg;
+      if (c.items && c.items.length) return c.items.map(i => `• ${i.category}: ${esc(i.name)}`).join('<br>');
+      if (c.components) return Object.entries(c.components).map(([k,v]) => `• ${k}: ${esc(v)}`).join('<br>');
+      return '<span style="color:var(--text-secondary)">Build attached</span>';
+    } catch(e) { return '<span style="color:var(--text-secondary)">—</span>'; }
+  };
+
+  const waLink = (phone, name, type) => {
+    if (!phone) return '';
+    const num = phone.replace(/\D/g,'');
+    const msg = encodeURIComponent(`Hi ${name || ''}, regarding your ${type} at SHIRO IT.`);
+    return `<a href="https://wa.me/60${num}?text=${msg}" target="_blank" class="action-btn wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>`;
+  };
+  const mailLink = (email, name) => {
+    if (!email) return '';
+    return `<a href="mailto:${email}?subject=SHIRO IT Inquiry&body=Hi ${name}," class="action-btn mail" title="Email"><i class="fas fa-paper-plane"></i></a>`;
+  };
+
+  const stockClass = (n) => n > 5 ? 'stock-ok' : n > 0 ? 'stock-low' : 'stock-out';
+
+  const CONFIGS = {
     contacts: {
-      cols: ['Date', 'Name', 'Contact', 'Subject', 'Message', 'Status', 'Actions'],
-      row: (r) => `
-        <td>${fmtDate(r.created_at)}</td>
-        <td class="name-col">${esc(r.name)}</td>
-        <td class="contact-col">${esc(r.email)}<br>${esc(r.phone)}</td>
-        <td>${esc(r.subject)}</td>
+      cols: ['Date', 'Name', 'Topic', 'Message', 'Status', 'Actions'],
+      row: r => `
+        <td style="white-space:nowrap;color:var(--text-secondary);font-size:0.78rem;">${fmtDate(r.created_at)}</td>
+        <td><div class="name-col">${esc(r.name)}</div><div class="sub-col">${esc(r.email)}</div></td>
+        <td>${esc(r.subject) || '—'}</td>
         <td class="msg-col" title="${esc(r.message)}">${esc(r.message)}</td>
-        <td>${r.is_read ? '<span class="badge badge-read">Read</span>' : '<span class="badge badge-new">Unread</span>'}</td>
+        <td>${statusBadge(r.is_read ? 'Read' : 'New')}</td>
         <td><div class="actions">
-          ${!r.is_read ? `<button class="action-btn ok" onclick="updateStatus('contact','${r.id}','Read')"><i class="fas fa-check"></i> Mark Read</button>` : ''}
-          <button class="action-btn del" onclick="deleteItem('contact','${r.id}')"><i class="fas fa-trash"></i></button>
+          ${!r.is_read ? `<button class="action-btn ok" onclick="updateStatus('contact','${r.id}','Read')" title="Mark read"><i class="fas fa-check"></i></button>` : ''}
+          ${mailLink(r.email, r.name)}
+          <button class="action-btn del" onclick="deleteItem('contact','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
         </div></td>`
     },
     quotes: {
       cols: ['Date', 'Customer', 'Build Config', 'Total', 'Status', 'Actions'],
-      row: (r) => `
-        <td>${fmtDate(r.created_at)}</td>
-        <td class="name-col">${esc(r.name)}<br><span class="contact-col">${esc(r.phone)}</span></td>
+      row: r => `
+        <td style="white-space:nowrap;color:var(--text-secondary);font-size:0.78rem;">${fmtDate(r.created_at)}</td>
+        <td><div class="name-col">${esc(r.name)}</div><div class="sub-col">${esc(r.phone)}</div></td>
         <td class="build-cfg">${fmtBuild(r.build_config)}</td>
-        <td style="font-weight:600;color:var(--blue)">RM ${Number(r.total_price).toLocaleString()}</td>
+        <td style="font-weight:800;color:var(--neon-blue);font-family:var(--font-head);white-space:nowrap;">RM ${Number(r.total_price||0).toLocaleString()}</td>
         <td>${statusBadge(r.status)}</td>
         <td><div class="actions">
-          <button class="action-btn ok" onclick="updateStatus('quote','${r.id}','Reviewed')"><i class="fas fa-eye"></i> Reviewed</button>
-          <button class="action-btn" onclick="updateStatus('quote','${r.id}','Ordered')"><i class="fas fa-check-double"></i> Ordered</button>
-          <button class="action-btn del" onclick="deleteItem('quote','${r.id}')"><i class="fas fa-trash"></i></button>
+          <button class="action-btn ok" onclick="updateStatus('quote','${r.id}','Confirmed')" title="Confirm"><i class="fas fa-check"></i></button>
+          ${waLink(r.phone, r.name, 'PC Quote')}
+          <button class="action-btn del" onclick="deleteItem('quote','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
         </div></td>`
     },
     bookings: {
-      cols: ['Date', 'Customer', 'Service', 'Preferred Date', 'Notes', 'Status', 'Actions'],
-      row: (r) => `
-        <td>${fmtDate(r.created_at)}</td>
-        <td class="name-col">${esc(r.name)}<br><span class="contact-col">${esc(r.phone)}</span></td>
-        <td>${esc(r.service_name)}</td>
-        <td>${esc(r.preferred_date) || '<span class="contact-col">Not specified</span>'}</td>
-        <td class="msg-col">${esc(r.notes) || '-'}</td>
+      cols: ['Date', 'Customer', 'Service', 'Notes', 'Status', 'Actions'],
+      row: r => `
+        <td style="white-space:nowrap;color:var(--text-secondary);font-size:0.78rem;">${fmtDate(r.created_at)}</td>
+        <td><div class="name-col">${esc(r.name)}</div><div class="sub-col">${esc(r.phone)}</div></td>
+        <td>${esc(r.service_name) || '—'}</td>
+        <td class="msg-col" title="${esc(r.notes)}">${esc(r.notes) || '—'}</td>
         <td>${statusBadge(r.status)}</td>
         <td><div class="actions">
-          <button class="action-btn ok" onclick="updateStatus('booking','${r.id}','Confirmed')"><i class="fas fa-check"></i> Confirm</button>
-          <button class="action-btn" onclick="updateStatus('booking','${r.id}','Completed')"><i class="fas fa-flag-checkered"></i> Done</button>
-          <button class="action-btn del" onclick="deleteItem('booking','${r.id}')"><i class="fas fa-trash"></i></button>
-        </div></td>`
-    },
-    applications: {
-      cols: ['Date', 'Name', 'Contact', 'Position', 'Experience', 'Resume', 'Status', 'Actions'],
-      row: (r) => `
-        <td>${fmtDate(r.created_at)}</td>
-        <td class="name-col">${esc(r.name)}</td>
-        <td class="contact-col">${esc(r.email)}<br>${esc(r.phone)}</td>
-        <td>${esc(r.position)}</td>
-        <td>${esc(r.experience)}</td>
-        <td>${r.resume_filename ? `<a href="/admin/api/download-resume/${r.resume_filename}" class="action-btn ok" style="text-decoration:none"><i class="fas fa-download"></i> CV</a>` : '<span class="contact-col">None</span>'}</td>
-        <td>${statusBadge(r.status)}</td>
-        <td><div class="actions">
-          <button class="action-btn ok" onclick="updateStatus('application','${r.id}','Shortlisted')"><i class="fas fa-star"></i> Shortlist</button>
-          <button class="action-btn del" onclick="updateStatus('application','${r.id}','Rejected')"><i class="fas fa-times"></i> Reject</button>
-          <button class="action-btn del" onclick="deleteItem('application','${r.id}')"><i class="fas fa-trash"></i></button>
+          <button class="action-btn ok" onclick="updateStatus('booking','${r.id}','Confirmed')" title="Confirm"><i class="fas fa-check"></i></button>
+          ${waLink(r.phone, r.name, 'Service Booking')}
+          <button class="action-btn del" onclick="deleteItem('booking','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
         </div></td>`
     },
     appointments: {
-      cols: ['Date', 'Customer', 'Contact', 'Service', 'Requested Date', 'Status', 'Actions'],
-      row: (r) => `
-        <td>${fmtDate(r.created_at)}</td>
-        <td class="name-col">${esc(r.name)}</td>
-        <td class="contact-col">${esc(r.email)}<br>${esc(r.phone)}</td>
-        <td>${esc(r.service_type || r.service || '-')}</td>
-        <td>${esc(r.preferred_date) || '-'}</td>
+      cols: ['Submitted', 'Service', 'Customer', 'Preferred Time', 'Status', 'Actions'],
+      row: r => `
+        <td style="white-space:nowrap;color:var(--text-secondary);font-size:0.78rem;">${fmtDate(r.created_at)}</td>
+        <td>${esc(r.service_type || 'General')}</td>
+        <td><div class="name-col">${esc(r.name)}</div><div class="sub-col">${esc(r.phone)}</div></td>
+        <td style="white-space:nowrap;">${esc(r.preferred_date)} <span style="color:var(--text-secondary)">at</span> ${esc(r.preferred_time)}</td>
         <td>${statusBadge(r.status)}</td>
         <td><div class="actions">
-          <button class="action-btn ok" onclick="updateStatus('appointment','${r.id}','Confirmed')"><i class="fas fa-check"></i> Confirm</button>
-          <button class="action-btn del" onclick="deleteItem('appointment','${r.id}')"><i class="fas fa-trash"></i></button>
+          <button class="action-btn ok" onclick="updateStatus('appointment','${r.id}','Confirmed')" title="Confirm"><i class="fas fa-calendar-check"></i></button>
+          ${waLink(r.phone, r.name, 'Appointment')}
+          <button class="action-btn del" onclick="deleteItem('appointment','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
         </div></td>`
+    },
+    applications: {
+      cols: ['Date', 'Applicant', 'Position', 'Contact', 'Status', 'Actions'],
+      row: r => `
+        <td style="white-space:nowrap;color:var(--text-secondary);font-size:0.78rem;">${fmtDate(r.created_at)}</td>
+        <td class="name-col">${esc(r.name)}</td>
+        <td>${esc(r.position) || '—'}</td>
+        <td><div>${esc(r.phone)}</div><div class="sub-col">${esc(r.email)}</div></td>
+        <td>${statusBadge(r.status)}</td>
+        <td><div class="actions">
+          <button class="action-btn ok" onclick="updateStatus('application','${r.id}','Reviewed')" title="Mark reviewed"><i class="fas fa-eye"></i></button>
+          ${r.resume_filename ? `<a href="${API}/admin/api/download-resume/${r.resume_filename}" class="action-btn" title="Download Resume" target="_blank"><i class="fas fa-file-download"></i></a>` : ''}
+          ${mailLink(r.email, r.name)}
+          <button class="action-btn del" onclick="deleteItem('application','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+        </div></td>`
+    },
+    inventory: {
+      cols: ['Image', 'Product', 'Category', 'Price', 'Stock', 'Actions'],
+      row: r => {
+        const imgHtml = (() => {
+          if (!r.image) return `<i class="fas fa-image" style="color:var(--text-secondary)"></i>`;
+          if (!r.image.includes('/')) return `<span style="font-size:1.4rem">${r.image}</span>`;
+          const url = r.image.startsWith('http') ? r.image : API + (r.image.startsWith('/') ? r.image : '/' + r.image);
+          return `<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-exclamation-triangle\\' style=\\'color:var(--neon-red)\\'></i>'">`;
+        })();
+        const stock = Number(r.stock || 0);
+        return `
+          <td style="width:60px">
+            <div style="width:46px;height:46px;background:rgba(0,0,0,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);">${imgHtml}</div>
+          </td>
+          <td>
+            <div class="name-col">${esc(r.name)} ${r.featured ? '<i class="fas fa-star" style="color:var(--neon-yellow);font-size:0.7rem;" title="Featured"></i>' : ''}</div>
+            ${r.badge || r.health ? `<div class="sub-col" style="color:var(--neon-blue)">${esc(r.badge || (r.health + '% Health'))}</div>` : ''}
+          </td>
+          <td><span class="badge badge-cat">${esc(r.category)}</span></td>
+          <td style="font-weight:800;color:var(--neon-green);font-family:var(--font-head);">RM ${Number(r.price||0).toLocaleString()}</td>
+          <td><span class="${stockClass(stock)}">${stock}</span></td>
+          <td><div class="actions">
+            <button class="action-btn ok" onclick='editInventoryItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
+            <button class="action-btn del" onclick="deleteItem('inventory','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+          </div></td>`;
+      }
+    },
+    pcs: {
+      cols: ['Photo', 'Tier', 'Model Name', 'Price', 'Status', 'Actions'],
+      row: r => {
+        const photoHtml = r.photo_url ? `<img src="${esc(r.photo_url)}" style="width:100%;height:100%;object-fit:cover">` : `<i class="fas fa-desktop" style="color:var(--text-secondary)"></i>`;
+        return `
+          <td style="width:60px">
+            <div style="width:46px;height:46px;background:rgba(0,0,0,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);">${photoHtml}</div>
+          </td>
+          <td><span class="badge" style="background:var(--blue);color:white">${esc(r.tier_name)}</span><br><span style="font-size:0.7rem;color:var(--text-secondary)">${esc(r.tier_badge)}</span></td>
+          <td><div class="name-col">${esc(r.name)}</div></td>
+          <td><div style="font-weight:800;color:var(--neon-green);font-family:var(--font-head);">RM ${Number(r.price||0).toLocaleString()}</div>${r.discount ? `<div style="font-size:0.75rem;color:var(--neon-red)"><i class="fas fa-tag"></i> Promo: ${esc(r.discount)}</div>` : ''}</td>
+          <td>${r.featured ? '<span class="badge badge-done">Featured Slider</span>' : '<span class="badge badge-cat">Standard</span>'}</td>
+          <td><div class="actions">
+            <button class="action-btn ok" onclick='editPcItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
+            <button class="action-btn del" onclick="deleteItem('prebuilt_pcs','${r._id || r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+          </div></td>`;
+      }
+    },
+    tips: {
+      cols: ['Preview', 'Title', 'Media Type', 'Tags', '-' , 'Actions'],
+      row: r => {
+        const mediaHtml = r.media_type === 'image' ? `<i class="fas fa-image" style="color:var(--neon-blue)"></i>` : `<i class="fas fa-video" style="color:var(--neon-red)"></i>`;
+        return `
+          <td style="width:60px">
+            <div style="width:46px;height:46px;background:rgba(0,0,0,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);">${mediaHtml}</div>
+          </td>
+          <td><div class="name-col">${esc(r.title)}</div><div class="sub-col">${esc(r.description).substring(0, 50)}...</div></td>
+          <td><span class="badge" style="background:rgba(255,255,255,0.1)">${esc(r.media_type).toUpperCase()}</span></td>
+          <td>${(r.tags || []).map(t => `<span class="badge badge-cat">${esc(t)}</span>`).join(' ')}</td>
+          <td></td>
+          <td><div class="actions">
+            <button class="action-btn ok" onclick='editTipItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
+            <button class="action-btn del" onclick="deleteItem('it_tips','${r._id || r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+          </div></td>`;
+      }
     }
   };
 
-  const cfg = configs[tab];
+  const cfg = CONFIGS[tab];
   head.innerHTML = `<tr>${cfg.cols.map(c => `<th>${c}</th>`).join('')}</tr>`;
-  body.innerHTML = data.map(r => `<tr>${cfg.row(r)}</tr>`).join('');
+  body.innerHTML = data.map((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = cfg.row(r);
+    tr.style.animationDelay = `${i * 30}ms`;
+    return tr.outerHTML;
+  }).join('');
 }
 
-/* ===== ACTIONS ===== */
+$('invCatFilter').addEventListener('change', () => loadTab('inventory'));
+
+/* ─── SEARCH ─── */
+$('globalSearch').addEventListener('input', (e) => {
+  if (activeTab === 'hub') return;
+  renderTable(activeTab, lastData);
+});
+
+/* ─── STATUS UPDATE ─── */
 async function updateStatus(type, id, status) {
   try {
     const res = await fetch(API + '/admin/api/update-status', {
@@ -423,46 +1869,412 @@ async function updateStatus(type, id, status) {
       body: JSON.stringify({ type, id, status })
     });
     const d = await res.json();
-    if (d.success) { toast(`Status updated to "${status}"`); loadTab(activeTab); loadStats(); }
+    if (d.success) { toast(`Status → ${status}`, 'ok'); loadTab(activeTab); loadStats(); }
     else toast(d.error || 'Update failed', 'err');
-  } catch (_) { toast('Server error', 'err'); }
+  } catch(e) { toast('Network error', 'err'); }
 }
 
+/* ─── DELETE ─── */
 async function deleteItem(type, id) {
-  if (!confirm('Delete this record? This cannot be undone.')) return;
+  if (!confirm('Permanently delete this record? This cannot be undone.')) return;
   try {
-    const res = await fetch(API + '/admin/api/delete', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type, id })
-    });
+    let url;
+    // Content management types have their own dedicated DELETE routes
+    if (type === 'prebuilt_pcs') {
+      url = API + `/admin/api/prebuilt_pcs/${id}`;
+    } else if (type === 'it_tips') {
+      url = API + `/admin/api/it_tips/${id}`;
+    } else {
+      url = API + `/admin/api/delete/${type}/${id}`;
+    }
+    const res = await fetch(url, { method: 'DELETE' });
     const d = await res.json();
     if (d.success) { toast('Record deleted', 'ok'); loadTab(activeTab); loadStats(); }
     else toast(d.error || 'Delete failed', 'err');
-  } catch (_) { toast('Server error', 'err'); }
+  } catch(e) { toast('Network error', 'err'); }
 }
 
-/* ===== HELPERS ===== */
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ─── INVENTORY MODAL ─── */
+$('addInvBtn').onclick = () => {
+  $('inventoryForm').reset();
+  $('editId').value = '';
+  $('modalTitle').textContent = 'Deploy New Component';
+  $('imagePreview').innerHTML = '<span style="color:var(--text-secondary);font-size:0.8rem;">No image selected</span>';
+  $('uploadStatus').textContent = '';
+  openModal();
+};
+
+window.editInventoryItem = (item) => {
+  $('editId').value    = item.id;
+  $('itemName').value  = item.name;
+  $('itemPrice').value = item.price;
+  $('itemCat').value   = item.category;
+  $('itemStock').value = item.stock;
+  $('itemHealth').value = item.health || item.badge || '';
+  $('itemSpecs').value = item.specs || '';
+  $('itemImagePath').value = item.image || '';
+  $('itemFeatured').checked = !!item.featured;
+
+  if (item.image && item.image.includes('/')) {
+    const url = item.image.startsWith('http') ? item.image : API + (item.image.startsWith('/') ? item.image : '/' + item.image);
+    $('imagePreview').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:contain;">`;
+  } else {
+    $('imagePreview').innerHTML = `<span style="color:var(--text-secondary);font-size:0.8rem;">${item.image || 'No image'}</span>`;
+  }
+
+  $('modalTitle').textContent = 'Edit Component';
+  $('uploadStatus').textContent = '';
+  openModal();
+};
+
+// Auto-preview on file select
+$('itemImageFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('imagePreview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;">`;
+  };
+  reader.readAsDataURL(file);
+  $('uploadStatus').textContent = `Selected: ${file.name} — click Save to upload`;
+  $('uploadStatus').style.color = 'var(--neon-blue)';
+});
+
+// Upload on save (via hidden flow)
+async function uploadFileIfNeeded() {
+  const fileInput = $('itemImageFile');
+  if (!fileInput.files[0]) return $('itemImagePath').value;
+  const formData = new FormData();
+  formData.append('image', fileInput.files[0]);
+  $('uploadStatus').textContent = 'Uploading…';
+  try {
+    const res = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: formData });
+    const d = await res.json();
+    if (d.success) {
+      $('itemImagePath').value = d.url;
+      $('uploadStatus').textContent = '✓ Upload complete';
+      $('uploadStatus').style.color = 'var(--neon-green)';
+      return d.url;
+    } else {
+      toast(d.error || 'Upload failed', 'err');
+      return $('itemImagePath').value;
+    }
+  } catch(e) {
+    toast('Upload network error', 'err');
+    return $('itemImagePath').value;
+  }
 }
-function fmtDate(d) {
-  if (!d) return '-';
-  return new Date(d).toLocaleString('en-MY', { dateStyle: 'short', timeStyle: 'short' });
+
+$('saveBtn').onclick = async () => {
+  const nameVal = $('itemName').value.trim();
+  const priceVal = $('itemPrice').value;
+  if (!nameVal) { toast('Product name is required', 'err'); return; }
+
+  $('saveBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+  $('saveBtn').disabled = true;
+
+  const imagePath = await uploadFileIfNeeded();
+  const id = $('editId').value;
+  const item = {
+    name: nameVal,
+    price: Number(priceVal),
+    category: $('itemCat').value,
+    stock: Number($('itemStock').value),
+    health: $('itemHealth').value,
+    specs: $('itemSpecs').value,
+    image: imagePath,
+    featured: $('itemFeatured').checked
+  };
+
+  const url    = id ? `${API}/admin/api/inventory/${id}` : `${API}/admin/api/inventory`;
+  const method = id ? 'PUT' : 'POST';
+
+  try {
+    const res = await fetch(url, {
+      method, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+    const d = await res.json();
+    if (d.success) {
+      toast(id ? 'Component updated' : 'Component added', 'ok');
+      closeModal();
+      loadTab('inventory');
+      loadStats();
+    } else { toast(d.error || 'Save failed', 'err'); }
+  } catch(e) { toast('Transmission failed', 'err'); }
+  finally {
+    $('saveBtn').innerHTML = '<i class="fas fa-save"></i> Save Record';
+    $('saveBtn').disabled = false;
+  }
+};
+
+function openModal()  { $('modalOverlay').classList.add('show'); }
+function closeModal() { $('modalOverlay').classList.remove('show'); }
+$('modalClose').onclick = closeModal;
+$('modalOverlay').addEventListener('click', e => { if (e.target === $('modalOverlay')) closeModal(); });
+
+/* ─── UTILS ─── */
+const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmtDate = s => s ? new Date(s).toLocaleString('en-MY', { dateStyle:'short', timeStyle:'short' }) : '—';
+
+function toast(msg, type = 'ok') {
+  const area = $('toastArea');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.style.position = 'relative';
+  t.innerHTML = `<i class="fas ${type === 'ok' ? 'fa-check-circle' : type === 'err' ? 'fa-times-circle' : 'fa-info-circle'}"></i> ${msg}<div class="toast-bar"></div>`;
+  area.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(20px)'; setTimeout(() => t.remove(), 350); }, 3200);
 }
-function statusBadge(s) {
-  const map = { 'New':'badge-new', 'Unread':'badge-new', 'Read':'badge-read',
-    'Confirmed':'badge-done', 'Completed':'badge-done', 'Shortlisted':'badge-done', 'Ordered':'badge-done',
-    'Pending':'badge-pending', 'Reviewed':'badge-pending',
-    'Rejected':'badge-rejected' };
-  const cls = map[s] || 'badge-new';
-  return `<span class="badge ${cls}">${s || 'New'}</span>`;
+
+function startClock() {
+  const update = () => {
+    const now = new Date();
+    $('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+  };
+  update();
+  setInterval(update, 1000);
 }
-function fmtBuild(cfg) {
-  if (!cfg || typeof cfg !== 'object') return '-';
-  return Object.entries(cfg).map(([k,v]) => `<b>${k}:</b> ${v}`).join('<br>');
+// ══════════════════════════════════════
+// DYNAMIC CONTENT LOGIC (PCs, Tips, Settings)
+// ══════════════════════════════════════
+
+async function loadSettings() {
+  try {
+    const res = await fetch(API + '/admin/api/settings');
+    const d = await res.json();
+    if (d.success) {
+      $('setFestival').value = d.data.active_festival || 'none';
+      $('setTipsCount').value = d.data.tips_display_count || 0;
+    }
+  } catch(e) { console.error('Failed to load settings', e); }
 }
+
+window.saveSettings = async () => {
+  const active_festival = $('setFestival').value;
+  const tips_display_count = $('setTipsCount').value;
+  try {
+    const res = await fetch(API + '/admin/api/settings', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ active_festival, tips_display_count })
+    });
+    const d = await res.json();
+    if (d.success) toast('Settings Saved', 'ok');
+    else toast('Failed to save settings', 'err');
+  } catch(e) { toast('Network error', 'err'); }
+}
+
+// ── Pre-built PCs Modal ──
+$('addPcBtn').onclick = () => {
+  $('pcForm').reset();
+  $('pcEditId').value = '';
+  $('pcModalTitle').textContent = 'Add Pre-built PC';
+  $('pcImagePreview').innerHTML = '<span style="color:var(--text-secondary);font-size:0.8rem;">No image selected</span>';
+  $('pcUploadStatus').textContent = '';
+  openPcModal();
+};
+
+window.editPcItem = (item) => {
+  $('pcEditId').value      = item._id || item.id;
+  $('pcTierName').value    = item.tier_name || '';
+  $('pcTierBadge').value   = item.tier_badge || '';
+  $('pcName').value        = item.name || '';
+  $('pcPrice').value       = item.price || 0;
+  $('pcDiscount').value    = item.discount || '';
+  $('pcSpecs').value       = (item.specs || []).join('\\n');
+  $('pcColor').value       = item.tier_color || '#0066FF';
+  $('pcFeatured').checked  = item.featured || false;
+  $('pcImagePath').value   = item.photo_url || '';
+  
+  if (item.photo_url) {
+    const url = item.photo_url.startsWith('http') ? item.photo_url : API + '/' + item.photo_url;
+    $('pcImagePreview').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:contain;">`;
+  } else {
+    $('pcImagePreview').innerHTML = '<span style="color:var(--text-secondary);font-size:0.8rem;">No photo selected</span>';
+  }
+  
+  $('pcModalTitle').textContent = 'Edit Pre-built PC';
+  openPcModal();
+};
+
+function openPcModal() { $('pcModalOverlay').classList.add('show'); }
+function closePcModal() { $('pcModalOverlay').classList.remove('show'); }
+// Use delegated events so binding works even if HTML is after <script>
+document.addEventListener('click', e => {
+  if (e.target && e.target.id === 'pcModalClose') closePcModal();
+  if (e.target && e.target.id === 'pcModalOverlay') closePcModal();
+  if (e.target && e.target.id === 'tipModalClose') closeTipModal();
+  if (e.target && e.target.id === 'tipModalOverlay') closeTipModal();
+});
+
+$('pcImageFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => $('pcImagePreview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:contain;">`;
+  reader.readAsDataURL(file);
+  $('pcUploadStatus').textContent = 'Ready to upload on save.';
+});
+
+$('savePcBtn').onclick = async () => {
+  $('savePcBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+  $('savePcBtn').disabled = true;
+
+  try {
+    let finalImagePath = $('pcImagePath').value;
+    const fileInput = $('pcImageFile');
+    if (fileInput.files[0]) {
+      const fd = new FormData();
+      fd.append('image', fileInput.files[0]);
+      const res = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const d = await res.json();
+      if (d.success) finalImagePath = d.url;
+    }
+
+    const id = $('pcEditId').value;
+    const item = {
+      tier_name: $('pcTierName').value,
+      tier_badge: $('pcTierBadge').value,
+      name: $('pcName').value,
+      price: $('pcPrice').value,
+      discount: $('pcDiscount').value,
+      tier_color: $('pcColor').value,
+      featured: $('pcFeatured').checked,
+      photo_url: finalImagePath,
+      specs: $('pcSpecs').value.split('\\n').filter(s => s.trim() !== '')
+    };
+
+    const url = id ? `${API}/admin/api/prebuilt_pcs/${id}` : `${API}/admin/api/prebuilt_pcs`;
+    const res2 = await fetch(url, {
+      method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+    const d2 = await res2.json();
+    if (d2.success) {
+      toast('PC Saved', 'ok');
+      closePcModal();
+      loadTab('pcs');
+    } else toast(d2.error || 'Save failed', 'err');
+  } catch(e) { toast('Error saving PC', 'err'); }
+  finally {
+    $('savePcBtn').innerHTML = '<i class="fas fa-save"></i> Save PC Record';
+    $('savePcBtn').disabled = false;
+  }
+};
+
+
+// ── IT Tips Modal ──
+$('addTipBtn').onclick = () => {
+  $('tipForm').reset();
+  $('tipEditId').value = '';
+  $('tipMediaUrl').value = '';
+  $('tipMediaPreview').innerHTML = '';
+  $('tipUploadStatus').textContent = '';
+  $('tipModalTitle').textContent = 'Add IT Tip / Widget';
+  openTipModal();
+};
+
+// Live preview on file select
+$('tipMediaFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  $('tipUploadStatus').textContent = `Selected: ${file.name} — will upload on save`;
+  $('tipUploadStatus').style.color = 'var(--neon-blue)';
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      $('tipMediaPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%;max-height:80px;border-radius:8px;margin-top:4px;">`;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    $('tipMediaPreview').innerHTML = `<div style="font-size:0.75rem;color:var(--neon-blue);"><i class="fas fa-video"></i> ${file.name}</div>`;
+  }
+});
+
+window.editTipItem = (item) => {
+  $('tipEditId').value      = item._id || item.id;
+  $('tipTitle').value       = item.title || '';
+  $('tipDesc').value        = item.description || '';
+  $('tipMediaType').value   = item.media_type || 'video';
+  $('tipMediaUrl').value    = item.media_url || '';
+  $('tipTags').value        = (item.tags || []).join(', ');
+
+  // Show existing media preview
+  if (item.media_url) {
+    const url = item.media_url.startsWith('http') ? item.media_url : API + '/' + item.media_url;
+    if (item.media_type === 'image') {
+      $('tipMediaPreview').innerHTML = `<img src="${url}" style="max-width:100%;max-height:80px;border-radius:8px;margin-top:4px;">`;
+    } else {
+      $('tipMediaPreview').innerHTML = `<div style="font-size:0.75rem;color:var(--neon-blue);"><i class="fas fa-video"></i> ${item.media_url}</div>`;
+    }
+    $('tipUploadStatus').textContent = 'Current file loaded.';
+    $('tipUploadStatus').style.color = 'var(--text-secondary)';
+  } else {
+    $('tipMediaPreview').innerHTML = '';
+    $('tipUploadStatus').textContent = '';
+  }
+
+  $('tipModalTitle').textContent = 'Edit IT Tip';
+  openTipModal();
+};
+
+function openTipModal() { $('tipModalOverlay').classList.add('show'); }
+function closeTipModal() { $('tipModalOverlay').classList.remove('show'); }
+// Tip modal close handled by shared document delegation above
+
+$('saveTipBtn').onclick = async () => {
+  $('saveTipBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+  $('saveTipBtn').disabled = true;
+
+  try {
+    // Upload file first if one was selected
+    let finalMediaUrl = $('tipMediaUrl').value;
+    const fileInput = $('tipMediaFile');
+    if (fileInput.files[0]) {
+      $('tipUploadStatus').textContent = 'Uploading…';
+      const fd = new FormData();
+      fd.append('image', fileInput.files[0]);
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upData = await upRes.json();
+      if (upData.success) {
+        finalMediaUrl = upData.url;
+        $('tipMediaUrl').value = finalMediaUrl;
+        $('tipUploadStatus').textContent = '✓ Upload complete';
+        $('tipUploadStatus').style.color = 'var(--neon-green)';
+      } else {
+        toast(upData.error || 'Upload failed', 'err');
+      }
+    }
+
+    const id = $('tipEditId').value;
+    const item = {
+      title: $('tipTitle').value,
+      description: $('tipDesc').value,
+      media_type: $('tipMediaType').value,
+      media_url: finalMediaUrl,
+      tags: $('tipTags').value.split(',').map(s=>s.trim()).filter(s=>s)
+    };
+
+    const url = id ? `${API}/admin/api/it_tips/${id}` : `${API}/admin/api/it_tips`;
+    const res = await fetch(url, {
+      method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+    const d = await res.json();
+    if (d.success) {
+      toast('IT Tip Saved', 'ok');
+      closeTipModal();
+      loadTab('tips');
+    } else toast(d.error || 'Save failed', 'err');
+  } catch(e) { toast('Error saving Tip', 'err'); }
+  finally {
+    $('saveTipBtn').innerHTML = '<i class="fas fa-save"></i> Save Tip';
+    $('saveTipBtn').disabled = false;
+  }
+};
 </script>
+
+
 </body>
 </html>
+

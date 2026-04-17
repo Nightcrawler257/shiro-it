@@ -31,42 +31,8 @@ html = html[:build_pc_start] + html[build_pc_start:].replace('<div id="page-buil
 # Now find the end of the new build-pc-services block
 new_build_pc_end = html.find('</div>\n\n        <!-- ========== CONTACT PAGE ========== -->')
 
-# 3. Create placeholder blocks
-onsite_ariz_html = """
-            <!-- Onsite Projects -->
-            <section class="section" id="section-onsite">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge badge-red"><i class="fas fa-network-wired"></i> <span data-translate="onsite_badge">Onsite Projects</span></span>
-                        <h2><span data-translate="onsite_h2_1">Expert</span> <span class="gradient-text" data-translate="onsite_h2_2">Onsite Setups</span></h2>
-                    </div>
-                    <div class="card" style="padding: 2rem; margin-bottom: 2rem; text-align: center;">
-                        <p data-translate="onsite_desc" style="font-size: 1.1rem; color: var(--text-secondary);">
-                            We provide professional onsite services including network infrastructure setup, security camera installation, and corporate IT setups. Our team ensures that your environment is equipped with reliable and secure technology solutions tailored to your specific operational needs.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Ariz Digital -->
-            <section class="section" id="section-ariz">
-                <div class="container">
-                    <div class="section-header">
-                        <span class="badge badge-blue"><i class="fas fa-building"></i> <span data-translate="ariz_badge">Ariz Digital</span></span>
-                        <h2><span data-translate="ariz_h2_1">Powered by</span> <span class="gradient-text" data-translate="ariz_h2_2">Ariz Digital</span></h2>
-                    </div>
-                    <div class="card" style="padding: 2rem; text-align: center;">
-                        <p data-translate="ariz_desc" style="font-size: 1.1rem; color: var(--text-secondary);">
-                            Ariz Digital is our trusted partner in delivering comprehensive digital solutions. 
-                            [Detailed information about Ariz Digital will be updated here.]
-                        </p>
-                    </div>
-                </div>
-            </section>
-"""
-
-# Insert Services and Placeholders before the closing </div> of build-pc-services
-html = html[:new_build_pc_end] + '\\n' + services_content + '\\n' + onsite_ariz_html + '\\n' + html[new_build_pc_end:]
+# Insert Services before the closing </div> of build-pc-services
+html = html[:new_build_pc_end] + '\\n' + services_content + '\\n' + html[new_build_pc_end:]
 
 # 4. Remove the old services block entirely
 # Need to find it again because indices might have shifted

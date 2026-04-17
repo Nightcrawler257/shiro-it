@@ -32,8 +32,8 @@ def create_app():
 
     app.config.from_object(Config)
 
-    # Enable CORS for API routes
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    # Enable CORS for all routes (important for local development)
+    CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
 
     # Initialize MongoDB
     mongo.init_app(app)
@@ -48,6 +48,8 @@ def create_app():
     from routes.quotes import quotes_bp
     from routes.services import services_bp
     from routes.admin import admin_bp
+    from routes.inventory import inventory_bp
+    from routes.content import content_bp
 
     app.register_blueprint(contact_bp)
     app.register_blueprint(jobs_bp)
@@ -55,6 +57,8 @@ def create_app():
     app.register_blueprint(quotes_bp)
     app.register_blueprint(services_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(inventory_bp)
+    app.register_blueprint(content_bp)
 
     # API index — shows available endpoints
     @app.route('/api')
@@ -71,6 +75,11 @@ def create_app():
                 'POST /api/service-booking': 'Book a service',
             }
         })
+    # Serve uploaded files
+    @app.route('/uploads/<path:filename>')
+    def serve_uploads(filename):
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
     # Serve static files from the parent directory (SHIRO IT folder)
     @app.route('/')
     def serve_index():
@@ -87,13 +96,31 @@ def create_app():
             return send_from_directory(PARENT_DIR, filename + '.html')
         return 'Page not found', 404
 
-    # Verify MongoDB connection
+    # Verify MongoDB connection + ensure default admin always exists
     with app.app_context():
         try:
             mongo.db.command('ping')
             print("[OK] MongoDB connected")
+
+            # Upsert a guaranteed fallback admin account on every startup
+            from werkzeug.security import generate_password_hash
+            DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'admin')
+            DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'shiro2026')
+
+            mongo.db.staff_users.update_one(
+                {'username': DEFAULT_ADMIN_USERNAME},
+                {'$setOnInsert': {
+                    'username': DEFAULT_ADMIN_USERNAME,
+                    'password': generate_password_hash(DEFAULT_ADMIN_PASSWORD)
+                }},
+                upsert=True
+            )
+            count = mongo.db.staff_users.count_documents({})
+            print(f"[OK] Staff users in DB: {count}  (fallback -> '{DEFAULT_ADMIN_USERNAME}' / '{DEFAULT_ADMIN_PASSWORD}')")
+
         except Exception as e:
-            print(f"[WARNING] MongoDB not available: {e}")
+            safe_err = str(e).encode('ascii', errors='replace').decode('ascii')
+            print(f"[WARNING] MongoDB not available: {safe_err}")
             print("  Make sure MongoDB is running or MONGO_URI is set correctly")
 
     return app
@@ -112,9 +139,8 @@ if __name__ == '__main__':
 |  API Base: http://localhost:{port}/api           |
 +==============================================+
 |  Database: MongoDB (shiro_it)                |
-|  Admin Login:                                |
-|    Username: admin                           |
-|    Password: shiroadmin2026                  |
+|  Staff Registration Code:                    |
+|    Code: {Config.STAFF_REGISTRATION_CODE}                  |
 +==============================================+
     """)
 
