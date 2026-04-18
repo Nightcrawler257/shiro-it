@@ -458,9 +458,18 @@ h5 {
 }
 
 /* ========== SPA ========== */
+/* Overflow containment — prevents any page content from bleeding horizontally */
+#spa-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
 .page {
   display: none;
   opacity: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   transition: opacity 0.3s ease;
 }
 .page.active {
@@ -720,7 +729,7 @@ body.light .nav-menu > li > a.active {
 }
 /* Mobile nav overlay (backdrop) */
 .nav-overlay {
-  display: none;
+  display: block;              /* Always rendered for smooth transition */
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.6);
@@ -728,10 +737,14 @@ body.light .nav-menu > li > a.active {
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  pointer-events: none;        /* NEVER block clicks when menu is closed */
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 .nav-overlay.active {
   opacity: 1;
+  pointer-events: auto;        /* Only intercept clicks when menu IS open */
+  visibility: visible;
 }
 
 /* ========== HERO ========== */
@@ -3058,17 +3071,18 @@ body.light .social-float-btn::before {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Mobile adjustments */
-@media (max-width: 640px) {
+/* Mobile: smaller buttons, closer to edge, no tooltip labels */
+@media (max-width: 768px) {
   .social-float {
-    bottom: 1.25rem;
-    right: 1.25rem;
-    gap: 0.5rem;
+    bottom: 1rem;
+    right: 0.5rem;
+    gap: 0.4rem;
   }
   .social-float-btn {
-    width: 42px;
-    height: 42px;
-    font-size: 1rem;
+    width: 38px;
+    height: 38px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   }
   .social-float-btn::before {
     display: none;
@@ -3230,10 +3244,8 @@ body.light .social-float-btn::before {
     opacity: 1;
     pointer-events: auto;
   }
-  /* Show overlay backdrop when menu is open */
-  .nav-overlay {
-    display: block;
-  }
+  /* Overlay is always display:block now, no need to override display */
+  /* Just ensure it's visible via the .active class */
   .nav-menu > li > a {
     display: flex;
     align-items: center;
