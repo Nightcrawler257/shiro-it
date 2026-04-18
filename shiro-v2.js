@@ -34,10 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (link.getAttribute("data-page") === pageId)
         link.classList.add("active");
     });
-    // Close mobile menu
+    // Close mobile menu (the full close function is defined further below,
+    // so we do it inline here to keep order-independence)
     navMenu.classList.remove("open");
-    document.getElementById("menuToggle").querySelector("i").className =
-      "fas fa-bars";
+    const _mt = document.getElementById("menuToggle");
+    if (_mt) _mt.querySelector("i").className = "fas fa-bars";
+    const _ov = document.getElementById("navOverlay");
+    if (_ov) _ov.classList.remove("active");
     // Trigger animations
     setTimeout(() => runScrollAnimations(), 300);
     // Update URL hash
@@ -92,18 +95,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== MOBILE MENU ===== */
   const menuToggle = document.getElementById("menuToggle");
+  const navOverlay = document.getElementById("navOverlay");
+
+  function closeMobileMenu() {
+    navMenu.classList.remove("open");
+    if (navOverlay) navOverlay.classList.remove("active");
+    menuToggle.querySelector("i").className = "fas fa-bars";
+  }
+
   menuToggle.addEventListener("click", () => {
-    navMenu.classList.toggle("open");
-    const icon = menuToggle.querySelector("i");
-    icon.className = navMenu.classList.contains("open")
-      ? "fas fa-times"
-      : "fas fa-bars";
+    const isOpen = navMenu.classList.toggle("open");
+    menuToggle.querySelector("i").className = isOpen ? "fas fa-times" : "fas fa-bars";
+    if (navOverlay) navOverlay.classList.toggle("active", isOpen);
   });
 
-  // Mobile dropdowns
+  // Close menu when tapping the backdrop overlay
+  if (navOverlay) {
+    navOverlay.addEventListener("click", closeMobileMenu);
+  }
+
+  // Mobile dropdowns (updated breakpoint to match CSS: 1024px)
   document.querySelectorAll(".dropdown > a").forEach((trigger) => {
     trigger.addEventListener("click", (e) => {
-      if (window.innerWidth <= 640) {
+      if (window.innerWidth <= 1024) {
         e.preventDefault();
         trigger.parentElement.classList.toggle("open");
       }

@@ -223,6 +223,8 @@ body.light {
 }
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 body {
   font-family: var(--font-body);
@@ -230,6 +232,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100vw;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -301,8 +304,9 @@ h5 {
 }
 .container {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
 }
 
 /* ========== UTILITY ========== */
@@ -526,7 +530,8 @@ body.light .nav-menu > li > a.active {
   gap: 8px;
 }
 .logo-img {
-  height: 80px;
+  height: 52px;
+  width: auto;
 }
 .logo-fallback {
   display: flex;
@@ -698,13 +703,35 @@ body.light .nav-menu > li > a.active {
 }
 .menu-toggle {
   display: none;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 8px;
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
   font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+.menu-toggle:hover {
+  border-color: var(--border-hover);
+  color: white;
+}
+/* Mobile nav overlay (backdrop) */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 998;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nav-overlay.active {
+  opacity: 1;
 }
 
 /* ========== HERO ========== */
@@ -1264,19 +1291,23 @@ body.light .nav-menu > li > a.active {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2.5rem 1.75rem;
+  padding: 2rem 1.5rem;
   min-height: 400px;
   gap: 0.75rem;
   background: var(--gradient-card);
+  width: 100%;
+  overflow: hidden;
 }
 .slide-poster-fallback h3 {
   font-size: 1.4rem;
   line-height: 1.25;
+  word-break: break-word;
 }
 .slide-poster-fallback p {
   font-size: 0.85rem;
   color: var(--text-secondary);
-  max-width: 280px;
+  max-width: 100%;
+  word-break: break-word;
 }
 .slide-fallback-icon {
   width: 70px;
@@ -3049,15 +3080,19 @@ body.light .social-float-btn::before {
   .hero-content {
     grid-template-columns: 1fr;
     text-align: center;
+    width: 100%;
+    overflow: hidden;
   }
   .hero-visual.hero-slider-container {
     display: block;
-    max-width: 560px;
+    max-width: 100%;
+    width: 100%;
     margin: 2rem auto 0;
   }
   .hero-desc {
     margin-left: auto;
     margin-right: auto;
+    max-width: 100%;
   }
   .hero-features {
     justify-content: center;
@@ -3162,27 +3197,78 @@ body.light .social-float-btn::before {
   }
 }
 
-@media (max-width: 640px) {
+/* ===== MOBILE NAV — compact dropdown overlay ≤1024px ===== */
+@media (max-width: 1024px) {
+  /* Compact pill-style dropdown card — no scrolling, overlays content */
   .nav-menu {
     display: none;
     position: fixed;
     top: var(--nav-height);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--bg-primary);
+    left: 1rem;
+    right: 1rem;
+    bottom: auto;                   /* auto height — no full screen */
+    background: rgba(7, 9, 20, 0.98);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
     flex-direction: column;
-    padding: 2rem 1.5rem;
-    gap: 0.5rem;
-    overflow-y: auto;
-    z-index: 999;
+    padding: 0.75rem 0.75rem 1rem;
+    gap: 0.2rem;
+    overflow: visible;
+    z-index: 1001;                  /* above navbar backdrop */
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
   }
   .nav-menu.open {
     display: flex;
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* Show overlay backdrop when menu is open */
+  .nav-overlay {
+    display: block;
   }
   .nav-menu > li > a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 0.75rem 1rem;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border-bottom: none;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-menu > li > a:hover,
+  .nav-menu > li > a.active {
+    background: rgba(255,255,255,0.07);
+    color: white;
+  }
+  /* Divider between items */
+  .nav-menu > li + li {
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  /* CTA button — full width, centered */
+  .nav-menu > li > a.nav-cta {
+    margin-top: 0.4rem;
+    border-radius: 8px;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+  }
+  .nav-menu > li + li:has(a.nav-cta) {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 0.25rem;
+    padding-top: 0.25rem;
   }
   .dropdown-menu {
     position: static;
@@ -3193,6 +3279,7 @@ body.light .social-float-btn::before {
     border: none;
     padding-left: 1rem;
     display: none;
+    background: transparent;
   }
   .dropdown.open .dropdown-menu {
     display: block;
@@ -3200,15 +3287,81 @@ body.light .social-float-btn::before {
   .menu-toggle {
     display: flex;
   }
+}
+
+/* ===== PHONE PORTRAIT — ≤640px core layout fixes ===== */
+@media (max-width: 640px) {
+
+  /* --- Navigation compact items --- */
+  .nav-menu {
+    left: 0.5rem;
+    right: 0.5rem;
+  }
+  .nav-menu > li > a {
+    padding: 0.65rem 0.85rem;
+    font-size: 0.88rem;
+  }
+
+  /* --- Typography --- */
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 1.9rem;
+    line-height: 1.15;
+    word-break: break-word;
+  }
+  .hero-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
   }
   .section-header h2 {
-    font-size: 1.7rem;
+    font-size: 1.55rem;
   }
   .page-hero {
-    padding: 8rem 0 3rem;
+    padding: 7rem 0 2.5rem;
   }
+
+  /* --- Hero features row — stack vertically --- */
+  .hero-features {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .hero-feature {
+    font-size: 0.82rem;
+  }
+
+  /* --- Hero buttons — full width, stacked --- */
+  .hero-buttons {
+    flex-direction: column;
+    gap: 0.65rem;
+    align-items: stretch;
+    margin-bottom: 1.5rem;
+  }
+  .hero-buttons .btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* --- Trust row --- */
+  .hero-trust {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  /* --- Hero badge clip adjustment --- */
+  .hero-badge {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.75rem;
+  }
+
+  /* --- Section spacing --- */
+  .section {
+    padding: 3rem 0;
+  }
+
+  /* --- Content grids --- */
   .services-grid {
     grid-template-columns: 1fr;
   }
@@ -3225,7 +3378,8 @@ body.light .social-float-btn::before {
     grid-template-columns: 1fr;
   }
   .about-stats-inner {
-    gap: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
   .footer-links-group {
     grid-template-columns: 1fr;
@@ -3238,27 +3392,93 @@ body.light .social-float-btn::before {
   .process-grid {
     grid-template-columns: 1fr;
   }
+
+  /* --- Hero slider --- */
   .hero-slider-container {
     max-width: 100%;
   }
   .hero-slide {
-    min-height: 360px;
-    padding: 1.5rem 1.25rem;
+    min-height: 260px;
+    padding: 1.25rem 1rem;
   }
   .slide-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   .hero-slider-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 0.7rem;
+    width: 30px;
+    height: 30px;
+    font-size: 0.65rem;
   }
   .hero-slider-prev {
-    left: -10px;
+    left: -6px;
   }
   .hero-slider-next {
-    right: -10px;
+    right: -6px;
   }
+
+  /* --- Smaller logo on small phones --- */
+  .logo-img {
+    height: 44px;
+  }
+
+  /* --- CTA sections --- */
+  .cta-buttons {
+    flex-direction: column;
+    gap: 0.65rem;
+    align-items: stretch;
+  }
+  .cta-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* --- Cards compact on mobile --- */
+  .card {
+    padding: 1.25rem;
+  }
+
+  /* --- Stats grid 2-col --- */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* --- Social float smaller --- */
+  .social-float {
+    bottom: 1.25rem;
+    right: 1rem;
+    gap: 0.5rem;
+  }
+  .social-float-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1rem;
+  }
+  .social-float-btn::before {
+    display: none;
+  }
+
+  /* --- Prevent any stray horizontal overflow --- */
+  img, video, iframe, embed {
+    max-width: 100%;
+  }
+  .hero-section {
+    padding: 6rem 0 2.5rem;
+    min-height: auto;
+  }
+}
+
+/* ===== LANDSCAPE PHONE — short height, wider width ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .nav-menu {
+    padding: 0.75rem 1.25rem;
+    gap: 0.1rem;
+    overflow-y: auto;
+  }
+  .nav-menu > li > a {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+  --nav-height: 56px;
 }
 
 /* ========== SERVICES MARQUEE STRIP ========== */
