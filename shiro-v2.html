@@ -1485,21 +1485,21 @@
                             <span class="badge badge-blue">Full-time</span>
                             <h4>PC Build Technician</h4>
                             <p>Assemble and test custom gaming PCs with attention to detail and cable management.</p>
-                            <a href="mailto:erateknologiglobal@gmail.com" class="svc-cta">Apply Now <i
+                            <a href="#" class="svc-cta" onclick="openJobModal('PC Build Technician'); return false;">Apply Now <i
                                     class="fas fa-arrow-right"></i></a>
                         </div>
                         <div class="card career-card">
                             <span class="badge badge-red">Internship</span>
                             <h4>IT Support Intern</h4>
                             <p>Learn the ropes of IT support while assisting with real client systems.</p>
-                            <a href="mailto:erateknologiglobal@gmail.com" class="svc-cta">Apply Now <i
+                            <a href="#" class="svc-cta" onclick="openJobModal('IT Support Intern'); return false;">Apply Now <i
                                     class="fas fa-arrow-right"></i></a>
                         </div>
                         <div class="card career-card">
                             <span class="badge badge-blue">Full-time</span>
                             <h4>Sales & Customer Service</h4>
                             <p>Help customers choose the right PC build and provide excellent after-sales support.</p>
-                            <a href="mailto:erateknologiglobal@gmail.com" class="svc-cta">Apply Now <i
+                            <a href="#" class="svc-cta" onclick="openJobModal('Sales & Customer Service'); return false;">Apply Now <i
                                     class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -1606,6 +1606,66 @@
         <a href="https://tiktok.com/@shiroit" target="_blank" rel="noopener noreferrer" class="social-float-btn social-tiktok" aria-label="TikTok">
             <i class="fab fa-tiktok"></i>
         </a>
+    </div>
+
+    <!-- Job Application Modal -->
+    <div class="builder-modal-overlay" id="jobModalOverlay" style="display:none; z-index:9999;">
+        <div class="builder-modal" style="max-width: 650px;">
+            <div class="builder-modal-header">
+                <h3><i class="fas fa-briefcase"></i> Apply for <span id="jobModalPositionText">Position</span></h3>
+                <button class="builder-modal-close" onclick="closeJobModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="builder-modal-body">
+                <form id="jobApplicationForm" enctype="multipart/form-data">
+                    <input type="hidden" id="jobPositionInput" name="position" value="">
+                    
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label>Phone *</label>
+                            <input type="tel" name="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Availability *</label>
+                            <input type="text" name="availability" class="form-control" placeholder="E.g., Immediate, 2 weeks notice" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label>Highest Education Level *</label>
+                        <input type="text" name="education" class="form-control" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label>Relevant Experience *</label>
+                        <textarea name="experience" class="form-control" rows="3" placeholder="Briefly describe your relevant experience..." required></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label>Cover Letter (Optional)</label>
+                        <textarea name="cover_letter" class="form-control" rows="3" placeholder="Why do you want to join us?"></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label>Resume * (PDF, DOC, DOCX - up to 5MB)</label>
+                        <input type="file" name="resume" class="form-control" accept=".pdf,.doc,.docx" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
+                    <p id="jobFormMessage" style="margin-top: 10px; font-size: 0.9rem; text-align: center; display: none;"></p>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- PC Builder Component Selector Modal -->

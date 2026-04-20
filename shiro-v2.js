@@ -2138,4 +2138,62 @@ function showToast(message, type = "success") {
   // Initialize
   updateUI();
   fetchInventory();
+
+  /* ===== JOB APPLICATION MODAL ===== */
+  window.openJobModal = function(position) {
+    const titleText = document.getElementById('jobModalPositionText');
+    const inputField = document.getElementById('jobPositionInput');
+    const overlay = document.getElementById('jobModalOverlay');
+    if (titleText) titleText.textContent = position;
+    if (inputField) inputField.value = position;
+    if (overlay) overlay.style.display = 'flex';
+  };
+
+  window.closeJobModal = function() {
+    const overlay = document.getElementById('jobModalOverlay');
+    const form = document.getElementById('jobApplicationForm');
+    const msg = document.getElementById('jobFormMessage');
+    if (overlay) overlay.style.display = 'none';
+    if (form) form.reset();
+    if (msg) msg.style.display = 'none';
+  };
+
+  const jobApplicationForm = document.getElementById('jobApplicationForm');
+  if (jobApplicationForm) {
+    jobApplicationForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('jobFormMessage');
+      if (msg) {
+        msg.style.display = 'block';
+        msg.textContent = 'Submitting...';
+        msg.style.color = 'var(--text-secondary)';
+      }
+
+      const formData = new FormData(jobApplicationForm);
+
+      try {
+        const res = await fetch(API_BASE + '/api/job-application', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        
+        if (msg) {
+          if (data.success) {
+            msg.style.color = 'var(--accent, #4ade80)';
+            msg.textContent = data.message || 'Application submitted successfully!';
+            setTimeout(window.closeJobModal, 3000);
+          } else {
+            msg.style.color = 'var(--accent-red, #ff4444)';
+            msg.textContent = data.error || 'Submission failed.';
+          }
+        }
+      } catch (err) {
+        if (msg) {
+           msg.style.color = 'var(--accent-red, #ff4444)';
+           msg.textContent = 'Network error. Please try again later.';
+        }
+      }
+    });
+  }
 })();
