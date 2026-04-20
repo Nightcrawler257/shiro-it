@@ -3121,7 +3121,7 @@ body.light .social-float-btn::before {
 }
 
 /* ========== RESPONSIVE ========== */
-@media (max-width: 1024px) {
+@media (max-width: 1250px) {
   .hero-content {
     grid-template-columns: 1fr;
     text-align: center;
@@ -3132,7 +3132,7 @@ body.light .social-float-btn::before {
   }
   .hero-visual.hero-slider-container {
     display: block;
-    max-width: 100%;
+    max-width: 620px;
     width: 100%;
     min-width: 0;
     margin: 0 auto;
