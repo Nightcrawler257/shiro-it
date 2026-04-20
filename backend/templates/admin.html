@@ -396,7 +396,7 @@
   .main-column { flex: 1; min-width: 0; }
 
   /* ── HUB ── */
-  .hub-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+  .hub-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
   .chart-panel {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: 18px; padding: 1.5rem; height: 300px; position: relative;
@@ -893,26 +893,6 @@
               <div class="chart-panel">
                 <h4><i class="fas fa-chart-line"></i> &nbsp;SUBMISSION OVERVIEW</h4>
                 <canvas id="mainChart" style="height:230px;"></canvas>
-              </div>
-              <div class="network-panel">
-                <h4><i class="fas fa-satellite-dish"></i> &nbsp;SYSTEM STATUS</h4>
-                <div class="net-row">
-                  <div class="net-row-label">Database Uplink</div>
-                  <div class="net-row-value" style="color:var(--neon-green)">● CONNECTED</div>
-                </div>
-                <div class="net-row">
-                  <div class="net-row-label">Response Latency</div>
-                  <div class="net-row-value" style="color:var(--neon-blue)" id="netLatency">— ms</div>
-                </div>
-                <div class="net-row">
-                  <div class="net-row-label">Security Clearance</div>
-                  <div class="net-row-value" style="color:var(--neon-yellow)">LVL 4 — ENCRYPTED</div>
-                </div>
-                <div class="net-row">
-                  <div class="net-row-label">Session Token</div>
-                  <div class="net-row-value" style="color:var(--neon-green);font-size:0.75rem;" id="sessionToken">VALID</div>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -1375,13 +1355,6 @@ function initDashboard() {
   loadStats();
   loadTab('hub');
   startClock();
-  initSessionToken();
-}
-
-function initSessionToken() {
-  const tok = Math.random().toString(36).slice(2, 10).toUpperCase();
-  const el = $('sessionToken');
-  if (el) el.textContent = `SHR-${tok}`;
 }
 
 /* ─── STATS ─── */
@@ -1390,9 +1363,6 @@ async function loadStats() {
   try {
     const res = await fetch(API + '/admin/api/stats');
     const d = await res.json();
-    const ping = Math.round(performance.now() - t0);
-    const latEl = $('netLatency');
-    if (latEl) latEl.textContent = `${ping} ms — STABLE`;
 
     if (d.success) {
       statsCache = d.stats;
