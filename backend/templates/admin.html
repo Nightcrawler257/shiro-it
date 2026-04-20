@@ -1409,7 +1409,6 @@ async function loadStats() {
       // Update Overview tasks if elements exist
       if ($('overviewUnread')) animateNumber('overviewUnread', unread);
       if ($('overviewQuotes')) animateNumber('overviewQuotes', d.stats.quotes_new || 0);
-        : 'No new quotes';
       $('s-bookings-sub').innerHTML   = d.stats.bookings_new > 0
         ? `<span class="stat-badge-new">${d.stats.bookings_new} PENDING</span>`
         : 'No new bookings';
