@@ -396,15 +396,16 @@
   .main-column { flex: 1; min-width: 0; }
 
   /* ── HUB ── */
-  .hub-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+  .hub-grid { display: grid; grid-template-columns: 3fr 1fr; gap: 1.5rem; }
   .chart-panel {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: 18px; padding: 1.5rem; height: 300px; position: relative;
   }
   .chart-panel h4 { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; letter-spacing: 0.5px; font-weight: 600; text-transform: uppercase; }
   .network-panel {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 18px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;
+    background: linear-gradient(145deg, rgba(12,15,26,0.8), rgba(20,25,40,0.6)); border: 1px solid var(--border-hi);
+    border-radius: 18px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
   }
   .network-panel h4 { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem; letter-spacing: 0.5px; font-weight: 600; text-transform: uppercase; }
   .net-row {
@@ -492,17 +493,20 @@
   /* ── ACTIVITY SIDEBAR ── */
   .activity-sidebar {
     width: 300px; flex-shrink: 0;
-    background: rgba(10,12,20,0.5); backdrop-filter: blur(12px);
-    border: 1px solid var(--border); border-radius: 18px;
-    padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem;
+    background: linear-gradient(180deg, rgba(16,20,34,0.7) 0%, rgba(12,15,26,0.6) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 242, 255, 0.15); 
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(0, 242, 255, 0.05);
+    padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;
     position: sticky; top: 2rem; max-height: calc(100vh - 10rem); overflow: hidden;
   }
   .activity-sidebar-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
-  .activity-sidebar-header h4 { font-size: 0.78rem; color: var(--blue-light); letter-spacing: 0.5px; font-weight: 600; }
-  .activity-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-right: 2px; }
+  .activity-sidebar-header h4 { font-size: 0.85rem; color: var(--neon-blue); letter-spacing: 1px; font-weight: 700; }
+  .activity-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.6rem; padding-right: 2px; }
   .activity-item {
     padding: 0.75rem; border-radius: 10px;
     background: rgba(255,255,255,0.025);
@@ -892,9 +896,31 @@
             <div class="hub-grid">
               <div class="chart-panel">
                 <h4><i class="fas fa-chart-line"></i> &nbsp;SUBMISSION OVERVIEW</h4>
-                <canvas id="mainChart" style="height:230px;"></canvas>
-            </div>
-          </div>
+                <div style="position: relative; height: 230px; width: 100%;">
+                  <canvas id="mainChart"></canvas>
+                </div>
+              </div>
+              <div class="network-panel">
+                <h4><i class="fas fa-bolt"></i> &nbsp;QUICK ACTIONS</h4>
+                <button class="btn btn-primary" style="width: 100%; justify-content: flex-start; gap: 1rem; border-radius: 12px; margin-bottom: 0.5rem;" onclick="loadTab('inventory'); setTimeout(() => document.getElementById('addInvBtn').click(), 50);">
+                  <i class="fas fa-plus-circle"></i> Add New Product
+                </button>
+                <button class="btn btn-secondary" style="width: 100%; justify-content: flex-start; gap: 1rem; border-radius: 12px; margin-bottom: 1.5rem;" onclick="loadTab('pcs'); setTimeout(() => document.getElementById('addPcBtn').click(), 50);">
+                  <i class="fas fa-desktop"></i> Deploy PC
+                </button>
+
+                <h4><i class="fas fa-bell" style="color:var(--neon-yellow);"></i> &nbsp;TASK OVERVIEW</h4>
+                <div class="net-row" onclick="loadTab('contacts')" style="cursor: pointer;">
+                  <div class="net-row-label">Unread Messages</div>
+                  <div class="net-row-value" style="color:var(--neon-blue)" id="overviewUnread">0</div>
+                </div>
+                <div class="net-row" onclick="loadTab('quotes')" style="cursor: pointer;">
+                  <div class="net-row-label">New PC Quotes</div>
+                  <div class="net-row-value" style="color:var(--neon-yellow)" id="overviewQuotes">0</div>
+                </div>
+              </div>
+            </div> <!-- End hub-grid -->
+          </div> <!-- End panelHub -->
 
           <!-- TABLE PANEL -->
           <div class="panel" id="panelTable" style="display:none;">
@@ -1371,13 +1397,18 @@ async function loadStats() {
       animateNumber('s-bookings', d.stats.bookings);
       animateNumber('s-apps', d.stats.applications);
       animateNumber('s-inventory', d.stats.inventory);
-
+      
       const unread = d.stats.contacts_unread;
       $('s-contacts-sub').innerHTML   = unread > 0
         ? `<span class="stat-badge-new">${unread} UNREAD</span>`
         : 'All messages read';
       $('s-quotes-sub').innerHTML     = d.stats.quotes_new > 0
         ? `<span class="stat-badge-new">${d.stats.quotes_new} NEW</span>`
+        : 'Up to date';
+
+      // Update Overview tasks if elements exist
+      if ($('overviewUnread')) animateNumber('overviewUnread', unread);
+      if ($('overviewQuotes')) animateNumber('overviewQuotes', d.stats.quotes_new || 0);
         : 'No new quotes';
       $('s-bookings-sub').innerHTML   = d.stats.bookings_new > 0
         ? `<span class="stat-badge-new">${d.stats.bookings_new} PENDING</span>`
@@ -1523,8 +1554,13 @@ function buildChart() {
   const ctx = $('mainChart').getContext('2d');
   if (chart) chart.destroy();
   const s = statsCache;
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+  gradient.addColorStop(0, 'rgba(0, 242, 255, 0.5)');
+  gradient.addColorStop(1, 'rgba(0, 242, 255, 0.05)');
+
   chart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: ['Messages', 'PC Quotes', 'Bookings', 'Appointments', 'Applications', 'Inventory'],
       datasets: [{
@@ -1537,23 +1573,17 @@ function buildChart() {
           s.applications || 0,
           s.inventory || 0
         ],
-        backgroundColor: [
-          'rgba(0,242,255,0.3)',
-          'rgba(255,238,0,0.3)',
-          'rgba(0,255,136,0.3)',
-          'rgba(0,136,255,0.3)',
-          'rgba(255,0,51,0.3)',
-          'rgba(168,85,247,0.3)',
-        ],
-        borderColor: [
-          'rgba(0,242,255,0.8)',
-          'rgba(255,238,0,0.8)',
-          'rgba(0,255,136,0.8)',
-          'rgba(0,136,255,0.8)',
-          'rgba(255,0,51,0.8)',
-          'rgba(168,85,247,0.8)',
-        ],
-        borderWidth: 2, borderRadius: 8, borderSkipped: false
+        backgroundColor: gradient,
+        borderColor: 'rgba(0, 242, 255, 1)',
+        borderWidth: 3,
+        pointBackgroundColor: '#0c0f1a',
+        pointBorderColor: 'rgba(0, 242, 255, 1)',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 8,
+        pointHoverBackgroundColor: 'rgba(0, 242, 255, 1)',
+        fill: true,
+        tension: 0.4
       }]
     },
     options: {
