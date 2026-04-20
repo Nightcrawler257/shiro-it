@@ -1215,10 +1215,10 @@ body.light .nav-menu > li > a.active {
   transition: var(--transition);
 }
 .hero-slider-prev {
-  left: -18px;
+  left: 12px;
 }
 .hero-slider-next {
-  right: -18px;
+  right: 12px;
 }
 .hero-slider-btn:hover {
   background: var(--accent);
@@ -2985,7 +2985,7 @@ textarea {
 .social-float {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  right: 1.5rem;
   z-index: 999;
   display: flex;
   flex-direction: column;
