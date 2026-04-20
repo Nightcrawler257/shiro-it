@@ -2089,11 +2089,11 @@ body.light .nav-menu > li > a.active {
   font-size: 0.85rem;
 }
 
-/* Brand filter row — full-width red-themed row below category tabs */
+/* Brand filter row — full-width blue-themed row below category tabs */
 .brand-filter-row {
-  background: rgba(239, 68, 68, 0.06);
-  border-top: 1px solid rgba(239, 68, 68, 0.2);
-  border-bottom: 1px solid rgba(239, 68, 68, 0.15);
+  background: rgba(59, 130, 246, 0.06);
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
   padding: 0.65rem 0;
 }
 .brand-filter-row .container {
@@ -2107,7 +2107,7 @@ body.light .nav-menu > li > a.active {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--accent);
+  color: var(--blue-neon);
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -2127,24 +2127,24 @@ body.light .nav-menu > li > a.active {
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  border: 1.5px solid rgba(239, 68, 68, 0.35);
+  border: 1.5px solid rgba(59, 130, 246, 0.35);
   color: var(--text-secondary);
-  background: rgba(239, 68, 68, 0.06);
+  background: rgba(59, 130, 246, 0.06);
   transition: all 0.2s ease;
   letter-spacing: 0.02em;
 }
 .brand-pill:hover {
-  border-color: var(--accent);
+  border-color: var(--blue-neon);
   color: white;
-  background: rgba(239, 68, 68, 0.15);
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
 }
 .brand-pill.active {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  border-color: #ef4444;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-color: #3b82f6;
   color: white;
   font-weight: 700;
-  box-shadow: 0 0 16px rgba(239, 68, 68, 0.45);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.5);
 }
 
 .products-grid {
