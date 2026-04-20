@@ -488,14 +488,15 @@ document.addEventListener("DOMContentLoaded", () => {
   /* Render brand filter pills for the shop */
   function renderBrandFilter(category) {
     const bar = document.getElementById('brandFilterBar');
-    if (!bar) return;
+    const row = document.getElementById('brandFilterRow');
+    if (!bar || !row) return;
     const pool = category === 'All' ? products : products.filter(p => p.category === category);
     const brands = [...new Set(pool.map(p => p.brand).filter(b => b && b.trim()))];
     if (brands.length < 1) {
-      bar.style.display = 'none';
+      row.style.display = 'none';
       return;
     }
-    bar.style.display = 'flex';
+    row.style.display = 'block';
     bar.innerHTML = ['All', ...brands.sort()].map(b =>
       `<button class="brand-pill${activeBrand === b ? ' active' : ''}" data-brand="${b}">${b}</button>`
     ).join('');
