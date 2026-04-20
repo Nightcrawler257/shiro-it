@@ -1314,7 +1314,6 @@ function togglePasswordVisibility(inputId, iconEl) {
 }
 
 async function doRegister() {
-  const regCode = $('regSecret').value.trim();
   const user = $('regUser').value.trim();
   const pass = $('regPass').value;
   const errEl = $('regError');
@@ -1323,7 +1322,7 @@ async function doRegister() {
   errEl.style.display = 'none';
   sucEl.style.display = 'none';
   
-  if (!regCode || !user || !pass) {
+  if (!user || !pass) {
     errEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> All fields are required';
     errEl.style.display = 'block';
     return;
@@ -1336,7 +1335,7 @@ async function doRegister() {
     const res = await fetch(API + '/admin/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: user, password: pass, reg_code: regCode })
+      body: JSON.stringify({ username: user, password: pass })
     });
     const d = await res.json();
     if (d.success) {
@@ -1409,6 +1408,7 @@ async function loadStats() {
       // Update Overview tasks if elements exist
       if ($('overviewUnread')) animateNumber('overviewUnread', unread);
       if ($('overviewQuotes')) animateNumber('overviewQuotes', d.stats.quotes_new || 0);
+        : 'No new quotes';
       $('s-bookings-sub').innerHTML   = d.stats.bookings_new > 0
         ? `<span class="stat-badge-new">${d.stats.bookings_new} PENDING</span>`
         : 'No new bookings';
