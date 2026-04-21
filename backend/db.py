@@ -156,6 +156,15 @@ def _create_tables():
             key   TEXT PRIMARY KEY,
             value TEXT
         );
+
+        CREATE TABLE IF NOT EXISTS testimonials (
+            id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            name       TEXT,
+            role       TEXT,
+            content    TEXT,
+            rating     INTEGER DEFAULT 5,
+            image_url  TEXT
+        );
     """)
     conn.commit()
 
@@ -177,3 +186,15 @@ def _migrate(conn):
             conn.commit()
         except Exception:
             pass  # column / change already exists — safe to ignore
+            
+    # Seed testimonials if empty
+    test_count = conn.execute("SELECT COUNT(*) FROM testimonials").fetchone()[0]
+    if test_count == 0:
+        seed_data = [
+            ("Ahmad R.", "Gamer / Developer", "SHIRO IT built my dream PC perfectly. The cable management is incredible and games run flawlessly on Ultra. Recommended!", 5, ""),
+            ("Sarah L.", "Content Creator", "Needed a reliable editing rig and they delivered. Fast rendering times and responsive service from start to finish.", 5, ""),
+            ("Farid H.", "Student", "Affordable and transparent. Fixed my laptop right before assignments were due. Very grateful for their quick turnaround.", 4, ""),
+            ("David T.", "Business Owner", "They handled our entire office network upgrade seamlessly. Zero downtime and great after-sales support.", 5, "")
+        ]
+        conn.executemany("INSERT INTO testimonials (name, role, content, rating, image_url) VALUES (?, ?, ?, ?, ?)", seed_data)
+        conn.commit()

@@ -802,6 +802,10 @@
           <i class="fas fa-lightbulb nav-icon"></i>
           <span class="nav-label">IT Tips Gallery</span>
         </a>
+        <a href="#" class="nav-item" data-tab="testimonials">
+          <i class="fas fa-star nav-icon"></i>
+          <span class="nav-label">Testimonials</span>
+        </a>
         <a href="#" class="nav-item" data-tab="settings">
           <i class="fas fa-cogs nav-icon"></i>
           <span class="nav-label">Site Settings</span>
@@ -956,6 +960,9 @@
                 </button>
                 <button class="btn btn-primary btn-sm" id="addTipBtn" style="display:none;">
                   <i class="fas fa-plus"></i> Add Tip
+                </button>
+                <button class="btn btn-primary btn-sm" id="addTestimonialBtn" style="display:none;">
+                  <i class="fas fa-plus"></i> Add Testimonial
                 </button>
               </div>
             </div>
@@ -1196,6 +1203,49 @@
   </div>
 </div>
 
+<!-- TESTIMONIAL MODAL -->
+<div class="modal-overlay" id="testimonialModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="testimonialModalTitle">Add Testimonial</h3>
+      <button class="modal-close" id="testimonialModalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="testimonialForm">
+        <input type="hidden" id="testEditId">
+        <div class="form-row">
+          <div class="form-group"><label>Reviewer Name</label><input type="text" id="testName" required></div>
+          <div class="form-group"><label>Role / Subtitle</label><input type="text" id="testRole"></div>
+        </div>
+        <div class="form-group">
+          <label>Review Content</label>
+          <textarea id="testContent" rows="4" required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Rating (1-5)</label>
+            <input type="number" id="testRating" value="5" min="1" max="5">
+          </div>
+          <div class="form-group">
+            <label>Reviewer Photo</label>
+            <div class="upload-area" id="testUploadArea">
+              <input type="file" id="testImageFile" accept="image/*">
+              <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+              <div class="upload-area-text" style="font-size:0.7rem;">Drop photo or browse</div>
+            </div>
+            <div id="testUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
+            <div id="testImagePreview" style="margin-top:0.5rem;"></div>
+            <input type="hidden" id="testImageUrl">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="saveTestimonialBtn"><i class="fas fa-save"></i> Save Testimonial</button>
+    </div>
+  </div>
+</div>
+
 <!-- Background canvas animation (from shiro-v2 theme) -->
 <script src="/bg-animation.js"></script>
 
@@ -1218,6 +1268,7 @@ const TAB_META = {
   inventory:    { h: 'Inventory',        s: 'Products, stock levels & pricing', icon: 'fa-boxes' },
   pcs:          { h: 'Choose Your PC',   s: 'Manage the Pre-built Gaming PCs section', icon: 'fa-desktop' },
   tips:         { h: 'IT Tips Gallery',  s: 'Manage knowledge base photos & videos', icon: 'fa-lightbulb' },
+  testimonials: { h: 'Testimonials',     s: 'Manage customer reviews on the homepage', icon: 'fa-star' },
   settings:     { h: 'Site Settings',    s: 'Manage Festival Animations and Display limits', icon: 'fa-cogs' }
 };
 
@@ -1231,6 +1282,7 @@ const apiDataMap = {
   inventory: '/admin/api/inventory',
   pcs: '/admin/api/prebuilt_pcs',
   tips: '/admin/api/it_tips',
+  testimonials: '/admin/api/testimonials',
   settings: '/admin/api/settings'
 };
 
@@ -1509,6 +1561,7 @@ async function loadTab(tab) {
   $('addInvBtn').style.display    = tab === 'inventory' ? 'flex'  : 'none';
   if($('addPcBtn'))  $('addPcBtn').style.display  = tab === 'pcs' ? 'flex' : 'none';
   if($('addTipBtn')) $('addTipBtn').style.display = tab === 'tips' ? 'flex' : 'none';
+  if($('addTestimonialBtn')) $('addTestimonialBtn').style.display = tab === 'testimonials' ? 'flex' : 'none';
 
   // Show loading state
   const body = $('tableBody');
@@ -1836,6 +1889,23 @@ function renderTable(tab, data) {
             <button class="action-btn del" onclick="deleteItem('it_tips','${r._id || r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
           </div></td>`;
       }
+    },
+    testimonials: {
+      cols: ['Photo', 'Name & Role', 'Review', 'Rating', 'Actions'],
+      row: r => {
+        const imgHtml = r.image_url ? `<img src="${esc(r.image_url.startsWith('http') ? r.image_url : API + '/' + r.image_url)}" style="width:100%;height:100%;object-fit:cover">` : `<i class="fas fa-user" style="color:var(--text-secondary)"></i>`;
+        return `
+          <td style="width:60px">
+            <div style="width:46px;height:46px;background:rgba(0,0,0,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);">${imgHtml}</div>
+          </td>
+          <td><div class="name-col">${esc(r.name)}</div><div class="sub-col">${esc(r.role)}</div></td>
+          <td class="msg-col" style="max-width:300px" title="${esc(r.content)}">${esc(r.content)}</td>
+          <td><span style="color:var(--neon-yellow)"><i class="fas fa-star"></i> ${r.rating}</span></td>
+          <td><div class="actions">
+            <button class="action-btn ok" onclick='editTestimonialItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
+            <button class="action-btn del" onclick="deleteItem('testimonials','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+          </div></td>`;
+      }
     }
   };
 
@@ -1881,6 +1951,8 @@ async function deleteItem(type, id) {
       url = API + `/admin/api/prebuilt_pcs/${id}`;
     } else if (type === 'it_tips') {
       url = API + `/admin/api/it_tips/${id}`;
+    } else if (type === 'testimonials') {
+      url = API + `/admin/api/testimonials/${id}`;
     } else {
       url = API + `/admin/api/delete/${type}/${id}`;
     }
@@ -2104,6 +2176,8 @@ document.addEventListener('click', e => {
   if (e.target && e.target.id === 'pcModalOverlay') closePcModal();
   if (e.target && e.target.id === 'tipModalClose') closeTipModal();
   if (e.target && e.target.id === 'tipModalOverlay') closeTipModal();
+  if (e.target && e.target.id === 'testimonialModalClose') closeTestimonialModal();
+  if (e.target && e.target.id === 'testimonialModalOverlay') closeTestimonialModal();
 });
 
 $('pcImageFile').addEventListener('change', (e) => {
@@ -2269,6 +2343,103 @@ $('saveTipBtn').onclick = async () => {
   finally {
     $('saveTipBtn').innerHTML = '<i class="fas fa-save"></i> Save Tip';
     $('saveTipBtn').disabled = false;
+  }
+};
+
+// ── Testimonials Modal ──
+$('addTestimonialBtn').onclick = () => {
+  $('testimonialForm').reset();
+  $('testEditId').value = '';
+  $('testImageUrl').value = '';
+  $('testImagePreview').innerHTML = '';
+  $('testUploadStatus').textContent = '';
+  $('testimonialModalTitle').textContent = 'Add Testimonial';
+  openTestimonialModal();
+};
+
+$('testImageFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  $('testUploadStatus').textContent = `Selected: ${file.name} — will upload on save`;
+  $('testUploadStatus').style.color = 'var(--neon-blue)';
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('testImagePreview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%;max-height:80px;border-radius:8px;margin-top:4px;">`;
+  };
+  reader.readAsDataURL(file);
+});
+
+window.editTestimonialItem = (item) => {
+  $('testEditId').value   = item.id;
+  $('testName').value     = item.name || '';
+  $('testRole').value     = item.role || '';
+  $('testContent').value  = item.content || '';
+  $('testRating').value   = item.rating || 5;
+  $('testImageUrl').value = item.image_url || '';
+
+  if (item.image_url) {
+    const url = item.image_url.startsWith('http') ? item.image_url : API + '/' + item.image_url;
+    $('testImagePreview').innerHTML = `<img src="${url}" style="max-width:100%;max-height:80px;border-radius:8px;margin-top:4px;">`;
+    $('testUploadStatus').textContent = 'Current photo loaded.';
+  } else {
+    $('testImagePreview').innerHTML = '';
+    $('testUploadStatus').textContent = '';
+  }
+
+  $('testimonialModalTitle').textContent = 'Edit Testimonial';
+  openTestimonialModal();
+};
+
+function openTestimonialModal() { $('testimonialModalOverlay').classList.add('show'); }
+function closeTestimonialModal() { $('testimonialModalOverlay').classList.remove('show'); }
+
+$('saveTestimonialBtn').onclick = async () => {
+  $('saveTestimonialBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+  $('saveTestimonialBtn').disabled = true;
+
+  try {
+    let finalImageUrl = $('testImageUrl').value;
+    const fileInput = $('testImageFile');
+    if (fileInput.files[0]) {
+      $('testUploadStatus').textContent = 'Uploading…';
+      const fd = new FormData();
+      fd.append('image', fileInput.files[0]);
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upData = await upRes.json();
+      if (upData.success) {
+        finalImageUrl = upData.url;
+        $('testImageUrl').value = finalImageUrl;
+        $('testUploadStatus').textContent = '✓ Upload complete';
+        $('testUploadStatus').style.color = 'var(--neon-green)';
+      } else {
+        toast(upData.error || 'Upload failed', 'err');
+      }
+    }
+
+    const id = $('testEditId').value;
+    const item = {
+      name: $('testName').value,
+      role: $('testRole').value,
+      content: $('testContent').value,
+      rating: parseInt($('testRating').value) || 5,
+      image_url: finalImageUrl
+    };
+
+    const url = id ? `${API}/admin/api/testimonials/${id}` : `${API}/admin/api/testimonials`;
+    const res = await fetch(url, {
+      method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+    const d = await res.json();
+    if (d.success) {
+      toast('Testimonial Saved', 'ok');
+      closeTestimonialModal();
+      loadTab('testimonials');
+    } else toast(d.error || 'Save failed', 'err');
+  } catch(e) { toast('Error saving Testimonial', 'err'); }
+  finally {
+    $('saveTestimonialBtn').innerHTML = '<i class="fas fa-save"></i> Save Testimonial';
+    $('saveTestimonialBtn').disabled = false;
   }
 };
 </script>

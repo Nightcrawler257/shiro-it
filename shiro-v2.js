@@ -1277,14 +1277,44 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ===== TESTIMONIALS SLIDER ===== */
-  (function () {
+  (async function () {
     const track = document.getElementById("tsliderTrack");
     const dotsEl = document.getElementById("tsliderDots");
     const btnPrev = document.getElementById("tsliderPrev");
     const btnNext = document.getElementById("tsliderNext");
     if (!track) return;
 
+    try {
+      const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '' : window.location.origin;
+      const res = await fetch(API + '/api/testimonials');
+      const d = await res.json();
+      if (d.success && d.data && d.data.length > 0) {
+        track.innerHTML = "";
+        d.data.forEach(t => {
+          const stars = Array(t.rating || 5).fill('<i class="fas fa-star"></i>').join('');
+          const avatarHtml = t.image_url 
+            ? `<img src="${t.image_url.startsWith('http') ? t.image_url : (t.image_url.startsWith('/') ? t.image_url : '/'+t.image_url)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`
+            : `<div class="author-avatar" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--card-bg-hover);border-radius:50%;color:var(--neon-blue);font-weight:bold">${t.name.charAt(0).toUpperCase()}</div>`;
+          
+          const slide = document.createElement("div");
+          slide.className = "card testimonial-card tslide";
+          slide.innerHTML = `
+            <div class="testimonial-stars">${stars}</div>
+            <p>"${t.content.replace(/</g, "&lt;").replace(/>/g, "&gt;")}"</p>
+            <div class="testimonial-author">
+                <div style="width:40px;height:40px;margin-right:1rem;flex-shrink:0;">${avatarHtml}</div>
+                <div><strong>${t.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</strong><span>${t.role.replace(/</g, "&lt;").replace(/>/g, "&gt;") || 'Customer'}</span></div>
+            </div>
+          `;
+          track.appendChild(slide);
+        });
+      }
+    } catch(e) {
+      console.error("Testimonials load failed", e);
+    }
+
     const slides = Array.from(track.querySelectorAll(".tslide"));
+    if (slides.length === 0) return;
     let current = 0;
     let autoTimer = null;
 

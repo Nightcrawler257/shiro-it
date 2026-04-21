@@ -68,6 +68,14 @@ def get_public_tips():
     return jsonify({'success': True, 'data': [_parse_tip(r) for r in rows]})
 
 
+@content_bp.route('/api/testimonials', methods=['GET'])
+def get_public_testimonials():
+    conn = db.get_conn()
+    rows = conn.execute('SELECT * FROM testimonials ORDER BY id DESC').fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
+
+
 @content_bp.route('/api/site_settings', methods=['GET'])
 def get_public_settings():
     conn = db.get_conn()
@@ -206,6 +214,62 @@ def admin_update_tip(tip_id):
 def admin_delete_tip(tip_id):
     conn = db.get_conn()
     conn.execute('DELETE FROM it_tips WHERE id = ?', (tip_id,))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
+
+
+# --- Testimonials ---
+
+@content_bp.route('/admin/api/testimonials', methods=['GET'])
+@login_required
+def admin_get_testimonials():
+    conn = db.get_conn()
+    rows = conn.execute('SELECT * FROM testimonials ORDER BY id DESC').fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
+
+
+@content_bp.route('/admin/api/testimonials', methods=['POST'])
+@login_required
+def admin_add_testimonial():
+    data = request.get_json()
+    conn = db.get_conn()
+    cursor = conn.execute(
+        'INSERT INTO testimonials (name, role, content, rating, image_url) VALUES (?, ?, ?, ?, ?)',
+        (data.get('name', '').strip(), data.get('role', '').strip(),
+         data.get('content', '').strip(), int(data.get('rating', 5)),
+         data.get('image_url', '').strip())
+    )
+    conn.commit()
+    new_id = cursor.lastrowid
+    row = conn.execute('SELECT * FROM testimonials WHERE id = ?', (new_id,)).fetchone()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_row(row)})
+
+
+@content_bp.route('/admin/api/testimonials/<int:t_id>', methods=['PUT'])
+@login_required
+def admin_update_testimonial(t_id):
+    data = request.get_json()
+    conn = db.get_conn()
+    conn.execute(
+        'UPDATE testimonials SET name=?, role=?, content=?, rating=?, image_url=? WHERE id=?',
+        (data.get('name', '').strip(), data.get('role', '').strip(),
+         data.get('content', '').strip(), int(data.get('rating', 5)),
+         data.get('image_url', '').strip(), t_id)
+    )
+    conn.commit()
+    row = conn.execute('SELECT * FROM testimonials WHERE id = ?', (t_id,)).fetchone()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_row(row)})
+
+
+@content_bp.route('/admin/api/testimonials/<int:t_id>', methods=['DELETE'])
+@login_required
+def admin_delete_testimonial(t_id):
+    conn = db.get_conn()
+    conn.execute('DELETE FROM testimonials WHERE id = ?', (t_id,))
     conn.commit()
     conn.close()
     return jsonify({'success': True})

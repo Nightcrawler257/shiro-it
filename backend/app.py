@@ -90,6 +90,10 @@ def create_app():
     @app.route('/<path:filename>')
     def serve_static(filename):
         """Serve all static files (HTML, CSS, JS, images, videos)."""
+        # SECURITY FIX: Prevent unauthorized download of the database and backend code
+        if filename.startswith('backend') or filename.endswith('.db') or filename.endswith('.py'):
+            return 'Page not found', 404
+
         filepath = os.path.join(PARENT_DIR, filename)
         if os.path.isfile(filepath):
             return send_from_directory(PARENT_DIR, filename)
