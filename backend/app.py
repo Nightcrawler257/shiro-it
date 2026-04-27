@@ -32,8 +32,19 @@ def create_app():
 
     app.config.from_object(Config)
 
-    # Enable CORS for all routes
-    CORS(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
+    # CORS — restrict to own domain only (prevents other sites sending credentialed requests)
+    CORS(app, supports_credentials=True, resources={
+        r"/api/*": {"origins": [
+            "https://nightcrawler257.pythonanywhere.com",
+            "http://localhost:5000",
+            "http://127.0.0.1:5000"
+        ]},
+        r"/admin/*": {"origins": [
+            "https://nightcrawler257.pythonanywhere.com",
+            "http://localhost:5000",
+            "http://127.0.0.1:5000"
+        ]}
+    })
 
     # Initialize SQLite database (creates tables if they don't exist)
     database.init_db(app.config['DATABASE_PATH'])
@@ -108,6 +119,16 @@ def create_app():
         DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'admin')
         DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'shiro2026')
 
+        # Warn if insecure defaults are still in use
+        _INSECURE_KEY = 'shiro-it-secret-key-2026'
+        _INSECURE_PASS = 'shiro2026'
+        if app.config['SECRET_KEY'] == _INSECURE_KEY:
+            print('[WARNING] SECRET_KEY is using the insecure default! '
+                  'Set SECRET_KEY as an environment variable on your server immediately.')
+        if DEFAULT_ADMIN_PASSWORD == _INSECURE_PASS:
+            print('[WARNING] DEFAULT_ADMIN_PASSWORD is using the insecure default! '
+                  'Set DEFAULT_ADMIN_PASSWORD as an environment variable on your server.')
+
         conn = database.get_conn()
         existing = conn.execute(
             'SELECT id FROM staff_users WHERE username = ?',
@@ -146,4 +167,4 @@ if __name__ == '__main__':
 +==============================================+
     """)
 
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)

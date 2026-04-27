@@ -74,8 +74,9 @@ def admin_logout():
 
 
 @admin_bp.route('/admin/api/register', methods=['POST'])
+@login_required
 def admin_register():
-    """Handle staff registration — no registration code required."""
+    """Handle staff registration — only accessible by a logged-in admin."""
     data     = request.get_json()
     username = data.get('username', '').strip()
     password = data.get('password', '')
