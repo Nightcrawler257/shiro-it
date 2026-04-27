@@ -106,112 +106,359 @@
 
   h1, h2, h3, h4, .font-head { font-family: var(--font-head); letter-spacing: 0.04em; text-transform: uppercase; }
 
-  /* ─────────────────────────────────────────
-     LOGIN
-  ───────────────────────────────────────── */
+  /* ═══════════════════════════════════════════
+     GAME-CHANGER LOGIN — SPLIT SCREEN
+  ═══════════════════════════════════════════ */
   #loginScreen {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh; padding: 1rem;
+    display: flex; min-height: 100vh; overflow: hidden;
   }
-  .login-card {
-    background: rgba(10, 13, 24, 0.92);
-    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-    border: 1px solid var(--border-hi);
-    border-radius: 12px; padding: 2.5rem; width: 100%; max-width: 420px;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 40px rgba(56,189,248,0.07), 0 0 40px rgba(239,68,68,0.05);
+
+  /* ── LEFT BRAND PANEL ── */
+  .login-brand {
+    flex: 1.1; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 3rem; background: linear-gradient(145deg, #04060e 0%, #070c1a 50%, #0a0d1f 100%);
+    border-right: 1px solid rgba(56,189,248,0.12);
+  }
+  /* Hex grid overlay */
+  .login-brand::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(56,189,248,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,189,248,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+  /* Scanning beam */
+  .login-brand::after {
+    content: ''; position: absolute; left: 0; right: 0; height: 2px; z-index: 1;
+    background: linear-gradient(90deg, transparent, rgba(56,189,248,0.6), rgba(239,68,68,0.4), transparent);
+    animation: scanBeam 6s ease-in-out infinite;
+    box-shadow: 0 0 20px rgba(56,189,248,0.4);
+  }
+  @keyframes scanBeam {
+    0%   { top: -2px; opacity: 0; }
+    5%   { opacity: 1; }
+    95%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  /* Floating orbs */
+  .orb {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    animation: floatOrb var(--dur, 8s) ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 320px; height: 320px; top: -80px; left: -80px;
+    background: radial-gradient(circle, rgba(29,78,216,0.18) 0%, transparent 70%);
+    --dur: 9s; }
+  .orb-2 { width: 260px; height: 260px; bottom: 10%; right: -60px;
+    background: radial-gradient(circle, rgba(239,68,68,0.14) 0%, transparent 70%);
+    --dur: 11s; }
+  .orb-3 { width: 180px; height: 180px; top: 45%; left: 40%;
+    background: radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 70%);
+    --dur: 7s; }
+  @keyframes floatOrb {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(20px, 30px) scale(1.1); }
+  }
+
+  .brand-top { position: relative; z-index: 2; }
+  .brand-logo {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem;
+  }
+  .brand-logo img { height: 54px; width: auto; object-fit: contain; }
+  .brand-logo-fallback {
+    display: none; align-items: center; gap: 0.75rem;
+  }
+  .brand-logo-icon {
+    width: 54px; height: 54px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.22), rgba(239,68,68,0.14));
+    border: 1px solid rgba(37,99,235,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; color: var(--blue-light);
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%,100% { box-shadow: 0 0 14px rgba(37,99,235,0.3); }
+    50% { box-shadow: 0 0 32px rgba(37,99,235,0.55), 0 0 60px rgba(239,68,68,0.18); }
+  }
+  .brand-logo-text h1 { font-size: 1.7rem; letter-spacing: 3px; }
+  .brand-logo-text h1 span { color: var(--blue-light); }
+  .brand-logo-text .brand-tagline { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 2px; margin-top: 0.15rem; }
+
+  .brand-headline {
+    font-family: var(--font-head); font-size: 3rem; font-weight: 800;
+    line-height: 1.1; letter-spacing: 2px; margin-bottom: 1.25rem;
+    background: linear-gradient(135deg, #e8f0ff 30%, var(--blue-neon) 70%, var(--red-neon) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .brand-desc {
+    color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8;
+    max-width: 380px; margin-bottom: 2.5rem;
+  }
+
+  /* Feature pills */
+  .brand-features { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 3rem; }
+  .feat-pill {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(56,189,248,0.15);
+    border-radius: 100px; padding: 0.45rem 0.9rem;
+    font-size: 0.75rem; color: var(--text-secondary); letter-spacing: 0.5px;
+    transition: var(--transition);
+  }
+  .feat-pill:hover { border-color: rgba(56,189,248,0.35); color: var(--blue-neon); background: rgba(56,189,248,0.05); }
+  .feat-pill i { color: var(--blue-neon); font-size: 0.7rem; }
+
+  /* Live stat strip */
+  .brand-stats { position: relative; z-index: 2; display: flex; gap: 1.25rem; flex-wrap: wrap; }
+  .bstat {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(56,189,248,0.1);
+    border-radius: 12px; padding: 1rem 1.25rem; min-width: 110px;
+    transition: var(--transition);
+  }
+  .bstat:hover { border-color: rgba(56,189,248,0.3); background: rgba(56,189,248,0.04); }
+  .bstat-val {
+    font-family: var(--font-head); font-size: 1.5rem; font-weight: 800;
+    color: var(--blue-neon); line-height: 1;
+  }
+  .bstat-val.red { color: var(--red-neon); }
+  .bstat-val.green { color: var(--neon-green); }
+  .bstat-label { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.25rem; }
+
+  /* System status bar */
+  .sys-status {
+    position: relative; z-index: 2; display: flex; align-items: center; gap: 0.5rem;
+    margin-top: 1.5rem; font-size: 0.7rem; color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+  .sys-status-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+    animation: blink 2s infinite;
+    box-shadow: 0 0 6px var(--green);
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ── RIGHT AUTH PANEL ── */
+  .login-form-panel {
+    width: 480px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 2.5rem 2rem;
+    background: var(--bg-primary);
     position: relative; overflow: hidden;
   }
-  /* Animated top border on login card */
+  .login-form-panel::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 2px; height: 100%;
+    background: linear-gradient(180deg, transparent, var(--blue-neon) 40%, var(--red-neon) 60%, transparent);
+    animation: sideGlow 4s ease-in-out infinite alternate;
+  }
+  @keyframes sideGlow {
+    from { opacity: 0.3; }
+    to { opacity: 0.9; }
+  }
+
+  .login-card {
+    width: 100%; max-width: 400px;
+    background: rgba(8, 11, 22, 0.85);
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(56,189,248,0.14);
+    border-radius: 20px; padding: 2.5rem;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 60px rgba(56,189,248,0.05), inset 0 1px 0 rgba(255,255,255,0.04);
+    position: relative; overflow: hidden;
+    animation: cardEntrance 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  }
+  @keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(30px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  /* Top animated gradient line */
   .login-card::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--blue-neon), var(--red-neon), var(--blue-neon));
-    background-size: 200% 100%;
-    animation: nav-scan 3s linear infinite;
+    background: linear-gradient(90deg, var(--blue-neon), var(--blue), var(--red), var(--red-neon), var(--blue-neon));
+    background-size: 300% 100%;
+    animation: shimmerBorder 4s linear infinite;
   }
-  @keyframes nav-scan {
+  @keyframes shimmerBorder {
     0%   { background-position: 0% 0%; }
-    100% { background-position: 200% 0%; }
+    100% { background-position: 300% 0%; }
   }
-  .login-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--blue) 40%, var(--red) 60%, transparent);
+
+  /* Card header */
+  .login-card-header { text-align: center; margin-bottom: 2rem; }
+  .login-portal-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.2);
+    border-radius: 100px; padding: 0.3rem 0.9rem;
+    font-size: 0.65rem; color: var(--blue-neon);
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.25rem;
   }
-  .login-logo { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; justify-content: center; }
-  .login-logo-icon {
-    width: 58px; height: 58px;
-    background: linear-gradient(135deg, rgba(37,99,235,0.18), rgba(239,68,68,0.12));
-    border: 1px solid rgba(37,99,235,0.3);
-    border-radius: 14px; display: flex; align-items: center; justify-content: center;
-    font-size: 1.7rem; animation: pulseGlow 3s ease-in-out infinite;
+  .login-portal-badge i { font-size: 0.6rem; }
+  .login-card-header h2 {
+    font-family: var(--font-head); font-size: 1.5rem; letter-spacing: 2px;
+    margin-bottom: 0.3rem;
   }
-  @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 12px rgba(37,99,235,0.25); }
-    50% { box-shadow: 0 0 28px rgba(37,99,235,0.45), 0 0 50px rgba(239,68,68,0.15); }
+  .login-card-header p {
+    color: var(--text-secondary); font-size: 0.78rem; letter-spacing: 1px;
   }
-  .login-logo h1 { font-size: 1.8rem; letter-spacing: 2px; }
-  .login-logo span { color: var(--blue); }
-  .login-subtitle {
-    color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 2.5rem;
-    text-align: center; text-transform: uppercase; letter-spacing: 2px;
+
+  /* Role tabs */
+  .role-tabs {
+    display: flex; background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 4px; margin-bottom: 1.75rem; gap: 4px;
   }
-  .form-group { margin-bottom: 1.4rem; }
-  .form-group label {
-    display: block; font-size: 0.72rem; font-weight: 700;
-    color: var(--text-secondary); margin-bottom: 0.6rem;
-    text-transform: uppercase; letter-spacing: 1.5px;
-  }
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 0.9rem 1.2rem;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 10px; color: var(--text-primary);
-    font-size: 0.95rem; outline: none; transition: var(--transition);
+  .role-tab {
+    flex: 1; padding: 0.55rem; border-radius: 9px; border: none;
+    background: none; color: var(--text-secondary); cursor: pointer;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; transition: var(--transition);
+    display: flex; align-items: center; justify-content: center; gap: 0.4rem;
     font-family: var(--font-body);
   }
-  .input-wrapper { position: relative; display: block; }
-  .pwd-toggle {
-    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-    color: var(--text-muted); cursor: pointer; padding: 0.5rem;
-    transition: color 0.2s;
+  .role-tab:hover { color: var(--text-primary); }
+  .role-tab.active {
+    background: linear-gradient(135deg, rgba(37,99,235,0.3), rgba(37,99,235,0.15));
+    color: var(--blue-neon); border: 1px solid rgba(37,99,235,0.3);
+    box-shadow: 0 0 16px rgba(37,99,235,0.15);
   }
-  .pwd-toggle:hover { color: var(--text-primary); }
+  .role-tab.active.red-tab {
+    background: linear-gradient(135deg, rgba(239,68,68,0.3), rgba(239,68,68,0.12));
+    color: var(--red-neon); border: 1px solid rgba(239,68,68,0.3);
+    box-shadow: 0 0 16px rgba(239,68,68,0.15);
+  }
+
+  /* Form inputs — floating label style */
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group label {
+    display: block; font-size: 0.68rem; font-weight: 700;
+    color: var(--text-secondary); margin-bottom: 0.5rem;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .form-group label i { opacity: 0.6; font-size: 0.65rem; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 0.85rem 1.1rem;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 11px; color: var(--text-primary);
+    font-size: 0.92rem; outline: none; transition: var(--transition);
+    font-family: var(--font-body); letter-spacing: 0.3px;
+  }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-    border-color: var(--blue);
-    background: rgba(37,99,235,0.04);
-    box-shadow: 0 0 16px rgba(37,99,235,0.12);
+    border-color: rgba(56,189,248,0.45);
+    background: rgba(56,189,248,0.04);
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.08), 0 0 20px rgba(56,189,248,0.1);
   }
+  .form-group input::placeholder { color: var(--text-muted); }
   .form-group select option { background: #0f111a; }
   .form-group textarea { resize: vertical; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
+  .input-wrapper { position: relative; display: block; }
+  .input-icon {
+    position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); font-size: 0.8rem; pointer-events: none;
+    transition: color 0.2s;
+  }
+  .input-wrapper input { padding-left: 2.6rem; }
+  .input-wrapper input:focus + .input-icon,
+  .input-wrapper:focus-within .input-icon { color: var(--blue-neon); }
+  .pwd-toggle {
+    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); cursor: pointer; padding: 0.4rem;
+    transition: color 0.2s; z-index: 2;
+  }
+  .pwd-toggle:hover { color: var(--text-primary); }
+
+  /* Login button */
   .btn {
     display: inline-flex; align-items: center; gap: 0.6rem;
-    padding: 0.8rem 1.6rem; border-radius: 10px; border: none;
+    padding: 0.8rem 1.6rem; border-radius: 11px; border: none;
     cursor: pointer; font-weight: 700; font-size: 0.85rem;
     transition: var(--transition); text-decoration: none;
-    text-transform: uppercase; letter-spacing: 1px;
+    text-transform: uppercase; letter-spacing: 1.5px;
     font-family: var(--font-body);
   }
   .btn-primary {
-    background: var(--blue);
-    color: #fff; box-shadow: var(--shadow-blue);
+    background: linear-gradient(135deg, var(--blue) 0%, #1a3faa 100%);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.4), 0 0 0 0 rgba(37,99,235,0);
+    position: relative; overflow: hidden;
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--blue-glow); }
-  .btn-danger {
-    background: var(--red);
-    color: #fff; box-shadow: var(--shadow-red);
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
   }
+  .btn-primary:hover::after { transform: translateX(100%); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(37,99,235,0.55), 0 0 0 1px rgba(56,189,248,0.2); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary.loading { pointer-events: none; opacity: 0.8; }
+  .btn-danger { background: linear-gradient(135deg, var(--red), var(--red-dark)); color: #fff; box-shadow: var(--shadow-red); }
   .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--red-glow); }
-  .btn-ghost {
-    background: rgba(255,255,255,0.04); color: var(--text-secondary);
-    border: 1px solid var(--border);
-  }
+  .btn-ghost { background: rgba(255,255,255,0.04); color: var(--text-secondary); border: 1px solid var(--border); }
   .btn-ghost:hover { color: var(--text-primary); border-color: var(--border-hover); background: rgba(255,255,255,0.08); }
   .btn-sm { padding: 0.5rem 1rem; font-size: 0.78rem; }
-  .btn-full { width: 100%; justify-content: center; margin-top: 0.8rem; }
+  .btn-full { width: 100%; justify-content: center; margin-top: 0.75rem; }
 
-  .error-msg { color: var(--neon-red); font-size: 0.82rem; margin-top: 1rem; display: none; text-align: center; }
+  /* Error/success messages */
+  .error-msg {
+    display: none; text-align: center;
+    font-size: 0.8rem; padding: 0.65rem 1rem;
+    background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 8px; color: var(--red-neon); margin-top: 0.75rem;
+  }
+
+  /* Divider */
+  .login-divider {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin: 1.5rem 0; color: var(--text-muted); font-size: 0.7rem; letter-spacing: 1px;
+  }
+  .login-divider::before, .login-divider::after {
+    content: ''; flex: 1; height: 1px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* Forgot password link */
+  .login-links {
+    display: flex; justify-content: center; margin-top: 1.25rem;
+  }
+  .login-link {
+    font-size: 0.78rem; color: var(--text-secondary);
+    text-decoration: none; transition: color 0.2s;
+    display: inline-flex; align-items: center; gap: 0.3rem;
+  }
+  .login-link:hover { color: var(--blue-neon); }
+
+  /* Security badge row */
+  .security-badges {
+    display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .sec-badge {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.5px;
+  }
+  .sec-badge i { color: var(--green); font-size: 0.6rem; }
+
+  /* Login subtitle (re-used in forgot panel) */
+  .login-subtitle {
+    color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 2rem;
+    text-align: center; text-transform: uppercase; letter-spacing: 2px;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 900px) {
+    .login-brand { display: none; }
+    .login-form-panel { width: 100%; }
+  }
+  @media (max-width: 480px) {
+    #loginScreen { display: block; }
+    .login-form-panel { padding: 1.5rem 1rem; min-height: 100vh; }
+    .login-card { padding: 1.75rem 1.25rem; }
+  }
 
   /* ─────────────────────────────────────────
      LAYOUT
@@ -654,80 +901,165 @@
 </div>
 
 <div id="loginScreen">
-  <div class="login-card" style="position:relative; overflow:hidden;">
-    <div class="login-logo">
-      <img src="/SHIRO IT.png" alt="SHIRO IT" style="height:64px; width:auto; object-fit:contain;"
-           onerror="this.style.display='none'; document.getElementById('loginLogoFallback').style.display='flex';">
-      <div id="loginLogoFallback" style="display:none; align-items:center; gap:0.75rem;">
-        <div class="login-logo-icon"><i class="fas fa-microchip"></i></div>
-        <h1>SHIRO<span>IT</span></h1>
-      </div>
-    </div>
 
-    <!-- LOGIN PANEL -->
-    <div id="panelLogin">
-      <p class="login-subtitle">Staff Portal — Authorization Required</p>
-      <div class="form-group">
-        <label>User Identity</label>
-        <input type="text" id="loginUser" placeholder="STAFF_ID" autocomplete="username">
-      </div>
-      <div class="form-group">
-        <label>Access Key</label>
-        <div class="input-wrapper">
-          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
-          <i class="fas fa-eye pwd-toggle" onclick="togglePasswordVisibility('loginPass', this)"></i>
+  <!-- ══ LEFT: BRAND PANEL ══ -->
+  <div class="login-brand">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="brand-top">
+      <!-- Logo -->
+      <div class="brand-logo">
+        <img src="/SHIRO IT.png" alt="SHIRO IT"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="brand-logo-fallback">
+          <div class="brand-logo-icon"><i class="fas fa-microchip"></i></div>
+          <div class="brand-logo-text">
+            <h1>SHIRO<span>IT</span></h1>
+            <div class="brand-tagline">Digital Solutions</div>
+          </div>
         </div>
       </div>
-      <p class="error-msg" id="loginError"><i class="fas fa-exclamation-triangle"></i> Access Denied: Invalid Credentials</p>
-      <button class="btn btn-primary btn-full" id="loginBtn">
-        <i class="fas fa-power-off"></i> Initialize Session
-      </button>
-      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8rem; display: flex; justify-content: space-between; color: var(--text-secondary);">
-        <a href="#" onclick="toggleAuthPanel('forgot'); return false;" style="transition: color 0.2s;">Forgot Password?</a>
-        <a href="#" onclick="toggleAuthPanel('register'); return false;" style="transition: color 0.2s; color: var(--blue-light);">Create Account</a>
+
+      <h2 class="brand-headline">COMMAND<br>CENTER<br>PORTAL</h2>
+      <p class="brand-desc">
+        Secure access to the SHIRO IT Staff Operations Hub.
+        Manage inventory, customer queries, appointments, and all business operations from one intelligent dashboard.
+      </p>
+
+      <div class="brand-features">
+        <span class="feat-pill"><i class="fas fa-shield-alt"></i> Encrypted Sessions</span>
+        <span class="feat-pill"><i class="fas fa-tachometer-alt"></i> Real-Time Analytics</span>
+        <span class="feat-pill"><i class="fas fa-boxes"></i> Inventory Control</span>
+        <span class="feat-pill"><i class="fas fa-calendar-check"></i> Appointment Manager</span>
+        <span class="feat-pill"><i class="fas fa-users"></i> Staff Management</span>
+        <span class="feat-pill"><i class="fas fa-rocket"></i> PC Build Quotes</span>
       </div>
     </div>
 
-    <!-- REGISTER PANEL -->
-    <div id="panelRegister" style="display:none;">
-      <p class="login-subtitle">Deploy New Staff Account</p>
-      <div class="form-group">
-        <label>Desired Username</label>
-        <input type="text" id="regUser" placeholder="e.g. JohnDoe">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <div class="input-wrapper">
-          <input type="password" id="regPass" placeholder="••••••••">
-          <i class="fas fa-eye pwd-toggle" onclick="togglePasswordVisibility('regPass', this)"></i>
+    <!-- Bottom stats -->
+    <div>
+      <div class="brand-stats">
+        <div class="bstat">
+          <div class="bstat-val" id="bstatContacts">—</div>
+          <div class="bstat-label">Messages</div>
+        </div>
+        <div class="bstat">
+          <div class="bstat-val red" id="bstatQuotes">—</div>
+          <div class="bstat-label">PC Quotes</div>
+        </div>
+        <div class="bstat">
+          <div class="bstat-val green" id="bstatBookings">—</div>
+          <div class="bstat-label">Bookings</div>
         </div>
       </div>
-      <p class="error-msg" id="regError"><i class="fas fa-exclamation-triangle"></i> Error message here</p>
-      <p class="success-msg" id="regSuccess" style="display:none; color: var(--green); font-size: 0.8rem; margin-top: -10px; margin-bottom: 15px; text-align: center;"><i class="fas fa-check-circle"></i> Account Created! You can now log in.</p>
-      <button class="btn btn-primary btn-full" id="regBtn" onclick="doRegister()">
-        <i class="fas fa-user-plus"></i> Register Account
-      </button>
-      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.8rem;">
-        <a href="#" onclick="toggleAuthPanel('login'); return false;" style="color: var(--text-secondary); transition: color 0.2s;"><i class="fas fa-arrow-left"></i> Back to Login</a>
+      <div class="sys-status">
+        <div class="sys-status-dot"></div>
+        ALL SYSTEMS OPERATIONAL &nbsp;·&nbsp; SHIRO IT v2.0 &nbsp;·&nbsp;
+        <span id="loginClock">--:--:--</span>
       </div>
     </div>
+  </div>
 
-    <!-- FORGOT PASSWORD PANEL -->
-    <div id="panelForgot" style="display:none;">
-      <p class="login-subtitle">Auth Recovery Procedure</p>
-      <div style="padding: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; margin-bottom: 1.5rem;">
-        <p style="color: var(--yellow); font-size: 0.85rem; line-height: 1.5; text-align: center;">
-          <i class="fas fa-lock" style="font-size: 1.5rem; margin-bottom: 0.75rem; display: block;"></i>
-          <strong>Self-Service Reset Disabled</strong><br><br>
-          For security reasons, automated password resets are restricted in this portal.<br><br>
-          Please contact your <strong>Store Manager</strong> or <strong>IT Administrator</strong> to receive a temporary access key.
+  <!-- ══ RIGHT: AUTH FORM PANEL ══ -->
+  <div class="login-form-panel">
+    <div class="login-card">
+
+      <!-- LOGIN PANEL -->
+      <div id="panelLogin">
+        <div class="login-card-header">
+          <div class="login-portal-badge"><i class="fas fa-lock"></i> Secure Access Portal</div>
+          <h2>STAFF LOGIN</h2>
+          <p>Authorized Personnel Only</p>
+        </div>
+
+        <!-- Role selector -->
+        <div class="role-tabs" id="roleTabs">
+          <button class="role-tab active" data-role="admin" onclick="selectRole(this)">
+            <i class="fas fa-user-shield"></i> Admin
+          </button>
+          <button class="role-tab" data-role="technician" onclick="selectRole(this)">
+            <i class="fas fa-tools"></i> Technician
+          </button>
+          <button class="role-tab" data-role="staff" onclick="selectRole(this)">
+            <i class="fas fa-user"></i> Staff
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-id-badge"></i> Username</label>
+          <div class="input-wrapper">
+            <input type="text" id="loginUser" placeholder="Enter your username" autocomplete="username"
+                   onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()">
+            <i class="fas fa-user input-icon"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-key"></i> Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="loginPass" placeholder="Enter your password" autocomplete="current-password"
+                   onkeydown="if(event.key==='Enter') document.getElementById('loginBtn').click()">
+            <i class="fas fa-lock input-icon"></i>
+            <i class="fas fa-eye pwd-toggle" id="pwdToggleIcon" onclick="togglePasswordVisibility('loginPass', this)"></i>
+          </div>
+        </div>
+
+        <p class="error-msg" id="loginError">
+          <i class="fas fa-exclamation-triangle"></i> Access Denied — Invalid Credentials
         </p>
-      </div>
-      <div style="margin-top: 1rem; text-align: center; font-size: 0.8rem;">
-        <a href="#" onclick="toggleAuthPanel('login'); return false;" style="color: var(--text-secondary); transition: color 0.2s;"><i class="fas fa-arrow-left"></i> Back to Login</a>
-      </div>
-    </div>
 
+        <button class="btn btn-primary btn-full" id="loginBtn">
+          <i class="fas fa-sign-in-alt" id="loginBtnIcon"></i>
+          <span id="loginBtnText">Initialize Session</span>
+        </button>
+
+        <div class="login-divider">PORTAL OPTIONS</div>
+
+        <div class="login-links">
+          <a href="#" class="login-link" onclick="toggleAuthPanel('forgot'); return false;">
+            <i class="fas fa-question-circle"></i> Forgot Password? Contact Admin
+          </a>
+        </div>
+
+        <div class="security-badges">
+          <span class="sec-badge"><i class="fas fa-shield-alt"></i> SSL Encrypted</span>
+          <span class="sec-badge"><i class="fas fa-lock"></i> Session Secured</span>
+          <span class="sec-badge"><i class="fas fa-check-circle"></i> Hash Protected</span>
+        </div>
+      </div>
+
+      <!-- FORGOT PASSWORD PANEL -->
+      <div id="panelForgot" style="display:none;">
+        <div class="login-card-header">
+          <div class="login-portal-badge" style="border-color:rgba(245,158,11,0.3); color:var(--yellow);"><i class="fas fa-key"></i> Recovery</div>
+          <h2>ACCESS RECOVERY</h2>
+          <p>Password Reset Procedure</p>
+        </div>
+        <div style="padding: 1.25rem; background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.18); border-radius: 12px; margin-bottom: 1.5rem; text-align:center;">
+          <i class="fas fa-lock" style="font-size: 2rem; color: var(--yellow); margin-bottom: 0.75rem; display: block; animation: pulseGlow 3s ease-in-out infinite;"></i>
+          <p style="color: var(--yellow); font-size: 0.85rem; line-height: 1.7;">
+            <strong>Self-Service Reset Disabled</strong><br><br>
+            For security reasons, automated password resets are restricted.<br><br>
+            Contact your <strong>Store Manager</strong> or <strong>IT Administrator</strong> to reset your access credentials.
+          </p>
+        </div>
+        <div class="login-links">
+          <a href="#" class="login-link" onclick="toggleAuthPanel('login'); return false;">
+            <i class="fas fa-arrow-left"></i> Back to Login
+          </a>
+        </div>
+      </div>
+
+      <!-- REGISTER PANEL (hidden dummy — kept for JS compat) -->
+      <div id="panelRegister" style="display:none;">
+        <p class="error-msg" id="regError"></p>
+        <p id="regSuccess" style="display:none;"></p>
+        <input type="text" id="regUser" style="display:none;">
+        <input type="password" id="regPass" style="display:none;">
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -1310,30 +1642,39 @@ async function doLogin() {
   const pass = $('loginPass').value;
   const errEl = $('loginError');
   errEl.style.display = 'none';
-  $('loginBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating…';
+  // Loading state
+  $('loginBtnText').textContent = 'Authenticating…';
+  $('loginBtnIcon').className = 'fas fa-spinner fa-spin';
   $('loginBtn').disabled = true;
+  $('loginBtn').classList.add('loading');
   try {
     const res = await fetch(API + '/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       body: JSON.stringify({ username: user, password: pass })
-
     });
     const d = await res.json();
     if (d.success) {
-      // Server session is now set — show dashboard directly
-      $('loginScreen').style.display = 'none';
-      $('dashboard').style.display = 'block';
-      initDashboard();
+      $('loginBtnText').textContent = 'Access Granted!';
+      $('loginBtnIcon').className = 'fas fa-check-circle';
+      setTimeout(() => {
+        $('loginScreen').style.display = 'none';
+        $('dashboard').style.display = 'block';
+        initDashboard();
+      }, 500);
     } else {
       errEl.style.display = 'block';
+      $('loginBtnText').textContent = 'Initialize Session';
+      $('loginBtnIcon').className = 'fas fa-sign-in-alt';
     }
   } catch (e) {
     errEl.style.display = 'block';
+    $('loginBtnText').textContent = 'Initialize Session';
+    $('loginBtnIcon').className = 'fas fa-sign-in-alt';
   } finally {
-    $('loginBtn').innerHTML = '<i class="fas fa-power-off"></i> Initialize Session';
     $('loginBtn').disabled = false;
+    $('loginBtn').classList.remove('loading');
   }
 }
 
@@ -1341,16 +1682,51 @@ function toggleAuthPanel(panelName) {
   $('panelLogin').style.display = 'none';
   $('panelRegister').style.display = 'none';
   $('panelForgot').style.display = 'none';
-  
-  if (panelName === 'login') $('panelLogin').style.display = 'block';
+  if (panelName === 'login')    $('panelLogin').style.display = 'block';
   if (panelName === 'register') $('panelRegister').style.display = 'block';
-  if (panelName === 'forgot') $('panelForgot').style.display = 'block';
-  
-  // Clear any previous error/success messages
+  if (panelName === 'forgot')   $('panelForgot').style.display = 'block';
   $('loginError').style.display = 'none';
-  $('regError').style.display = 'none';
-  $('regSuccess').style.display = 'none';
+  if ($('regError'))   $('regError').style.display = 'none';
+  if ($('regSuccess')) $('regSuccess').style.display = 'none';
 }
+
+/* Role tab selector on login */
+function selectRole(btn) {
+  document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active', 'red-tab'));
+  btn.classList.add('active');
+  if (btn.dataset.role === 'technician') btn.classList.add('red-tab');
+  // Future: could populate a hidden role field sent with the login request
+}
+
+/* Login page live clock */
+function startLoginClock() {
+  const el = $('loginClock');
+  if (!el) return;
+  function tick() {
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString('en-MY', { hour12: false });
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* Load brand panel stats (public-ish — just shows counts) */
+async function loadBrandStats() {
+  try {
+    const res = await fetch(API + '/admin/api/stats', { credentials: 'include' });
+    const d = await res.json();
+    if (d.success) {
+      if ($('bstatContacts')) $('bstatContacts').textContent = d.stats.contacts;
+      if ($('bstatQuotes'))   $('bstatQuotes').textContent   = d.stats.quotes;
+      if ($('bstatBookings')) $('bstatBookings').textContent = d.stats.bookings;
+    }
+  } catch(e) { /* stats panel stays at — */ }
+}
+
+// Start login clock on page load
+startLoginClock();
+// Try loading stats (will silently fail if not logged in yet)
+loadBrandStats();
 
 function togglePasswordVisibility(inputId, iconEl) {
   const input = $(inputId);
