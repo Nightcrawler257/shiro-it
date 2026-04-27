@@ -15,6 +15,12 @@ Admin dashboard at http://localhost:5000/admin
 """
 
 import os
+from dotenv import load_dotenv
+
+# Load .env file if present (used on PythonAnywhere for secrets)
+# The .env file should NEVER be committed to Git
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+
 from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
 from config import Config
