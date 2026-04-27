@@ -43,7 +43,7 @@
   --border-red:   rgba(239, 68, 68, 0.35);
 
   /* -- Misc -- */
-  --nav-height:   68px;
+  --nav-height:   82px;
   --radius:       8px;
   --radius-lg:    12px;
   --transition:   all 0.25s ease;
@@ -539,7 +539,7 @@ body.light .nav-menu > li > a.active {
   gap: 8px;
 }
 .logo-img {
-  height: 52px;
+  height: 70px;
   width: auto;
 }
 .logo-fallback {
@@ -3473,7 +3473,7 @@ body.light .social-float-btn::before {
 
   /* --- Smaller logo on small phones --- */
   .logo-img {
-    height: 44px;
+    height: 58px;
   }
 
   /* --- CTA sections --- */
@@ -3534,7 +3534,7 @@ body.light .social-float-btn::before {
     font-size: 0.9rem;
   }
   :root {
-    --nav-height: 56px;
+    --nav-height: 68px;
   }
 }
 
