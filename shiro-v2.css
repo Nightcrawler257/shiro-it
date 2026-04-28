@@ -750,10 +750,10 @@ body.light .nav-menu > li > a.active {
 /* ========== HERO ========== */
 .hero-section {
   position: relative;
-  min-height: 100vh;
+  min-height: auto;
   display: flex;
   align-items: center;
-  padding: 8rem 0 4rem;
+  padding: calc(var(--nav-height) + 3rem) 0 3.5rem;
   overflow: hidden;
 }
 .hero-bg {
@@ -3362,7 +3362,7 @@ body.light .social-float-btn::before {
     font-size: 1.55rem;
   }
   .page-hero {
-    padding: 7rem 0 2.5rem;
+    padding: calc(var(--nav-height) + 2rem) 0 2.5rem;
   }
 
   /* --- Hero features row — stack vertically --- */
@@ -3517,7 +3517,7 @@ body.light .social-float-btn::before {
     max-width: 100%;
   }
   .hero-section {
-    padding: 6rem 0 2.5rem;
+    padding: calc(var(--nav-height) + 1.5rem) 0 2rem;
     min-height: auto;
   }
 }
