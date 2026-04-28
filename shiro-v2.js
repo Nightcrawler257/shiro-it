@@ -1628,9 +1628,116 @@ function showToast(message, type = "success") {
 
   let W, H;
   let meteors = [];
-  let rings = [];
-  let stars = [];
-  let comps = [];
+  let rings   = [];
+  let stars   = [];
+  let comps   = [];
+  let nodes   = [];        // ← network nodes
+  let mouseX  = 0, mouseY = 0;
+
+  // Track mouse for node attraction
+  window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+  /* -- Network nodes (connected particle web) -- */
+  function initNodes() {
+    nodes = Array.from({ length: 72 }, () => ({
+      x:     Math.random() * W,
+      y:     Math.random() * H,
+      vx:    (Math.random() - 0.5) * 0.55,
+      vy:    (Math.random() - 0.5) * 0.55,
+      r:     Math.random() * 2 + 1.5,
+      col:   Math.random() > 0.5 ? 'a' : 'b',
+      pulse: Math.random() * Math.PI * 2,
+    }));
+  }
+
+  function drawNetwork(p) {
+    const MAX_D  = 170;
+    const MAX_D2 = MAX_D * MAX_D;
+
+    // Move nodes
+    nodes.forEach(n => {
+      // Subtle mouse attraction
+      const dx = mouseX - n.x, dy = mouseY - n.y;
+      const md = Math.sqrt(dx * dx + dy * dy);
+      if (md < 220 && md > 0) {
+        n.vx += (dx / md) * 0.018;
+        n.vy += (dy / md) * 0.018;
+      }
+      // Speed cap
+      const spd = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
+      if (spd > 1.4) { n.vx *= 0.94; n.vy *= 0.94; }
+      n.x += n.vx;
+      n.y += n.vy;
+      n.pulse += 0.028;
+      // Bounce
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+      n.x = Math.max(0, Math.min(W, n.x));
+      n.y = Math.max(0, Math.min(H, n.y));
+    });
+
+    // Draw connections
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 > MAX_D2) continue;
+        const d    = Math.sqrt(d2);
+        const t    = 1 - d / MAX_D;          // 0→1 as nodes get closer
+        const alpha = t * 0.55;
+
+        const ca = p[a.col], cb = p[b.col];
+        const gr = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+        gr.addColorStop(0, rgba(ca, alpha));
+        gr.addColorStop(1, rgba(cb, alpha));
+
+        // Main line
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = gr;
+        ctx.lineWidth   = t * 1.8;
+        ctx.stroke();
+
+        // Bloom glow on close connections
+        if (d < 90) {
+          const gt = 1 - d / 90;
+          const gr2 = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+          gr2.addColorStop(0, rgba(ca, gt * 0.18));
+          gr2.addColorStop(1, rgba(cb, gt * 0.18));
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = gr2;
+          ctx.lineWidth   = gt * 7;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw glowing node dots
+    nodes.forEach(n => {
+      const c    = p[n.col];
+      const pls  = Math.sin(n.pulse) * 0.5 + 0.5;
+      const gRad = n.r + pls * 5;
+
+      // Radial glow halo
+      const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, gRad * 3.5);
+      grd.addColorStop(0, rgba(c, 0.35 + pls * 0.25));
+      grd.addColorStop(1, rgba(c, 0));
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, gRad * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+
+      // Core dot
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r + pls * 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(c, 0.85 + pls * 0.15);
+      ctx.fill();
+    });
+  }
 
   /* -- Stars (twinkle dots) -- */
   function initStars() {
@@ -1910,17 +2017,22 @@ function showToast(message, type = "success") {
   setInterval(spawnRing, 1800);
 
   function resize() {
-    W = canvas.width = window.innerWidth;
+    W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
+    mouseX = W / 2;
+    mouseY = H / 2;
     initStars();
     initComponents();
+    initNodes();
   }
 
   function draw() {
     const p = palettes();
     ctx.clearRect(0, 0, W, H);
 
-    /* -- Twinkling stars -- */
+    /* -- Connected node network -- */
+    drawNetwork(p);
+
     stars.forEach((s) => {
       s.phase += s.speed;
       const alpha = (Math.sin(s.phase) * 0.5 + 0.5) * 0.78 + 0.12;
