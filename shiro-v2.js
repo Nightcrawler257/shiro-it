@@ -1685,7 +1685,7 @@ function showToast(message, type = "success") {
         if (d2 > MAX_D2) continue;
         const d    = Math.sqrt(d2);
         const t    = 1 - d / MAX_D;          // 0→1 as nodes get closer
-        const alpha = t * 0.55;
+        const alpha = t * 0.18;              // subtle lines
 
         const ca = p[a.col], cb = p[b.col];
         const gr = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
@@ -1697,20 +1697,20 @@ function showToast(message, type = "success") {
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
         ctx.strokeStyle = gr;
-        ctx.lineWidth   = t * 1.8;
+        ctx.lineWidth   = t * 1.2;
         ctx.stroke();
 
         // Bloom glow on close connections
         if (d < 90) {
           const gt = 1 - d / 90;
           const gr2 = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-          gr2.addColorStop(0, rgba(ca, gt * 0.18));
-          gr2.addColorStop(1, rgba(cb, gt * 0.18));
+          gr2.addColorStop(0, rgba(ca, gt * 0.06));
+          gr2.addColorStop(1, rgba(cb, gt * 0.06));
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
           ctx.strokeStyle = gr2;
-          ctx.lineWidth   = gt * 7;
+          ctx.lineWidth   = gt * 4;
           ctx.stroke();
         }
       }
@@ -1723,18 +1723,18 @@ function showToast(message, type = "success") {
       const gRad = n.r + pls * 5;
 
       // Radial glow halo
-      const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, gRad * 3.5);
-      grd.addColorStop(0, rgba(c, 0.35 + pls * 0.25));
+      const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, gRad * 3);
+      grd.addColorStop(0, rgba(c, 0.12 + pls * 0.08));
       grd.addColorStop(1, rgba(c, 0));
       ctx.beginPath();
-      ctx.arc(n.x, n.y, gRad * 3.5, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, gRad * 3, 0, Math.PI * 2);
       ctx.fillStyle = grd;
       ctx.fill();
 
       // Core dot
       ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r + pls * 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(c, 0.85 + pls * 0.15);
+      ctx.arc(n.x, n.y, n.r + pls * 0.8, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(c, 0.45 + pls * 0.15);
       ctx.fill();
     });
   }
