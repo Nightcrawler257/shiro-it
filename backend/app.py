@@ -122,11 +122,11 @@ def create_app():
     # Ensure a default admin account always exists on startup
     with app.app_context():
         from werkzeug.security import generate_password_hash
-        DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'admin')
+        DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'ShiroIT')
         DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'shiro2026')
 
         # Warn if insecure defaults are still in use
-        _INSECURE_KEY = 'shiro-it-secret-key-2026'
+        _INSECURE_KEY  = 'shiro-it-secret-key-2026'
         _INSECURE_PASS = 'shiro2026'
         if app.config['SECRET_KEY'] == _INSECURE_KEY:
             print('[WARNING] SECRET_KEY is using the insecure default! '

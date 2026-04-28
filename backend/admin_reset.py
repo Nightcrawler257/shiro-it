@@ -1,8 +1,8 @@
 """
-Reset or create an admin user in SQLite.
-Run:
-cd backend
-python admin_reset.py
+Reset or create the emergency admin account in SQLite.
+Run THIS from a PythonAnywhere bash console:
+  cd /home/Hareshhh/shiro-it/backend
+  python admin_reset.py
 """
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -11,10 +11,10 @@ from app import create_app
 import db
 from werkzeug.security import generate_password_hash
 
-# ── Change these as needed ───────────────
-TARGET_USERNAME = "admin"
-NEW_PASSWORD    = "admin123"
-# ─────────────────────────────────────────
+# ── Emergency admin credentials ───────────
+TARGET_USERNAME = "ShiroIT"
+NEW_PASSWORD    = "REPLACE_WITH_YOUR_PASSWORD"   # change before running!
+# ──────────────────────────────────────────
 
 app = create_app()
 
