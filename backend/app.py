@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 # The .env file should NEVER be committed to Git
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
-from flask import Flask, send_from_directory, jsonify
+from flask import Flask, send_from_directory, jsonify, make_response
 from flask_cors import CORS
 from config import Config
 import db as database
@@ -102,7 +102,11 @@ def create_app():
     # Serve static files from the parent directory (SHIRO IT folder)
     @app.route('/')
     def serve_index():
-        return send_from_directory(PARENT_DIR, 'shiro-v2.html')
+        response = make_response(send_from_directory(PARENT_DIR, 'shiro-v2.html'))
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '-1'
+        return response
 
     @app.route('/<path:filename>')
     def serve_static(filename):
