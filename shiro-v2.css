@@ -198,11 +198,13 @@ body.light {
   display: none;
 } /* handled by canvas now */
 #bgCanvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   opacity: 1;
+  z-index: -2;
+  pointer-events: none;
 }
 
 /* Ensure all page content sits above the background */
