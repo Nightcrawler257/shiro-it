@@ -1687,16 +1687,11 @@ function showToast(message, type = "success") {
         const t    = 1 - d / MAX_D;          // 0→1 as nodes get closer
         const alpha = t * 0.18;              // subtle lines
 
-        const ca = p[a.col], cb = p[b.col];
-        const gr = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-        gr.addColorStop(0, rgba(ca, alpha));
-        gr.addColorStop(1, rgba(cb, alpha));
-
-        // Main line
+        // Use solid color instead of expensive gradient
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = gr;
+        ctx.strokeStyle = rgba(p[a.col], alpha);
         ctx.lineWidth   = t * 1.2;
         ctx.stroke();
 

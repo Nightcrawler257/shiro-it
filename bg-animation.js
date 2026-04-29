@@ -23,7 +23,7 @@
 
   // ── Particle network ──
   function initParticles() {
-    const count = Math.floor((W * H) / 14000);
+    const count = Math.floor((W * H) / 25000);
     particles = Array.from({ length: count }, () => ({
       x: Math.random() * W,
       y: Math.random() * H,
@@ -76,16 +76,14 @@
       for (let j = i + 1; j < particles.length; j++) {
         const pt2 = particles[j];
         const dx2 = pt.x - pt2.x, dy2 = pt.y - pt2.y;
-        const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-        if (dist < LINK_DIST) {
+        const dist2 = dx2 * dx2 + dy2 * dy2;
+        if (dist2 < LINK_DIST * LINK_DIST) {
+          const dist = Math.sqrt(dist2);
           const lineAlpha = (1 - dist / LINK_DIST) * 0.3;
-          const lg = ctx.createLinearGradient(pt.x, pt.y, pt2.x, pt2.y);
-          lg.addColorStop(0, rgba(p[pt.col], lineAlpha));
-          lg.addColorStop(1, rgba(p[pt2.col], lineAlpha));
           ctx.beginPath();
           ctx.moveTo(pt.x, pt.y);
           ctx.lineTo(pt2.x, pt2.y);
-          ctx.strokeStyle = lg;
+          ctx.strokeStyle = rgba(p[pt.col], lineAlpha);
           ctx.lineWidth = 0.7;
           ctx.stroke();
         }
