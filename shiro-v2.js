@@ -1730,6 +1730,7 @@ function showToast(message, type = "success") {
 
         // Bloom glow on close connections
         if (d < 90) {
+          const ca = p[a.col], cb = p[b.col];
           const gt = 1 - d / 90;
           const gr2 = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
           gr2.addColorStop(0, rgba(ca, gt * 0.06));
