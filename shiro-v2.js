@@ -1979,6 +1979,7 @@ function showToast(message, type = "success") {
 
   /* -- Pulse rings -- */
   function spawnRing() {
+    if (rings.length > 10) return;
     const p = palettes();
     const col = Math.random() > 0.5 ? p.a : p.b;
     rings.push({
@@ -1994,6 +1995,7 @@ function showToast(message, type = "success") {
 
   /* -- Meteors -- */
   function spawnMeteor() {
+    if (meteors.length > 15) return;
     const p = palettes();
     const col = Math.random() > 0.5 ? p.a : p.b;
     meteors.push({

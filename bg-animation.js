@@ -158,6 +158,7 @@
 
   // ── Meteors ──
   function spawnMeteor() {
+    if (meteors.length > 15) return;
     const p = palette();
     const col = Math.random() > 0.5 ? p.a : p.b;
     meteors.push({ x: Math.random() * W * 1.5, y: 0, vx: -3 - Math.random() * 4, vy: 3 + Math.random() * 5, len: 100 + Math.random() * 100, life: 1, decay: 0.015 + Math.random() * 0.015, color: col });
@@ -165,6 +166,7 @@
 
   // ── Pulse rings ──
   function spawnRing() {
+    if (rings.length > 10) return;
     const p = palette();
     const col = Math.random() > 0.5 ? p.a : p.b;
     rings.push({ x: Math.random() * W, y: Math.random() * H, r: 0, maxR: 80 + Math.random() * 120, life: 1, decay: 0.006 + Math.random() * 0.006, color: col });
