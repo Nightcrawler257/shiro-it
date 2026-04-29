@@ -1421,10 +1421,15 @@ body.light .nav-menu > li > a.active {
 .service-card {
   text-align: center;
   padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.3s ease;
 }
 .service-card:hover {
-  border-color: rgba(0, 102, 255, 0.3);
-  transform: translateY(-4px);
+  border-color: rgba(0, 102, 255, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(0, 102, 255, 0.1);
 }
 .service-icon {
   width: 60px;
@@ -1437,6 +1442,12 @@ body.light .nav-menu > li > a.active {
   justify-content: center;
   font-size: 1.3rem;
   color: var(--accent);
+  transition: all 0.3s ease;
+}
+.service-card:hover .service-icon {
+  background: rgba(0, 102, 255, 0.15);
+  color: var(--blue);
+  transform: scale(1.1);
 }
 .service-card h4 {
   margin-bottom: 0.5rem;
@@ -1444,6 +1455,21 @@ body.light .nav-menu > li > a.active {
 .service-card p {
   font-size: 0.85rem;
   color: var(--text-secondary);
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+}
+.service-card-action {
+  margin-top: auto;
+}
+.service-card-action .btn {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+}
+.service-card:hover .service-card-action .btn {
+  background: rgba(37, 211, 102, 0.1);
+  border-color: #25d366;
+  color: #25d366;
 }
 
 /* ========== TIERS ========== */

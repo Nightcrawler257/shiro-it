@@ -1122,6 +1122,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  if (whatsappOrder) {
+    whatsappOrder.addEventListener("click", () => {
+      if (whatsappOrder.classList.contains("disabled")) return;
+      const cfg = whatsappOrder._buildConfig;
+      if (!cfg || cfg.items.length === 0) {
+        showToast("Your build is empty!", "error");
+        return;
+      }
+      
+      addToGlobalCart({
+        type: 'build',
+        name: 'Custom PC Build',
+        price: cfg.total,
+        items: cfg.items,
+        id: 'build-' + Date.now()
+      });
+      
+      // Optionally open the cart right away
+      if (cartOpenBtn) cartOpenBtn.click();
+      
+      // Reset builder after adding to cart
+      cartItems = [];
+      renderBuilder();
+      updateSummary();
+    });
+  }
+
   function renderGlobalCart() {
     if (!cartBody) return;
     cartBody.innerHTML = "";
