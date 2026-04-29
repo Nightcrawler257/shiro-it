@@ -863,12 +863,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return brandFilterHtml + items.map(item => {
+      const itemId = item.id || item._id;
+      const isSelected = cartItems.some(ci => ci.id === itemId);
+      
       const displayImage = item.image && item.image.includes('/') 
         ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
         : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
       
       return `
-      <div class="inline-item" onclick="addInlineItem('${item.id || item._id}', '${category}')">
+      <div class="inline-item" ${!isSelected ? `onclick="addInlineItem('${itemId}', '${category}')"` : ''} style="${isSelected ? 'opacity:0.6; cursor:default; border-color:var(--border-color);' : ''}">
         <div style="display:flex; align-items:center; gap:1rem;">
           ${displayImage}
           <div class="inline-item-info">
@@ -878,7 +881,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="inline-item-action">
           <span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
-          <div class="inline-add-btn"><i class="fas fa-plus"></i></div>
+          <div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}">
+            <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
+          </div>
         </div>
       </div>
     `}).join("");
@@ -900,6 +905,7 @@ document.addEventListener("DOMContentLoaded", () => {
         category: item.category,
         price: item.price
       });
+      showToast(`${item.name} added to your build!`, "success");
       renderBuilder();
       updateSummary();
     }
