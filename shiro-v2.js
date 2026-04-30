@@ -36,9 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     // Close mobile menu (the full close function is defined further below,
     // so we do it inline here to keep order-independence)
-    navMenu.classList.remove("open");
+    if (navMenu) navMenu.classList.remove("open");
     const _mt = document.getElementById("menuToggle");
-    if (_mt) _mt.querySelector("i").className = "fas fa-bars";
+    if (_mt) {
+      const _mti = _mt.querySelector("i");
+      if (_mti) _mti.className = "fas fa-bars";
+    }
     const _ov = document.getElementById("navOverlay");
     if (_ov) _ov.classList.remove("active");
     // Trigger animations
@@ -103,11 +106,14 @@ document.addEventListener("DOMContentLoaded", () => {
     menuToggle.querySelector("i").className = "fas fa-bars";
   }
 
-  menuToggle.addEventListener("click", () => {
-    const isOpen = navMenu.classList.toggle("open");
-    menuToggle.querySelector("i").className = isOpen ? "fas fa-times" : "fas fa-bars";
-    if (navOverlay) navOverlay.classList.toggle("active", isOpen);
-  });
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navMenu.classList.toggle("open");
+      const icon = menuToggle.querySelector("i");
+      if (icon) icon.className = isOpen ? "fas fa-times" : "fas fa-bars";
+      if (navOverlay) navOverlay.classList.toggle("active", isOpen);
+    });
+  }
 
   // Close menu when tapping the backdrop overlay
   if (navOverlay) {
@@ -127,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===== NAVBAR SCROLL ===== */
   const navbar = document.querySelector(".navbar");
   window.addEventListener("scroll", () => {
-    navbar.classList.toggle("scrolled", window.scrollY > 50);
+    if (navbar) navbar.classList.toggle("scrolled", window.scrollY > 50);
   });
 
   /* ===== THEME TOGGLE ===== */
@@ -138,22 +144,27 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("shiro-theme", "dark");
   }
 
-  if (savedTheme === "light") {
-    document.body.classList.add("light");
-    themeToggle.querySelector("i").className = "fas fa-sun";
-  } else {
-    document.body.classList.remove("light");
-    themeToggle.querySelector("i").className = "fas fa-moon";
-  }
+  if (themeToggle) {
+    const themeIcon = themeToggle.querySelector("i");
+    if (themeIcon) {
+      if (savedTheme === "light") {
+        document.body.classList.add("light");
+        themeIcon.className = "fas fa-sun";
+      } else {
+        document.body.classList.remove("light");
+        themeIcon.className = "fas fa-moon";
+      }
+    }
 
-  themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("light");
-    const isLight = document.body.classList.contains("light");
-    themeToggle.querySelector("i").className = isLight
-      ? "fas fa-sun"
-      : "fas fa-moon";
-    localStorage.setItem("shiro-theme", isLight ? "light" : "dark");
-  });
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+      const isLight = document.body.classList.contains("light");
+      if (themeIcon) {
+        themeIcon.className = isLight ? "fas fa-sun" : "fas fa-moon";
+      }
+      localStorage.setItem("shiro-theme", isLight ? "light" : "dark");
+    });
+  }
 
   /* ===== LANGUAGE SWITCHER ===== */
   const langToggle = document.getElementById("languageToggle");
@@ -325,11 +336,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const flag = document.getElementById("currentFlag");
     const langText = document.getElementById("currentLanguage");
     if (lang === "bm") {
-      flag.className = "fi fi-my";
-      langText.textContent = "BM";
+      if (flag) flag.className = "fi fi-my";
+      if (langText) langText.textContent = "BM";
     } else {
-      flag.className = "fi fi-us";
-      langText.textContent = "EN";
+      if (flag) flag.className = "fi fi-us";
+      if (langText) langText.textContent = "EN";
     }
     document.querySelectorAll("[data-translate]").forEach((el) => {
       const key = el.getAttribute("data-translate");
@@ -557,7 +568,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let inventoryData = [];
   let cartItems = []; // Current selection in PC Builder
-  let globalCart = JSON.parse(localStorage.getItem("shiro-global-cart") || "[]");
+  let globalCart = [];
+  try {
+    const saved = localStorage.getItem("shiro-global-cart");
+    if (saved) globalCart = JSON.parse(saved);
+  } catch (e) {
+    console.warn("Could not parse global cart:", e);
+    globalCart = [];
+  }
 
   const MANDATORY_COMPONENTS = ["CPU", "Motherboard", "RAM", "Storage", "GPU", "Case", "PSU"];
   const COOLING_COMPONENTS = ["Cooling", "AIO Cooling"];
@@ -636,8 +654,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const d = await res.json();
       if (d.success && d.data && d.data.length > 0) {
         container.innerHTML = d.data.map(pc => {
-          const photoHtml = pc.photo_url
-            ? `<img src="${pc.photo_url.startsWith('http') ? pc.photo_url : API_BASE + '/' + pc.photo_url}" alt="${pc.name}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">`
+          const photoUrl = pc.photo_url || "";
+          const photoHtml = photoUrl
+            ? `<img src="${photoUrl.startsWith('http') ? photoUrl : API_BASE + '/' + photoUrl}" alt="${pc.name}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">`
             : '';
           const discountHtml = pc.discount ? `<div class="tier-discount"><i class="fas fa-tag"></i> ${pc.discount}</div>` : '';
           const featuredClass = pc.featured ? ' featured' : '';
@@ -1015,35 +1034,37 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // UI Feedback for validation
     const summaryCard = document.querySelector('.summary-card');
-    let validationEl = document.getElementById('buildValidation');
-    if (!validationEl) {
-      validationEl = document.createElement('div');
-      validationEl.id = 'buildValidation';
-      summaryCard.insertBefore(validationEl, whatsappOrder);
-    }
-
-    if (validation.isValid) {
-      validationEl.innerHTML = `<div class="validation-msg success"><i class="fas fa-check-circle"></i> Complete Build! Ready to add to cart.</div>`;
-      if(whatsappOrder) {
-        whatsappOrder.innerHTML = `<i class="fas fa-cart-plus"></i> Add Build to Cart`;
-        whatsappOrder.classList.remove('disabled');
-        whatsappOrder.style.opacity = "1";
-        whatsappOrder.style.pointerEvents = "auto";
+    if (summaryCard) {
+      let validationEl = document.getElementById('buildValidation');
+      if (!validationEl) {
+        validationEl = document.createElement('div');
+        validationEl.id = 'buildValidation';
+        summaryCard.insertBefore(validationEl, whatsappOrder);
       }
-    } else {
-      validationEl.innerHTML = `
-        <div class="validation-msg error">
-          <i class="fas fa-exclamation-triangle"></i> Incomplete Build
-          <ul class="missing-list">
-            ${validation.missing.map(m => `<li>Missing ${m}</li>`).join('')}
-          </ul>
-        </div>
-      `;
-      if(whatsappOrder) {
-        whatsappOrder.innerHTML = `<i class="fas fa-lock"></i> Incomplete Build`;
-        whatsappOrder.classList.add('disabled');
-        whatsappOrder.style.opacity = "0.5";
-        whatsappOrder.style.pointerEvents = "none";
+      
+      if (validation.isValid) {
+        validationEl.innerHTML = `<div class="validation-msg success"><i class="fas fa-check-circle"></i> Complete Build! Ready to add to cart.</div>`;
+        if(whatsappOrder) {
+          whatsappOrder.innerHTML = `<i class="fas fa-cart-plus"></i> Add Build to Cart`;
+          whatsappOrder.classList.remove('disabled');
+          whatsappOrder.style.opacity = "1";
+          whatsappOrder.style.pointerEvents = "auto";
+        }
+      } else {
+        validationEl.innerHTML = `
+          <div class="validation-msg error">
+            <i class="fas fa-exclamation-triangle"></i> Incomplete Build
+            <ul class="missing-list">
+              ${validation.missing.map(m => `<li>Missing ${m}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+        if(whatsappOrder) {
+          whatsappOrder.innerHTML = `<i class="fas fa-lock"></i> Incomplete Build`;
+          whatsappOrder.classList.add('disabled');
+          whatsappOrder.style.opacity = "0.5";
+          whatsappOrder.style.pointerEvents = "none";
+        }
       }
     }
 
