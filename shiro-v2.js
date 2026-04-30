@@ -439,11 +439,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== SHOP — Products ===== */
   let products = [];
-  const premiumPlaceholders = [
-    "images/pc1.png",
-    "images/pc2.png",
-    "images/pc3.png"
-  ];
 
   const productsGrid = document.getElementById("productsGrid");
   const emptyState = document.getElementById("emptyState");
@@ -476,13 +471,12 @@ document.addEventListener("DOMContentLoaded", () => {
     filtered.forEach((p) => {
       const card = document.createElement("div");
       card.className = "product-card" + (p.featured ? " featured" : "");
-      const hasImg = p.image && (p.image.startsWith('/') || p.image.startsWith('http') || p.image.includes('.png'));
-      const imgSrc = hasImg ? resolveImagePath(p.image) : premiumPlaceholders[Math.floor(Math.random() * premiumPlaceholders.length)];
-
       card.innerHTML = `
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ""}
         <div class="product-image">
-          <img src="${imgSrc}" alt="${p.name}">
+          ${p.image && (p.image.startsWith('/') || p.image.startsWith('http'))
+            ? `<img src="${resolveImagePath(p.image)}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;">`
+            : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${getCategoryIcon(p.category)}</div>`}
         </div>
         <div class="product-category">${p.category}</div>
         <h3>${p.name}</h3>
@@ -826,7 +820,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${
           cfg.svg
             ? `<div class="comp-img-wrap">${cfg.svg}</div>`
-            : `<div class="comp-img-wrap"><img src="${premiumPlaceholders[i % premiumPlaceholders.length]}" class="animated-pc" style="width:100%; height:100%; object-fit:cover;"></div>`
+            : `<div class="comp-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:${cfg.color}50;"><i class="${cfg.icon}"></i></div>`
         }
         <div class="comp-header">
           <div class="comp-icon" style="color:${cfg.color}; background:${cfg.color}20;">
@@ -891,10 +885,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const itemId = item.id || item._id;
       const isSelected = cartItems.some(ci => ci.id === itemId);
       
-      const hasImg = item.image && (item.image.includes('/') || item.image.includes('.png'));
-      const imgSrc = hasImg ? resolveImagePath(item.image) : premiumPlaceholders[Math.floor(Math.random() * premiumPlaceholders.length)];
-      
-      const displayImage = `<img src="${imgSrc}" alt="${item.name}" class="animated-pc" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`;
+      const displayImage = item.image && item.image.includes('/') 
+        ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
+        : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
       
       return `
       <div class="inline-item" ${!isSelected ? `onclick="addInlineItem('${itemId}', '${category}')"` : ''} style="${isSelected ? 'opacity:0.6; cursor:default; border-color:var(--border-color);' : ''}">
@@ -963,13 +956,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.createElement("div");
       el.className = "builder-item";
       
-      const hasImg = item.image && (item.image.includes('/') || item.image.includes('.png'));
-      const imgSrc = hasImg ? resolveImagePath(item.image) : premiumPlaceholders[Math.floor(Math.random() * premiumPlaceholders.length)];
-      const img = `<img src="${imgSrc}" alt="${item.name}" class="animated-pc" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">`;
-      
-      el.innerHTML = `
-        <div style="display:flex; align-items:center; gap:1rem;">
-          ${img}
+          ${item.image && item.image.includes('/') 
+            ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
+            : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
           <div class="builder-item-info">
             <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.8rem;'></i>" : ""}</h4>
             <p>${item.category} ${item.specs ? " | " + item.specs : ""}</p>
