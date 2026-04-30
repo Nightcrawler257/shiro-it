@@ -797,7 +797,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Render each category block
-    Object.keys(cartByCategory).forEach((cat) => {
+    Object.keys(cartByCategory).forEach((cat, i) => {
       const itemsInCat = cartByCategory[cat];
       const cfg = getCategoryConfig(cat);
 
