@@ -787,11 +787,12 @@ body.light .nav-menu > li > a.active {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr minmax(0, 540px);
-  gap: 3rem;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 1.5rem;
   align-items: center;
   width: 100%;
-  max-width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 .hero-badge {
   display: inline-flex;
@@ -2875,15 +2876,20 @@ textarea {
   overflow: hidden;
   background: var(--bg-secondary);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
 }
-.video-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: rgba(0, 102, 255, 0.3);
+
+.clickable-tip {
+  cursor: pointer;
+}
+
+.clickable-tip:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0, 102, 255, 0.2);
+  border-color: var(--neon-blue);
 }
 .video-wrapper {
   position: relative;

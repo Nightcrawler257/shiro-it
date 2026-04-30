@@ -781,6 +781,10 @@
           <i class="fas fa-desktop nav-icon"></i>
           <span class="nav-label">Choose Your PC</span>
         </a>
+        <a href="#" class="nav-item" data-tab="hero">
+          <i class="fas fa-images nav-icon"></i>
+          <span class="nav-label">Hero Carousel</span>
+        </a>
         <a href="#" class="nav-item" data-tab="tips">
           <i class="fas fa-lightbulb nav-icon"></i>
           <span class="nav-label">IT Tips Gallery</span>
@@ -987,8 +991,39 @@
                   <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">How many knowledge base widgets to show on the public page. Set to 0 to show all.</p>
                 </div>
                 
+                <div class="form-group">
+                  <label><i class="fas fa-clock" style="color:var(--neon-blue)"></i> Carousel Slide Duration (Seconds)</label>
+                  <input type="number" id="setHeroDuration" min="1" max="60" placeholder="e.g. 8">
+                  <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">How long each slide stays on screen before rotating.</p>
+                </div>
+                
                 <button type="button" class="btn btn-primary" onclick="saveSettings()" style="margin-top: 1.5rem;"><i class="fas fa-save"></i> Save Settings</button>
               </form>
+            </div>
+          </div>
+
+          <!-- ══════════════════════════════════════
+               HERO CAROUSEL TAB
+          ══════════════════════════════════════ -->
+          <div id="tab-hero" class="tab-content" style="display:none;">
+            <div class="tab-actions">
+              <button class="btn btn-primary" id="addSlideBtn"><i class="fas fa-plus"></i> Add New Slide</button>
+            </div>
+            <div class="data-table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Media</th>
+                    <th>Title / Subtitle</th>
+                    <th>Button / Target</th>
+                    <th>Order</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="heroTableBody">
+                  <tr><td colspan="5" style="text-align:center;padding:3rem;">Loading slides...</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -1136,6 +1171,63 @@
   </div>
 </div>
 
+<!-- HERO SLIDE MODAL -->
+<div class="modal-overlay" id="heroModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="heroModalTitle">Add Hero Slide</h3>
+      <button class="modal-close" id="heroModalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="heroForm">
+        <input type="hidden" id="heroEditId">
+        <div class="form-row">
+          <div class="form-group"><label>Title (Main Heading)</label><input type="text" id="heroTitle"></div>
+          <div class="form-group"><label>Subtitle (Small Text)</label><input type="text" id="heroSubtitle"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Media Type</label>
+            <select id="heroMediaType">
+              <option value="image">Image / Poster</option>
+              <option value="video">Video</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Media File</label>
+            <div class="upload-area" id="heroUploadArea">
+              <input type="file" id="heroMediaFile" accept="image/*,video/*">
+              <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+              <div class="upload-area-text">Drop file or click to browse</div>
+            </div>
+            <div id="heroUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
+            <div id="heroMediaPreview" style="margin-top:0.5rem;"></div>
+            <input type="hidden" id="heroMediaUrl">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Button Text</label><input type="text" id="heroBtnText" placeholder="e.g. View Services"></div>
+          <div class="form-group">
+            <label>Navigation Target</label>
+            <select id="heroTarget">
+              <option value="home">Home Page</option>
+              <option value="shop">Shop / Store</option>
+              <option value="build-pc-services">Build Your PC</option>
+              <option value="build-pc-services#services">IT Services</option>
+              <option value="jobs">Careers</option>
+              <option value="contact">Contact Us</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Order Index</label><input type="number" id="heroOrder" value="0"></div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="saveHeroBtn"><i class="fas fa-save"></i> Save Slide</button>
+    </div>
+  </div>
+</div>
+
 <!-- TIP MODAL -->
 <div class="modal-overlay" id="tipModalOverlay">
   <div class="modal">
@@ -1167,6 +1259,18 @@
             <div id="tipMediaPreview" style="margin-top:0.5rem;"></div>
             <input type="hidden" id="tipMediaUrl">
           </div>
+        </div>
+        <div class="form-group">
+          <label>Navigation Target (Where it links to)</label>
+          <select id="tipTarget">
+            <option value="home">Home Page (No scroll)</option>
+            <option value="shop">Shop / Store</option>
+            <option value="build-pc-services">Build Your PC (Configurator)</option>
+            <option value="build-pc-services#services">IT Services Section</option>
+            <option value="home#tips-video-gallery">IT Tips Section</option>
+            <option value="jobs">Careers / Job Openings</option>
+            <option value="contact">Contact Us</option>
+          </select>
         </div>
         <div class="form-group"><label>Tags (Comma separated)</label><input type="text" id="tipTags"></div>
       </form>
@@ -1580,6 +1684,11 @@ async function loadTab(tab) {
   if($('addPcBtn'))  $('addPcBtn').style.display  = tab === 'pcs' ? 'flex' : 'none';
   if($('addTipBtn')) $('addTipBtn').style.display = tab === 'tips' ? 'flex' : 'none';
   if($('addTestimonialBtn')) $('addTestimonialBtn').style.display = tab === 'testimonials' ? 'flex' : 'none';
+  if($('addSlideBtn')) $('addSlideBtn').style.display = tab === 'hero' ? 'flex' : 'none';
+  
+  if (tab === 'tips') loadITTips();
+  if (tab === 'hero') loadHeroSlides();
+  if (tab === 'testimonials') loadTestimonials();
 
   // Show loading state
   const body = $('tableBody');
@@ -2254,6 +2363,148 @@ $('savePcBtn').onclick = async () => {
 };
 
 
+// ── Hero Carousel ──
+async function loadHeroSlides() {
+  const body = $('heroTableBody');
+  try {
+    const res = await fetch(API + '/admin/api/hero_slides');
+    const d = await res.json();
+    if (!d.success) return;
+    if (d.data.length === 0) {
+      body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:3rem;">No slides found. Add your first one!</td></tr>';
+      return;
+    }
+    body.innerHTML = d.data.map(item => {
+      const mediaHtml = item.media_type === 'image' 
+        ? `<img src="${item.media_url.startsWith('http') ? item.media_url : API + item.media_url}" style="width:60px;height:40px;object-fit:cover;border-radius:4px;">`
+        : `<div style="font-size:1.2rem;color:var(--neon-blue);text-align:center;"><i class="fas fa-video"></i></div>`;
+      
+      return `
+        <tr>
+          <td>${mediaHtml}</td>
+          <td>
+            <div style="font-weight:600;color:var(--text-primary);">${item.title}</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);">${item.subtitle || '—'}</div>
+          </td>
+          <td>
+            <div style="font-size:0.85rem;">${item.button_text}</div>
+            <div style="font-size:0.75rem;color:var(--text-secondary);">${item.target_page}</div>
+          </td>
+          <td><span class="badge badge-blue">${item.order_index}</span></td>
+          <td>
+            <div class="row-actions">
+              <button class="btn btn-icon" onclick='editHeroItem(${JSON.stringify(item)})' title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-icon btn-red" onclick="deleteItem('hero_slides', ${item.id}, loadHeroSlides)" title="Delete"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+  } catch (e) {
+    body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--neon-red);">Failed to load slides</td></tr>';
+  }
+}
+
+$('addSlideBtn').onclick = () => {
+  $('heroForm').reset();
+  $('heroEditId').value = '';
+  $('heroMediaUrl').value = '';
+  $('heroMediaPreview').innerHTML = '';
+  $('heroUploadStatus').textContent = '';
+  $('heroModalTitle').textContent = 'Add Hero Slide';
+  openHeroModal();
+};
+
+$('heroMediaFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  $('heroUploadStatus').textContent = `Selected: ${file.name}`;
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      $('heroMediaPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%;max-height:80px;border-radius:8px;margin-top:4px;">`;
+    };
+    reader.readAsDataURL(file);
+  } else {
+    $('heroMediaPreview').innerHTML = `<div style="font-size:0.75rem;color:var(--neon-blue);"><i class="fas fa-video"></i> Video selected</div>`;
+  }
+});
+
+window.editHeroItem = (item) => {
+  $('heroEditId').value     = item.id;
+  $('heroTitle').value      = item.title || '';
+  $('heroSubtitle').value   = item.subtitle || '';
+  $('heroMediaType').value  = item.media_type || 'image';
+  $('heroMediaUrl').value   = item.media_url || '';
+  $('heroBtnText').value    = item.button_text || '';
+  $('heroTarget').value     = item.target_page || 'home';
+  $('heroOrder').value      = item.order_index || 0;
+
+  if (item.media_url) {
+    const url = item.media_url.startsWith('http') ? item.media_url : API + item.media_url;
+    if (item.media_type === 'image') {
+      $('heroMediaPreview').innerHTML = `<img src="${url}" style="max-width:100%;max-height:80px;border-radius:8px;margin-top:4px;">`;
+    } else {
+      $('heroMediaPreview').innerHTML = `<div style="font-size:0.75rem;color:var(--neon-blue);"><i class="fas fa-video"></i> ${item.media_url}</div>`;
+    }
+  }
+  $('heroModalTitle').textContent = 'Edit Hero Slide';
+  openHeroModal();
+};
+
+function openHeroModal() { $('heroModalOverlay').classList.add('show'); }
+function closeHeroModal() { $('heroModalOverlay').classList.remove('show'); }
+
+$('saveHeroBtn').onclick = async () => {
+  $('saveHeroBtn').disabled = true;
+  $('saveHeroBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+  try {
+    let finalUrl = $('heroMediaUrl').value;
+    const fileInput = $('heroMediaFile');
+    if (fileInput.files[0]) {
+      const fd = new FormData();
+      fd.append('file', fileInput.files[0]);
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upData = await upRes.json();
+      if (upData.success) finalUrl = upData.url;
+    }
+
+    const id = $('heroEditId').value;
+    const item = {
+      title: $('heroTitle').value,
+      subtitle: $('heroSubtitle').value,
+      media_type: $('heroMediaType').value,
+      media_url: finalUrl,
+      button_text: $('heroBtnText').value,
+      target_page: $('heroTarget').value,
+      order_index: parseInt($('heroOrder').value) || 0
+    };
+
+    const url = id ? `${API}/admin/api/hero_slides/${id}` : `${API}/admin/api/hero_slides`;
+    const method = id ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+    const d = await res.json();
+    if (d.success) {
+      toast('Slide saved!', 'ok');
+      closeHeroModal();
+      loadHeroSlides();
+    }
+  } catch (e) {
+    toast('Error saving slide', 'err');
+  } finally {
+    $('saveHeroBtn').disabled = false;
+    $('saveHeroBtn').innerHTML = '<i class="fas fa-save"></i> Save Slide';
+  }
+};
+
+// Handle Hero modal close
+$('heroModalClose').onclick = closeHeroModal;
+
+
 // ── IT Tips Modal ──
 $('addTipBtn').onclick = () => {
   $('tipForm').reset();
@@ -2289,6 +2540,7 @@ window.editTipItem = (item) => {
   $('tipMediaType').value   = item.media_type || 'video';
   $('tipMediaUrl').value    = item.media_url || '';
   $('tipTags').value        = (item.tags || []).join(', ');
+  $('tipTarget').value      = item.target_page || 'home';
 
   // Show existing media preview
   if (item.media_url) {
@@ -2343,7 +2595,8 @@ $('saveTipBtn').onclick = async () => {
       description: $('tipDesc').value,
       media_type: $('tipMediaType').value,
       media_url: finalMediaUrl,
-      tags: $('tipTags').value.split(',').map(s=>s.trim()).filter(s=>s)
+      tags: $('tipTags').value.split(',').map(s=>s.trim()).filter(s=>s),
+      target_page: $('tipTarget').value
     };
 
     const url = id ? `${API}/admin/api/it_tips/${id}` : `${API}/admin/api/it_tips`;

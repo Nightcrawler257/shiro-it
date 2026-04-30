@@ -96,6 +96,85 @@ document.addEventListener("DOMContentLoaded", () => {
   const initialPage = window.location.hash.replace("#", "") || "home";
   if (initialPage !== "home") navigateTo(initialPage);
 
+  /* ===== SITE SETTINGS & FESTIVALS ===== */
+  async function applySiteSettings() {
+    try {
+      const res = await fetch(API_BASE + '/api/site_settings');
+      const d = await res.json();
+      if (d.success && d.data) {
+        const settings = d.data;
+        
+        // 1. Handle Festival Effects
+        const festival = settings.active_festival || 'none';
+        if (festival !== 'none') {
+          // Load the festival CSS if not already present
+          if (!document.getElementById('festival-css')) {
+            const link = document.createElement('link');
+            link.id = 'festival-css';
+            link.rel = 'stylesheet';
+            link.href = '/festivals/festival.css';
+            document.head.appendChild(link);
+          }
+          // Load the specific festival JS
+          const script = document.createElement('script');
+          script.src = `/festivals/${festival}.js`;
+          document.body.appendChild(script);
+        }
+        
+        window.siteSettings = settings;
+        // If settings specify a duration, update the global interval
+        if (settings.hero_slide_duration) {
+          window.heroInterval = parseInt(settings.hero_slide_duration) * 1000;
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to load site settings:', err);
+    }
+  }
+  window.heroInterval = 8000; // Default
+  applySiteSettings();
+
+  async function loadHeroSlides() {
+    const track = document.getElementById("heroSliderTrack");
+    if (!track) return;
+
+    try {
+      const res = await fetch(API_BASE + '/api/hero_slides');
+      const d = await res.json();
+      if (d.success && d.data && d.data.length > 0) {
+        track.innerHTML = d.data.map((slide, index) => {
+          const mediaUrl = slide.media_url.startsWith('http') ? slide.media_url : API_BASE + slide.media_url;
+          let mediaHtml = '';
+          
+          if (slide.media_type === 'video') {
+            mediaHtml = `<video class="slide-poster-video" autoplay muted loop playsinline><source src="${mediaUrl}" type="video/mp4"></video>`;
+          } else {
+            mediaHtml = `<img src="${mediaUrl}" alt="${slide.title}" class="slide-poster-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
+          }
+
+          return `
+            <div class="hero-slide hero-slide-poster ${index === 0 ? 'active' : ''}">
+              ${mediaHtml}
+              <div class="slide-poster-fallback">
+                <div class="slide-poster-icon"><i class="fas ${slide.media_type === 'video' ? 'fa-video' : 'fa-desktop'}"></i></div>
+                <h3>${slide.title.replace('\n', '<br>')}</h3>
+                <p>${slide.subtitle || ''}</p>
+                <a href="#${slide.target_page}" data-page="${slide.target_page.split('#')[0]}" class="btn btn-primary btn-sm">
+                  <i class="fas fa-arrow-right"></i> ${slide.button_text || 'Learn More'}
+                </a>
+              </div>
+            </div>`;
+        }).join('');
+        
+        // Re-initialize slider logic
+        initHeroSlider();
+      }
+    } catch (err) {
+      console.error('Failed to load hero slides:', err);
+    }
+  }
+  loadHeroSlides();
+
   /* ===== MOBILE MENU ===== */
   const menuToggle = document.getElementById("menuToggle");
   const navOverlay = document.getElementById("navOverlay");
@@ -712,7 +791,6 @@ document.addEventListener("DOMContentLoaded", () => {
           };
           const mediaUrl = resolveMedia(tip.media_url);
 
-          // Detect video MIME from extension for broader browser support
           const ext = (tip.media_url || '').split('.').pop().toLowerCase();
           const mimeMap = { mp4: 'video/mp4', webm: 'video/webm', ogg: 'video/ogg', mov: 'video/mp4', mkv: 'video/mp4' };
           const mimeType = mimeMap[ext] || 'video/mp4';
@@ -721,8 +799,9 @@ document.addEventListener("DOMContentLoaded", () => {
             ? `<div class="video-wrapper"><img src="${mediaUrl}" alt="${tip.title}"></div>`
             : `<div class="video-wrapper"><video controls preload="metadata"><source src="${mediaUrl}" type="${mimeType}">Your browser does not support video.</video></div>`;
           const tagsHtml = (tip.tags || []).map(t => `<span class="video-tag">${t}</span>`).join('');
+          
           return `
-            <div class="video-card">
+            <div class="video-card clickable-tip" data-target="${tip.target_page || 'home'}">
               ${mediaHtml}
               <div class="video-info">
                 <h4>${tip.title}</h4>
@@ -731,6 +810,32 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>`;
         }).join('');
+
+        // Add click listeners for navigation
+        grid.querySelectorAll('.clickable-tip').forEach(card => {
+          card.addEventListener('click', (e) => {
+            // Don't navigate if clicking the video controls
+            if (e.target.closest('video')) return;
+            
+            const rawTarget = card.getAttribute('data-target');
+            const [pageId, sectionId] = rawTarget.split('#');
+            
+            navigateTo(pageId);
+            
+            if (sectionId) {
+              setTimeout(() => {
+                const targetEl = document.getElementById(sectionId) || document.getElementById('page-' + pageId).querySelector('#' + sectionId);
+                if (targetEl) {
+                  const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
+                  window.scrollTo({
+                    top: targetEl.offsetTop - navbarHeight,
+                    behavior: 'smooth'
+                  });
+                }
+              }, 400);
+            }
+          });
+        });
       } else {
         grid.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No tips available yet.</p>';
       }
@@ -1471,7 +1576,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })();
 
   /* ===== HERO SLIDER ===== */
-  (function () {
+  function initHeroSlider() {
     const track = document.getElementById("heroSliderTrack");
     const dotsEl = document.getElementById("heroSliderDots");
     const btnPrev = document.getElementById("heroSliderPrev");
@@ -1480,10 +1585,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!track) return;
 
     const slides = Array.from(track.querySelectorAll(".hero-slide"));
+    if (slides.length <= 1) {
+      if (btnPrev) btnPrev.style.display = 'none';
+      if (btnNext) btnNext.style.display = 'none';
+      if (dotsEl) dotsEl.style.display = 'none';
+      return;
+    }
+
     const total = slides.length;
     let current = 0;
     let autoTimer = null;
-    const INTERVAL = 8000; // 8 seconds per slide
+    const INTERVAL = window.heroInterval || 8000;
 
     function goTo(idx) {
       current = ((idx % total) + total) % total; // wrap around
@@ -1588,7 +1700,7 @@ document.addEventListener("DOMContentLoaded", () => {
     buildDots();
     goTo(0);
     startAuto();
-  })();
+  }
 
   /* ===== HERO PARTICLES ===== */
   const particlesContainer = document.getElementById("heroParticles");

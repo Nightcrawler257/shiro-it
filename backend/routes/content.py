@@ -83,8 +83,16 @@ def get_public_settings():
     conn.close()
     settings = {r['key']: r['value'] for r in rows}
     if not settings:
-        settings = {'active_festival': 'none', 'tips_display_count': '0'}
+        settings = {'active_festival': 'none', 'tips_display_count': '0', 'hero_slide_duration': '8'}
     return jsonify({'success': True, 'data': settings})
+
+
+@content_bp.route('/api/hero_slides', methods=['GET'])
+def get_public_slides():
+    conn = db.get_conn()
+    rows = conn.execute('SELECT * FROM hero_slides ORDER BY order_index ASC, id ASC').fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
 
 
 # ===========================================================================
@@ -179,10 +187,10 @@ def admin_add_tip():
     tags_json = json.dumps(data.get('tags', []))
     conn = db.get_conn()
     cursor = conn.execute(
-        'INSERT INTO it_tips (title, description, media_type, media_url, tags) VALUES (?, ?, ?, ?, ?)',
+        'INSERT INTO it_tips (title, description, media_type, media_url, tags, target_page) VALUES (?, ?, ?, ?, ?, ?)',
         (data.get('title', '').strip(), data.get('description', '').strip(),
          data.get('media_type', 'video').strip(), data.get('media_url', '').strip(),
-         tags_json)
+         tags_json, data.get('target_page', 'home'))
     )
     conn.commit()
     new_id = cursor.lastrowid
@@ -198,10 +206,10 @@ def admin_update_tip(tip_id):
     tags_json = json.dumps(data.get('tags', []))
     conn = db.get_conn()
     conn.execute(
-        'UPDATE it_tips SET title=?, description=?, media_type=?, media_url=?, tags=? WHERE id=?',
+        'UPDATE it_tips SET title=?, description=?, media_type=?, media_url=?, tags=?, target_page=? WHERE id=?',
         (data.get('title', '').strip(), data.get('description', '').strip(),
          data.get('media_type', 'video').strip(), data.get('media_url', '').strip(),
-         tags_json, tip_id)
+         tags_json, data.get('target_page', 'home'), tip_id)
     )
     conn.commit()
     row = conn.execute('SELECT * FROM it_tips WHERE id = ?', (tip_id,)).fetchone()
@@ -286,6 +294,7 @@ def admin_get_settings():
     settings = {r['key']: r['value'] for r in rows}
     settings.setdefault('active_festival', 'none')
     settings.setdefault('tips_display_count', '0')
+    settings.setdefault('hero_slide_duration', '8')
     return jsonify({'success': True, 'data': settings})
 
 
@@ -294,7 +303,9 @@ def admin_get_settings():
 def admin_update_settings():
     data = request.get_json()
     active_festival    = data.get('active_festival', 'none')
-    tips_display_count = str(int(data.get('tips_display_count', 0)))
+    tips_display_count  = str(int(data.get('tips_display_count', 0)))
+    hero_slide_duration = str(int(data.get('hero_slide_duration', 8)))
+    if int(hero_slide_duration) < 1: hero_slide_duration = '8'
 
     conn = db.get_conn()
     conn.execute(
@@ -305,9 +316,74 @@ def admin_update_settings():
         "INSERT OR REPLACE INTO site_settings (key, value) VALUES ('tips_display_count', ?)",
         (tips_display_count,)
     )
+    conn.execute(
+        "INSERT OR REPLACE INTO site_settings (key, value) VALUES ('hero_slide_duration', ?)",
+        (hero_slide_duration,)
+    )
     conn.commit()
     conn.close()
     return jsonify({'success': True, 'data': {
         'active_festival': active_festival,
-        'tips_display_count': int(tips_display_count)
+        'tips_display_count': int(tips_display_count),
+        'hero_slide_duration': int(hero_slide_duration)
     }})
+
+
+# --- Hero Slides ---
+
+@content_bp.route('/admin/api/hero_slides', methods=['GET'])
+@login_required
+def admin_get_slides():
+    conn = db.get_conn()
+    rows = conn.execute('SELECT * FROM hero_slides ORDER BY order_index ASC, id ASC').fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
+
+
+@content_bp.route('/admin/api/hero_slides', methods=['POST'])
+@login_required
+def admin_add_slide():
+    data = request.get_json()
+    conn = db.get_conn()
+    cursor = conn.execute(
+        '''INSERT INTO hero_slides (title, subtitle, media_type, media_url, button_text, target_page, order_index)
+           VALUES (?, ?, ?, ?, ?, ?, ?)''',
+        (data.get('title', '').strip(), data.get('subtitle', '').strip(),
+         data.get('media_type', 'image').strip(), data.get('media_url', '').strip(),
+         data.get('button_text', 'Learn More').strip(), data.get('target_page', 'home').strip(),
+         int(data.get('order_index', 0)))
+    )
+    conn.commit()
+    new_id = cursor.lastrowid
+    row = conn.execute('SELECT * FROM hero_slides WHERE id = ?', (new_id,)).fetchone()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_row(row)})
+
+
+@content_bp.route('/admin/api/hero_slides/<int:slide_id>', methods=['PUT'])
+@login_required
+def admin_update_slide(slide_id):
+    data = request.get_json()
+    conn = db.get_conn()
+    conn.execute(
+        '''UPDATE hero_slides SET title=?, subtitle=?, media_type=?, media_url=?,
+           button_text=?, target_page=?, order_index=? WHERE id=?''',
+        (data.get('title', '').strip(), data.get('subtitle', '').strip(),
+         data.get('media_type', 'image').strip(), data.get('media_url', '').strip(),
+         data.get('button_text', 'Learn More').strip(), data.get('target_page', 'home').strip(),
+         int(data.get('order_index', 0)), slide_id)
+    )
+    conn.commit()
+    row = conn.execute('SELECT * FROM hero_slides WHERE id = ?', (slide_id,)).fetchone()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_row(row)})
+
+
+@content_bp.route('/admin/api/hero_slides/<int:slide_id>', methods=['DELETE'])
+@login_required
+def admin_delete_slide(slide_id):
+    conn = db.get_conn()
+    conn.execute('DELETE FROM hero_slides WHERE id = ?', (slide_id,))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})

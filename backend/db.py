@@ -165,6 +165,17 @@ def _create_tables():
             rating     INTEGER DEFAULT 5,
             image_url  TEXT
         );
+
+        CREATE TABLE IF NOT EXISTS hero_slides (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            title       TEXT,
+            subtitle    TEXT,
+            media_type  TEXT DEFAULT 'image',
+            media_url   TEXT,
+            button_text TEXT DEFAULT 'Learn More',
+            target_page TEXT DEFAULT 'home',
+            order_index INTEGER DEFAULT 0
+        );
     """)
     conn.commit()
 
@@ -179,6 +190,10 @@ def _migrate(conn):
     migrations = [
         # Add brand column to pc_components if not present
         'ALTER TABLE pc_components ADD COLUMN brand TEXT DEFAULT ""',
+        # Add target_page column to it_tips for widget navigation
+        'ALTER TABLE it_tips ADD COLUMN target_page TEXT DEFAULT "home"',
+        # Add hero_slide_duration setting (migration is just ensuring site_settings is ready)
+        "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('hero_slide_duration', '8')"
     ]
     for sql in migrations:
         try:
