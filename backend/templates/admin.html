@@ -953,7 +953,7 @@
                 </button>
               </div>
             </div>
-            <div class="table-container">
+            <div class="table-container" id="tableContainer">
               <table id="dataTable">
                 <thead id="tableHead"></thead>
                 <tbody id="tableBody"></tbody>
@@ -1679,12 +1679,21 @@ async function loadTab(tab) {
   $('rowCount').textContent = '…';
 
   // Show/hide specific controls
-  $('invCatFilter').style.display = tab === 'inventory' ? 'block' : 'none';
-  $('addInvBtn').style.display    = tab === 'inventory' ? 'flex'  : 'none';
-  if($('addPcBtn'))  $('addPcBtn').style.display  = tab === 'pcs' ? 'flex' : 'none';
-  if($('addTipBtn')) $('addTipBtn').style.display = tab === 'tips' ? 'flex' : 'none';
-  if($('addTestimonialBtn')) $('addTestimonialBtn').style.display = tab === 'testimonials' ? 'flex' : 'none';
-  if($('addSlideBtn')) $('addSlideBtn').style.display = tab === 'hero' ? 'flex' : 'none';
+  // Show/hide specific controls
+  const invFilter = $('invCatFilter');
+  if (invFilter) invFilter.style.display = tab === 'inventory' ? 'block' : 'none';
+  
+  const addInvBtn = $('addInvBtn');
+  const addPcBtn  = $('addPcBtn');
+  const addTipBtn = $('addTipBtn');
+  const addTestimonialBtn = $('addTestimonialBtn');
+  const addSlideBtn = $('addSlideBtn');
+
+  if (addInvBtn) addInvBtn.style.display = tab === 'inventory' ? 'flex' : 'none';
+  if (addPcBtn)  addPcBtn.style.display  = tab === 'pcs' ? 'flex' : 'none';
+  if (addTipBtn) addTipBtn.style.display = tab === 'tips' ? 'flex' : 'none';
+  if (addTestimonialBtn) addTestimonialBtn.style.display = tab === 'testimonials' ? 'flex' : 'none';
+  if (addSlideBtn) addSlideBtn.style.display = tab === 'hero' ? 'flex' : 'none';
 
   // Update Section Header based on tab
   const pTitle = $('panelTitle');
@@ -1723,7 +1732,16 @@ async function loadTab(tab) {
   }
   
   if (tab === 'tips') loadITTips();
-  if (tab === 'hero') loadHeroSlides();
+  if (tab === 'hero') {
+    // Hide the default table and show the custom hero table
+    $('tableContainer').style.display = 'none';
+    $('tab-hero').style.display = 'block';
+    loadHeroSlides();
+  } else {
+    if ($('tableContainer')) $('tableContainer').style.display = 'block';
+    if ($('tab-hero')) $('tab-hero').style.display = 'none';
+  }
+  
   if (tab === 'testimonials') loadTestimonials();
 
   // Show loading state
