@@ -1094,9 +1094,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!selectedCats.has(cat)) missing.push(cat);
     });
 
-    const hasCooling = COOLING_COMPONENTS.some(cat => selectedCats.has(cat));
-    if (!hasCooling) missing.push("Cooling (Air or AIO)");
-
     return {
       isValid: missing.length === 0,
       missing: missing
