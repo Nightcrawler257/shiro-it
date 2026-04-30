@@ -168,6 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Re-initialize slider logic
         initHeroSlider();
+      } else {
+        // Fallback if no slides exist in DB
+        track.innerHTML = `
+          <div class="hero-slide hero-slide-poster active">
+            <img src="images/banners/slide-1.jpg" alt="Welcome to SHIRO IT" class="slide-poster-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="slide-poster-fallback">
+              <div class="slide-poster-icon"><i class="fas fa-desktop"></i></div>
+              <h3>Welcome to<br><span class="gradient-text">SHIRO IT</span></h3>
+              <p>Your one-stop destination for Premium PC Builds and IT Services.</p>
+              <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary btn-sm"><i class="fas fa-gamepad"></i> Explore Now</a>
+            </div>
+          </div>`;
       }
     } catch (err) {
       console.error('Failed to load hero slides:', err);

@@ -1685,6 +1685,25 @@ async function loadTab(tab) {
   if($('addTipBtn')) $('addTipBtn').style.display = tab === 'tips' ? 'flex' : 'none';
   if($('addTestimonialBtn')) $('addTestimonialBtn').style.display = tab === 'testimonials' ? 'flex' : 'none';
   if($('addSlideBtn')) $('addSlideBtn').style.display = tab === 'hero' ? 'flex' : 'none';
+
+  // Update Section Header based on tab
+  const headerTitle = $('sectionHeaderTitle');
+  if (headerTitle) {
+    const titles = {
+      contacts: 'CONTACT SUBMISSIONS',
+      quotes: 'QUOTE REQUESTS',
+      bookings: 'BOOKINGS',
+      appointments: 'APPOINTMENTS',
+      applications: 'JOB APPLICATIONS',
+      inventory: 'INVENTORY / COMPONENTS',
+      pcs: 'PRE-BUILT PCs',
+      hero: 'HERO CAROUSEL SLIDES',
+      tips: 'IT TIPS GALLERY',
+      testimonials: 'TESTIMONIALS',
+      settings: 'SITE SETTINGS'
+    };
+    headerTitle.textContent = titles[tab] || 'DASHBOARD';
+  }
   
   if (tab === 'tips') loadITTips();
   if (tab === 'hero') loadHeroSlides();
