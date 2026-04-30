@@ -440,9 +440,9 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===== SHOP — Products ===== */
   let products = [];
   const premiumPlaceholders = [
-    "premium_gaming_pc_1_1777518690839.png",
-    "premium_gaming_pc_2_1777518707414.png",
-    "premium_gaming_pc_3_1777518727129.png"
+    "images/pc1.png",
+    "images/pc2.png",
+    "images/pc3.png"
   ];
 
   const productsGrid = document.getElementById("productsGrid");
@@ -826,7 +826,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${
           cfg.svg
             ? `<div class="comp-img-wrap">${cfg.svg}</div>`
-            : `<div class="comp-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:${cfg.color}50;"><i class="${cfg.icon}"></i></div>`
+            : `<div class="comp-img-wrap"><img src="${premiumPlaceholders[i % premiumPlaceholders.length]}" class="animated-pc" style="width:100%; height:100%; object-fit:cover;"></div>`
         }
         <div class="comp-header">
           <div class="comp-icon" style="color:${cfg.color}; background:${cfg.color}20;">
@@ -891,9 +891,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const itemId = item.id || item._id;
       const isSelected = cartItems.some(ci => ci.id === itemId);
       
-      const displayImage = item.image && item.image.includes('/') 
-        ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
-        : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
+      const hasImg = item.image && (item.image.includes('/') || item.image.includes('.png'));
+      const imgSrc = hasImg ? resolveImagePath(item.image) : premiumPlaceholders[Math.floor(Math.random() * premiumPlaceholders.length)];
+      
+      const displayImage = `<img src="${imgSrc}" alt="${item.name}" class="animated-pc" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`;
       
       return `
       <div class="inline-item" ${!isSelected ? `onclick="addInlineItem('${itemId}', '${category}')"` : ''} style="${isSelected ? 'opacity:0.6; cursor:default; border-color:var(--border-color);' : ''}">
@@ -961,11 +962,14 @@ document.addEventListener("DOMContentLoaded", () => {
     items.forEach(item => {
       const el = document.createElement("div");
       el.className = "builder-item";
+      
+      const hasImg = item.image && (item.image.includes('/') || item.image.includes('.png'));
+      const imgSrc = hasImg ? resolveImagePath(item.image) : premiumPlaceholders[Math.floor(Math.random() * premiumPlaceholders.length)];
+      const img = `<img src="${imgSrc}" alt="${item.name}" class="animated-pc" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">`;
+      
       el.innerHTML = `
         <div style="display:flex; align-items:center; gap:1rem;">
-          ${item.image && item.image.includes('/') 
-            ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
-            : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
+          ${hasImg ? img : `<div style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
           <div class="builder-item-info">
             <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.8rem;'></i>" : ""}</h4>
             <p>${item.category} ${item.specs ? " | " + item.specs : ""}</p>
