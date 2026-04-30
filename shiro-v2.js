@@ -916,7 +916,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   window.addInlineItem = function(itemId, category) {
-    const item = inventoryData.find(c => (c.id || c._id) === itemId);
+    const item = inventoryData.find(c => String(c.id || c._id) === String(itemId));
     if (item) {
       cartItems.push({
         id: item._id || item.id,
