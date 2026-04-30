@@ -969,7 +969,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       el.innerHTML = `
         <div style="display:flex; align-items:center; gap:1rem;">
-          ${hasImg ? img : `<div style="width:50px;height:50px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
+          ${img}
           <div class="builder-item-info">
             <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.8rem;'></i>" : ""}</h4>
             <p>${item.category} ${item.specs ? " | " + item.specs : ""}</p>
