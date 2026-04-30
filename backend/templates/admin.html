@@ -1322,6 +1322,7 @@ const TAB_META = {
   applications: { h: 'Job Applications', s: 'Recruitment pipeline & candidates', icon: 'fa-user-plus' },
   inventory:    { h: 'Inventory',        s: 'Products, stock levels & pricing', icon: 'fa-boxes' },
   pcs:          { h: 'Choose Your PC',   s: 'Manage the Pre-built Gaming PCs section', icon: 'fa-desktop' },
+  hero:         { h: 'Hero Carousel',    s: 'Manage homepage banner slides', icon: 'fa-images' },
   tips:         { h: 'IT Tips Gallery',  s: 'Manage knowledge base photos & videos', icon: 'fa-lightbulb' },
   testimonials: { h: 'Testimonials',     s: 'Manage customer reviews on the homepage', icon: 'fa-star' },
   settings:     { h: 'Site Settings',    s: 'Manage Festival Animations and Display limits', icon: 'fa-cogs' }
@@ -1708,18 +1709,19 @@ async function loadTab(tab) {
     }
   }
   
-  if (tab === 'tips') loadITTips();
+
   if (tab === 'hero') {
     // Hide the default table and show the custom hero table
     $('tableContainer').style.display = 'none';
     $('tab-hero').style.display = 'block';
     loadHeroSlides();
+    return;
   } else {
     if ($('tableContainer')) $('tableContainer').style.display = 'block';
     if ($('tab-hero')) $('tab-hero').style.display = 'none';
   }
   
-  if (tab === 'testimonials') loadTestimonials();
+
 
   // Show loading state
   const body = $('tableBody');
