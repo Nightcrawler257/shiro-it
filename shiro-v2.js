@@ -956,6 +956,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.createElement("div");
       el.className = "builder-item";
       
+      el.innerHTML = `
+        <div style="display:flex; align-items:center; gap:1rem;">
           ${item.image && item.image.includes('/') 
             ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
             : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
