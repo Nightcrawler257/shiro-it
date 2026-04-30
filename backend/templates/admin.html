@@ -675,33 +675,10 @@
         <span id="loginBtnText">Sign In</span>
       </button>
 
-      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.78rem;">
-        <a href="#" onclick="toggleAuthPanel('forgot'); return false;"
-           style="color: var(--text-secondary); transition: color 0.2s;"
-           onmouseover="this.style.color='var(--blue-light)'" onmouseout="this.style.color='var(--text-secondary)'">
-          Forgot password? Contact your administrator
-        </a>
-      </div>
+
     </div>
 
-    <!-- FORGOT PASSWORD PANEL -->
-    <div id="panelForgot" style="display:none;">
-      <p class="login-subtitle">Reset Not Available</p>
-      <div style="padding: 1.25rem; background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.18); border-radius: 10px; margin-bottom: 1.5rem; text-align:center;">
-        <i class="fas fa-lock" style="font-size: 1.8rem; color: var(--yellow); margin-bottom: 0.75rem; display: block;"></i>
-        <p style="color: var(--yellow); font-size: 0.85rem; line-height: 1.7;">
-          Self-service password reset is disabled for security reasons.<br><br>
-          Please contact your <strong>Store Manager</strong> or <strong>IT Admin</strong> to reset your password.
-        </p>
-      </div>
-      <div style="text-align: center; font-size: 0.78rem;">
-        <a href="#" onclick="toggleAuthPanel('login'); return false;"
-           style="color: var(--text-secondary); transition: color 0.2s;"
-           onmouseover="this.style.color='var(--blue-light)'" onmouseout="this.style.color='var(--text-secondary)'">
-          <i class="fas fa-arrow-left"></i> Back to Sign In
-        </a>
-      </div>
-    </div>
+
 
     <!-- REGISTER PANEL (hidden — preserved for JS compat) -->
     <div id="panelRegister" style="display:none;">
@@ -1427,10 +1404,10 @@ async function doLogin() {
 function toggleAuthPanel(panelName) {
   $('panelLogin').style.display = 'none';
   $('panelRegister').style.display = 'none';
-  $('panelForgot').style.display = 'none';
+
   if (panelName === 'login')    $('panelLogin').style.display = 'block';
   if (panelName === 'register') $('panelRegister').style.display = 'block';
-  if (panelName === 'forgot')   $('panelForgot').style.display = 'block';
+
   $('loginError').style.display = 'none';
   if ($('regError'))   $('regError').style.display = 'none';
   if ($('regSuccess')) $('regSuccess').style.display = 'none';
