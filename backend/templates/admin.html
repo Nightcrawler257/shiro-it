@@ -928,12 +928,33 @@
                 <button class="btn btn-primary btn-sm" id="addTestimonialBtn" style="display:none;">
                   <i class="fas fa-plus"></i> Add Testimonial
                 </button>
+                <button class="btn btn-primary btn-sm" id="addSlideBtn" style="display:none;">
+                  <i class="fas fa-plus"></i> Add Slide
+                </button>
               </div>
             </div>
             <div class="table-container" id="tableContainer">
               <table id="dataTable">
                 <thead id="tableHead"></thead>
                 <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+
+            <!-- HERO CAROUSEL TABLE -->
+            <div class="table-container" id="tab-hero" style="display:none;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Media</th>
+                    <th>Title / Subtitle</th>
+                    <th>Button / Target</th>
+                    <th style="width:80px">Order</th>
+                    <th style="width:100px;text-align:right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="heroTableBody">
+                  <tr><td colspan="5" style="text-align:center;padding:3rem;">Loading slides...</td></tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -979,30 +1000,7 @@
             </div>
           </div>
 
-          <!-- ══════════════════════════════════════
-               HERO CAROUSEL TAB
-          ══════════════════════════════════════ -->
-          <div id="tab-hero" class="tab-content" style="display:none;">
-            <div class="tab-actions">
-              <button class="btn btn-primary" id="addSlideBtn"><i class="fas fa-plus"></i> Add New Slide</button>
-            </div>
-            <div class="data-table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Media</th>
-                    <th>Title / Subtitle</th>
-                    <th>Button / Target</th>
-                    <th>Order</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="heroTableBody">
-                  <tr><td colspan="5" style="text-align:center;padding:3rem;">Loading slides...</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+
 
         </div><!-- /main-column -->
 
@@ -2412,11 +2410,11 @@ async function loadHeroSlides() {
             <div style="font-size:0.85rem;">${item.button_text}</div>
             <div style="font-size:0.75rem;color:var(--text-secondary);">${item.target_page}</div>
           </td>
-          <td><span class="badge badge-blue">${item.order_index}</span></td>
+          <td><span class="badge badge-cat">${item.order_index}</span></td>
           <td>
-            <div class="row-actions">
-              <button class="btn btn-icon" onclick='editHeroItem(${JSON.stringify(item)})' title="Edit"><i class="fas fa-edit"></i></button>
-              <button class="btn btn-icon btn-red" onclick="deleteItem('hero_slides', ${item.id}, loadHeroSlides)" title="Delete"><i class="fas fa-trash"></i></button>
+            <div class="actions" style="justify-content:flex-end">
+              <button class="action-btn ok" onclick='editHeroItem(${JSON.stringify(item).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="action-btn del" onclick="deleteItem('hero_slides', ${item.id})" title="Delete"><i class="fas fa-trash"></i></button>
             </div>
           </td>
         </tr>`;
