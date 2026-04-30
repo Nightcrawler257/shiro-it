@@ -439,6 +439,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== SHOP — Products ===== */
   let products = [];
+  const premiumPlaceholders = [
+    "premium_gaming_pc_1_1777518690839.png",
+    "premium_gaming_pc_2_1777518707414.png",
+    "premium_gaming_pc_3_1777518727129.png"
+  ];
 
   const productsGrid = document.getElementById("productsGrid");
   const emptyState = document.getElementById("emptyState");
@@ -471,12 +476,13 @@ document.addEventListener("DOMContentLoaded", () => {
     filtered.forEach((p) => {
       const card = document.createElement("div");
       card.className = "product-card" + (p.featured ? " featured" : "");
+      const hasImg = p.image && (p.image.startsWith('/') || p.image.startsWith('http') || p.image.includes('.png'));
+      const imgSrc = hasImg ? resolveImagePath(p.image) : premiumPlaceholders[Math.floor(Math.random() * premiumPlaceholders.length)];
+
       card.innerHTML = `
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ""}
         <div class="product-image">
-          ${p.image && (p.image.startsWith('/') || p.image.startsWith('http'))
-            ? `<img src="${resolveImagePath(p.image)}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;">`
-            : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${getCategoryIcon(p.category)}</div>`}
+          <img src="${imgSrc}" alt="${p.name}">
         </div>
         <div class="product-category">${p.category}</div>
         <h3>${p.name}</h3>

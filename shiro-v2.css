@@ -2210,26 +2210,44 @@ body.light .nav-menu > li > a.active {
   letter-spacing: 0.05em;
 }
 .product-image {
-  width: 150px;
-  height: 150px;
+  width: 100%;
+  height: 180px;
   background: linear-gradient(
     135deg,
-    rgba(0, 102, 255, 0.1),
-    rgba(255, 0, 51, 0.1)
+    rgba(0, 102, 255, 0.08),
+    rgba(255, 0, 51, 0.08)
   );
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
   margin-bottom: 1.25rem;
   overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.03);
 }
 .product-image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 5px;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: floatPC 6s ease-in-out infinite;
+}
+.product-card:hover .product-image img {
+  transform: scale(1.1) rotate(2deg);
+}
+
+@keyframes floatPC {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(-1deg); }
+}
+
+.product-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(7, 9, 15, 0.4) 100%);
+  pointer-events: none;
 }
 .product-category {
   font-size: 0.7rem;
