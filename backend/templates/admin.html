@@ -1687,8 +1687,9 @@ async function loadTab(tab) {
   if($('addSlideBtn')) $('addSlideBtn').style.display = tab === 'hero' ? 'flex' : 'none';
 
   // Update Section Header based on tab
-  const headerTitle = $('sectionHeaderTitle');
-  if (headerTitle) {
+  const pTitle = $('panelTitle');
+  const pIcon  = $('panelIcon');
+  if (pTitle) {
     const titles = {
       contacts: 'CONTACT SUBMISSIONS',
       quotes: 'QUOTE REQUESTS',
@@ -1702,7 +1703,23 @@ async function loadTab(tab) {
       testimonials: 'TESTIMONIALS',
       settings: 'SITE SETTINGS'
     };
-    headerTitle.textContent = titles[tab] || 'DASHBOARD';
+    const icons = {
+      contacts: 'fa-envelope',
+      quotes: 'fa-rocket',
+      bookings: 'fa-microchip',
+      appointments: 'fa-calendar-alt',
+      applications: 'fa-user-plus',
+      inventory: 'fa-boxes',
+      pcs: 'fa-desktop',
+      hero: 'fa-images',
+      tips: 'fa-lightbulb',
+      testimonials: 'fa-star',
+      settings: 'fa-cogs'
+    };
+    pTitle.textContent = titles[tab] || 'DASHBOARD';
+    if (pIcon && icons[tab]) {
+      pIcon.className = 'fas ' + icons[tab];
+    }
   }
   
   if (tab === 'tips') loadITTips();
