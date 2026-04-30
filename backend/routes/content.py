@@ -90,7 +90,18 @@ def get_public_settings():
 @content_bp.route('/api/hero_slides', methods=['GET'])
 def get_public_slides():
     conn = db.get_conn()
-    rows = conn.execute('SELECT * FROM hero_slides ORDER BY order_index ASC, id ASC').fetchall()
+    setting = conn.execute(
+        "SELECT value FROM site_settings WHERE key = 'hero_display_limit'"
+    ).fetchone()
+    limit = 0
+    if setting:
+        try: limit = int(setting['value'])
+        except (ValueError, TypeError): limit = 0
+
+    if limit > 0:
+        rows = conn.execute('SELECT * FROM hero_slides ORDER BY order_index ASC, id ASC LIMIT ?', (limit,)).fetchall()
+    else:
+        rows = conn.execute('SELECT * FROM hero_slides ORDER BY order_index ASC, id ASC').fetchall()
     conn.close()
     return jsonify({'success': True, 'data': serialize_rows(rows)})
 
@@ -295,6 +306,7 @@ def admin_get_settings():
     settings.setdefault('active_festival', 'none')
     settings.setdefault('tips_display_count', '0')
     settings.setdefault('hero_slide_duration', '8')
+    settings.setdefault('hero_display_limit', '0')
     return jsonify({'success': True, 'data': settings})
 
 
@@ -303,8 +315,9 @@ def admin_get_settings():
 def admin_update_settings():
     data = request.get_json()
     active_festival    = data.get('active_festival', 'none')
-    tips_display_count  = str(int(data.get('tips_display_count', 0)))
-    hero_slide_duration = str(int(data.get('hero_slide_duration', 8)))
+    tips_display_count   = str(int(data.get('tips_display_count', 0)))
+    hero_slide_duration  = str(int(data.get('hero_slide_duration', 8)))
+    hero_display_limit   = str(int(data.get('hero_display_limit', 0)))
     if int(hero_slide_duration) < 1: hero_slide_duration = '8'
 
     conn = db.get_conn()
@@ -320,12 +333,17 @@ def admin_update_settings():
         "INSERT OR REPLACE INTO site_settings (key, value) VALUES ('hero_slide_duration', ?)",
         (hero_slide_duration,)
     )
+    conn.execute(
+        "INSERT OR REPLACE INTO site_settings (key, value) VALUES ('hero_display_limit', ?)",
+        (hero_display_limit,)
+    )
     conn.commit()
     conn.close()
     return jsonify({'success': True, 'data': {
         'active_festival': active_festival,
         'tips_display_count': int(tips_display_count),
-        'hero_slide_duration': int(hero_slide_duration)
+        'hero_slide_duration': int(hero_slide_duration),
+        'hero_display_limit': int(hero_display_limit)
     }})
 
 

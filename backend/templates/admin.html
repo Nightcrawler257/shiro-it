@@ -994,6 +994,12 @@
                   <input type="number" id="setHeroDuration" min="1" max="60" placeholder="e.g. 8">
                   <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">How long each slide stays on screen before rotating.</p>
                 </div>
+
+                <div class="form-group">
+                  <label><i class="fas fa-images" style="color:var(--neon-blue)"></i> Carousel Display Count (Slide Limit)</label>
+                  <input type="number" id="setHeroLimit" min="0" max="20" placeholder="e.g. 5">
+                  <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">Maximum number of slides to show on the public page. Set to 0 to show all.</p>
+                </div>
                 
                 <button type="button" class="btn btn-primary" onclick="saveSettings()" style="margin-top: 1.5rem;"><i class="fas fa-save"></i> Save Settings</button>
               </form>
@@ -2264,6 +2270,8 @@ async function loadSettings() {
     if (d.success) {
       $('setFestival').value = d.data.active_festival || 'none';
       $('setTipsCount').value = d.data.tips_display_count || 0;
+      $('setHeroDuration').value = d.data.hero_slide_duration || 8;
+      $('setHeroLimit').value = d.data.hero_display_limit || 0;
     }
   } catch(e) { console.error('Failed to load settings', e); }
 }
@@ -2271,10 +2279,12 @@ async function loadSettings() {
 window.saveSettings = async () => {
   const active_festival = $('setFestival').value;
   const tips_display_count = $('setTipsCount').value;
+  const hero_slide_duration = $('setHeroDuration').value;
+  const hero_display_limit = $('setHeroLimit').value;
   try {
     const res = await fetch(API + '/admin/api/settings', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ active_festival, tips_display_count })
+      body: JSON.stringify({ active_festival, tips_display_count, hero_slide_duration, hero_display_limit })
     });
     const d = await res.json();
     if (d.success) toast('Settings Saved', 'ok');
