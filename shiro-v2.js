@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll("[data-page]");
   const navMenu = document.getElementById("navMenu");
 
-  function navigateTo(pageId) {
+  window.navigateTo = function(pageId) {
     pages.forEach((p) => p.classList.remove("active"));
     const target = document.getElementById("page-" + pageId);
     if (target) {
@@ -50,40 +50,41 @@ document.addEventListener("DOMContentLoaded", () => {
     history.pushState(null, "", "#" + pageId);
   }
 
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = link.getAttribute("data-page");
-      
-      if (page) {
-          navigateTo(page);
-          
-          // Custom scroll for merged page
-          if (page === 'build-pc-services') {
-              // If clicked from 'Services' link, scroll to services section
-              if (link.innerHTML.includes('nav_services') || link.getAttribute('href') === '#services') {
-                  setTimeout(() => {
-                      const servicesSection = document.getElementById('services-content');
-                      if (servicesSection) {
-                          const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
-                          window.scrollTo({
-                              top: servicesSection.offsetTop - navbarHeight,
-                              behavior: 'smooth'
-                          });
-                      }
-                  }, 350); // small delay to let page transition complete
-              } else if (link.innerHTML.includes('nav_build') || link.getAttribute('href') === '#build-pc') {
-                  // Make sure we scroll to top for Build PC
-                  setTimeout(() => {
-                      window.scrollTo({
-                          top: 0,
-                          behavior: 'smooth'
-                      });
-                  }, 350);
-              }
-          }
-      }
-    });
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("[data-page]");
+    if (!link) return;
+
+    e.preventDefault();
+    const page = link.getAttribute("data-page");
+    
+    if (page) {
+        window.navigateTo(page);
+        
+        // Custom scroll for merged page
+        if (page === 'build-pc-services') {
+            // If clicked from 'Services' link, scroll to services section
+            if (link.innerHTML.includes('nav_services') || link.getAttribute('href') === '#services') {
+                setTimeout(() => {
+                    const servicesSection = document.getElementById('services-content');
+                    if (servicesSection) {
+                        const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
+                        window.scrollTo({
+                            top: servicesSection.offsetTop - navbarHeight,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 350); // small delay to let page transition complete
+            } else if (link.innerHTML.includes('nav_build') || link.getAttribute('href') === '#build-pc') {
+                // Make sure we scroll to top for Build PC
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 350);
+            }
+        }
+    }
   });
 
   // Handle browser back/forward
