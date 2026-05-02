@@ -1195,6 +1195,7 @@
               <option value="shop">Shop / Store</option>
               <option value="build-pc-services">Build Your PC</option>
               <option value="build-pc-services#services">IT Services</option>
+              <option value="tips">IT Tips & Tricks</option>
               <option value="jobs">Careers</option>
               <option value="contact">Contact Us</option>
             </select>
@@ -1242,7 +1243,21 @@
           </div>
         </div>
 
-        <div class="form-group"><label>Tags (Comma separated) (Optional)</label><input type="text" id="tipTags"></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Navigation Target (Optional)</label>
+            <select id="tipTarget">
+              <option value="home">Home Page</option>
+              <option value="shop">Shop / Store</option>
+              <option value="build-pc-services">Build Your PC</option>
+              <option value="build-pc-services#services">IT Services</option>
+              <option value="tips">IT Tips & Tricks</option>
+              <option value="jobs">Careers</option>
+              <option value="contact">Contact Us</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Tags (Comma separated) (Optional)</label><input type="text" id="tipTags"></div>
+        </div>
       </form>
     </div>
     <div class="modal-footer">
@@ -2570,6 +2585,7 @@ window.editTipItem = (item) => {
   $('tipMediaType').value   = item.media_type || 'video';
   $('tipMediaUrl').value    = item.media_url || '';
   $('tipTags').value        = (item.tags || []).join(', ');
+  $('tipTarget').value      = item.target_page || 'home';
 
 
   // Show existing media preview
@@ -2625,6 +2641,7 @@ $('saveTipBtn').onclick = async () => {
       description: $('tipDesc').value,
       media_type: $('tipMediaType').value,
       media_url: finalMediaUrl,
+      target_page: $('tipTarget').value,
       tags: $('tipTags').value.split(',').map(s=>s.trim()).filter(s=>s)
     };
 
