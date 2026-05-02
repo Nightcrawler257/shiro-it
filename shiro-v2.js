@@ -172,7 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
           return `
             <div class="hero-slide hero-slide-poster ${index === 0 ? 'active' : ''}" 
                  data-page="${pageTarget}" 
-                 style="cursor: pointer;">
+                 style="cursor: pointer; --slide-img: url('${mediaUrl}');">
+              <div class="slide-poster-backdrop"></div>
               ${mediaHtml}
               <div class="slide-poster-fallback">
                 <div class="slide-poster-icon"><i class="fas ${slide.media_type === 'video' ? 'fa-video' : 'fa-desktop'}"></i></div>
