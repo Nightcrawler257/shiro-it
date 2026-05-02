@@ -2121,6 +2121,8 @@ async function deleteItem(type, id) {
       url = API + `/admin/api/it_tips/${id}`;
     } else if (type === 'testimonials') {
       url = API + `/admin/api/testimonials/${id}`;
+    } else if (type === 'hero_slides') {
+      url = API + `/admin/api/hero_slides/${id}`;
     } else {
       url = API + `/admin/api/delete/${type}/${id}`;
     }
