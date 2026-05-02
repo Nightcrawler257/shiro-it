@@ -1317,30 +1317,30 @@
                     <!-- Formal Briefing Form -->
                     <form class="card contact-form tactical-form" id="contactForm">
                         <div class="form-header">
-                            <span class="badge badge-red"><i class="fas fa-file-alt"></i> Official Inquiry</span>
+                            <span class="badge badge-red"><i class="fas fa-file-alt"></i> <span data-translate="contact_form_badge">Official Inquiry</span></span>
                             <h3 data-translate="contact_form_title">Mission Briefing</h3>
-                            <p class="form-subtext">Best for custom build specifications, business partnerships, or formal quotes requiring detailed records.</p>
+                            <p class="form-subtext" data-translate="contact_form_desc">Best for custom build specifications, business partnerships, or formal quotes requiring detailed records.</p>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
-                                <label><i class="fas fa-user-tag"></i> Name</label>
-                                <input type="text" placeholder="Identity" required>
+                                <label><i class="fas fa-user-tag"></i> <span data-translate="contact_field_name">Name</span></label>
+                                <input type="text" placeholder="Identity" data-translate="contact_ph_identity" required>
                             </div>
                             <div class="form-group">
-                                <label><i class="fas fa-envelope"></i> Email</label>
-                                <input type="email" placeholder="Communication Link" required>
+                                <label><i class="fas fa-envelope"></i> <span data-translate="contact_field_email">Email</span></label>
+                                <input type="email" placeholder="Communication Link" data-translate="contact_ph_link" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label><i class="fas fa-phone-alt"></i> Phone (Optional)</label>
+                                <label><i class="fas fa-phone-alt"></i> <span data-translate="contact_field_phone">Phone (Optional)</span></label>
                                 <input type="tel" placeholder="+60 12-345 6789">
                             </div>
                             <div class="form-group">
-                                <label><i class="fas fa-thumbtack"></i> Subject</label>
+                                <label><i class="fas fa-thumbtack"></i> <span data-translate="contact_field_subject">Subject</span></label>
                                 <select>
-                                    <option value="">Select Objective</option>
+                                    <option value="" data-translate="contact_ph_objective">Select Objective</option>
                                     <option value="custom-build">Strategic Custom Build</option>
                                     <option value="repair">System Diagnostics & Repair</option>
                                     <option value="networking">Network Infrastructure</option>
@@ -1350,11 +1350,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label><i class="fas fa-comment-dots"></i> Message Brief</label>
-                            <textarea placeholder="Outline your project requirements or specific questions..." rows="5"
+                            <label><i class="fas fa-comment-dots"></i> <span data-translate="contact_field_msg">Message Brief</span></label>
+                            <textarea placeholder="Outline your project requirements or specific questions..." data-translate="contact_ph_brief" rows="5"
                                 required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary form-submit tactical-btn">
+                        <button type="submit" class="btn btn-primary form-submit tactical-btn" data-translate="contact_transmit">
                             <i class="fas fa-paper-plane"></i> TRANSMIT MESSAGE
                         </button>
                     </form>
@@ -1363,34 +1363,34 @@
                     <div class="contact-info">
                         <div class="card info-card direct-intel-card">
                             <div class="card-glow-blue"></div>
-                            <span class="badge badge-blue"><i class="fas fa-bolt"></i> Fastest Response</span>
-                            <h4><i class="fab fa-whatsapp"></i> Direct Intelligence</h4>
-                            <p>For immediate assistance, stock availability, or quick technical questions. Connect with our team instantly.</p>
+                            <span class="badge badge-blue"><i class="fas fa-bolt"></i> <span data-translate="contact_intel_badge">Fastest Response</span></span>
+                            <h4 data-translate="contact_intel_title"><i class="fab fa-whatsapp"></i> Direct Intelligence</h4>
+                            <p data-translate="contact_intel_desc">For immediate assistance, stock availability, or quick technical questions. Connect with our team instantly.</p>
                             
                             <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
                                 class="btn btn-whatsapp whatsapp-tactical" style="margin-top:1.25rem; width: 100%; justify-content: center;">
-                                <i class="fab fa-whatsapp"></i> CHAT ON WHATSAPP
+                                <i class="fab fa-whatsapp"></i> <span data-translate="contact_whatsapp_btn">CHAT ON WHATSAPP</span>
                             </a>
                             
                             <div class="response-stats">
-                                <div class="stat"><i class="fas fa-clock"></i> Avg. 30min</div>
-                                <div class="stat"><i class="fas fa-check-double"></i> Live Support</div>
+                                <div class="stat"><i class="fas fa-clock"></i> <span data-translate="contact_stat_resp">Avg. 30min</span></div>
+                                <div class="stat"><i class="fas fa-check-double"></i> <span data-translate="contact_stat_live">Live Support</span></div>
                             </div>
                         </div>
 
                         <div class="card info-card hours-card">
-                            <h4><i class="fas fa-clock"></i> Operational Hours</h4>
+                            <h4 data-translate="contact_hours_title"><i class="fas fa-clock"></i> Operational Hours</h4>
                             <div class="hours-list">
                                 <div class="hour-row">
                                     <span>Monday - Saturday</span>
                                     <strong>10:00 - 19:00</strong>
                                 </div>
                                 <div class="hour-row">
-                                    <span>Sunday / Holidays</span>
-                                    <strong class="text-red">Closed</strong>
+                                    <span data-translate="contact_hours_sun">Sunday / Holidays</span>
+                                    <strong class="text-red" data-translate="contact_hours_sun">Closed</strong>
                                 </div>
                             </div>
-                            <div class="timezone-info"><i class="fas fa-globe-asia"></i> Kuala Lumpur (GMT+8)</div>
+                            <div class="timezone-info" data-translate="contact_timezone"><i class="fas fa-globe-asia"></i> Kuala Lumpur (GMT+8)</div>
                         </div>
                     </div>
                 </div>

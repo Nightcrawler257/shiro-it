@@ -408,7 +408,28 @@ document.addEventListener("DOMContentLoaded", () => {
       contact_h1_1: "Hubungi",
       contact_h1_2: "Kami",
       contact_desc: "Ada soalan atau perlukan sebut harga? Hubungi kami melalui mana-mana saluran di bawah.",
-      contact_form_title: "Hantar Mesej Kepada Kami",
+      contact_form_title: "Taklimat Misi",
+      contact_form_badge: "Inkuiri Rasmi",
+      contact_form_desc: "Terbaik untuk spesifikasi binaan custom, perkongsian perniagaan, atau sebut harga rasmi yang memerlukan rekod terperinci.",
+      contact_field_name: "Nama",
+      contact_field_email: "Emel",
+      contact_field_phone: "Telefon (Pilihan)",
+      contact_field_subject: "Subjek",
+      contact_field_msg: "Ringkasan Mesej",
+      contact_ph_identity: "Identiti",
+      contact_ph_link: "Pautan Komunikasi",
+      contact_ph_objective: "Pilih Objektif",
+      contact_ph_brief: "Gariskan keperluan projek anda atau soalan khusus...",
+      contact_transmit: "HANTAR MESEJ",
+      contact_intel_badge: "Respon Terpantas",
+      contact_intel_title: "Perisikan Terus",
+      contact_intel_desc: "Untuk bantuan segera, ketersediaan stok, atau soalan teknikal pantas. Hubungi pasukan kami secara terus.",
+      contact_whatsapp_btn: "SEMBANG DI WHATSAPP",
+      contact_stat_resp: "Purata 30min",
+      contact_stat_live: "Sokongan Langsung",
+      contact_hours_title: "Waktu Operasi",
+      contact_hours_sun: "Tutup",
+      contact_timezone: "Kuala Lumpur (GMT+8)",
       contact_find_badge: "Cari Kami",
       contact_loc1: "Lokasi",
       contact_loc2: "Kami",
@@ -418,6 +439,30 @@ document.addEventListener("DOMContentLoaded", () => {
       // Language
       language_english: "English",
       language_bm: "Bahasa Malaysia",
+      // Shop
+      shop_in_stock: "dalam stok",
+      shop_only_left: "Tinggal 1 sahaja!",
+      shop_add_cart: "Tambah ke Troli",
+      shop_ask_price: "Tanya Harga",
+      cat_all: "Semua",
+      cat_gaming_pcs: "PC Gaming",
+      cat_laptops: "Laptop",
+      cat_components: "Komponen",
+      cat_peripherals: "Aksesori",
+      cat_monitors: "Monitor",
+      cat_networking: "Rangkaian",
+      cat_custom: "Binaan Custom",
+      cat_other: "Lain-lain",
+      // WhatsApp
+      wa_order_intro: "Hai SHIRO IT! Saya ingin membuat pesanan:\n\n",
+      wa_order_total: "Jumlah: RM ",
+      wa_order_outro: "\n\nSila sahkan ketersediaan. Terima kasih!",
+      // Cart
+      cart_title: "Troli Anda",
+      cart_empty: "Troli anda kosong",
+      cart_browse: "Lihat Kedai",
+      cart_checkout: "Tempah di WhatsApp",
+      cart_total: "Jumlah Besar",
     },
   };
 
@@ -436,10 +481,19 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("[data-translate]").forEach((el) => {
       const key = el.getAttribute("data-translate");
       if (lang === "bm" && translations.bm[key]) {
-        el.textContent = translations.bm[key];
+        if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+          el.placeholder = translations.bm[key];
+        } else {
+          el.textContent = translations.bm[key];
+        }
       } else if (lang === "en") {
-        // Reset to original — store originals on first run
-        if (el.dataset.originalText) el.textContent = el.dataset.originalText;
+        if (el.dataset.originalText) {
+          if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+            el.placeholder = el.dataset.originalText;
+          } else {
+            el.textContent = el.dataset.originalText;
+          }
+        }
       }
     });
     langDropdown.classList.remove("open");
@@ -447,7 +501,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Store original texts
   document.querySelectorAll("[data-translate]").forEach((el) => {
-    el.dataset.originalText = el.textContent;
+    el.dataset.originalText = (el.tagName === "INPUT" || el.tagName === "TEXTAREA") ? el.placeholder : el.textContent;
   });
 
   langToggle.addEventListener("click", () =>
@@ -562,6 +616,25 @@ document.addEventListener("DOMContentLoaded", () => {
     filtered.forEach((p) => {
       const card = document.createElement("div");
       card.className = "product-card" + (p.featured ? " featured" : "");
+      
+      let displayCategory = p.category;
+      let displayStock = "";
+      let displayPrice = p.price > 0 ? "RM " + p.price.toLocaleString() : "Ask for Price";
+      let displayBtn = "Add to Cart";
+
+      if (currentLang === 'bm') {
+        const catKey = "cat_" + p.category.toLowerCase().replace(/\s+/g, '_');
+        displayCategory = translations.bm[catKey] || p.category;
+        displayBtn = translations.bm.shop_add_cart;
+        if (p.price <= 0) displayPrice = translations.bm.shop_ask_price;
+        
+        if (p.stock > 1) displayStock = `${p.stock} ${translations.bm.shop_in_stock}`;
+        else if (p.stock === 1) displayStock = translations.bm.shop_only_left;
+      } else {
+        if (p.stock > 1) displayStock = `${p.stock} in stock`;
+        else if (p.stock === 1) displayStock = "Only 1 left!";
+      }
+
       card.innerHTML = `
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ""}
         <div class="product-image">
@@ -569,15 +642,15 @@ document.addEventListener("DOMContentLoaded", () => {
             ? `<img src="${resolveImagePath(p.image)}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;">`
             : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${getCategoryIcon(p.category)}</div>`}
         </div>
-        <div class="product-category">${p.category}</div>
+        <div class="product-category">${displayCategory}</div>
         <h3>${p.name}</h3>
         <p class="product-specs">${p.specs}</p>
         ${p.health ? `<p class="product-health"><i class="fas fa-heartbeat"></i> Health: ${p.health}</p>` : ""}
-        ${p.stock > 1 ? `<p class="product-stock"><i class="fas fa-boxes"></i> ${p.stock} in stock</p>` : (p.stock === 1 ? `<p class="product-stock"><i class="fas fa-box"></i> Only 1 left!</p>` : "")}
+        ${displayStock ? `<p class="product-stock"><i class="fas fa-boxes"></i> ${displayStock}</p>` : ""}
         <div class="product-bottom">
-          <div class="product-price">${p.price > 0 ? "RM " + p.price.toLocaleString() : '<span style="color:var(--accent-blue);font-size:0.85em;">Ask for Price</span>'}</div>
+          <div class="product-price">${p.price > 0 ? "RM " + p.price.toLocaleString() : `<span style="color:var(--accent-blue);font-size:0.85em;">${displayPrice}</span>`}</div>
           <button class="btn btn-primary product-btn" onclick="addShopItemToCart(this)">
-            <i class="fas fa-cart-plus"></i> Add to Cart
+            <i class="fas fa-cart-plus"></i> ${displayBtn}
           </button>
         </div>
       `;
@@ -1297,11 +1370,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let grandTotal = 0;
 
     if (globalCart.length === 0) {
+      const emptyText = currentLang === 'bm' ? translations.bm.cart_empty : "Your cart is empty";
+      const browseText = currentLang === 'bm' ? translations.bm.cart_browse : "Browse Shop";
       cartBody.innerHTML = `
         <div class="cart-empty">
           <i class="fas fa-shopping-basket"></i>
-          <p>Your cart is empty</p>
-          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('cartCloseBtn').click(); navigateTo('shop');">Browse Shop</button>
+          <p>${emptyText}</p>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('cartCloseBtn').click(); navigateTo('shop');">${browseText}</button>
         </div>
       `;
       cartGrandTotal.textContent = "RM 0";
@@ -1349,7 +1424,11 @@ document.addEventListener("DOMContentLoaded", () => {
     checkoutBtn.addEventListener('click', () => {
       if (globalCart.length === 0) return;
       
-      let message = "Hi SHIRO IT! I'd like to place an order:\n\n";
+      let intro = currentLang === 'bm' ? translations.bm.wa_order_intro : "Hi SHIRO IT! I'd like to place an order:\n\n";
+      let totalLabel = currentLang === 'bm' ? translations.bm.wa_order_total : "Total: RM ";
+      let outro = currentLang === 'bm' ? translations.bm.wa_order_outro : "\n\nPlease confirm availability. Thank you!";
+
+      let message = intro;
       globalCart.forEach((item, idx) => {
         message += `${idx + 1}. ${item.name} (RM ${item.price.toLocaleString()})\n`;
         if (item.type === 'build' && item.items) {
@@ -1361,7 +1440,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       
       const total = globalCart.reduce((sum, item) => sum + item.price, 0);
-      message += `Total: RM ${total.toLocaleString()}\n\nPlease confirm availability. Thank you!`;
+      message += `${totalLabel}${total.toLocaleString()}${outro}`;
       
       const whatsappUrl = `https://wa.me/60177617672?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
