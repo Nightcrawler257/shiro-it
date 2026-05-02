@@ -180,6 +180,8 @@ document.addEventListener("DOMContentLoaded", () => {
               <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary btn-sm"><i class="fas fa-gamepad"></i> Explore Now</a>
             </div>
           </div>`;
+        // Re-initialize slider logic even for fallback (hides arrows if count=1)
+        initHeroSlider();
       }
     } catch (err) {
       console.error('Failed to load hero slides:', err);

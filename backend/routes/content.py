@@ -314,10 +314,16 @@ def admin_get_settings():
 @login_required
 def admin_update_settings():
     data = request.get_json()
+    def _safe_int(val, default=0):
+        try:
+            if val is None or str(val).strip() == '': return default
+            return int(val)
+        except (ValueError, TypeError): return default
+
     active_festival    = data.get('active_festival', 'none')
-    tips_display_count   = str(int(data.get('tips_display_count', 0)))
-    hero_slide_duration  = str(int(data.get('hero_slide_duration', 8)))
-    hero_display_limit   = str(int(data.get('hero_display_limit', 0)))
+    tips_display_count   = str(_safe_int(data.get('tips_display_count'), 0))
+    hero_slide_duration  = str(_safe_int(data.get('hero_slide_duration'), 8))
+    hero_display_limit   = str(_safe_int(data.get('hero_display_limit'), 0))
     if int(hero_slide_duration) < 1: hero_slide_duration = '8'
 
     conn = db.get_conn()

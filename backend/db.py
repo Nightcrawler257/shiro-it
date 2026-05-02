@@ -192,8 +192,12 @@ def _migrate(conn):
         'ALTER TABLE pc_components ADD COLUMN brand TEXT DEFAULT ""',
         # Add target_page column to it_tips for widget navigation
         'ALTER TABLE it_tips ADD COLUMN target_page TEXT DEFAULT "home"',
-        # Add hero_slide_duration setting (migration is just ensuring site_settings is ready)
-        "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('hero_slide_duration', '8')"
+        # Add hero_slide_duration setting
+        "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('hero_slide_duration', '8')",
+        # Add hero_display_limit setting
+        "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('hero_display_limit', '0')",
+        # Add tips_display_count setting
+        "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('tips_display_count', '0')"
     ]
     for sql in migrations:
         try:
