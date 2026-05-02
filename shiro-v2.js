@@ -153,16 +153,19 @@ document.addEventListener("DOMContentLoaded", () => {
             mediaHtml = `<img src="${mediaUrl}" alt="${slide.title}" class="slide-poster-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
           }
 
+          const pageTarget = (slide.target_page || 'home').split('#')[0];
           return `
-            <div class="hero-slide hero-slide-poster ${index === 0 ? 'active' : ''}">
+            <div class="hero-slide hero-slide-poster ${index === 0 ? 'active' : ''}" 
+                 data-page="${pageTarget}" 
+                 style="cursor: pointer;">
               ${mediaHtml}
               <div class="slide-poster-fallback">
                 <div class="slide-poster-icon"><i class="fas ${slide.media_type === 'video' ? 'fa-video' : 'fa-desktop'}"></i></div>
-                <h3>${slide.title.replace('\n', '<br>')}</h3>
+                <h3>${slide.title ? slide.title.replace('\n', '<br>') : ''}</h3>
                 <p>${slide.subtitle || ''}</p>
-                <a href="#${slide.target_page}" data-page="${slide.target_page.split('#')[0]}" class="btn btn-primary btn-sm">
-                  <i class="fas fa-arrow-right"></i> ${slide.button_text || 'Learn More'}
-                </a>
+                <div class="btn btn-primary btn-sm">
+                  <i class="fas fa-arrow-right"></i> ${slide.button_text || (currentLang === 'bm' ? 'Ketahui Lanjut' : 'Learn More')}
+                </div>
               </div>
             </div>`;
         }).join('');
