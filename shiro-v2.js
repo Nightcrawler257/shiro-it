@@ -55,15 +55,36 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!link) return;
 
     e.preventDefault();
+    const rawTarget = link.getAttribute("data-page") || link.getAttribute("href") || "";
+    const cleanTarget = rawTarget.replace("#", "");
+    const [pageId, sectionId] = cleanTarget.split("-section-"); // or split by # if we change format
+
+    // Actually, let's just support simple pageId and then handle section if # is in href
     const page = link.getAttribute("data-page");
+    const href = link.getAttribute("href") || "";
+    const section = href.includes("#") ? href.split("#")[1] : null;
     
     if (page) {
         window.navigateTo(page);
         
-        // Custom scroll for merged page
+        // Handle section scroll if present
+        if (section && section !== page) {
+            setTimeout(() => {
+                const targetEl = document.getElementById(section);
+                if (targetEl) {
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
+                    window.scrollTo({
+                        top: targetEl.offsetTop - navbarHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 400);
+            return; // skip the default merged logic below
+        }
+
+        // Custom scroll for merged page (legacy handling for specific nav links)
         if (page === 'build-pc-services') {
-            // If clicked from 'Services' link, scroll to services section
-            if (link.innerHTML.includes('nav_services') || link.getAttribute('href') === '#services') {
+            if (link.innerHTML.includes('nav_services') || href === '#services') {
                 setTimeout(() => {
                     const servicesSection = document.getElementById('services-content');
                     if (servicesSection) {
@@ -73,15 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             behavior: 'smooth'
                         });
                     }
-                }, 350); // small delay to let page transition complete
-            } else if (link.innerHTML.includes('nav_build') || link.getAttribute('href') === '#build-pc') {
-                // Make sure we scroll to top for Build PC
-                setTimeout(() => {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
                 }, 350);
+            } else {
+                setTimeout(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, 350);
             }
         }
     }
