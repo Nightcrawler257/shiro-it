@@ -2550,79 +2550,157 @@ body.light .comp-img-wrap::after {
 
 .form-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 2rem;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 2.5rem;
+  align-items: start;
 }
-.contact-form {
-  padding: 2rem;
+.tactical-form {
+  padding: 2.5rem;
+  background: linear-gradient(165deg, rgba(15, 20, 35, 0.9), rgba(5, 7, 15, 0.98));
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 }
-.contact-form h3 {
-  margin-bottom: 1.5rem;
+.form-header {
+  margin-bottom: 2rem;
+  border-left: 3px solid var(--red);
+  padding-left: 1.25rem;
+}
+.form-header h3 {
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0.5rem 0;
+}
+.form-subtext {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-}
-.form-group:not(.form-row .form-group) {
-  margin-bottom: 1rem;
+  gap: 0.6rem;
 }
 .form-group label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-textarea {
-  resize: vertical;
+.form-group label i {
+  color: var(--blue-neon);
+  font-size: 0.7rem;
 }
-.form-submit {
+.tactical-form input, 
+.tactical-form select, 
+.tactical-form textarea {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: var(--text-primary);
+  padding: 0.85rem 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tactical-form input:focus, 
+.tactical-form select:focus, 
+.tactical-form textarea:focus {
+  border-color: var(--red);
+  background: rgba(239, 68, 68, 0.04);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);
+}
+.tactical-btn {
   width: 100%;
-  justify-content: center;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  border-radius: 4px;
 }
+
 .contact-info {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
 }
-.info-card {
-  padding: 1.5rem;
+.direct-intel-card {
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  background: linear-gradient(165deg, rgba(10, 25, 45, 0.9), rgba(5, 10, 20, 0.98));
+  overflow: hidden;
 }
-.info-card h4 {
+.card-glow-blue {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.direct-intel-card h4 {
+  margin-top: 1rem;
+  font-size: 1.4rem;
+}
+.direct-intel-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.whatsapp-tactical {
+  border-radius: 4px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.response-stats {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.response-stats .stat {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
+  gap: 6px;
 }
-.info-card h4 i {
-  color: var(--blue);
+.response-stats .stat i {
+  color: var(--blue-neon);
 }
-.hours-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+
+.hours-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
-.hours-list div {
+.hour-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
 }
-.hours-list span {
-  color: var(--text-muted);
-}
-.hours-list strong {
-  color: var(--text-primary);
-}
-.info-card > p {
-  font-size: 0.85rem;
+.hour-row span {
   color: var(--text-secondary);
+}
+.text-red {
+  color: var(--red-neon) !important;
+}
+.timezone-info {
+  margin-top: 1.25rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .careers-grid {

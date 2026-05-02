@@ -1314,61 +1314,83 @@
             <!-- Contact Form + Info -->
             <section class="section form-section">
                 <div class="container form-grid">
-                    <form class="card contact-form" id="contactForm">
-                        <h3 data-translate="contact_form_title">Send Us a Message</h3>
+                    <!-- Formal Briefing Form -->
+                    <form class="card contact-form tactical-form" id="contactForm">
+                        <div class="form-header">
+                            <span class="badge badge-red"><i class="fas fa-file-alt"></i> Official Inquiry</span>
+                            <h3 data-translate="contact_form_title">Mission Briefing</h3>
+                            <p class="form-subtext">Best for custom build specifications, business partnerships, or formal quotes requiring detailed records.</p>
+                        </div>
+                        
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" placeholder="Your name" required>
+                                <label><i class="fas fa-user-tag"></i> Name</label>
+                                <input type="text" placeholder="Identity" required>
                             </div>
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" placeholder="your@email.com" required>
+                                <label><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" placeholder="Communication Link" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Phone</label>
+                                <label><i class="fas fa-phone-alt"></i> Phone (Optional)</label>
                                 <input type="tel" placeholder="+60 12-345 6789">
                             </div>
                             <div class="form-group">
-                                <label>Subject</label>
+                                <label><i class="fas fa-thumbtack"></i> Subject</label>
                                 <select>
-                                    <option value="">Select a topic</option>
-                                    <option value="custom-build">Custom PC Build</option>
-                                    <option value="repair">PC Repair</option>
-                                    <option value="networking">Networking</option>
-                                    <option value="it-support">IT Support</option>
-                                    <option value="other">Other</option>
+                                    <option value="">Select Objective</option>
+                                    <option value="custom-build">Strategic Custom Build</option>
+                                    <option value="repair">System Diagnostics & Repair</option>
+                                    <option value="networking">Network Infrastructure</option>
+                                    <option value="it-support">Managed IT Support</option>
+                                    <option value="other">Other Tactical Inquiry</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Message</label>
-                            <textarea placeholder="Tell us about your project or question..." rows="5"
+                            <label><i class="fas fa-comment-dots"></i> Message Brief</label>
+                            <textarea placeholder="Outline your project requirements or specific questions..." rows="5"
                                 required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary form-submit">
-                            <i class="fas fa-paper-plane"></i> Send Message
+                        <button type="submit" class="btn btn-primary form-submit tactical-btn">
+                            <i class="fas fa-paper-plane"></i> TRANSMIT MESSAGE
                         </button>
                     </form>
 
+                    <!-- Instant Communication & Info -->
                     <div class="contact-info">
-                        <div class="card info-card">
-                            <h4><i class="fas fa-clock"></i> Business Hours</h4>
-                            <div class="hours-list">
-                                <div><span>Monday - Saturday</span><strong>10:00 AM - 7:00 PM</strong></div>
-                                <div><span>Sunday</span><strong>Closed</strong></div>
+                        <div class="card info-card direct-intel-card">
+                            <div class="card-glow-blue"></div>
+                            <span class="badge badge-blue"><i class="fas fa-bolt"></i> Fastest Response</span>
+                            <h4><i class="fab fa-whatsapp"></i> Direct Intelligence</h4>
+                            <p>For immediate assistance, stock availability, or quick technical questions. Connect with our team instantly.</p>
+                            
+                            <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
+                                class="btn btn-whatsapp whatsapp-tactical" style="margin-top:1.25rem; width: 100%; justify-content: center;">
+                                <i class="fab fa-whatsapp"></i> CHAT ON WHATSAPP
+                            </a>
+                            
+                            <div class="response-stats">
+                                <div class="stat"><i class="fas fa-clock"></i> Avg. 30min</div>
+                                <div class="stat"><i class="fas fa-check-double"></i> Live Support</div>
                             </div>
                         </div>
-                        <div class="card info-card">
-                            <h4><i class="fas fa-bolt"></i> Quick Response</h4>
-                            <p>For the fastest response, reach us on WhatsApp. We typically reply within 30 minutes
-                                during business hours.</p>
-                            <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
-                                class="btn btn-whatsapp" style="margin-top:1rem;">
-                                <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-                            </a>
+
+                        <div class="card info-card hours-card">
+                            <h4><i class="fas fa-clock"></i> Operational Hours</h4>
+                            <div class="hours-list">
+                                <div class="hour-row">
+                                    <span>Monday - Saturday</span>
+                                    <strong>10:00 - 19:00</strong>
+                                </div>
+                                <div class="hour-row">
+                                    <span>Sunday / Holidays</span>
+                                    <strong class="text-red">Closed</strong>
+                                </div>
+                            </div>
+                            <div class="timezone-info"><i class="fas fa-globe-asia"></i> Kuala Lumpur (GMT+8)</div>
                         </div>
                     </div>
                 </div>
