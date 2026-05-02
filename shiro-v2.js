@@ -56,13 +56,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     e.preventDefault();
     const rawTarget = link.getAttribute("data-page") || link.getAttribute("href") || "";
-    const cleanTarget = rawTarget.replace("#", "");
-    const [pageId, sectionId] = cleanTarget.split("-section-"); // or split by # if we change format
+    let cleanTarget = rawTarget.replace("#", "");
+    
+    // Alias mapping for Careers
+    if (cleanTarget === 'jobs') cleanTarget = 'contact#careers-section';
+
+    const [pageId, sectionId] = cleanTarget.split("#"); 
 
     // Actually, let's just support simple pageId and then handle section if # is in href
-    const page = link.getAttribute("data-page");
+    const page = pageId || link.getAttribute("data-page");
     const href = link.getAttribute("href") || "";
-    const section = href.includes("#") ? href.split("#")[1] : null;
+    const section = sectionId || (href.includes("#") ? href.split("#")[1] : null);
     
     if (page) {
         window.navigateTo(page);
