@@ -786,6 +786,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { id: "Motherboard", icon: "fas fa-server", color: "#0066FF", svg: SVG_MOBO },
     { id: "RAM", icon: "fas fa-memory", color: "#0066FF", svg: null },
     { id: "Storage", icon: "fas fa-hdd", color: "#FF0033", svg: null },
+    { id: "SSD Laptop", icon: "fas fa-laptop", color: "#FF0033", svg: null },
+    { id: "HDD", icon: "fas fa-hdd", color: "#ef4444", svg: null },
     { id: "GPU", icon: "fas fa-film", color: "#FF0033", svg: null },
     { id: "Case", icon: "fas fa-box", color: "#FF0033", svg: SVG_CASE },
     { id: "PSU", icon: "fas fa-bolt", color: "#0066FF", svg: SVG_PSU },
@@ -964,6 +966,8 @@ document.addEventListener("DOMContentLoaded", () => {
       'RAM':        'fa-memory',
       'RAM Laptop': 'fa-memory',
       'Storage':    'fa-hdd',
+      'SSD Laptop': 'fa-laptop',
+      'HDD':        'fa-hdd',
       'GPU':        'fa-desktop',
       'Case':       'fa-box-open',
       'PSU':        'fa-bolt',
@@ -977,7 +981,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cls = icons[cat] || 'fa-cog';
     const colors = {
       'CPU':'#3b82f6','Motherboard':'#3b82f6','RAM':'#a855f7','RAM Laptop':'#a855f7',
-      'Storage':'#ef4444','GPU':'#f59e0b','Case':'#ef4444','PSU':'#3b82f6',
+      'Storage':'#ef4444','SSD Laptop':'#ef4444','HDD':'#ef4444',
+      'GPU':'#f59e0b','Case':'#ef4444','PSU':'#3b82f6',
       'AIO Cooling':'#38bdf8','Cooling':'#38bdf8','Monitor':'#22c55e',
       'Keyboard':'#f87171','Mouse':'#38bdf8','Accessories':'#94a3b8',
     };
