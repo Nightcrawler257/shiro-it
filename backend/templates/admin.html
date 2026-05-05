@@ -2365,7 +2365,7 @@ window.editPcItem = (item) => {
   $('pcName').value        = item.name || '';
   $('pcPrice').value       = item.price || 0;
   $('pcDiscount').value    = item.discount || '';
-  $('pcSpecs').value       = (item.specs || []).join('\\n');
+  $('pcSpecs').value       = (item.specs || []).join('\n');
   $('pcColor').value       = item.tier_color || '#0066FF';
   $('pcFeatured').checked  = item.featured || false;
   $('pcMediaType').value   = item.media_type || 'image';
@@ -2459,7 +2459,7 @@ $('savePcBtn').onclick = async () => {
       media_type: $('pcMediaType').value,
       tags: $('pcTags').value.split(',').map(t => t.trim()).filter(t => t),
       photo_url: finalImagePath,
-      specs: $('pcSpecs').value.split('\\n').filter(s => s.trim() !== '')
+      specs: $('pcSpecs').value.split('\n').filter(s => s.trim() !== '')
     };
 
     const url = id ? `${API}/admin/api/prebuilt_pcs/${id}` : `${API}/admin/api/prebuilt_pcs`;

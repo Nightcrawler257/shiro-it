@@ -207,6 +207,11 @@ def _migrate(conn):
         "ALTER TABLE service_bookings ADD COLUMN device_model TEXT DEFAULT ''",
         "ALTER TABLE service_bookings ADD COLUMN problem_description TEXT DEFAULT ''",
         "ALTER TABLE service_bookings ADD COLUMN photo_url TEXT DEFAULT ''",
+        # Add missing columns to prebuilt_pcs if not present
+        "ALTER TABLE prebuilt_pcs ADD COLUMN tier_color TEXT DEFAULT '#0066FF'",
+        "ALTER TABLE prebuilt_pcs ADD COLUMN featured INTEGER DEFAULT 0",
+        "ALTER TABLE prebuilt_pcs ADD COLUMN media_type TEXT DEFAULT 'image'",
+        "ALTER TABLE prebuilt_pcs ADD COLUMN tags TEXT DEFAULT ''",
     ]
     for sql in migrations:
         try:
