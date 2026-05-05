@@ -1968,7 +1968,7 @@ body.light .nav-menu > li > a.active {
 /* ========== SERVICES DETAIL ========== */
 .services-detail-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
 }
 .service-detail-card {
