@@ -1155,7 +1155,7 @@
             <div class="upload-area-text">Drop file or click to browse</div>
           </div>
           <div id="pcUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
-          <div id="pcImagePreview" style="margin-top:0.5rem;"></div>
+          <div id="pcImagePreview" style="margin-top:0.5rem; width:100%; height:200px; background:rgba(0,0,0,0.3); border-radius:10px; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px solid var(--border);"></div>
           <input type="hidden" id="pcImagePath">
         </div>
         <div class="form-group">
@@ -2462,8 +2462,14 @@ $('savePcBtn').onclick = async () => {
       toast('PC Saved', 'ok');
       closePcModal();
       loadTab('pcs');
-    } else toast(d2.error || 'Save failed', 'err');
-  } catch(e) { toast('Error saving PC', 'err'); }
+    } else {
+      console.error('Save failed:', d2);
+      toast(d2.error || 'Save failed', 'err');
+    }
+  } catch(e) { 
+    console.error('Error saving PC:', e);
+    toast('Error saving PC: ' + e.message, 'err'); 
+  }
   finally {
     $('savePcBtn').innerHTML = '<i class="fas fa-save"></i> Save PC Record';
     $('savePcBtn').disabled = false;

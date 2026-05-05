@@ -2698,6 +2698,8 @@ function showToast(message, type = "success") {
 
 /* ===== SERVICE BOOKING MODAL ===== */
 window.openServiceBooking = function(serviceName) {
+  const overlay = document.getElementById('serviceBookingOverlay');
+  if (!overlay) return;
   document.getElementById('sb-service').value = serviceName;
   document.getElementById('sb-service-display').value = serviceName;
   document.getElementById('serviceBookingForm').reset();
@@ -2705,7 +2707,7 @@ window.openServiceBooking = function(serviceName) {
   document.getElementById('sb-service-display').value = serviceName;
   const sbMsg = document.getElementById('sb-msg');
   if (sbMsg) { sbMsg.style.display = 'none'; sbMsg.textContent = ''; }
-  document.getElementById('serviceBookingOverlay').style.display = 'flex';
+  overlay.classList.add('show');
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2714,7 +2716,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.id === 'checkoutInfoOverlay') e.target.style.display = 'none';
   });
   document.getElementById('serviceBookingOverlay')?.addEventListener('click', (e) => {
-    if (e.target.id === 'serviceBookingOverlay') e.target.style.display = 'none';
+    if (e.target.id === 'serviceBookingOverlay') e.target.classList.remove('show');
   });
 
   // Service booking form submit
@@ -2733,37 +2735,53 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!name || !phone) return;
 
       submitBtn.disabled = true;
+      const originalBtnHtml = submitBtn.innerHTML;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
 
       try {
-        await fetch(
-          (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
-            ? 'http://localhost:5000/api/service-booking'
-            : window.location.origin + '/api/service-booking',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name, phone,
-              email: email || `${phone}@whatsapp.com`,
-              service_name: service,
-              preferred_date: date,
-              notes: 'Submitted via website service card'
-            })
+        const res = await fetch(API_BASE + '/api/service-booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, phone,
+            email: email || `${phone}@whatsapp.com`,
+            service_name: service,
+            preferred_date: date,
+            notes: `Auto-generated booking for ${service}`
+          })
+        });
+
+        const d = await res.json();
+        if (d.success) {
+          if (sbMsg) {
+            sbMsg.style.display = 'block';
+            sbMsg.style.color = 'var(--green)';
+            sbMsg.textContent = 'Booking Saved! Redirecting to WhatsApp...';
           }
-        );
+          
+          const waMsg = `Hi Shiro IT, I'm ${name}. I just booked a *${service}* service for ${date || 'as soon as possible'}. Please confirm my appointment.`;
+          const waUrl = `https://wa.me/60177617672?text=${encodeURIComponent(waMsg)}`;
+          
+          setTimeout(() => {
+            window.open(waUrl, '_blank');
+            document.getElementById('serviceBookingOverlay').classList.remove('show');
+            serviceBookingForm.reset();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
+          }, 1500);
+        } else {
+          throw new Error(d.error || 'Server error');
+        }
       } catch (err) {
-        console.warn('Booking save failed (non-blocking):', err);
+        console.error('Booking failed:', err);
+        if (sbMsg) {
+          sbMsg.style.display = 'block';
+          sbMsg.style.color = 'var(--red)';
+          sbMsg.textContent = 'Error: ' + err.message;
+        }
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
       }
-
-      // Always open WhatsApp
-      document.getElementById('serviceBookingOverlay').style.display = 'none';
-      const waMsg = `Hi SHIRO IT! I'd like to book a service.\n\nService: ${service}\nName: ${name}\nPhone: ${phone}${date ? '\nPreferred Date: ' + date : ''}\n\nPlease confirm availability. Thank you!`;
-      window.open(`https://wa.me/60177617672?text=${encodeURIComponent(waMsg)}`, '_blank');
-
-      serviceBookingForm.reset();
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Confirm Booking via WhatsApp';
     });
   }
 });

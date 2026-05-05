@@ -129,17 +129,20 @@ def admin_add_pc():
     data = request.get_json()
     specs_json = json.dumps(data.get('specs', []))
     tags_json = json.dumps(data.get('tags', []))
+    def _s(val, default=''):
+        return str(val).strip() if val is not None else default
+
     conn = db.get_conn()
     cursor = conn.execute(
         '''INSERT INTO prebuilt_pcs
            (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-        (data.get('tier_name', '').strip(), data.get('tier_badge', '').strip(),
-         data.get('name', '').strip(), data.get('price', '').strip(),
-         data.get('discount', '').strip(), data.get('photo_url', '').strip(),
-         specs_json, data.get('tier_color', '#0066FF').strip(),
+        (_s(data.get('tier_name')), _s(data.get('tier_badge')),
+         _s(data.get('name')), _s(data.get('price')),
+         _s(data.get('discount')), _s(data.get('photo_url')),
+         specs_json, _s(data.get('tier_color', '#0066FF')),
          1 if data.get('featured') else 0,
-         data.get('media_type', 'image').strip(),
+         _s(data.get('media_type', 'image')),
          tags_json)
     )
     conn.commit()
@@ -155,18 +158,22 @@ def admin_update_pc(pc_id):
     data = request.get_json()
     specs_json = json.dumps(data.get('specs', []))
     tags_json = json.dumps(data.get('tags', []))
+
+    def _s(val, default=''):
+        return str(val).strip() if val is not None else default
+
     conn = db.get_conn()
     result = conn.execute(
         '''UPDATE prebuilt_pcs
            SET tier_name=?, tier_badge=?, name=?, price=?, discount=?,
                photo_url=?, specs=?, tier_color=?, featured=?, media_type=?, tags=?
            WHERE id=?''',
-        (data.get('tier_name', '').strip(), data.get('tier_badge', '').strip(),
-         data.get('name', '').strip(), data.get('price', '').strip(),
-         data.get('discount', '').strip(), data.get('photo_url', '').strip(),
-         specs_json, data.get('tier_color', '').strip(),
+        (_s(data.get('tier_name')), _s(data.get('tier_badge')),
+         _s(data.get('name')), _s(data.get('price')),
+         _s(data.get('discount')), _s(data.get('photo_url')),
+         specs_json, _s(data.get('tier_color')),
          1 if data.get('featured') else 0,
-         data.get('media_type', 'image').strip(),
+         _s(data.get('media_type', 'image')),
          tags_json, pc_id)
     )
     if result.rowcount == 0:
