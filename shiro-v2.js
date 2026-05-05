@@ -1,9 +1,5 @@
 /* ========== SHIRO IT v2 — Main JavaScript ========== */
 
-// Backend API base URL — auto-detect:
-// In production (Render/Flask serving the HTML), use the same origin.
-// For local dev with a separate Flask server, fall back to localhost:5000.
-// Backup API_BASE for local dev via file:// protocol
 const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
   ? 'http://localhost:5000'
   : window.location.origin;
@@ -28,14 +24,11 @@ document.addEventListener("DOMContentLoaded", () => {
       target.classList.add("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // Update active nav link
     navLinks.forEach((link) => {
       link.classList.remove("active");
       if (link.getAttribute("data-page") === pageId)
         link.classList.add("active");
     });
-    // Close mobile menu (the full close function is defined further below,
-    // so we do it inline here to keep order-independence)
     if (navMenu) navMenu.classList.remove("open");
     const _mt = document.getElementById("menuToggle");
     if (_mt) {
@@ -44,34 +37,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const _ov = document.getElementById("navOverlay");
     if (_ov) _ov.classList.remove("active");
-    // Trigger animations
     setTimeout(() => runScrollAnimations(), 300);
-    // Update URL hash
     history.pushState(null, "", "#" + pageId);
   }
 
   document.addEventListener("click", (e) => {
     const link = e.target.closest("[data-page]");
     if (!link) return;
-
     e.preventDefault();
     const rawTarget = link.getAttribute("data-page") || link.getAttribute("href") || "";
     let cleanTarget = rawTarget.replace("#", "");
-    
-    // Alias mapping for Careers
     if (cleanTarget === 'jobs') cleanTarget = 'contact#careers-section';
-
     const [pageId, sectionId] = cleanTarget.split("#"); 
-
-    // Actually, let's just support simple pageId and then handle section if # is in href
     const page = pageId || link.getAttribute("data-page");
     const href = link.getAttribute("href") || "";
     const section = sectionId || (href.includes("#") ? href.split("#")[1] : null);
-    
     if (page) {
         window.navigateTo(page);
-        
-        // Handle section scroll if present
         if (section && section !== page) {
             setTimeout(() => {
                 const targetEl = document.getElementById(section);
@@ -83,36 +65,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
                 }
             }, 400);
-            return; // skip the default merged logic below
-        }
-
-        // Custom scroll for merged page (legacy handling for specific nav links)
-        if (page === 'build-pc-services') {
-            if (link.innerHTML.includes('nav_services') || href === '#services') {
-                setTimeout(() => {
-                    const servicesSection = document.getElementById('services-content');
-                    if (servicesSection) {
-                        const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
-                        window.scrollTo({
-                            top: servicesSection.offsetTop - navbarHeight,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, 350);
-            } else {
-                setTimeout(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, 350);
-            }
+            return;
         }
     }
   });
 
-  // Handle browser back/forward
   window.addEventListener("popstate", () => {
     const hash = window.location.hash.replace("#", "") || "home";
     navigateTo(hash);
   });
 
-  // Load initial page from hash
   const initialPage = window.location.hash.replace("#", "") || "home";
   if (initialPage !== "home") navigateTo(initialPage);
 
@@ -123,11 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const d = await res.json();
       if (d.success && d.data) {
         const settings = d.data;
-        
-        // 1. Handle Festival Effects
         const festival = settings.active_festival || 'none';
         if (festival !== 'none') {
-          // Load the festival CSS if not already present
           if (!document.getElementById('festival-css')) {
             const link = document.createElement('link');
             link.id = 'festival-css';
@@ -135,29 +94,23 @@ document.addEventListener("DOMContentLoaded", () => {
             link.href = '/festivals/festival.css';
             document.head.appendChild(link);
           }
-          // Load the specific festival JS
           const script = document.createElement('script');
           script.src = `/festivals/${festival}.js`;
           document.body.appendChild(script);
         }
-        
         window.siteSettings = settings;
-        // If settings specify a duration, update the global interval
         if (settings.hero_slide_duration) {
           window.heroInterval = parseInt(settings.hero_slide_duration) * 1000;
         }
       }
-    } catch (err) {
-      console.warn('Failed to load site settings:', err);
-    }
+    } catch (err) {}
   }
-  window.heroInterval = 8000; // Default
+  window.heroInterval = 8000;
   applySiteSettings();
 
   async function loadHeroSlides() {
     const track = document.getElementById("heroSliderTrack");
     if (!track) return;
-
     try {
       const res = await fetch(API_BASE + '/api/hero_slides');
       const d = await res.json();
@@ -165,13 +118,11 @@ document.addEventListener("DOMContentLoaded", () => {
         track.innerHTML = d.data.map((slide, index) => {
           const mediaUrl = slide.media_url.startsWith('http') ? slide.media_url : API_BASE + slide.media_url;
           let mediaHtml = '';
-          
           if (slide.media_type === 'video') {
             mediaHtml = `<video class="slide-poster-video" autoplay muted loop playsinline><source src="${mediaUrl}" type="video/mp4"></video>`;
           } else {
-            mediaHtml = `<img src="${mediaUrl}" alt="${slide.title}" class="slide-poster-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
+            mediaHtml = `<img src="${mediaUrl}" alt="${slide.title}" class="slide-poster-img">`;
           }
-
           const pageTarget = (slide.target_page || 'home').split('#')[0];
           return `
             <div class="hero-slide hero-slide-poster ${index === 0 ? 'active' : ''}" 
@@ -180,49 +131,28 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="slide-poster-backdrop"></div>
               ${mediaHtml}
               <div class="slide-poster-fallback">
-                <div class="slide-poster-icon"><i class="fas ${slide.media_type === 'video' ? 'fa-video' : 'fa-desktop'}"></i></div>
                 <h3>${slide.title ? slide.title.replace('\n', '<br>') : ''}</h3>
                 <p>${slide.subtitle || ''}</p>
                 <div class="btn btn-primary btn-sm">
-                  <i class="fas fa-arrow-right"></i> ${slide.button_text || (currentLang === 'bm' ? 'Ketahui Lanjut' : 'Learn More')}
+                  <i class="fas fa-arrow-right"></i> \${slide.button_text || (currentLang === 'bm' ? 'Ketahui Lanjut' : 'Learn More')}
                 </div>
               </div>
             </div>`;
         }).join('');
-        
-        // Re-initialize slider logic
-        initHeroSlider();
-      } else {
-        // Fallback if no slides exist in DB
-        track.innerHTML = `
-          <div class="hero-slide hero-slide-poster active">
-            <img src="images/banners/slide-1.jpg" alt="Welcome to SHIRO IT" class="slide-poster-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="slide-poster-fallback">
-              <div class="slide-poster-icon"><i class="fas fa-desktop"></i></div>
-              <h3>Welcome to<br><span class="gradient-text">SHIRO IT</span></h3>
-              <p>Your one-stop destination for Premium PC Builds and IT Services.</p>
-              <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary btn-sm"><i class="fas fa-gamepad"></i> Explore Now</a>
-            </div>
-          </div>`;
-        // Re-initialize slider logic even for fallback (hides arrows if count=1)
         initHeroSlider();
       }
-    } catch (err) {
-      console.error('Failed to load hero slides:', err);
-    }
+    } catch (err) {}
   }
   loadHeroSlides();
 
   /* ===== MOBILE MENU ===== */
   const menuToggle = document.getElementById("menuToggle");
   const navOverlay = document.getElementById("navOverlay");
-
   function closeMobileMenu() {
-    navMenu.classList.remove("open");
+    if(navMenu) navMenu.classList.remove("open");
     if (navOverlay) navOverlay.classList.remove("active");
-    menuToggle.querySelector("i").className = "fas fa-bars";
+    if(menuToggle && menuToggle.querySelector("i")) menuToggle.querySelector("i").className = "fas fa-bars";
   }
-
   if (menuToggle && navMenu) {
     menuToggle.addEventListener("click", () => {
       const isOpen = navMenu.classList.toggle("open");
@@ -231,13 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (navOverlay) navOverlay.classList.toggle("active", isOpen);
     });
   }
-
-  // Close menu when tapping the backdrop overlay
-  if (navOverlay) {
-    navOverlay.addEventListener("click", closeMobileMenu);
-  }
-
-  // Mobile dropdowns (updated breakpoint to match CSS: 1024px)
+  if (navOverlay) navOverlay.addEventListener("click", closeMobileMenu);
   document.querySelectorAll(".dropdown > a").forEach((trigger) => {
     trigger.addEventListener("click", (e) => {
       if (window.innerWidth <= 1024) {
@@ -255,30 +179,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== THEME TOGGLE ===== */
   const themeToggle = document.getElementById("themeToggle");
-  let savedTheme = localStorage.getItem("shiro-theme");
-  if (!savedTheme) {
-    savedTheme = "dark";
-    localStorage.setItem("shiro-theme", "dark");
-  }
-
+  let savedTheme = localStorage.getItem("shiro-theme") || "dark";
   if (themeToggle) {
     const themeIcon = themeToggle.querySelector("i");
-    if (themeIcon) {
-      if (savedTheme === "light") {
-        document.body.classList.add("light");
-        themeIcon.className = "fas fa-sun";
-      } else {
-        document.body.classList.remove("light");
-        themeIcon.className = "fas fa-moon";
-      }
+    if (savedTheme === "light") {
+      document.body.classList.add("light");
+      if(themeIcon) themeIcon.className = "fas fa-sun";
     }
-
     themeToggle.addEventListener("click", () => {
       document.body.classList.toggle("light");
       const isLight = document.body.classList.contains("light");
-      if (themeIcon) {
-        themeIcon.className = isLight ? "fas fa-sun" : "fas fa-moon";
-      }
+      if (themeIcon) themeIcon.className = isLight ? "fas fa-sun" : "fas fa-moon";
       localStorage.setItem("shiro-theme", isLight ? "light" : "dark");
     });
   }
@@ -287,15 +198,242 @@ document.addEventListener("DOMContentLoaded", () => {
   const langToggle = document.getElementById("languageToggle");
   const langDropdown = document.getElementById("languageDropdown");
   const langOptions = document.querySelectorAll(".language-option");
-  let currentLang = localStorage.getItem("shiro-lang");
-  if (!currentLang) {
-    currentLang = "en";
-    localStorage.setItem("shiro-lang", "en");
-  }
+  let currentLang = localStorage.getItem("shiro-lang") || "en";
 
   const translations = {
+    en: {
+      nav_home: "Home",
+      nav_tips: "IT Tips & Tricks",
+      nav_gaming: "Gaming",
+      nav_services: "Services",
+      nav_shop: "Shop",
+      nav_about: "About",
+      nav_contact: "Contact",
+      nav_build_1: "Build PC",
+      nav_build_2: "IT Services",
+      hero_badge: "Malaysia's Custom PC Builder",
+      hero_title_1: "Build Your Dream",
+      hero_title_2: "Gaming PC",
+      hero_desc: "From budget builds to ultimate powerhouses — we craft custom PCs that match your performance needs and style. Expert IT services in Kepala Batas, Penang.",
+      hero_f1: "Quick Response",
+      hero_f2: "2-Year Warranty",
+      hero_f3: "Expert Engineers",
+      hero_cta1: "Build Your PC",
+      hero_cta2: "View Shop",
+      hero_trust: "customers trust SHIRO IT",
+      svc_badge: "Our Services",
+      svc_title_1: "What We",
+      svc_title_2: "Offer",
+      svc_desc: "From custom PC builds to comprehensive IT solutions, we've got you covered.",
+      svc_1_title: "Custom PC Build",
+      svc_1_desc: "Hand-built gaming rigs tailored to your performance needs and budget.",
+      svc_2_title: "PC Repair",
+      svc_2_desc: "Expert diagnosis and repair for all PC hardware and software issues.",
+      svc_3_title: "Networking",
+      svc_3_desc: "Professional network setup, configuration, and troubleshooting.",
+      svc_4_title: "IT Support",
+      svc_4_desc: "Comprehensive IT support for businesses and individuals.",
+      svc_5_title: "Data Recovery",
+      svc_5_desc: "Retrieve lost data from failed drives and corrupted systems.",
+      svc_6_title: "Cloud Solutions",
+      svc_6_desc: "Cloud migration, setup, and management for your business.",
+      tier_title_1: "Choose",
+      tier_title_2: "Your PC",
+      stat_1: "PCs Built",
+      stat_2: "Satisfaction",
+      stat_3: "Years Exp",
+      stat_4: "Support",
+      test_title_1: "What Customers",
+      test_title_2: "Say",
+      cta_1: "Ready to Build",
+      cta_2: "Dream PC",
+      cta_desc: "Use our interactive configurator to design your perfect gaming PC. Choose from the latest components and get an instant estimate.",
+      about_badge: "About Us",
+      about_h1_1: "We Build",
+      about_h1_2: "Dreams",
+      about_desc: "SHIRO IT is a passionate Malaysian custom PC builder and IT service provider dedicated to delivering high-performance systems and exceptional service.",
+      about_stat1: "PCs Built",
+      about_stat2: "Years",
+      about_stat3: "Satisfaction",
+      about_stat4v: "Penang",
+      about_stat4: "Based",
+      about_journey_badge: "Our Journey",
+      about_story1: "The SHIRO IT",
+      about_story2: "Story",
+      about_tl1_title: "The Beginning",
+      about_tl1_desc: "SHIRO IT was founded with a passion for building high-performance custom PCs.",
+      about_tl2_title: "Growing Strong",
+      about_tl2_desc: "Expanded into IT services, offering repairs, networking, and cloud solutions.",
+      about_tl3_title: "Online Presence",
+      about_tl3_desc: "Launched our e-commerce platform and interactive PC configurator.",
+      about_tl4_title: "Community Impact",
+      about_tl4_desc: "Partnered with local schools and universities for tech education programs.",
+      about_tl5_title: "Expansion",
+      about_tl5_desc: "Opened our Penang showroom and grew to serve over 500 customers.",
+      about_tl6_title: "Innovation",
+      about_tl6_desc: "Introduced AI-powered build recommendations and real-time compatibility checks.",
+      about_values_badge: "Our Values",
+      about_values1: "What Drives",
+      about_values2: "Us",
+      val_1_title: "Passion",
+      val_1_desc: "Every build is crafted with a genuine love for technology and gaming.",
+      val_2_title: "Trust",
+      val_2_desc: "Transparent pricing, honest recommendations, and reliable after-sales support.",
+      val_3_title: "Innovation",
+      val_3_desc: "Constantly embracing the latest technology to provide the best experience for our customers.",
+      val_4_title: "Community",
+      val_4_desc: "Building a community of gamers and tech enthusiasts across Malaysia.",
+      about_team_badge: "Our Team",
+      about_team1: "Meet The",
+      about_team2: "Team",
+      tips_badge: "Knowledge Base",
+      tips_h1_1: "IT",
+      tips_h1_2: "Tips & Tricks",
+      tips_desc: "Practical tech tips to keep your PC running fast, secure, and optimized. From SHIRO IT experts to you.",
+      tips_video_badge: "Video Guides",
+      tips_video1: "Watch &",
+      tips_video2: "Learn",
+      tips_care_badge: "PC Care",
+      tips_care1: "Keep Your PC",
+      tips_care2: "Healthy",
+      tips_cta1: "Need",
+      tips_cta2: "Expert Help",
+      tips_cta_desc: "Our technicians can diagnose and fix any PC issue. From slow performance to hardware failures — we've got you covered.",
+      svcp_badge: "Our Services",
+      svcp_h1_1: "Professional",
+      svcp_h1_2: "IT Solutions",
+      svcp_desc: "From custom PC builds to enterprise IT support — we deliver reliable, high-quality technology services tailored to your needs.",
+      proc_badge: "How It Works",
+      proc_h2_1: "Our",
+      proc_h2_2: "Process",
+      faq_badge: "FAQ",
+      faq_h2_1: "Frequently",
+      faq_h2_2: "Asked",
+      shop_badge: "Shop",
+      shop_h1_1: "SHIRO IT",
+      shop_h1_2: "Store",
+      shop_desc: "Pre-built gaming PCs, workstations, components, and accessories — all picked by SHIRO IT.",
+      shop_cta_h2: "Can't Find What You Need?",
+      shop_cta_desc: "We can source any component or build a custom PC just for you.",
+      build_badge: "PC Configurator & Services",
+      build_h1_1: "Build PC &",
+      build_h1_2: "IT Services",
+      build_desc: "Select your components below and get an instant price estimate. Order via WhatsApp!",
+      contact_badge: "Contact Us",
+      contact_h1_1: "Get In",
+      contact_h1_2: "Touch",
+      contact_desc: "Have a question or need a quote? Reach out to us through any of the channels below.",
+      contact_form_title: "Mission Briefing",
+      contact_form_badge: "Official Inquiry",
+      contact_form_desc: "Best for custom build specifications, business partnerships, or formal quotes requiring detailed records.",
+      contact_field_name: "Name",
+      contact_field_email: "Email",
+      contact_field_phone: "Phone (Optional)",
+      contact_field_subject: "Subject",
+      contact_field_msg: "Message Brief",
+      contact_ph_identity: "Identity",
+      contact_ph_link: "Communication Link",
+      contact_ph_objective: "Select Objective",
+      contact_ph_brief: "Outline your project requirements or specific questions...",
+      contact_transmit: "SEND MESSAGE",
+      contact_intel_badge: "Fastest Response",
+      contact_intel_title: "Direct Intelligence",
+      contact_intel_desc: "For immediate assistance, stock availability, or quick technical questions. Connect with our team instantly.",
+      contact_whatsapp_btn: "CHAT ON WHATSAPP",
+      contact_stat_resp: "Avg. 30min",
+      contact_stat_live: "Live Support",
+      contact_hours_title: "Operational Hours",
+      contact_hours_sun: "Closed",
+      contact_timezone: "Kuala Lumpur (GMT+8)",
+      contact_find_badge: "Find Us",
+      contact_loc1: "Our",
+      contact_loc2: "Location",
+      careers_badge: "Careers",
+      careers_h2_1: "Join Our",
+      careers_h2_2: "Team",
+      language_english: "English",
+      language_bm: "Bahasa Malaysia",
+      shop_in_stock: "in stock",
+      shop_only_left: "Only 1 left!",
+      shop_add_cart: "Add to Cart",
+      shop_ask_price: "Ask Price",
+      cat_all: "All",
+      cat_gaming_pcs: "Gaming PCs",
+      cat_laptops: "Laptops",
+      cat_components: "Components",
+      cat_peripherals: "Peripherals",
+      cat_monitors: "Monitors",
+      cat_networking: "Networking",
+      cat_custom: "Custom Builds",
+      cat_other: "Other",
+      wa_order_intro: "Hi SHIRO IT! I'd like to place an order:\n\n",
+      wa_order_total: "Total: RM ",
+      wa_order_outro: "\n\nPlease confirm availability. Thank you!",
+      cart_title: "Your Cart",
+      cart_empty: "Your cart is empty",
+      cart_browse: "Browse Shop",
+      cart_checkout: "Order on WhatsApp",
+      cart_total: "Grand Total",
+      check_status_btn: "Check My Booking Status",
+      check_status_title: "Check Status",
+      check_status_action: "Check",
+      svc_ewaste_title: "E-Waste Collection",
+      svc_ewaste_desc: "Properly dispose of your old electronics. We ensure eco-friendly recycling and 100% data destruction.",
+      svc_ewaste_f1: "Eco-Friendly Disposal",
+      svc_ewaste_f2: "Certified Data Destruction",
+      svc_ewaste_f3: "Component Recycling",
+      svc_ewaste_f4: "Small & Large Batch Pickup",
+      svc_ewaste_cta: "Schedule a Pickup",
+      svc_repair_f1: "Logic Board Chip-Level Repair",
+      svc_repair_f2: "Screen & Keyboard Replacement",
+      svc_repair_f3: "OS Installation & Optimization",
+      svc_repair_f4: "Liquid Damage Treatment",
+      svc_spa_f1: "Full Dust Removal",
+      svc_spa_f2: "Thermal Paste (MX-4/Kryonaut)",
+      svc_spa_f3: "Fan Lubrication & Cleaning",
+      svc_spa_f4: "Performance Benchmarking",
+      svc_net_f1: "WiFi 6 Mesh Network Setup",
+      svc_net_f2: "SME Server & Rack Mounting",
+      svc_net_f3: "NAS & Private Cloud Storage",
+      svc_net_f4: "IP CCTV Security Systems",
+      svc_data_f1: "SSD & NVMe Data Retrieval",
+      svc_data_f2: "Mechanical HDD Recovery",
+      svc_data_f3: "RAID Array Reconstruction",
+      svc_data_f4: "Secure Data Erasure",
+      sb_service: "Service",
+      sb_name: "Your Name",
+      sb_phone: "WhatsApp No.",
+      sb_device: "Device / Item",
+      sb_problem: "Describe the Problem",
+      sb_photo_title: "Attach a Photo",
+      sb_photo_ph: "Click or drag a photo here",
+      sb_date: "Preferred Date",
+      sb_submit: "Confirm Booking via WhatsApp",
+      svc_repair_title: "Expert Hardware Repair",
+      svc_repair_desc: "Fast diagnosis for desktops and laptops. We specialize in logic board and hardware level troubleshooting.",
+      svc_repair_cta: "Book Repair",
+      svc_spa_title: "Laptop Spa & Cooling",
+      svc_spa_desc: "Overheating? We provide deep cleaning and high-performance thermal paste re-application.",
+      svc_spa_cta: "Book Spa",
+      svc_net_title: "Network Solutions",
+      svc_net_desc: "Enterprise-grade network solutions for SMEs and high-performance WiFi 6 setups for modern homes.",
+      svc_net_cta: "Get Quote",
+      svc_data_title: "Data Recovery",
+      svc_data_desc: "Advanced recovery for corrupted SSDs, dead HDDs, and accidental file deletions.",
+      svc_data_cta: "Emergency Help",
+      svc_trade_title: "PC & Laptop Trade-In",
+      svc_trade_desc: "Upgrade your setup by trading in your old hardware. We offer fair market value for working systems and components.",
+      svc_trade_cta: "Get Valuation",
+      proc_step1_title: "Consultation",
+      proc_step1_desc: "Tell us what you need — we listen and recommend the best solution.",
+      proc_step2_title: "Planning",
+      proc_step2_desc: "We design a tailored solution with transparent pricing.",
+      proc_step3_title: "Execution",
+      proc_step3_desc: "Our experts build or repair your system with precision.",
+      proc_step4_title: "Testing",
+      proc_step4_desc: "Rigorous testing ensures your system is stable and ready.",
+    },
     bm: {
-      // Nav
       nav_home: "Utama",
       nav_tips: "Tips & Trik IT",
       nav_gaming: "Gaming",
@@ -303,14 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_shop: "Kedai",
       nav_about: "Tentang",
       nav_contact: "Hubungi",
-      nav_build: "Bina PC & Perkhidmatan IT",
-      nav_gaming_pcs: "PC Gaming",
-      nav_custom_builds: "Bina Sendiri",
-      nav_prebuilt: "PC Siap",
-      nav_repair: "Baik Pulih",
-      nav_maintenance: "Penyelenggaraan",
-      nav_networking: "Rangkaian",
-      // Hero
+      nav_build_1: "Bina PC",
+      nav_build_2: "Perkhidmatan IT",
       hero_badge: "Pembina PC Custom Malaysia",
       hero_title_1: "Bina Impian Anda",
       hero_title_2: "PC Gaming",
@@ -321,7 +453,6 @@ document.addEventListener("DOMContentLoaded", () => {
       hero_cta1: "Bina PC Anda",
       hero_cta2: "Lihat Kedai",
       hero_trust: "pelanggan mempercayai SHIRO IT",
-      // Home Services
       svc_badge: "Perkhidmatan Kami",
       svc_title_1: "Apa Yang",
       svc_title_2: "Kami Tawarkan",
@@ -338,22 +469,17 @@ document.addEventListener("DOMContentLoaded", () => {
       svc_5_desc: "Pulihkan data yang hilang dari pemacu rosak dan sistem korup.",
       svc_6_title: "Penyelesaian Cloud",
       svc_6_desc: "Migrasi cloud, setup, dan pengurusan untuk perniagaan anda.",
-      // Tiers
       tier_title_1: "Pilih",
       tier_title_2: "PC Anda",
-      // Stats
       stat_1: "PC Dibina",
       stat_2: "Kepuasan",
       stat_3: "Tahun Pengalaman",
       stat_4: "Sokongan",
-      // Testimonials
       test_title_1: "Apa Pelanggan",
       test_title_2: "Kata",
-      // CTA
       cta_1: "Sedia Bina",
       cta_2: "PC Impian",
       cta_desc: "Gunakan konfigurator interaktif kami untuk reka PC gaming sempurna anda. Pilih dari komponen terkini dan dapatkan sebut harga segera.",
-      // About Page
       about_badge: "Tentang Kami",
       about_h1_1: "Kami Bina",
       about_h1_2: "Impian",
@@ -392,7 +518,6 @@ document.addEventListener("DOMContentLoaded", () => {
       about_team_badge: "Pasukan Kami",
       about_team1: "Kenali",
       about_team2: "Pasukan",
-      // IT Tips Page
       tips_badge: "Pangkalan Ilmu",
       tips_h1_1: "IT",
       tips_h1_2: "Tips & Trik",
@@ -406,7 +531,6 @@ document.addEventListener("DOMContentLoaded", () => {
       tips_cta1: "Perlukan",
       tips_cta2: "Bantuan Pakar",
       tips_cta_desc: "Jurutera kami boleh diagnos dan baiki sebarang masalah PC. Dari prestasi perlahan hingga kerosakan perkakasan — kami sedia membantu.",
-      // Services Page
       svcp_badge: "Perkhidmatan Kami",
       svcp_h1_1: "Profesional",
       svcp_h1_2: "Penyelesaian IT",
@@ -417,19 +541,16 @@ document.addEventListener("DOMContentLoaded", () => {
       faq_badge: "Soalan Lazim",
       faq_h2_1: "Soalan",
       faq_h2_2: "Lazim",
-      // Shop Page
       shop_badge: "Kedai",
       shop_h1_1: "SHIRO IT",
       shop_h1_2: "Kedai",
       shop_desc: "PC gaming siap bina, stesen kerja, komponen, dan aksesori — semuanya dipilih oleh SHIRO IT.",
       shop_cta_h2: "Tak Jumpa Apa Yang Anda Cari?",
       shop_cta_desc: "Kami boleh dapatkan sebarang komponen atau bina PC custom khas untuk anda.",
-      // Build PC Page
-      build_badge: "PC Configurator & Services",
-      build_h1_1: "Build PC &",
-      build_h1_2: "IT Services",
+      build_badge: "Konfigurator PC & Perkhidmatan",
+      build_h1_1: "Bina PC &",
+      build_h1_2: "Perkhidmatan IT",
       build_desc: "Pilih komponen anda di bawah dan dapatkan anggaran harga segera. Tempah melalui WhatsApp!",
-      // Contact Page
       contact_badge: "Hubungi Kami",
       contact_h1_1: "Hubungi",
       contact_h1_2: "Kami",
@@ -462,10 +583,8 @@ document.addEventListener("DOMContentLoaded", () => {
       careers_badge: "Kerjaya",
       careers_h2_1: "Sertai",
       careers_h2_2: "Pasukan Kami",
-      // Language
-      language_english: "English",
+      language_english: "Inggeris",
       language_bm: "Bahasa Malaysia",
-      // Shop
       shop_in_stock: "dalam stok",
       shop_only_left: "Tinggal 1 sahaja!",
       shop_add_cart: "Tambah ke Troli",
@@ -479,17 +598,14 @@ document.addEventListener("DOMContentLoaded", () => {
       cat_networking: "Rangkaian",
       cat_custom: "Binaan Custom",
       cat_other: "Lain-lain",
-      // WhatsApp
       wa_order_intro: "Hai SHIRO IT! Saya ingin membuat pesanan:\n\n",
       wa_order_total: "Jumlah: RM ",
-      wa_order_outro: "\n\nSila sahkan ketersediaan. Terima kasih!",
-      // Cart
+      wa_order_outro: "\n\nPlease confirm availability. Terima kasih!",
       cart_title: "Troli Anda",
       cart_empty: "Troli anda kosong",
       cart_browse: "Lihat Kedai",
       cart_checkout: "Tempah di WhatsApp",
       cart_total: "Jumlah Besar",
-      // New
       check_status_btn: "Semak Status Tempahan Saya",
       check_status_title: "Semak Status",
       check_status_action: "Semak",
@@ -500,6 +616,22 @@ document.addEventListener("DOMContentLoaded", () => {
       svc_ewaste_f3: "Kitar Semula Komponen",
       svc_ewaste_f4: "Pengambilan Batch Kecil & Besar",
       svc_ewaste_cta: "Jadualkan Pengambilan",
+      svc_repair_f1: "Baik Pulih Tahap Cip Logic Board",
+      svc_repair_f2: "Ganti Skrin & Papan Kekunci",
+      svc_repair_f3: "Pemasangan & Optimum OS",
+      svc_repair_f4: "Rawatan Kerosakan Cecair",
+      svc_spa_f1: "Pembersihan Habuk Penuh",
+      svc_spa_f2: "Thermal Paste (MX-4/Kryonaut)",
+      svc_spa_f3: "Pelinciran & Pembersihan Kipas",
+      svc_spa_f4: "Ujian Prestasi (Benchmarking)",
+      svc_net_f1: "Setup Rangkaian Mesh WiFi 6",
+      svc_net_f2: "Server PKS & Pemasangan Rak",
+      svc_net_f3: "Simpanan NAS & Cloud Peribadi",
+      svc_net_f4: "Sistem Keselamatan IP CCTV",
+      svc_data_f1: "Pemulihan Data SSD & NVMe",
+      svc_data_f2: "Pemulihan HDD Mekanikal",
+      svc_data_f3: "Rekonstruksi Array RAID",
+      svc_data_f4: "Pemadaman Data Selamat",
       sb_service: "Perkhidmatan",
       sb_name: "Nama Anda",
       sb_phone: "No. WhatsApp",
@@ -509,7 +641,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sb_photo_ph: "Klik atau seret foto ke sini",
       sb_date: "Tarikh Pilihan",
       sb_submit: "Sahkan Tempahan melalui WhatsApp",
-      // IT Services Detail
       svc_repair_title: "Baik Pulih Perkakasan Pakar",
       svc_repair_desc: "Diagnosis pantas untuk desktop dan laptop. Kami pakar dalam penyelesaian masalah tahap cip logic board dan perkakasan.",
       svc_repair_cta: "Tempah Baik Pulih",
@@ -525,6 +656,14 @@ document.addEventListener("DOMContentLoaded", () => {
       svc_trade_title: "Trade-In PC & Laptop",
       svc_trade_desc: "Naik taraf setup anda dengan trade-in perkakasan lama. Kami menawarkan nilai pasaran yang adil untuk sistem dan komponen.",
       svc_trade_cta: "Dapatkan Penilaian",
+      proc_step1_title: "Konsultasi",
+      proc_step1_desc: "Beritahu kami keperluan anda — kami dengar dan syorkan penyelesaian terbaik.",
+      proc_step2_title: "Perancangan",
+      proc_step2_desc: "Kami reka penyelesaian khusus dengan harga yang telus.",
+      proc_step3_title: "Pelaksanaan",
+      proc_step3_desc: "Pakar kami membina atau membaiki sistem anda dengan ketepatan.",
+      proc_step4_title: "Pengujian",
+      proc_step4_desc: "Ujian rapi memastikan sistem anda stabil dan sedia.",
     },
   };
 
@@ -542,33 +681,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     document.querySelectorAll("[data-translate]").forEach((el) => {
       const key = el.getAttribute("data-translate");
-      if (lang === "bm" && translations.bm[key]) {
+      if (translations[lang] && translations[lang][key]) {
         if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-          el.placeholder = translations.bm[key];
+          el.placeholder = translations[lang][key];
         } else {
-          el.textContent = translations.bm[key];
-        }
-      } else if (lang === "en") {
-        if (el.dataset.originalText) {
-          if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-            el.placeholder = el.dataset.originalText;
-          } else {
-            el.textContent = el.dataset.originalText;
-          }
+          el.textContent = translations[lang][key];
         }
       }
     });
-    langDropdown.classList.remove("open");
+    const ld = document.getElementById("languageDropdown");
+    if (ld) ld.classList.remove("open");
   }
 
-  // Store original texts
-  document.querySelectorAll("[data-translate]").forEach((el) => {
-    el.dataset.originalText = (el.tagName === "INPUT" || el.tagName === "TEXTAREA") ? el.placeholder : el.textContent;
-  });
+  const lt = document.getElementById("languageToggle");
+  if (lt) {
+    lt.addEventListener("click", () => {
+      const ld = document.getElementById("languageDropdown");
+      if (ld) ld.classList.toggle("open");
+    });
+  }
 
-  langToggle.addEventListener("click", () =>
-    langDropdown.classList.toggle("open"),
-  );
   langOptions.forEach((opt) => {
     opt.addEventListener("click", () =>
       setLanguage(opt.getAttribute("data-lang")),
@@ -577,10 +709,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setLanguage(currentLang);
 
-  // Close language dropdown on outside click
   document.addEventListener("click", (e) => {
-    if (!e.target.closest(".language-switcher"))
-      langDropdown.classList.remove("open");
+    const ld = document.getElementById("languageDropdown");
+    if (ld && !e.target.closest(".language-switcher"))
+      ld.classList.remove("open");
   });
 
   /* ===== SCROLL ANIMATIONS ===== */
