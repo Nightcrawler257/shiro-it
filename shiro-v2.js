@@ -881,7 +881,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="tier-price">
                   ${pc.price && pc.price > 0 
                     ? `RM ${Number(pc.price).toLocaleString()}` 
-                    : '<span style="font-size:1.1rem;opacity:0.7;">Contact for Price</span>'}
+                    : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
                 </div>
                 ${discountHtml}
                 <div class="tier-specs">${specsHtml}</div>

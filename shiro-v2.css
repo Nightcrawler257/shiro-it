@@ -454,7 +454,7 @@ h5 {
   margin-top: 0.75rem;
   font-family: var(--font-heading);
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .section-desc {
@@ -1626,7 +1626,7 @@ body.light .nav-menu > li > a.active {
   font-weight: 800;
   margin-bottom: 0.75rem;
   color: var(--accent);
-  font-family: var(--font-head);
+  font-family: var(--font-heading);
 }
 .tier-discount {
   display: inline-block;
