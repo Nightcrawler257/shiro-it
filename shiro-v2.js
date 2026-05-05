@@ -509,6 +509,22 @@ document.addEventListener("DOMContentLoaded", () => {
       sb_photo_ph: "Klik atau seret foto ke sini",
       sb_date: "Tarikh Pilihan",
       sb_submit: "Sahkan Tempahan melalui WhatsApp",
+      // IT Services Detail
+      svc_repair_title: "Baik Pulih Perkakasan Pakar",
+      svc_repair_desc: "Diagnosis pantas untuk desktop dan laptop. Kami pakar dalam penyelesaian masalah tahap cip logic board dan perkakasan.",
+      svc_repair_cta: "Tempah Baik Pulih",
+      svc_spa_title: "Spa & Penyejukan Laptop",
+      svc_spa_desc: "Laptop panas? Kami menyediakan pembersihan mendalam dan penggantian thermal paste berprestasi tinggi.",
+      svc_spa_cta: "Tempah Spa",
+      svc_net_title: "Penyelesaian Rangkaian",
+      svc_net_desc: "Penyelesaian rangkaian gred perusahaan untuk PKS dan setup WiFi 6 berprestasi tinggi untuk kediaman moden.",
+      svc_net_cta: "Dapatkan Sebut Harga",
+      svc_data_title: "Pemulihan Data",
+      svc_data_desc: "Pemulihan lanjutan untuk SSD rosak, HDD mati, dan pemadaman fail secara tidak sengaja.",
+      svc_data_cta: "Bantuan Kecemasan",
+      svc_trade_title: "Trade-In PC & Laptop",
+      svc_trade_desc: "Naik taraf setup anda dengan trade-in perkakasan lama. Kami menawarkan nilai pasaran yang adil untuk sistem dan komponen.",
+      svc_trade_cta: "Dapatkan Penilaian",,
     },
   };
 
