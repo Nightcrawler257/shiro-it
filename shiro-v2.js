@@ -2819,14 +2819,16 @@ document.addEventListener('DOMContentLoaded', () => {
           if (photoUrl) waMsg += '\nPhoto: ' + API_BASE + photoUrl + '\n';
           waMsg += '\nPlease confirm my appointment. Thank you!';
 
-          setTimeout(() => {
-            window.open('https://wa.me/60177617672?text=' + encodeURIComponent(waMsg), '_blank');
-            document.getElementById('serviceBookingOverlay').classList.remove('show');
-            serviceBookingForm.reset();
-            clearBookingPhoto();
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnHtml;
-          }, 1500);
+          // Immediate redirect for mobile reliability
+          const waUrl = 'https://wa.me/60177617672?text=' + encodeURIComponent(waMsg);
+          window.location.href = waUrl;
+          
+          document.getElementById('serviceBookingOverlay').classList.remove('show');
+          serviceBookingForm.reset();
+          clearBookingPhoto();
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml;
+
         } else {
           throw new Error(d.error || 'Server error');
         }
@@ -2843,4 +2845,56 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+});/* ===== BOOKING STATUS CHECKER ===== */
+window.checkBookingStatus = async function() {
+  const phone = document.getElementById('statusPhone').value.trim();
+  const resDiv = document.getElementById('statusResult');
+  const errDiv = document.getElementById('statusError');
+  const btn = document.getElementById('statusBtn');
+  
+  if (!phone) return;
+  
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+  resDiv.style.display = 'none';
+  errDiv.style.display = 'none';
+  
+  try {
+    const res = await fetch(`${API_BASE}/api/service-booking/status?phone=${encodeURIComponent(phone)}`);
+    const d = await res.json();
+    
+    if (d.success) {
+      if (d.bookings.length === 0) {
+        errDiv.textContent = 'No bookings found for this number.';
+        errDiv.style.display = 'block';
+      } else {
+        resDiv.innerHTML = d.bookings.map(b => `
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);padding:1rem;border-radius:10px;margin-bottom:.8rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;">
+              <span style="font-weight:700;color:#38bdf8;font-size:.9rem;">${b.service_name}</span>
+              <span style="font-size:.7rem;color:var(--text-secondary);">${b.created_at.split(' ')[0]}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:.5rem;">
+              <div style="width:8px;height:8px;border-radius:50%;background:${b.status === 'Confirmed' ? '#22c55e' : '#f59e0b'};box-shadow:0 0 10px ${b.status === 'Confirmed' ? '#22c55e' : '#f59e0b'};"></div>
+              <span style="font-size:.85rem;font-weight:600;color:${b.status === 'Confirmed' ? '#22c55e' : '#f59e0b'};">${b.status}</span>
+            </div>
+          </div>
+        `).join('');
+        resDiv.style.display = 'block';
+      }
+    } else {
+      throw new Error(d.error);
+    }
+  } catch(e) {
+    errDiv.textContent = 'Error: ' + e.message;
+    errDiv.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Check';
+  }
+};
+
+// Also close the new modal on backdrop click
+document.getElementById('checkStatusModal')?.addEventListener('click', (e) => {
+  if (e.target.id === 'checkStatusModal') e.target.classList.remove('show');
 });

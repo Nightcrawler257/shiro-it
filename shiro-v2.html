@@ -1077,6 +1077,12 @@
                     <h1><span data-translate="svcp_h1_1">Professional</span> <span class="gradient-text" data-translate="svcp_h1_2">IT Solutions</span></h1>
                     <p class="page-hero-desc" data-translate="svcp_desc">From custom PC builds to enterprise IT support — we deliver reliable,
                         high-quality technology services tailored to your needs.</p>
+                    <div style="margin-top:2rem;display:flex;justify-content:center;">
+                        <button onclick="document.getElementById('checkStatusModal').classList.add('show')" class="btn" style="background:rgba(56,189,248,0.1);border:1px solid #38bdf8;color:#38bdf8;padding:.8rem 1.8rem;border-radius:12px;display:flex;align-items:center;gap:.6rem;cursor:pointer;transition:.2s;">
+                            <i class="fas fa-search-location"></i> Check My Booking Status
+                        </button>
+                    </div>
+
                 </div>
             </section>
 
@@ -1821,3 +1827,24 @@
 </body>
 
 </html>
+    <!-- ===== CHECK STATUS MODAL ===== -->
+    <div class="builder-modal-overlay" id="checkStatusModal" style="z-index:10001;">
+        <div class="builder-modal" style="max-width:440px;">
+            <div class="builder-modal-header" style="background:linear-gradient(135deg,rgba(56,189,248,0.08),transparent);">
+                <h3><i class="fas fa-search-location" style="color:#38bdf8;"></i> Check Status</h3>
+                <button class="builder-modal-close" onclick="document.getElementById('checkStatusModal').classList.remove('show');"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="builder-modal-body" style="padding:1.5rem;">
+                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:.9rem;">Enter the WhatsApp number used for booking to see its current status.</p>
+                <div class="form-group" style="margin-bottom:1.25rem;">
+                    <label class="sb-label">WhatsApp Number</label>
+                    <div style="display:flex;gap:.5rem;">
+                        <input type="tel" id="statusPhone" class="form-control" placeholder="e.g. 0177617672" style="flex:1;">
+                        <button onclick="checkBookingStatus()" id="statusBtn" class="btn" style="background:#38bdf8;color:#000;font-weight:700;padding:0 1.25rem;border-radius:10px;">Check</button>
+                    </div>
+                </div>
+                <div id="statusResult" style="max-height:250px;overflow-y:auto;display:none;"></div>
+                <div id="statusError" style="display:none;color:#ef4444;background:rgba(239,68,68,0.08);padding:.8rem;border-radius:10px;font-size:.85rem;margin-top:1rem;"></div>
+            </div>
+        </div>
+    </div>

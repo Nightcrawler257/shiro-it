@@ -109,7 +109,31 @@ def upload_booking_photo():
     if ext not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
         return jsonify({'success': False, 'error': 'Only image files allowed'}), 400
     filename = f"booking_{uuid.uuid4().hex[:12]}{ext}"
-    upload_dir = os.path.join(current_app.root_path, 'static', 'uploads', 'bookings')
+    # Save to the main static folder in parent directory
+    parent_dir = os.path.abspath(os.path.join(current_app.root_path, '..'))
+    upload_dir = os.path.join(parent_dir, 'static', 'uploads', 'bookings')
     os.makedirs(upload_dir, exist_ok=True)
     f.save(os.path.join(upload_dir, filename))
     return jsonify({'success': True, 'url': f'/static/uploads/bookings/{filename}'})
+
+@services_bp.route('/api/service-booking/status', methods=['GET'])
+def get_booking_status():
+    """Check status of a booking by phone."""
+    phone = request.args.get('phone', '').strip()
+    if not phone:
+        return jsonify({'success': False, 'error': 'Phone number is required'}), 400
+    
+    try:
+        conn = db.get_conn()
+        bookings = conn.execute(
+            'SELECT service_name, status, created_at FROM service_bookings WHERE phone = ? ORDER BY created_at DESC',
+            (phone,)
+        ).fetchall()
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'bookings': [dict(b) for b in bookings]
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
