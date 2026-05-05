@@ -1079,7 +1079,7 @@
                         high-quality technology services tailored to your needs.</p>
                     <div style="margin-top:2rem;display:flex;justify-content:center;">
                         <button onclick="document.getElementById('checkStatusModal').classList.add('show')" class="btn" style="background:rgba(56,189,248,0.1);border:1px solid #38bdf8;color:#38bdf8;padding:.8rem 1.8rem;border-radius:12px;display:flex;align-items:center;gap:.6rem;cursor:pointer;transition:.2s;">
-                            <i class="fas fa-search-location"></i> Check My Booking Status
+                            <i class="fas fa-search-location"></i> <span data-translate="check_status_btn">Check My Booking Status</span>
                         </button>
                     </div>
 
@@ -1092,15 +1092,15 @@
                         <!-- E-Waste Collection -->
                         <div class="card service-detail-card" style="--svc-color: #10b981;">
                             <div class="svc-icon"><i class="fas fa-recycle"></i></div>
-                            <h3>E-Waste Collection</h3>
-                            <p>Properly dispose of your old electronics. We ensure eco-friendly recycling and 100% data destruction.</p>
+                            <h3 data-translate="svc_ewaste_title">E-Waste Collection</h3>
+                            <p data-translate="svc_ewaste_desc">Properly dispose of your old electronics. We ensure eco-friendly recycling and 100% data destruction.</p>
                             <div class="svc-features">
-                                <span><i class="fas fa-check"></i> Eco-Friendly Disposal</span>
-                                <span><i class="fas fa-check"></i> Certified Data Destruction</span>
-                                <span><i class="fas fa-check"></i> Component Recycling</span>
-                                <span><i class="fas fa-check"></i> Small & Large Batch Pickup</span>
+                                <span data-translate="svc_ewaste_f1"><i class="fas fa-check"></i> Eco-Friendly Disposal</span>
+                                <span data-translate="svc_ewaste_f2"><i class="fas fa-check"></i> Certified Data Destruction</span>
+                                <span data-translate="svc_ewaste_f3"><i class="fas fa-check"></i> Component Recycling</span>
+                                <span data-translate="svc_ewaste_f4"><i class="fas fa-check"></i> Small & Large Batch Pickup</span>
                             </div>
-                            <button onclick="openServiceBooking('E-Waste Collection')" class="svc-cta">Schedule a Pickup <i class="fas fa-arrow-right"></i></button>
+                            <button onclick="openServiceBooking('E-Waste Collection')" class="svc-cta" data-translate="svc_ewaste_cta">Schedule a Pickup <i class="fas fa-arrow-right"></i></button>
                         </div>
                         
                         <!-- Repair -->
@@ -1665,41 +1665,41 @@
 
                     <!-- Service (read-only) -->
                     <div class="form-group" style="margin-bottom:.9rem;">
-                        <label class="sb-label"><i class="fas fa-wrench"></i> Service</label>
+                        <label class="sb-label"><i class="fas fa-wrench"></i> <span data-translate="sb_service">Service</span></label>
                         <input type="text" id="sb-service-display" class="form-control" readonly style="opacity:.65;cursor:default;">
                     </div>
 
                     <!-- Name + Phone -->
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.9rem;">
                         <div class="form-group">
-                            <label class="sb-label"><i class="fas fa-user"></i> Your Name *</label>
+                            <label class="sb-label"><i class="fas fa-user"></i> <span data-translate="sb_name">Your Name</span> *</label>
                             <input type="text" id="sb-name" class="form-control" placeholder="e.g. Ahmad" required>
                         </div>
                         <div class="form-group">
-                            <label class="sb-label"><i class="fab fa-whatsapp"></i> WhatsApp No. *</label>
+                            <label class="sb-label"><i class="fab fa-whatsapp"></i> <span data-translate="sb_phone">WhatsApp No.</span> *</label>
                             <input type="tel" id="sb-phone" class="form-control" placeholder="e.g. 0177617672" required>
                         </div>
                     </div>
 
                     <!-- Device Model -->
                     <div class="form-group" style="margin-bottom:.9rem;">
-                        <label class="sb-label"><i class="fas fa-laptop"></i> Device / Item <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
+                        <label class="sb-label"><i class="fas fa-laptop"></i> <span data-translate="sb_device">Device / Item</span> <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
                         <input type="text" id="sb-device" class="form-control" placeholder="e.g. Dell XPS 15, iPhone 13, Custom PC...">
                     </div>
 
                     <!-- Problem Description -->
                     <div class="form-group" style="margin-bottom:.9rem;">
-                        <label class="sb-label"><i class="fas fa-exclamation-circle"></i> Describe the Problem *</label>
+                        <label class="sb-label"><i class="fas fa-exclamation-circle"></i> <span data-translate="sb_problem">Describe the Problem</span> *</label>
                         <textarea id="sb-problem" class="form-control" rows="3" placeholder="e.g. My laptop overheats and shuts down after 20 minutes. The fan is very loud..." required style="resize:vertical;min-height:80px;"></textarea>
                     </div>
 
                     <!-- Photo Upload -->
                     <div class="form-group" style="margin-bottom:.9rem;">
-                        <label class="sb-label"><i class="fas fa-camera"></i> Attach a Photo <span style="opacity:.55;font-size:.78rem;">(optional — helps our tech diagnose faster)</span></label>
+                        <label class="sb-label"><i class="fas fa-camera"></i> <span data-translate="sb_photo_title">Attach a Photo</span></label>
                         <div id="sb-photo-area" style="border:2px dashed rgba(255,255,255,0.1);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:.2s;position:relative;">
                             <input type="file" id="sb-photo" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
                             <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--text-secondary);margin-bottom:.4rem;display:block;"></i>
-                            <div id="sb-photo-label" style="font-size:.82rem;color:var(--text-secondary);">Click or drag a photo here</div>
+                            <div id="sb-photo-label" style="font-size:.82rem;color:var(--text-secondary);" data-translate="sb_photo_ph">Click or drag a photo here</div>
                         </div>
                         <div id="sb-photo-preview" style="margin-top:.5rem;display:none;">
                             <img id="sb-photo-img" src="" style="max-height:120px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);">
@@ -1709,13 +1709,13 @@
 
                     <!-- Date -->
                     <div class="form-group" style="margin-bottom:1.25rem;">
-                        <label class="sb-label"><i class="fas fa-calendar-alt"></i> Preferred Date <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
+                        <label class="sb-label"><i class="fas fa-calendar-alt"></i> <span data-translate="sb_date">Preferred Date</span> <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
                         <input type="date" id="sb-date" class="form-control">
                     </div>
 
                     <p id="sb-msg" style="display:none;margin-bottom:.75rem;font-size:.85rem;text-align:center;padding:.6rem;border-radius:8px;"></p>
                     <button type="submit" id="sb-submit-btn" class="btn btn-whatsapp" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:1rem;padding:.9rem;">
-                        <i class="fab fa-whatsapp"></i> Confirm Booking via WhatsApp
+                        <i class="fab fa-whatsapp"></i> <span data-translate="sb_submit">Confirm Booking via WhatsApp</span>
                     </button>
                 </form>
             </div>
@@ -1831,7 +1831,7 @@
     <div class="builder-modal-overlay" id="checkStatusModal" style="z-index:10001;">
         <div class="builder-modal" style="max-width:440px;">
             <div class="builder-modal-header" style="background:linear-gradient(135deg,rgba(56,189,248,0.08),transparent);">
-                <h3><i class="fas fa-search-location" style="color:#38bdf8;"></i> Check Status</h3>
+                <h3 data-translate="check_status_title"><i class="fas fa-search-location" style="color:#38bdf8;"></i> Check Status</h3>
                 <button class="builder-modal-close" onclick="document.getElementById('checkStatusModal').classList.remove('show');"><i class="fas fa-times"></i></button>
             </div>
             <div class="builder-modal-body" style="padding:1.5rem;">
@@ -1840,7 +1840,7 @@
                     <label class="sb-label">WhatsApp Number</label>
                     <div style="display:flex;gap:.5rem;">
                         <input type="tel" id="statusPhone" class="form-control" placeholder="e.g. 0177617672" style="flex:1;">
-                        <button onclick="checkBookingStatus()" id="statusBtn" class="btn" style="background:#38bdf8;color:#000;font-weight:700;padding:0 1.25rem;border-radius:10px;">Check</button>
+                        <button onclick="checkBookingStatus()" id="statusBtn" class="btn" style="background:#38bdf8;color:#000;font-weight:700;padding:0 1.25rem;border-radius:10px;" data-translate="check_status_action">Check</button>
                     </div>
                 </div>
                 <div id="statusResult" style="max-height:250px;overflow-y:auto;display:none;"></div>
