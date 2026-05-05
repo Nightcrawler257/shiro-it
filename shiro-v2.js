@@ -878,11 +878,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="tier-badge">${pc.tier_badge || ''}</div>
                 <div class="tier-name">${pc.tier_name || ''}</div>
                 <div class="tier-tags-row">${tagsHtml}</div>
-                <h3>${pc.name}</h3>
-                <div class="tier-price">RM ${Number(pc.price || 0).toLocaleString()}</div>
+                <div class="tier-price">
+                  ${pc.price && pc.price > 0 
+                    ? `RM ${Number(pc.price).toLocaleString()}` 
+                    : '<span style="font-size:1.1rem;opacity:0.7;">Contact for Price</span>'}
+                </div>
                 ${discountHtml}
                 <div class="tier-specs">${specsHtml}</div>
-                <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary tier-btn">Configure <i class="fas fa-arrow-right"></i></a>
+                <button onclick="openServiceBooking('${pc.name}')" class="btn btn-primary tier-btn">Order Now <i class="fas fa-shopping-cart"></i></button>
               </div>
             </div>`;
         }).join('');

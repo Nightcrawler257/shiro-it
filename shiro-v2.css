@@ -389,7 +389,11 @@ h5 {
   cursor: pointer;
   text-decoration: none;
   border: none;
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.tier-btn {
+  padding: 0.8rem 1.2rem;
+  clip-path: none;
 }
 .btn-primary {
   background: linear-gradient(135deg, #ef4444, #dc2626);
@@ -2738,17 +2742,21 @@ body.light .comp-img-wrap::after {
 .tier-btn {
   width: 100%;
   margin-top: auto;
-  padding: 0.85rem;
-  font-size: 0.85rem;
-  font-weight: 700;
+  padding: 0.9rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-  transition: all 0.3s ease;
+  letter-spacing: 1.2px;
+  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   background: var(--red);
   color: white;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 .tier-btn:hover {
   clip-path: polygon(0% 0%, 90% 0%, 100% 100%, 10% 100%);
