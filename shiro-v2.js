@@ -967,7 +967,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const mediaHtml = tip.media_type === 'image'
             ? `<div class="video-wrapper"><img src="${mediaUrl}" alt="${tip.title}"></div>`
-            : `<div class="video-wrapper"><video controls preload="metadata"><source src="${mediaUrl}" type="${mimeType}">Your browser does not support video.</video></div>`;
+            : `<div class="video-wrapper"><video autoplay muted loop playsinline controls preload="metadata"><source src="${mediaUrl}" type="${mimeType}">Your browser does not support video.</video></div>`;
           const tagsHtml = (tip.tags || []).map(t => `<span class="video-tag">${t}</span>`).join('');
           
           return `
