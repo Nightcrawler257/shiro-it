@@ -1647,43 +1647,81 @@
 
     <!-- ===== SERVICE BOOKING MODAL ===== -->
     <div class="builder-modal-overlay" id="serviceBookingOverlay" style="z-index:10000;">
-        <div class="builder-modal" style="max-width:480px;">
-            <div class="builder-modal-header">
+        <div class="builder-modal" style="max-width:520px;">
+            <div class="builder-modal-header" style="background:linear-gradient(135deg,rgba(37,99,235,0.08),transparent);">
                 <h3><i class="fas fa-tools" style="color:var(--accent-blue);"></i> Book a Service</h3>
                 <button class="builder-modal-close" onclick="document.getElementById('serviceBookingOverlay').classList.remove('show');"><i class="fas fa-times"></i></button>
             </div>
             <div class="builder-modal-body" style="padding:1.5rem;">
-                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:.95rem;">We'll save your booking request and open WhatsApp so our team can confirm the details.</p>
+                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:.9rem;"><i class="fas fa-info-circle" style="color:var(--accent-blue);margin-right:6px;"></i>Fill in your details — we'll save it and open WhatsApp so our team can respond fast.</p>
                 <form id="serviceBookingForm">
                     <input type="hidden" id="sb-service">
-                    <div class="form-group" style="margin-bottom:1rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Service</label>
-                        <input type="text" id="sb-service-display" class="form-control" readonly style="opacity:.7;">
+
+                    <!-- Service (read-only) -->
+                    <div class="form-group" style="margin-bottom:.9rem;">
+                        <label class="sb-label"><i class="fas fa-wrench"></i> Service</label>
+                        <input type="text" id="sb-service-display" class="form-control" readonly style="opacity:.65;cursor:default;">
                     </div>
-                    <div class="form-group" style="margin-bottom:1rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Your Name *</label>
-                        <input type="text" id="sb-name" class="form-control" placeholder="e.g. Ahmad" required>
+
+                    <!-- Name + Phone -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.9rem;">
+                        <div class="form-group">
+                            <label class="sb-label"><i class="fas fa-user"></i> Your Name *</label>
+                            <input type="text" id="sb-name" class="form-control" placeholder="e.g. Ahmad" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="sb-label"><i class="fab fa-whatsapp"></i> WhatsApp No. *</label>
+                            <input type="tel" id="sb-phone" class="form-control" placeholder="e.g. 0177617672" required>
+                        </div>
                     </div>
-                    <div class="form-group" style="margin-bottom:1rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">WhatsApp Number *</label>
-                        <input type="tel" id="sb-phone" class="form-control" placeholder="e.g. 0177617672" required>
+
+                    <!-- Device Model -->
+                    <div class="form-group" style="margin-bottom:.9rem;">
+                        <label class="sb-label"><i class="fas fa-laptop"></i> Device / Item <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
+                        <input type="text" id="sb-device" class="form-control" placeholder="e.g. Dell XPS 15, iPhone 13, Custom PC...">
                     </div>
-                    <div class="form-group" style="margin-bottom:1rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Email (Optional)</label>
-                        <input type="email" id="sb-email" class="form-control" placeholder="e.g. ahmad@email.com">
+
+                    <!-- Problem Description -->
+                    <div class="form-group" style="margin-bottom:.9rem;">
+                        <label class="sb-label"><i class="fas fa-exclamation-circle"></i> Describe the Problem *</label>
+                        <textarea id="sb-problem" class="form-control" rows="3" placeholder="e.g. My laptop overheats and shuts down after 20 minutes. The fan is very loud..." required style="resize:vertical;min-height:80px;"></textarea>
                     </div>
+
+                    <!-- Photo Upload -->
+                    <div class="form-group" style="margin-bottom:.9rem;">
+                        <label class="sb-label"><i class="fas fa-camera"></i> Attach a Photo <span style="opacity:.55;font-size:.78rem;">(optional — helps our tech diagnose faster)</span></label>
+                        <div id="sb-photo-area" style="border:2px dashed rgba(255,255,255,0.1);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:.2s;position:relative;">
+                            <input type="file" id="sb-photo" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
+                            <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--text-secondary);margin-bottom:.4rem;display:block;"></i>
+                            <div id="sb-photo-label" style="font-size:.82rem;color:var(--text-secondary);">Click or drag a photo here</div>
+                        </div>
+                        <div id="sb-photo-preview" style="margin-top:.5rem;display:none;">
+                            <img id="sb-photo-img" src="" style="max-height:120px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);">
+                            <button type="button" onclick="clearBookingPhoto()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:.8rem;margin-left:.5rem;"><i class="fas fa-times"></i> Remove</button>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
                     <div class="form-group" style="margin-bottom:1.25rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Preferred Date (Optional)</label>
+                        <label class="sb-label"><i class="fas fa-calendar-alt"></i> Preferred Date <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
                         <input type="date" id="sb-date" class="form-control">
                     </div>
-                    <p id="sb-msg" style="display:none;margin-bottom:.75rem;font-size:.85rem;text-align:center;"></p>
-                    <button type="submit" class="btn btn-whatsapp" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;">
+
+                    <p id="sb-msg" style="display:none;margin-bottom:.75rem;font-size:.85rem;text-align:center;padding:.6rem;border-radius:8px;"></p>
+                    <button type="submit" id="sb-submit-btn" class="btn btn-whatsapp" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:1rem;padding:.9rem;">
                         <i class="fab fa-whatsapp"></i> Confirm Booking via WhatsApp
                     </button>
                 </form>
             </div>
         </div>
     </div>
+    <style>
+      .sb-label { display:block; margin-bottom:.35rem; font-size:.82rem; font-weight:600; color:var(--text-secondary); letter-spacing:.3px; }
+      .sb-label i { margin-right:5px; color:var(--accent-blue); }
+      #sb-photo-area:hover { border-color: var(--accent-blue); background:rgba(37,99,235,0.04); }
+      .btn-whatsapp { background:#25d366; color:#fff; border:none; border-radius:10px; cursor:pointer; font-weight:700; transition:.2s; }
+      .btn-whatsapp:hover { background:#1ebe5d; box-shadow:0 0 18px rgba(37,211,102,0.35); }
+    </style>
 
     <!-- PC Builder Component Selector Modal -->
     <style>

@@ -1973,12 +1973,20 @@ function renderTable(tab, data) {
         </div></td>`
     },
     bookings: {
-      cols: ['Date', 'Customer', 'Service', 'Notes', 'Status', 'Actions'],
+      cols: ['Date', 'Customer', 'Service & Device', 'Problem', 'Photo', 'Status', 'Actions'],
       row: r => `
         <td style="white-space:nowrap;color:var(--text-secondary);font-size:0.78rem;">${fmtDate(r.created_at)}</td>
         <td><div class="name-col">${esc(r.name)}</div><div class="sub-col">${esc(r.phone)}</div></td>
-        <td>${esc(r.service_name) || '—'}</td>
-        <td class="msg-col" title="${esc(r.notes)}">${esc(r.notes) || '—'}</td>
+        <td>
+          <div style="font-weight:600;">${esc(r.service_name) || '—'}</div>
+          ${r.device_model ? `<div class="sub-col"><i class="fas fa-laptop" style="font-size:.7rem;"></i> ${esc(r.device_model)}</div>` : ''}
+        </td>
+        <td style="max-width:220px;">
+          <div style="font-size:.82rem;color:var(--text-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word;">${esc(r.problem_description) || '<span style="color:var(--text-secondary)">—</span>'}</div>
+        </td>
+        <td style="text-align:center;">
+          ${r.photo_url ? `<a href="${API + r.photo_url}" target="_blank"><img src="${API + r.photo_url}" style="height:48px;width:64px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;" title="View photo"></a>` : '<span style="color:var(--text-secondary);font-size:.75rem;">—</span>'}
+        </td>
         <td>${statusBadge(r.status)}</td>
         <td><div class="actions">
           <button class="action-btn ok" onclick="updateStatus('booking','${r.id}','Confirmed')" title="Confirm"><i class="fas fa-check"></i></button>

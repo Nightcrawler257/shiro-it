@@ -105,15 +105,18 @@ def _create_tables():
         );
 
         CREATE TABLE IF NOT EXISTS service_bookings (
-            id             INTEGER PRIMARY KEY AUTOINCREMENT,
-            name           TEXT,
-            email          TEXT,
-            phone          TEXT,
-            service_name   TEXT,
-            preferred_date TEXT,
-            notes          TEXT,
-            status         TEXT DEFAULT 'New',
-            created_at     TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
+            id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+            name                TEXT,
+            email               TEXT,
+            phone               TEXT,
+            service_name        TEXT,
+            preferred_date      TEXT,
+            device_model        TEXT DEFAULT '',
+            problem_description TEXT DEFAULT '',
+            photo_url           TEXT DEFAULT '',
+            notes               TEXT,
+            status              TEXT DEFAULT 'New',
+            created_at          TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
         );
 
         CREATE TABLE IF NOT EXISTS pc_components (
@@ -199,7 +202,11 @@ def _migrate(conn):
         # Add hero_display_limit setting
         "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('hero_display_limit', '0')",
         # Add tips_display_count setting
-        "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('tips_display_count', '0')"
+        "INSERT OR IGNORE INTO site_settings (key, value) VALUES ('tips_display_count', '0')",
+        # Add service booking detail columns
+        "ALTER TABLE service_bookings ADD COLUMN device_model TEXT DEFAULT ''",
+        "ALTER TABLE service_bookings ADD COLUMN problem_description TEXT DEFAULT ''",
+        "ALTER TABLE service_bookings ADD COLUMN photo_url TEXT DEFAULT ''",
     ]
     for sql in migrations:
         try:

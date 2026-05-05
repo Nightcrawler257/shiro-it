@@ -2696,22 +2696,30 @@ function showToast(message, type = "success") {
   }
 })();
 
+
 /* ===== SERVICE BOOKING MODAL ===== */
 window.openServiceBooking = function(serviceName) {
   const overlay = document.getElementById('serviceBookingOverlay');
   if (!overlay) return;
-  document.getElementById('sb-service').value = serviceName;
-  document.getElementById('sb-service-display').value = serviceName;
   document.getElementById('serviceBookingForm').reset();
   document.getElementById('sb-service').value = serviceName;
   document.getElementById('sb-service-display').value = serviceName;
+  clearBookingPhoto();
   const sbMsg = document.getElementById('sb-msg');
   if (sbMsg) { sbMsg.style.display = 'none'; sbMsg.textContent = ''; }
   overlay.classList.add('show');
 };
 
+window.clearBookingPhoto = function() {
+  const photoInput = document.getElementById('sb-photo');
+  const preview = document.getElementById('sb-photo-preview');
+  const label = document.getElementById('sb-photo-label');
+  if (photoInput) photoInput.value = '';
+  if (preview) preview.style.display = 'none';
+  if (label) label.textContent = 'Click or drag a photo here';
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  // Close modals when clicking backdrop
   document.getElementById('checkoutInfoOverlay')?.addEventListener('click', (e) => {
     if (e.target.id === 'checkoutInfoOverlay') e.target.style.display = 'none';
   });
@@ -2719,24 +2727,62 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.id === 'serviceBookingOverlay') e.target.classList.remove('show');
   });
 
-  // Service booking form submit
+  const sbPhoto = document.getElementById('sb-photo');
+  if (sbPhoto) {
+    sbPhoto.addEventListener('change', function() {
+      const file = this.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        document.getElementById('sb-photo-img').src = ev.target.result;
+        document.getElementById('sb-photo-preview').style.display = 'block';
+        document.getElementById('sb-photo-label').textContent = file.name;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   const serviceBookingForm = document.getElementById('serviceBookingForm');
   if (serviceBookingForm) {
     serviceBookingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const service = document.getElementById('sb-service').value;
-      const name    = document.getElementById('sb-name').value.trim();
-      const phone   = document.getElementById('sb-phone').value.trim();
-      const email   = document.getElementById('sb-email').value.trim();
-      const date    = document.getElementById('sb-date').value;
-      const sbMsg   = document.getElementById('sb-msg');
-      const submitBtn = serviceBookingForm.querySelector('[type="submit"]');
+      const service  = document.getElementById('sb-service').value;
+      const name     = document.getElementById('sb-name').value.trim();
+      const phone    = document.getElementById('sb-phone').value.trim();
+      const device   = document.getElementById('sb-device')?.value.trim() || '';
+      const problem  = document.getElementById('sb-problem')?.value.trim() || '';
+      const date     = document.getElementById('sb-date').value;
+      const sbMsg    = document.getElementById('sb-msg');
+      const submitBtn = document.getElementById('sb-submit-btn') || serviceBookingForm.querySelector('[type="submit"]');
 
-      if (!name || !phone) return;
+      if (!name || !phone || !problem) {
+        if (sbMsg) {
+          sbMsg.style.display = 'block';
+          sbMsg.style.color = '#ef4444';
+          sbMsg.style.background = 'rgba(239,68,68,0.08)';
+          sbMsg.textContent = 'Please fill in your name, phone and problem description.';
+        }
+        return;
+      }
 
       submitBtn.disabled = true;
       const originalBtnHtml = submitBtn.innerHTML;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      if (sbMsg) sbMsg.style.display = 'none';
+
+      let photoUrl = '';
+      const photoFile = document.getElementById('sb-photo')?.files[0];
+      if (photoFile) {
+        try {
+          const fd = new FormData();
+          fd.append('photo', photoFile);
+          const upRes = await fetch(API_BASE + '/api/service-booking/upload-photo', { method: 'POST', body: fd });
+          const upData = await upRes.json();
+          if (upData.success) photoUrl = upData.url;
+        } catch(uploadErr) {
+          console.warn('Photo upload failed, continuing without:', uploadErr);
+        }
+      }
 
       try {
         const res = await fetch(API_BASE + '/api/service-booking', {
@@ -2744,10 +2790,13 @@ document.addEventListener('DOMContentLoaded', () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name, phone,
-            email: email || `${phone}@whatsapp.com`,
+            email: phone + '@whatsapp.com',
             service_name: service,
             preferred_date: date,
-            notes: `Auto-generated booking for ${service}`
+            device_model: device,
+            problem_description: problem,
+            photo_url: photoUrl,
+            notes: ''
           })
         });
 
@@ -2755,17 +2804,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (d.success) {
           if (sbMsg) {
             sbMsg.style.display = 'block';
-            sbMsg.style.color = 'var(--green)';
-            sbMsg.textContent = 'Booking Saved! Redirecting to WhatsApp...';
+            sbMsg.style.color = '#22c55e';
+            sbMsg.style.background = 'rgba(34,197,94,0.08)';
+            sbMsg.textContent = 'Booking saved! Opening WhatsApp...';
           }
-          
-          const waMsg = `Hi Shiro IT, I'm ${name}. I just booked a *${service}* service for ${date || 'as soon as possible'}. Please confirm my appointment.`;
-          const waUrl = `https://wa.me/60177617672?text=${encodeURIComponent(waMsg)}`;
-          
+
+          let waMsg = 'SHIRO IT Service Request\n\n';
+          waMsg += 'Service: ' + service + '\n';
+          waMsg += 'Name: ' + name + '\n';
+          waMsg += 'Phone: ' + phone + '\n';
+          if (device) waMsg += 'Device: ' + device + '\n';
+          waMsg += '\nProblem Description:\n' + problem + '\n';
+          if (date) waMsg += '\nPreferred Date: ' + date + '\n';
+          if (photoUrl) waMsg += '\nPhoto: ' + API_BASE + photoUrl + '\n';
+          waMsg += '\nPlease confirm my appointment. Thank you!';
+
           setTimeout(() => {
-            window.open(waUrl, '_blank');
+            window.open('https://wa.me/60177617672?text=' + encodeURIComponent(waMsg), '_blank');
             document.getElementById('serviceBookingOverlay').classList.remove('show');
             serviceBookingForm.reset();
+            clearBookingPhoto();
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnHtml;
           }, 1500);
@@ -2776,7 +2834,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Booking failed:', err);
         if (sbMsg) {
           sbMsg.style.display = 'block';
-          sbMsg.style.color = 'var(--red)';
+          sbMsg.style.color = '#ef4444';
+          sbMsg.style.background = 'rgba(239,68,68,0.08)';
           sbMsg.textContent = 'Error: ' + err.message;
         }
         submitBtn.disabled = false;

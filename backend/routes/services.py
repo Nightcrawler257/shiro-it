@@ -49,7 +49,7 @@ def get_services():
 
 @services_bp.route('/api/service-booking', methods=['POST'])
 def book_service():
-    """Handle service booking requests."""
+    """Handle service booking requests with full problem details."""
     data = request.get_json()
 
     if not data.get('name', '').strip():
@@ -59,7 +59,6 @@ def book_service():
     if not data.get('service_name', '').strip():
         return jsonify({'success': False, 'error': 'Service name is required'}), 400
 
-    # Email is optional
     email = data.get('email', '').strip()
     if email and not email.endswith('@whatsapp.com') and not is_valid_email(email):
         return jsonify({'success': False, 'error': 'Please enter a valid email address'}), 400
@@ -67,10 +66,18 @@ def book_service():
     try:
         conn = db.get_conn()
         cursor = conn.execute(
-            '''INSERT INTO service_bookings (name, email, phone, service_name, preferred_date, notes, status)
-               VALUES (?, ?, ?, ?, ?, ?, 'New')''',
-            (data['name'].strip(), data['email'].strip(), data['phone'].strip(),
-             data['service_name'].strip(), data.get('preferred_date', '').strip(),
+            '''INSERT INTO service_bookings
+               (name, email, phone, service_name, preferred_date,
+                device_model, problem_description, photo_url, notes, status)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'New')''',
+            (data['name'].strip(),
+             email or f"{data['phone'].strip()}@whatsapp.com",
+             data['phone'].strip(),
+             data['service_name'].strip(),
+             data.get('preferred_date', '').strip(),
+             data.get('device_model', '').strip(),
+             data.get('problem_description', '').strip(),
+             data.get('photo_url', '').strip(),
              data.get('notes', '').strip())
         )
         conn.commit()
@@ -79,10 +86,30 @@ def book_service():
 
         return jsonify({
             'success': True,
-            'message': f"Booking request for \"{data['service_name']}\" submitted! We'll contact you to confirm the details.",
+            'message': f"Booking for \"{data['service_name']}\" submitted!",
             'id': new_id
         }), 201
 
     except Exception as e:
-        current_app.logger.error(f'Service booking submission failed: {e}')
+        current_app.logger.error(f'Service booking failed: {e}')
         return jsonify({'success': False, 'error': 'Failed to submit booking. Please try again.'}), 500
+
+
+@services_bp.route('/api/service-booking/upload-photo', methods=['POST'])
+def upload_booking_photo():
+    """Upload a photo for a service booking, return its URL."""
+    import os, uuid
+    from flask import current_app
+    if 'photo' not in request.files:
+        return jsonify({'success': False, 'error': 'No file provided'}), 400
+    f = request.files['photo']
+    if not f.filename:
+        return jsonify({'success': False, 'error': 'No file selected'}), 400
+    ext = os.path.splitext(f.filename)[1].lower()
+    if ext not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
+        return jsonify({'success': False, 'error': 'Only image files allowed'}), 400
+    filename = f"booking_{uuid.uuid4().hex[:12]}{ext}"
+    upload_dir = os.path.join(current_app.root_path, 'static', 'uploads', 'bookings')
+    os.makedirs(upload_dir, exist_ok=True)
+    f.save(os.path.join(upload_dir, filename))
+    return jsonify({'success': True, 'url': f'/static/uploads/bookings/{filename}'})
