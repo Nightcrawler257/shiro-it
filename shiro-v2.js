@@ -1446,30 +1446,84 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGlobalCart();
   };
 
+  // Build the WhatsApp message from current cart
+  function buildCartWhatsAppMessage() {
+    let intro = currentLang === 'bm' ? translations.bm.wa_order_intro : "Hi SHIRO IT! I'd like to place an order:\n\n";
+    let totalLabel = currentLang === 'bm' ? translations.bm.wa_order_total : "Total: RM ";
+    let outro = currentLang === 'bm' ? translations.bm.wa_order_outro : "\n\nPlease confirm availability. Thank you!";
+    let message = intro;
+    globalCart.forEach((item, idx) => {
+      message += `${idx + 1}. ${item.name} (RM ${item.price.toLocaleString()})\n`;
+      if (item.type === 'build' && item.items) {
+        item.items.forEach(i => { message += `   - ${i.category}: ${i.name}\n`; });
+      }
+      message += "\n";
+    });
+    const total = globalCart.reduce((sum, item) => sum + item.price, 0);
+    message += `${totalLabel}${total.toLocaleString()}${outro}`;
+    return { message, total };
+  }
+
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
       if (globalCart.length === 0) return;
-      
-      let intro = currentLang === 'bm' ? translations.bm.wa_order_intro : "Hi SHIRO IT! I'd like to place an order:\n\n";
-      let totalLabel = currentLang === 'bm' ? translations.bm.wa_order_total : "Total: RM ";
-      let outro = currentLang === 'bm' ? translations.bm.wa_order_outro : "\n\nPlease confirm availability. Thank you!";
+      // Open the info modal instead of going straight to WhatsApp
+      document.getElementById('checkoutInfoOverlay').style.display = 'flex';
+      document.getElementById('checkoutInfoForm').reset();
+      const ciMsg = document.getElementById('ci-msg');
+      if (ciMsg) { ciMsg.style.display = 'none'; ciMsg.textContent = ''; }
+    });
+  }
 
-      let message = intro;
-      globalCart.forEach((item, idx) => {
-        message += `${idx + 1}. ${item.name} (RM ${item.price.toLocaleString()})\n`;
-        if (item.type === 'build' && item.items) {
-          item.items.forEach(i => {
-             message += `   - ${i.category}: ${i.name}\n`;
-          });
-        }
-        message += "\n";
-      });
-      
-      const total = globalCart.reduce((sum, item) => sum + item.price, 0);
-      message += `${totalLabel}${total.toLocaleString()}${outro}`;
-      
-      const whatsappUrl = `https://wa.me/60177617672?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
+  // Handle checkout info form submission
+  const checkoutInfoForm = document.getElementById('checkoutInfoForm');
+  if (checkoutInfoForm) {
+    checkoutInfoForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name  = document.getElementById('ci-name').value.trim();
+      const phone = document.getElementById('ci-phone').value.trim();
+      const email = document.getElementById('ci-email').value.trim();
+      const ciMsg = document.getElementById('ci-msg');
+      const submitBtn = checkoutInfoForm.querySelector('[type="submit"]');
+      if (!name || !phone) { return; }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+      const { message, total } = buildCartWhatsAppMessage();
+
+      // Build the quote payload
+      const buildItems = globalCart.filter(i => i.type === 'build').flatMap(i => i.items || []);
+      const shopItems  = globalCart.filter(i => i.type === 'product').map(i => ({ name: i.name, price: i.price }));
+      const buildConfig = [...buildItems, ...shopItems];
+
+      try {
+        await fetch(API_BASE + '/api/quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, phone,
+            email: email || `${phone}@whatsapp.com`,
+            build_config: buildConfig,
+            total_price: total,
+            notes: 'Submitted via website cart checkout'
+          })
+        });
+      } catch (err) {
+        console.warn('Quote save failed (non-blocking):', err);
+      }
+
+      // Always open WhatsApp regardless of save result
+      document.getElementById('checkoutInfoOverlay').style.display = 'none';
+      window.open(`https://wa.me/60177617672?text=${encodeURIComponent(message)}`, '_blank');
+
+      // Reset cart after checkout
+      globalCart = [];
+      localStorage.setItem('shiro-global-cart', '[]');
+      updateCartBadge();
+      renderGlobalCart();
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Save & Open WhatsApp';
     });
   }
 
@@ -2618,3 +2672,75 @@ function showToast(message, type = "success") {
     });
   }
 })();
+
+/* ===== SERVICE BOOKING MODAL ===== */
+window.openServiceBooking = function(serviceName) {
+  document.getElementById('sb-service').value = serviceName;
+  document.getElementById('sb-service-display').value = serviceName;
+  document.getElementById('serviceBookingForm').reset();
+  document.getElementById('sb-service').value = serviceName;
+  document.getElementById('sb-service-display').value = serviceName;
+  const sbMsg = document.getElementById('sb-msg');
+  if (sbMsg) { sbMsg.style.display = 'none'; sbMsg.textContent = ''; }
+  document.getElementById('serviceBookingOverlay').style.display = 'flex';
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Close modals when clicking backdrop
+  document.getElementById('checkoutInfoOverlay')?.addEventListener('click', (e) => {
+    if (e.target.id === 'checkoutInfoOverlay') e.target.style.display = 'none';
+  });
+  document.getElementById('serviceBookingOverlay')?.addEventListener('click', (e) => {
+    if (e.target.id === 'serviceBookingOverlay') e.target.style.display = 'none';
+  });
+
+  // Service booking form submit
+  const serviceBookingForm = document.getElementById('serviceBookingForm');
+  if (serviceBookingForm) {
+    serviceBookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const service = document.getElementById('sb-service').value;
+      const name    = document.getElementById('sb-name').value.trim();
+      const phone   = document.getElementById('sb-phone').value.trim();
+      const email   = document.getElementById('sb-email').value.trim();
+      const date    = document.getElementById('sb-date').value;
+      const sbMsg   = document.getElementById('sb-msg');
+      const submitBtn = serviceBookingForm.querySelector('[type="submit"]');
+
+      if (!name || !phone) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+      try {
+        await fetch(
+          (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+            ? 'http://localhost:5000/api/service-booking'
+            : window.location.origin + '/api/service-booking',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name, phone,
+              email: email || `${phone}@whatsapp.com`,
+              service_name: service,
+              preferred_date: date,
+              notes: 'Submitted via website service card'
+            })
+          }
+        );
+      } catch (err) {
+        console.warn('Booking save failed (non-blocking):', err);
+      }
+
+      // Always open WhatsApp
+      document.getElementById('serviceBookingOverlay').style.display = 'none';
+      const waMsg = `Hi SHIRO IT! I'd like to book a service.\n\nService: ${service}\nName: ${name}\nPhone: ${phone}${date ? '\nPreferred Date: ' + date : ''}\n\nPlease confirm availability. Thank you!`;
+      window.open(`https://wa.me/60177617672?text=${encodeURIComponent(waMsg)}`, '_blank');
+
+      serviceBookingForm.reset();
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Confirm Booking via WhatsApp';
+    });
+  }
+});

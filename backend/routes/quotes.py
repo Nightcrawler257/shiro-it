@@ -13,14 +13,14 @@ def request_quote():
 
     if not data.get('name', '').strip():
         return jsonify({'success': False, 'error': 'Name is required'}), 400
-    if not data.get('email', '').strip():
-        return jsonify({'success': False, 'error': 'Email is required'}), 400
     if not data.get('phone', '').strip():
-        return jsonify({'success': False, 'error': 'Phone is required'}), 400
+        return jsonify({'success': False, 'error': 'Phone number is required'}), 400
     if not data.get('build_config'):
         return jsonify({'success': False, 'error': 'Build configuration is required'}), 400
 
-    if not is_valid_email(data['email'].strip()):
+    # Email is optional — if provided validate it
+    email = data.get('email', '').strip()
+    if email and not email.endswith('@whatsapp.com') and not is_valid_email(email):
         return jsonify({'success': False, 'error': 'Please enter a valid email address'}), 400
 
     try:

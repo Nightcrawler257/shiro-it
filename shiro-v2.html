@@ -1106,7 +1106,7 @@
                                 <span><i class="fas fa-check"></i> OS Cleanup</span>
                                 <span><i class="fas fa-check"></i> Water Damage</span>
                             </div>
-                            <a href="https://wa.me/60177617672?text=Hi, I need help with a PC repair" target="_blank" class="svc-cta">Book Repair <i class="fas fa-arrow-right"></i></a>
+                            <a href="javascript:void(0)" onclick="openServiceBooking('Expert PC Repair')" class="svc-cta">Book Repair <i class="fas fa-arrow-right"></i></a>
                         </div>
 
                         <!-- Networking -->
@@ -1120,7 +1120,7 @@
                                 <span><i class="fas fa-check"></i> NAS / Cloud</span>
                                 <span><i class="fas fa-check"></i> IP Camera</span>
                             </div>
-                            <a href="https://wa.me/60177617672?text=Hi, I'm interested in Networking solutions" target="_blank" class="svc-cta">Get Quote <i class="fas fa-arrow-right"></i></a>
+                            <a href="javascript:void(0)" onclick="openServiceBooking('Networking Solution')" class="svc-cta">Get Quote <i class="fas fa-arrow-right"></i></a>
                         </div>
 
                         <!-- Data Recovery -->
@@ -1134,7 +1134,7 @@
                                 <span><i class="fas fa-check"></i> RAID Systems</span>
                                 <span><i class="fas fa-check"></i> Forensic Tools</span>
                             </div>
-                            <a href="https://wa.me/60177617672?text=Hi, I need Data Recovery help" target="_blank" class="svc-cta">Emergency Help <i class="fas fa-arrow-right"></i></a>
+                            <a href="javascript:void(0)" onclick="openServiceBooking('Data Recovery')" class="svc-cta">Emergency Help <i class="fas fa-arrow-right"></i></a>
                         </div>
 
                         <!-- Cybersecurity -->
@@ -1148,7 +1148,7 @@
                                 <span><i class="fas fa-check"></i> Pen Testing</span>
                                 <span><i class="fas fa-check"></i> Access Control</span>
                             </div>
-                            <a href="https://wa.me/60177617672?text=Hi, I want a Security Audit" target="_blank" class="svc-cta">Learn More <i class="fas fa-arrow-right"></i></a>
+                            <a href="javascript:void(0)" onclick="openServiceBooking('Cybersecurity Audit')" class="svc-cta">Learn More <i class="fas fa-arrow-right"></i></a>
                         </div>
 
                         <!-- Asset Management -->
@@ -1162,7 +1162,7 @@
                                 <span><i class="fas fa-check"></i> Asset Registry</span>
                                 <span><i class="fas fa-check"></i> Policy Setup</span>
                             </div>
-                            <a href="https://wa.me/60177617672?text=Hi, I'm interested in IT Outsourcing" target="_blank" class="svc-cta">Partner with Us <i class="fas fa-arrow-right"></i></a>
+                            <a href="javascript:void(0)" onclick="openServiceBooking('IT Outsourcing')" class="svc-cta">Partner with Us <i class="fas fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1606,6 +1606,77 @@
                     
                     <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
                     <p id="jobFormMessage" style="margin-top: 10px; font-size: 0.9rem; text-align: center; display: none;"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CHECKOUT INFO MODAL ===== -->
+    <div class="builder-modal-overlay" id="checkoutInfoOverlay" style="display:none; z-index:10000;">
+        <div class="builder-modal" style="max-width:480px;">
+            <div class="builder-modal-header">
+                <h3><i class="fab fa-whatsapp" style="color:#25d366;"></i> Almost there!</h3>
+                <button class="builder-modal-close" onclick="document.getElementById('checkoutInfoOverlay').style.display='none';"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="builder-modal-body" style="padding:1.5rem;">
+                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:0.95rem;">Leave your details so we can follow up on your order. Then we'll open WhatsApp with your full build list.</p>
+                <form id="checkoutInfoForm">
+                    <div class="form-group" style="margin-bottom:1rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Your Name *</label>
+                        <input type="text" id="ci-name" class="form-control" placeholder="e.g. Ahmad" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom:1rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">WhatsApp Number *</label>
+                        <input type="tel" id="ci-phone" class="form-control" placeholder="e.g. 0177617672" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom:1.25rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Email (Optional)</label>
+                        <input type="email" id="ci-email" class="form-control" placeholder="e.g. ahmad@email.com">
+                    </div>
+                    <p id="ci-msg" style="display:none;margin-bottom:.75rem;font-size:.85rem;text-align:center;"></p>
+                    <button type="submit" class="btn btn-whatsapp" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;">
+                        <i class="fab fa-whatsapp"></i> Save & Open WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SERVICE BOOKING MODAL ===== -->
+    <div class="builder-modal-overlay" id="serviceBookingOverlay" style="display:none; z-index:10000;">
+        <div class="builder-modal" style="max-width:480px;">
+            <div class="builder-modal-header">
+                <h3><i class="fas fa-tools" style="color:var(--accent-blue);"></i> Book a Service</h3>
+                <button class="builder-modal-close" onclick="document.getElementById('serviceBookingOverlay').style.display='none';"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="builder-modal-body" style="padding:1.5rem;">
+                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:.95rem;">We'll save your booking request and open WhatsApp so our team can confirm the details.</p>
+                <form id="serviceBookingForm">
+                    <input type="hidden" id="sb-service">
+                    <div class="form-group" style="margin-bottom:1rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Service</label>
+                        <input type="text" id="sb-service-display" class="form-control" readonly style="opacity:.7;">
+                    </div>
+                    <div class="form-group" style="margin-bottom:1rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Your Name *</label>
+                        <input type="text" id="sb-name" class="form-control" placeholder="e.g. Ahmad" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom:1rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">WhatsApp Number *</label>
+                        <input type="tel" id="sb-phone" class="form-control" placeholder="e.g. 0177617672" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom:1rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Email (Optional)</label>
+                        <input type="email" id="sb-email" class="form-control" placeholder="e.g. ahmad@email.com">
+                    </div>
+                    <div class="form-group" style="margin-bottom:1.25rem;">
+                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Preferred Date (Optional)</label>
+                        <input type="date" id="sb-date" class="form-control">
+                    </div>
+                    <p id="sb-msg" style="display:none;margin-bottom:.75rem;font-size:.85rem;text-align:center;"></p>
+                    <button type="submit" class="btn btn-whatsapp" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;">
+                        <i class="fab fa-whatsapp"></i> Confirm Booking via WhatsApp
+                    </button>
                 </form>
             </div>
         </div>

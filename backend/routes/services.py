@@ -54,14 +54,14 @@ def book_service():
 
     if not data.get('name', '').strip():
         return jsonify({'success': False, 'error': 'Name is required'}), 400
-    if not data.get('email', '').strip():
-        return jsonify({'success': False, 'error': 'Email is required'}), 400
     if not data.get('phone', '').strip():
-        return jsonify({'success': False, 'error': 'Phone is required'}), 400
+        return jsonify({'success': False, 'error': 'Phone number is required'}), 400
     if not data.get('service_name', '').strip():
         return jsonify({'success': False, 'error': 'Service name is required'}), 400
 
-    if not is_valid_email(data['email'].strip()):
+    # Email is optional
+    email = data.get('email', '').strip()
+    if email and not email.endswith('@whatsapp.com') and not is_valid_email(email):
         return jsonify({'success': False, 'error': 'Please enter a valid email address'}), 400
 
     try:
