@@ -1516,18 +1516,21 @@ body.light .nav-menu > li > a.active {
 }
 .tier-media-wrapper {
   width: 100%;
-  height: 240px;
-  background: rgba(0,0,0,0.2);
+  height: 300px;
+  background: #050a14; /* Deep dark background for letterboxing */
   margin-bottom: 1.25rem;
   overflow: hidden;
   position: relative;
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .tier-media-wrapper img, 
 .tier-media-wrapper video {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Standard full-bleed look */
+  object-fit: contain; /* Ensure the full poster is visible */
 }
 .tier-card-content {
   padding: 0 1.5rem; /* Side padding for text only */
