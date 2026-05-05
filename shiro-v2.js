@@ -524,7 +524,7 @@ document.addEventListener("DOMContentLoaded", () => {
       svc_data_cta: "Bantuan Kecemasan",
       svc_trade_title: "Trade-In PC & Laptop",
       svc_trade_desc: "Naik taraf setup anda dengan trade-in perkakasan lama. Kami menawarkan nilai pasaran yang adil untuk sistem dan komponen.",
-      svc_trade_cta: "Dapatkan Penilaian",,
+      svc_trade_cta: "Dapatkan Penilaian",
     },
   };
 
