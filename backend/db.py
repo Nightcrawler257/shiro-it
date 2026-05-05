@@ -140,7 +140,9 @@ def _create_tables():
             photo_url  TEXT,
             specs      TEXT,
             tier_color TEXT DEFAULT '#0066FF',
-            featured   INTEGER DEFAULT 0
+            featured   INTEGER DEFAULT 0,
+            media_type TEXT DEFAULT 'image',
+            tags       TEXT
         );
 
         CREATE TABLE IF NOT EXISTS it_tips (

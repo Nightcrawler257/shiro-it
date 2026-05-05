@@ -847,25 +847,43 @@ document.addEventListener("DOMContentLoaded", () => {
       if (d.success && d.data && d.data.length > 0) {
         container.innerHTML = d.data.map(pc => {
           const photoUrl = pc.photo_url || "";
-          const photoHtml = photoUrl
-            ? `<img src="${photoUrl.startsWith('http') ? photoUrl : API_BASE + '/' + photoUrl}" alt="${pc.name}" style="width:100%;height:220px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">`
-            : '';
+          const isVideo = pc.media_type === 'video';
+          const fullUrl = photoUrl.startsWith('http') ? photoUrl : API_BASE + (photoUrl.startsWith('/') ? photoUrl : '/' + photoUrl);
+          
+          let mediaHtml = '';
+          if (photoUrl) {
+            if (isVideo) {
+              mediaHtml = `
+                <video src="${fullUrl}" autoplay muted loop playsinline></video>
+                <div class="video-overlay"><i class="fas fa-play-circle"></i></div>`;
+            } else {
+              mediaHtml = `<img src="${fullUrl}" alt="${pc.name}">`;
+            }
+          }
+          
           const discountHtml = pc.discount ? `<div class="tier-discount"><i class="fas fa-tag"></i> ${pc.discount}</div>` : '';
           const featuredClass = pc.featured ? ' featured' : '';
           const ribbonHtml = pc.featured ? '<div class="tier-ribbon">★ BEST SELLER</div>' : '';
           const specsHtml = (pc.specs || []).map(s => `<div>${s}</div>`).join('');
+          const tagsHtml = (pc.tags || []).map(t => `<span class="tier-tag">${t}</span>`).join('');
           const color = pc.tier_color || '#0066FF';
+          
           return `
             <div class="tier-card${featuredClass}" style="--tier-color: ${color};">
               ${ribbonHtml}
-              <div class="tier-badge">${pc.tier_badge || ''}</div>
-              <div class="tier-name">${pc.tier_name || ''}</div>
-              ${photoHtml}
-              <h3>${pc.name}</h3>
-              <div class="tier-price">RM ${Number(pc.price || 0).toLocaleString()}</div>
-              ${discountHtml}
-              <div class="tier-specs">${specsHtml}</div>
-              <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary tier-btn">Configure <i class="fas fa-arrow-right"></i></a>
+              <div class="tier-media-wrapper">
+                ${mediaHtml}
+              </div>
+              <div class="tier-card-content">
+                <div class="tier-badge">${pc.tier_badge || ''}</div>
+                <div class="tier-name">${pc.tier_name || ''}</div>
+                <div class="tier-tags-row">${tagsHtml}</div>
+                <h3>${pc.name}</h3>
+                <div class="tier-price">RM ${Number(pc.price || 0).toLocaleString()}</div>
+                ${discountHtml}
+                <div class="tier-specs">${specsHtml}</div>
+                <a href="#build-pc-services" data-page="build-pc-services" class="btn btn-primary tier-btn">Configure <i class="fas fa-arrow-right"></i></a>
+              </div>
             </div>`;
         }).join('');
         // Re-run nav listeners for new tier buttons

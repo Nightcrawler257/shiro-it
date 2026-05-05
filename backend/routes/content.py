@@ -12,13 +12,15 @@ content_bp = Blueprint('content', __name__)
 # ---------------------------------------------------------------------------
 
 def _parse_pc(row):
-    """Deserialize specs (JSON list) in a prebuilt_pcs row."""
+    """Deserialize specs and tags (JSON list) in a prebuilt_pcs row."""
     d = serialize_row(row)
-    if d and isinstance(d.get('specs'), str):
-        try:
-            d['specs'] = json.loads(d['specs'])
-        except (json.JSONDecodeError, TypeError):
-            d['specs'] = []
+    if d:
+        if isinstance(d.get('specs'), str):
+            try: d['specs'] = json.loads(d['specs'])
+            except: d['specs'] = []
+        if isinstance(d.get('tags'), str):
+            try: d['tags'] = json.loads(d['tags'])
+            except: d['tags'] = []
     return d
 
 
@@ -126,16 +128,19 @@ def admin_get_pcs():
 def admin_add_pc():
     data = request.get_json()
     specs_json = json.dumps(data.get('specs', []))
+    tags_json = json.dumps(data.get('tags', []))
     conn = db.get_conn()
     cursor = conn.execute(
         '''INSERT INTO prebuilt_pcs
-           (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+           (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
         (data.get('tier_name', '').strip(), data.get('tier_badge', '').strip(),
          data.get('name', '').strip(), data.get('price', '').strip(),
          data.get('discount', '').strip(), data.get('photo_url', '').strip(),
          specs_json, data.get('tier_color', '#0066FF').strip(),
-         1 if data.get('featured') else 0)
+         1 if data.get('featured') else 0,
+         data.get('media_type', 'image').strip(),
+         tags_json)
     )
     conn.commit()
     new_id = cursor.lastrowid
@@ -149,17 +154,20 @@ def admin_add_pc():
 def admin_update_pc(pc_id):
     data = request.get_json()
     specs_json = json.dumps(data.get('specs', []))
+    tags_json = json.dumps(data.get('tags', []))
     conn = db.get_conn()
     result = conn.execute(
         '''UPDATE prebuilt_pcs
            SET tier_name=?, tier_badge=?, name=?, price=?, discount=?,
-               photo_url=?, specs=?, tier_color=?, featured=?
+               photo_url=?, specs=?, tier_color=?, featured=?, media_type=?, tags=?
            WHERE id=?''',
         (data.get('tier_name', '').strip(), data.get('tier_badge', '').strip(),
          data.get('name', '').strip(), data.get('price', '').strip(),
          data.get('discount', '').strip(), data.get('photo_url', '').strip(),
          specs_json, data.get('tier_color', '').strip(),
-         1 if data.get('featured') else 0, pc_id)
+         1 if data.get('featured') else 0,
+         data.get('media_type', 'image').strip(),
+         tags_json, pc_id)
     )
     if result.rowcount == 0:
         conn.close()
