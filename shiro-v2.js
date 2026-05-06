@@ -405,8 +405,8 @@ document.addEventListener("DOMContentLoaded", () => {
       sb_phone: "WhatsApp No.",
       sb_device: "Device / Item",
       sb_problem: "Describe the Problem",
-      sb_photo_title: "Attach a Photo",
-      sb_photo_ph: "Click or drag a photo here",
+      sb_photo_title: "Attach Photos / Videos",
+      sb_photo_ph: "Click or drag photos/videos here",
       sb_date: "Preferred Date",
       sb_submit: "Confirm Booking via WhatsApp",
       svc_repair_title: "Expert Hardware Repair",
@@ -653,8 +653,8 @@ document.addEventListener("DOMContentLoaded", () => {
       sb_phone: "No. WhatsApp",
       sb_device: "Model Peranti / Item",
       sb_problem: "Keterangan Masalah",
-      sb_photo_title: "Lampirkan Foto",
-      sb_photo_ph: "Klik atau seret foto ke sini",
+      sb_photo_title: "Lampirkan Foto / Video",
+      sb_photo_ph: "Klik atau seret foto/video ke sini",
       sb_date: "Tarikh Pilihan",
       sb_submit: "Sahkan Tempahan melalui WhatsApp",
       svc_repair_title: "Baik Pulih Perkakasan Pakar",
@@ -2886,11 +2886,16 @@ window.openServiceBooking = function(serviceName) {
 
 window.clearBookingPhoto = function() {
   const photoInput = document.getElementById('sb-photo');
+  const previewContainer = document.getElementById('sb-photo-preview-container');
   const preview = document.getElementById('sb-photo-preview');
   const label = document.getElementById('sb-photo-label');
   if (photoInput) photoInput.value = '';
-  if (preview) preview.style.display = 'none';
-  if (label) label.textContent = 'Click or drag a photo here';
+  if (preview) preview.innerHTML = '';
+  if (previewContainer) previewContainer.style.display = 'none';
+  if (label) {
+    const isBM = localStorage.getItem('shiro-lang') === 'bm';
+    label.textContent = isBM ? "Klik atau seret foto/video ke sini" : "Click or drag photos/videos here";
+  }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2900,17 +2905,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('serviceBookingOverlay')?.addEventListener('click', (e) => {
     if (e.target.id === 'serviceBookingOverlay') e.target.classList.remove('show');
   });
-
-  window.clearBookingPhoto = function() {
-    const photoInput = document.getElementById('sb-photo');
-    const previewContainer = document.getElementById('sb-photo-preview-container');
-    const preview = document.getElementById('sb-photo-preview');
-    const label = document.getElementById('sb-photo-label');
-    if (photoInput) photoInput.value = '';
-    if (preview) preview.innerHTML = '';
-    if (previewContainer) previewContainer.style.display = 'none';
-    if (label) label.textContent = 'Click or drag photos/videos here';
-  };
 
   const sbPhoto = document.getElementById('sb-photo');
   if (sbPhoto) {
