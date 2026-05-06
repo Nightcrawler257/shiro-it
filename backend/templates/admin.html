@@ -1971,7 +1971,23 @@ function renderTable(tab, data) {
           <div style="font-size:.82rem;color:var(--text-primary);line-height:1.5;white-space:pre-wrap;word-break:break-word;">${esc(r.problem_description) || '<span style="color:var(--text-secondary)">—</span>'}</div>
         </td>
         <td style="text-align:center;">
-          ${r.photo_url ? `<a href="${API + r.photo_url}" target="_blank"><img src="${API + r.photo_url}" style="height:48px;width:64px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;" title="View photo"></a>` : '<span style="color:var(--text-secondary);font-size:.75rem;">—</span>'}
+          ${(() => {
+            if (!r.photo_url) return '<span style="color:var(--text-secondary);font-size:.75rem;">—</span>';
+            try {
+              const urls = JSON.parse(r.photo_url);
+              if (!Array.isArray(urls)) throw new Error();
+              if (urls.length === 0) return '<span style="color:var(--text-secondary);font-size:.75rem;">—</span>';
+              return `<div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;max-width:140px;margin:0 auto;">` + urls.map(u => {
+                const isVid = u.match(/\.(mp4|mov|webm|mkv)$/i);
+                if (isVid) return `<a href="${API + u}" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;height:48px;width:48px;background:#1e293b;border-radius:6px;border:1px solid var(--border);color:var(--neon-blue);text-decoration:none;" title="View video"><i class="fas fa-video"></i></a>`;
+                return `<a href="${API + u}" target="_blank"><img src="${API + u}" style="height:48px;width:48px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;" title="View photo"></a>`;
+              }).join('') + `</div>`;
+            } catch(e) {
+              const isVid = r.photo_url.match(/\.(mp4|mov|webm|mkv)$/i);
+              if (isVid) return `<a href="${API + r.photo_url}" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;height:48px;width:64px;background:#1e293b;border-radius:6px;border:1px solid var(--border);color:var(--neon-blue);text-decoration:none;" title="View video"><i class="fas fa-video"></i></a>`;
+              return `<a href="${API + r.photo_url}" target="_blank"><img src="${API + r.photo_url}" style="height:48px;width:64px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;" title="View photo"></a>`;
+            }
+          })()}
         </td>
         <td><div class="actions">
           <a href="https://wa.me/60${r.phone.replace(/\D/g,'')}?text=${encodeURIComponent(`Hi ${r.name}, regarding your service booking at SHIRO IT.`)}" 

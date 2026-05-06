@@ -1692,17 +1692,17 @@
                         <textarea id="sb-problem" class="form-control" rows="3" placeholder="e.g. My laptop overheats and shuts down after 20 minutes. The fan is very loud..." required style="resize:vertical;min-height:80px;"></textarea>
                     </div>
 
-                    <!-- Photo Upload -->
+                    <!-- Photo/Video Upload -->
                     <div class="form-group" style="margin-bottom:.9rem;">
-                        <label class="sb-label"><i class="fas fa-camera"></i> <span data-translate="sb_photo_title">Attach a Photo</span></label>
+                        <label class="sb-label"><i class="fas fa-camera"></i> <span data-translate="sb_photo_title">Attach Photos / Videos</span></label>
                         <div id="sb-photo-area" style="border:2px dashed rgba(255,255,255,0.1);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:.2s;position:relative;">
-                            <input type="file" id="sb-photo" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
+                            <input type="file" id="sb-photo" accept="image/*,video/*" multiple style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
                             <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--text-secondary);margin-bottom:.4rem;display:block;"></i>
-                            <div id="sb-photo-label" style="font-size:.82rem;color:var(--text-secondary);" data-translate="sb_photo_ph">Click or drag a photo here</div>
+                            <div id="sb-photo-label" style="font-size:.82rem;color:var(--text-secondary);" data-translate="sb_photo_ph">Click or drag photos/videos here</div>
                         </div>
-                        <div id="sb-photo-preview" style="margin-top:.5rem;display:none;">
-                            <img id="sb-photo-img" src="" style="max-height:120px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);">
-                            <button type="button" onclick="clearBookingPhoto()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:.8rem;margin-left:.5rem;"><i class="fas fa-times"></i> Remove</button>
+                        <div id="sb-photo-preview-container" style="margin-top:.5rem;display:none;">
+                            <div id="sb-photo-preview" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;"></div>
+                            <button type="button" onclick="clearBookingPhoto()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:.8rem;"><i class="fas fa-times"></i> Remove All</button>
                         </div>
                     </div>
 

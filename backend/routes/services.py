@@ -106,8 +106,8 @@ def upload_booking_photo():
     if not f.filename:
         return jsonify({'success': False, 'error': 'No file selected'}), 400
     ext = os.path.splitext(f.filename)[1].lower()
-    if ext not in ['.jpg', '.jpeg', '.png', '.gif', '.webp']:
-        return jsonify({'success': False, 'error': 'Only image files allowed'}), 400
+    if ext not in ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.mp4', '.mov', '.webm', '.mkv']:
+        return jsonify({'success': False, 'error': 'Only image and video files are allowed'}), 400
     filename = f"booking_{uuid.uuid4().hex[:12]}{ext}"
     # Save to the main static folder in parent directory
     parent_dir = os.path.abspath(os.path.join(current_app.root_path, '..'))

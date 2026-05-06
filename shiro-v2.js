@@ -2901,18 +2901,51 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.id === 'serviceBookingOverlay') e.target.classList.remove('show');
   });
 
+  window.clearBookingPhoto = function() {
+    const photoInput = document.getElementById('sb-photo');
+    const previewContainer = document.getElementById('sb-photo-preview-container');
+    const preview = document.getElementById('sb-photo-preview');
+    const label = document.getElementById('sb-photo-label');
+    if (photoInput) photoInput.value = '';
+    if (preview) preview.innerHTML = '';
+    if (previewContainer) previewContainer.style.display = 'none';
+    if (label) label.textContent = 'Click or drag photos/videos here';
+  };
+
   const sbPhoto = document.getElementById('sb-photo');
   if (sbPhoto) {
     sbPhoto.addEventListener('change', function() {
-      const file = this.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        document.getElementById('sb-photo-img').src = ev.target.result;
-        document.getElementById('sb-photo-preview').style.display = 'block';
-        document.getElementById('sb-photo-label').textContent = file.name;
-      };
-      reader.readAsDataURL(file);
+      const files = Array.from(this.files);
+      const previewContainer = document.getElementById('sb-photo-preview-container');
+      const preview = document.getElementById('sb-photo-preview');
+      const label = document.getElementById('sb-photo-label');
+      
+      if (files.length === 0) {
+        window.clearBookingPhoto();
+        return;
+      }
+      
+      preview.innerHTML = '';
+      previewContainer.style.display = 'block';
+      label.textContent = `${files.length} file(s) selected`;
+      
+      files.forEach(file => {
+        const isVideo = file.type.startsWith('video/');
+        const el = document.createElement('div');
+        el.style.cssText = 'position:relative; width:60px; height:60px; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.2); background:#1e293b; display:flex; align-items:center; justify-content:center;';
+        
+        if (isVideo) {
+           el.innerHTML = `<i class="fas fa-video" style="color:var(--neon-blue);font-size:1.5rem;"></i>`;
+           preview.appendChild(el);
+        } else {
+           const reader = new FileReader();
+           reader.onload = ev => {
+             el.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+           };
+           reader.readAsDataURL(file);
+           preview.appendChild(el);
+        }
+      });
     });
   }
 
@@ -2944,17 +2977,23 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
       if (sbMsg) sbMsg.style.display = 'none';
 
-      let photoUrl = '';
-      const photoFile = document.getElementById('sb-photo')?.files[0];
-      if (photoFile) {
+      let photoUrls = [];
+      const photoFiles = Array.from(document.getElementById('sb-photo')?.files || []);
+      
+      if (photoFiles.length > 0) {
         try {
-          const fd = new FormData();
-          fd.append('photo', photoFile);
-          const upRes = await fetch(API_BASE + '/api/service-booking/upload-photo', { method: 'POST', body: fd });
-          const upData = await upRes.json();
-          if (upData.success) photoUrl = upData.url;
+          const uploadPromises = photoFiles.map(async file => {
+            const fd = new FormData();
+            fd.append('photo', file);
+            const res = await fetch(API_BASE + '/api/service-booking/upload-photo', { method: 'POST', body: fd });
+            const data = await res.json();
+            if (data.success) return data.url;
+            return null;
+          });
+          const results = await Promise.all(uploadPromises);
+          photoUrls = results.filter(url => url !== null);
         } catch(uploadErr) {
-          console.warn('Photo upload failed, continuing without:', uploadErr);
+          console.warn('Photo upload failed, continuing without some files:', uploadErr);
         }
       }
 
@@ -2969,7 +3008,7 @@ document.addEventListener('DOMContentLoaded', () => {
             preferred_date: date,
             device_model: device,
             problem_description: problem,
-            photo_url: photoUrl,
+            photo_url: JSON.stringify(photoUrls),
             notes: ''
           })
         });
@@ -2990,7 +3029,12 @@ document.addEventListener('DOMContentLoaded', () => {
           if (device) waMsg += 'Device: ' + device + '\n';
           waMsg += '\nProblem Description:\n' + problem + '\n';
           if (date) waMsg += '\nPreferred Date: ' + date + '\n';
-          if (photoUrl) waMsg += '\nPhoto: ' + API_BASE + photoUrl + '\n';
+          if (photoUrls.length > 0) {
+            waMsg += '\nAttachments:\n';
+            photoUrls.forEach((url, index) => {
+              waMsg += `${index + 1}. ${API_BASE}${url}\n`;
+            });
+          }
           waMsg += '\nPlease confirm my appointment. Thank you!';
 
           // Immediate redirect for mobile reliability
