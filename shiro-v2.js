@@ -1132,44 +1132,15 @@ document.addEventListener("DOMContentLoaded", () => {
           const mediaHtml = tip.media_type === 'image'
             ? `<div class="video-wrapper"><img src="${mediaUrl}" alt="${tip.title}"></div>`
             : `<div class="video-wrapper"><video autoplay muted loop playsinline controls preload="metadata"><source src="${mediaUrl}" type="${mimeType}">Your browser does not support video.</video></div>`;
-          const tagsHtml = (tip.tags || []).map(t => `<span class="video-tag">${t}</span>`).join('');
-          
           return `
-            <div class="video-card clickable-tip" data-target="${tip.target_page || 'home'}">
+            <div class="video-card">
               ${mediaHtml}
               <div class="video-info">
                 <h4>${tip.title}</h4>
                 <p>${tip.description || ''}</p>
-                <div class="video-tags">${tagsHtml}</div>
               </div>
             </div>`;
         }).join('');
-
-        // Add click listeners for navigation
-        grid.querySelectorAll('.clickable-tip').forEach(card => {
-          card.addEventListener('click', (e) => {
-            // Don't navigate if clicking the video controls
-            if (e.target.closest('video')) return;
-            
-            const rawTarget = card.getAttribute('data-target');
-            const [pageId, sectionId] = rawTarget.split('#');
-            
-            navigateTo(pageId);
-            
-            if (sectionId) {
-              setTimeout(() => {
-                const targetEl = document.getElementById(sectionId) || document.getElementById('page-' + pageId).querySelector('#' + sectionId);
-                if (targetEl) {
-                  const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
-                  window.scrollTo({
-                    top: targetEl.offsetTop - navbarHeight,
-                    behavior: 'smooth'
-                  });
-                }
-              }, 400);
-            }
-          });
-        });
       } else {
         grid.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No tips available yet.</p>';
       }

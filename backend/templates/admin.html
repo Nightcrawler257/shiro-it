@@ -1264,21 +1264,7 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Navigation Target (Optional)</label>
-            <select id="tipTarget">
-              <option value="home">Home Page</option>
-              <option value="shop">Shop / Store</option>
-              <option value="build-pc-services">Build Your PC</option>
-              <option value="build-pc-services#services">IT Services</option>
-              <option value="tips">IT Tips & Tricks</option>
-              <option value="contact#careers-section">Careers</option>
-              <option value="contact">Contact Us</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Tags (Comma separated) (Optional)</label><input type="text" id="tipTags"></div>
-        </div>
+
       </form>
     </div>
     <div class="modal-footer">
@@ -2077,7 +2063,7 @@ function renderTable(tab, data) {
       }
     },
     tips: {
-      cols: ['Preview', 'Title', 'Media Type', 'Tags', '-' , 'Actions'],
+      cols: ['Preview', 'Title', 'Media Type', 'Actions'],
       row: r => {
         const mediaHtml = r.media_type === 'image' ? `<i class="fas fa-image" style="color:var(--neon-blue)"></i>` : `<i class="fas fa-video" style="color:var(--neon-red)"></i>`;
         return `
@@ -2086,8 +2072,7 @@ function renderTable(tab, data) {
           </td>
           <td><div class="name-col">${esc(r.title)}</div><div class="sub-col">${esc(r.description).substring(0, 50)}...</div></td>
           <td><span class="badge" style="background:rgba(255,255,255,0.1)">${esc(r.media_type).toUpperCase()}</span></td>
-          <td>${(r.tags || []).map(t => `<span class="badge badge-cat">${esc(t)}</span>`).join(' ')}</td>
-          <td></td>
+
           <td><div class="actions">
             <button class="action-btn ok" onclick='editTipItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
             <button class="action-btn del" onclick="deleteItem('it_tips','${r._id || r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
@@ -2663,8 +2648,7 @@ window.editTipItem = (item) => {
   $('tipDesc').value        = item.description || '';
   $('tipMediaType').value   = item.media_type || 'video';
   $('tipMediaUrl').value    = item.media_url || '';
-  $('tipTags').value        = (item.tags || []).join(', ');
-  $('tipTarget').value      = item.target_page || 'home';
+
 
 
   // Show existing media preview
@@ -2719,9 +2703,7 @@ $('saveTipBtn').onclick = async () => {
       title: $('tipTitle').value,
       description: $('tipDesc').value,
       media_type: $('tipMediaType').value,
-      media_url: finalMediaUrl,
-      target_page: $('tipTarget').value,
-      tags: $('tipTags').value.split(',').map(s=>s.trim()).filter(s=>s)
+      media_url: finalMediaUrl
     };
 
     const url = id ? `${API}/admin/api/it_tips/${id}` : `${API}/admin/api/it_tips`;
