@@ -2890,6 +2890,7 @@ window.clearBookingPhoto = function() {
   const preview = document.getElementById('sb-photo-preview');
   const label = document.getElementById('sb-photo-label');
   if (photoInput) photoInput.value = '';
+  window.bookingMediaFiles = []; // Clear accumulative files
   if (preview) preview.innerHTML = '';
   if (previewContainer) previewContainer.style.display = 'none';
   if (label) {
@@ -2906,40 +2907,58 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.id === 'serviceBookingOverlay') e.target.classList.remove('show');
   });
 
+  window.bookingMediaFiles = [];
+
+  window.removeBookingMedia = function(index) {
+    window.bookingMediaFiles.splice(index, 1);
+    renderBookingMediaPreviews();
+  };
+
+  function renderBookingMediaPreviews() {
+    const previewContainer = document.getElementById('sb-photo-preview-container');
+    const preview = document.getElementById('sb-photo-preview');
+    const label = document.getElementById('sb-photo-label');
+    
+    if (window.bookingMediaFiles.length === 0) {
+      window.clearBookingPhoto();
+      return;
+    }
+    
+    preview.innerHTML = '';
+    previewContainer.style.display = 'block';
+    label.textContent = `${window.bookingMediaFiles.length} file(s) selected`;
+    
+    window.bookingMediaFiles.forEach((file, index) => {
+      const isVideo = file.type.startsWith('video/');
+      const el = document.createElement('div');
+      el.style.cssText = 'position:relative; width:60px; height:60px; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.2); background:#1e293b; display:flex; align-items:center; justify-content:center;';
+      
+      const rmBtn = `<button type="button" onclick="window.removeBookingMedia(${index})" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.6);border:none;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;z-index:10;"><i class="fas fa-times"></i></button>`;
+
+      if (isVideo) {
+         el.innerHTML = rmBtn + `<i class="fas fa-video" style="color:var(--neon-blue);font-size:1.5rem;"></i>`;
+         preview.appendChild(el);
+      } else {
+         const reader = new FileReader();
+         reader.onload = ev => {
+           el.innerHTML = rmBtn + `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
+         };
+         reader.readAsDataURL(file);
+         preview.appendChild(el);
+      }
+    });
+  }
+
   const sbPhoto = document.getElementById('sb-photo');
   if (sbPhoto) {
     sbPhoto.addEventListener('change', function() {
-      const files = Array.from(this.files);
-      const previewContainer = document.getElementById('sb-photo-preview-container');
-      const preview = document.getElementById('sb-photo-preview');
-      const label = document.getElementById('sb-photo-label');
-      
-      if (files.length === 0) {
-        window.clearBookingPhoto();
-        return;
+      const newFiles = Array.from(this.files);
+      if (newFiles.length > 0) {
+        window.bookingMediaFiles = window.bookingMediaFiles.concat(newFiles);
+        renderBookingMediaPreviews();
       }
-      
-      preview.innerHTML = '';
-      previewContainer.style.display = 'block';
-      label.textContent = `${files.length} file(s) selected`;
-      
-      files.forEach(file => {
-        const isVideo = file.type.startsWith('video/');
-        const el = document.createElement('div');
-        el.style.cssText = 'position:relative; width:60px; height:60px; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.2); background:#1e293b; display:flex; align-items:center; justify-content:center;';
-        
-        if (isVideo) {
-           el.innerHTML = `<i class="fas fa-video" style="color:var(--neon-blue);font-size:1.5rem;"></i>`;
-           preview.appendChild(el);
-        } else {
-           const reader = new FileReader();
-           reader.onload = ev => {
-             el.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">`;
-           };
-           reader.readAsDataURL(file);
-           preview.appendChild(el);
-        }
-      });
+      // Reset input value so same files can be selected again if needed
+      this.value = '';
     });
   }
 
@@ -2972,7 +2991,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sbMsg) sbMsg.style.display = 'none';
 
       let photoUrls = [];
-      const photoFiles = Array.from(document.getElementById('sb-photo')?.files || []);
+      const photoFiles = window.bookingMediaFiles || [];
       
       if (photoFiles.length > 0) {
         try {
