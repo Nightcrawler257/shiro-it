@@ -1038,15 +1038,41 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchInventory();
 
   /* ===== DYNAMIC PREBUILT PCs ===== */
+  let allPrebuiltPCs = [];
+  let currentPcCategory = 'All';
+
   async function loadPrebuiltPCs() {
-    const container = document.getElementById('prebuiltPcsContainer');
-    if (!container) return;
     try {
       const res = await fetch(API_BASE + '/api/prebuilt_pcs');
       const d = await res.json();
       if (d.success && d.data && d.data.length > 0) {
-        container.innerHTML = d.data.map(pc => {
-          const photoUrl = pc.photo_url || "";
+        allPrebuiltPCs = d.data;
+        renderPrebuiltPCs();
+      } else {
+        const container = document.getElementById('prebuiltPcsContainer');
+        if (container) container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">PC configurations coming soon.</p>';
+      }
+    } catch (err) {
+      console.warn('Failed to load prebuilt PCs from API:', err);
+    }
+  }
+
+  function renderPrebuiltPCs() {
+    const container = document.getElementById('prebuiltPcsContainer');
+    if (!container) return;
+
+    let filteredPCs = allPrebuiltPCs;
+    if (currentPcCategory !== 'All') {
+      filteredPCs = allPrebuiltPCs.filter(pc => pc.pc_type === currentPcCategory);
+    }
+
+    if (filteredPCs.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No PCs found in this category.</p>';
+      return;
+    }
+
+    container.innerHTML = filteredPCs.map(pc => {
+      const photoUrl = pc.photo_url || "";
           const isVideo = pc.media_type === 'video';
           const fullUrl = photoUrl.startsWith('http') ? photoUrl : API_BASE + (photoUrl.startsWith('/') ? photoUrl : '/' + photoUrl);
           
@@ -1106,24 +1132,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
               </div>`;
           }
-        }).join('');
-        // Re-run nav listeners for new tier buttons
-        container.querySelectorAll('[data-page]').forEach(link => {
-          link.addEventListener('click', e => {
-            e.preventDefault();
-            navigateTo(link.getAttribute('data-page'));
-          });
-        });
-        setTimeout(runScrollAnimations, 100);
-      } else {
-        // Fallback: show a placeholder
-        container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">PC configurations coming soon.</p>';
-      }
-    } catch (err) {
-      console.warn('Failed to load prebuilt PCs from API:', err);
-      // Leave blank — content.py may not be registered yet
-    }
+    }).join('');
+
+    // Re-run nav listeners for new tier buttons
+    container.querySelectorAll('[data-page]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        navigateTo(link.getAttribute('data-page'));
+      });
+    });
+    setTimeout(runScrollAnimations, 100);
   }
+
+  // Setup tab click listeners
+  document.querySelectorAll('.pc-tab').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.pc-tab').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentPcCategory = e.target.getAttribute('data-pctype') || 'All';
+      renderPrebuiltPCs();
+    });
+  });
   loadPrebuiltPCs();
 
   /* ===== DYNAMIC IT TIPS GALLERY ===== */

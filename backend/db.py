@@ -146,7 +146,8 @@ def _create_tables():
             featured   INTEGER DEFAULT 0,
             media_type TEXT DEFAULT 'image',
             tags       TEXT,
-            display_style TEXT DEFAULT 'specs'
+            display_style TEXT DEFAULT 'specs',
+            pc_type    TEXT DEFAULT 'Standard Gaming PC'
         );
 
         CREATE TABLE IF NOT EXISTS it_tips (
@@ -214,6 +215,7 @@ def _migrate(conn):
         "ALTER TABLE prebuilt_pcs ADD COLUMN media_type TEXT DEFAULT 'image'",
         "ALTER TABLE prebuilt_pcs ADD COLUMN tags TEXT DEFAULT ''",
         "ALTER TABLE prebuilt_pcs ADD COLUMN display_style TEXT DEFAULT 'specs'",
+        "ALTER TABLE prebuilt_pcs ADD COLUMN pc_type TEXT DEFAULT 'Standard Gaming PC'",
     ]
     for sql in migrations:
         try:

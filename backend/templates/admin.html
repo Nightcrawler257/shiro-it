@@ -1121,9 +1121,6 @@
       <form id="pcForm">
         <input type="hidden" id="pcEditId">
         <div class="form-row">
-          <div class="form-group"><label>Tier Name (e.g. ENTRY)</label><input type="text" id="pcTierName"></div>
-          <div class="form-group"><label>Badge (e.g. Best Value)</label><input type="text" id="pcTierBadge"></div>
-          <div class="form-group"><label>Theme Color</label><input type="color" id="pcColor" value="#0066FF"></div>
           <div class="form-group">
             <label>Display Style</label>
             <select id="pcDisplayStyle">
@@ -1131,13 +1128,26 @@
               <option value="poster">Poster Layout</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>PC Category / Type</label>
+            <select id="pcType">
+              <option value="Office PC">Office PC</option>
+              <option value="Standard Gaming PC">Standard Gaming PC</option>
+              <option value="Upgraded Gaming PC">Upgraded Gaming PC</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row" id="pcSpecsRow1">
+          <div class="form-group"><label>Tier Name (e.g. ENTRY)</label><input type="text" id="pcTierName"></div>
+          <div class="form-group"><label>Badge (e.g. Best Value)</label><input type="text" id="pcTierBadge"></div>
+          <div class="form-group"><label>Theme Color</label><input type="color" id="pcColor" value="#0066FF"></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Model Name (e.g. Phantom Lite)</label><input type="text" id="pcName"></div>
           <div class="form-group"><label>Price (RM)</label><input type="number" id="pcPrice" step="0.01"></div>
-          <div class="form-group"><label>Promo text (e.g. 10% OFF)</label><input type="text" id="pcDiscount"></div>
+          <div class="form-group" id="pcDiscountGroup"><label>Promo text (e.g. 10% OFF)</label><input type="text" id="pcDiscount"></div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="pcSpecsGroup">
           <label>Specifications (One per line)</label>
           <textarea id="pcSpecs" rows="4"></textarea>
         </div>
@@ -1153,6 +1163,10 @@
             <label>Media Source / URL (Optional)</label>
             <input type="text" id="pcMediaUrl" placeholder="Direct link (e.g. https://...) or upload below">
           </div>
+        </div>
+        <div class="form-group" id="pcTagsGroup">
+          <label>Tags (Comma separated)</label>
+          <input type="text" id="pcTags" placeholder="e.g. 1080p Gaming, RGB, Value">
         </div>
         <div class="form-group">
           <label>Featured Image / Video Upload</label>
@@ -2362,8 +2376,10 @@ $('addPcBtn').onclick = () => {
   $('pcMediaUrl').value = '';
   $('pcTags').value = '';
   $('pcDisplayStyle').value = 'specs';
+  $('pcType').value = 'Standard Gaming PC';
   $('pcImagePreview').innerHTML = '<span style="color:var(--text-secondary);font-size:0.8rem;">No media selected</span>';
   $('pcUploadStatus').textContent = '';
+  togglePcFields();
   openPcModal();
 };
 
@@ -2381,6 +2397,7 @@ window.editPcItem = (item) => {
   $('pcMediaUrl').value    = item.photo_url || '';
   $('pcTags').value        = (item.tags || []).join(', ');
   $('pcDisplayStyle').value= item.display_style || 'specs';
+  $('pcType').value        = item.pc_type || 'Standard Gaming PC';
   $('pcImagePath').value   = item.photo_url || '';
   
   if (item.photo_url) {
@@ -2395,8 +2412,20 @@ window.editPcItem = (item) => {
   }
   
   $('pcModalTitle').textContent = 'Edit Pre-built PC';
+  togglePcFields();
   openPcModal();
 };
+
+function togglePcFields() {
+  const isPoster = $('pcDisplayStyle').value === 'poster';
+  const displayVal = isPoster ? 'none' : '';
+  $('pcSpecsRow1').style.display = isPoster ? 'none' : 'flex';
+  $('pcDiscountGroup').style.display = displayVal;
+  $('pcSpecsGroup').style.display = displayVal;
+  $('pcTagsGroup').style.display = displayVal;
+}
+
+$('pcDisplayStyle').addEventListener('change', togglePcFields);
 
 function openPcModal() { $('pcModalOverlay').classList.add('show'); }
 function closePcModal() { $('pcModalOverlay').classList.remove('show'); }
@@ -2468,6 +2497,7 @@ $('savePcBtn').onclick = async () => {
       featured: $('pcFeatured').checked,
       media_type: $('pcMediaType').value,
       display_style: $('pcDisplayStyle').value,
+      pc_type: $('pcType').value,
       tags: $('pcTags').value.split(',').map(t => t.trim()).filter(t => t),
       photo_url: finalImagePath,
       specs: $('pcSpecs').value.split('\n').filter(s => s.trim() !== '')

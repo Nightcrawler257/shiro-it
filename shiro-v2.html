@@ -308,6 +308,13 @@
                         <h2><span data-translate="tier_title_1">Choose Your</span> <span class="gradient-text"
                                 data-translate="tier_title_2">PC</span></h2>
                     </div>
+                    
+                    <div class="pc-category-tabs" style="display:flex; justify-content:center; gap:0.5rem; margin-bottom:2rem; flex-wrap:wrap;">
+                        <button class="pc-tab active btn btn-outline btn-sm" data-pctype="All">All PCs</button>
+                        <button class="pc-tab btn btn-outline btn-sm" data-pctype="Office PC">Office PC</button>
+                        <button class="pc-tab btn btn-outline btn-sm" data-pctype="Standard Gaming PC">Standard Gaming PC</button>
+                        <button class="pc-tab btn btn-outline btn-sm" data-pctype="Upgraded Gaming PC">Upgraded Gaming PC</button>
+                    </div>
 
                     <div class="tiers-grid" id="prebuiltPcsContainer">
                         <!-- Dynamic PCs will be injected via shiro-v2.js -->
@@ -1805,7 +1812,7 @@
             </div>
         </div>
     </div>
-    <script src="shiro-v2.js?v=6"></script>
+    <script src="shiro-v2.js?v=7"></script>
     
     <!-- Festival Animations: dynamically loaded based on Site Settings in Admin -->
     <script id="festivalLoader">

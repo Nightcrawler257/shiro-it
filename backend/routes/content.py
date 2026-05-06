@@ -135,15 +135,16 @@ def admin_add_pc():
     conn = db.get_conn()
     cursor = conn.execute(
         '''INSERT INTO prebuilt_pcs
-           (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags, display_style)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+           (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags, display_style, pc_type)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
         (_s(data.get('tier_name')), _s(data.get('tier_badge')),
          _s(data.get('name')), _s(data.get('price')),
          _s(data.get('discount')), _s(data.get('photo_url')),
          specs_json, _s(data.get('tier_color', '#0066FF')),
          1 if data.get('featured') else 0,
          _s(data.get('media_type', 'image')),
-         tags_json, _s(data.get('display_style', 'specs')))
+         tags_json, _s(data.get('display_style', 'specs')),
+         _s(data.get('pc_type', 'Standard Gaming PC')))
     )
     conn.commit()
     new_id = cursor.lastrowid
@@ -166,7 +167,7 @@ def admin_update_pc(pc_id):
     result = conn.execute(
         '''UPDATE prebuilt_pcs
            SET tier_name=?, tier_badge=?, name=?, price=?, discount=?,
-               photo_url=?, specs=?, tier_color=?, featured=?, media_type=?, tags=?, display_style=?
+               photo_url=?, specs=?, tier_color=?, featured=?, media_type=?, tags=?, display_style=?, pc_type=?
            WHERE id=?''',
         (_s(data.get('tier_name')), _s(data.get('tier_badge')),
          _s(data.get('name')), _s(data.get('price')),
@@ -174,7 +175,8 @@ def admin_update_pc(pc_id):
          specs_json, _s(data.get('tier_color')),
          1 if data.get('featured') else 0,
          _s(data.get('media_type', 'image')),
-         tags_json, _s(data.get('display_style', 'specs')), pc_id)
+         tags_json, _s(data.get('display_style', 'specs')),
+         _s(data.get('pc_type', 'Standard Gaming PC')), pc_id)
     )
     if result.rowcount == 0:
         conn.close()
