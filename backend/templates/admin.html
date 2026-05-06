@@ -1124,6 +1124,13 @@
           <div class="form-group"><label>Tier Name (e.g. ENTRY)</label><input type="text" id="pcTierName"></div>
           <div class="form-group"><label>Badge (e.g. Best Value)</label><input type="text" id="pcTierBadge"></div>
           <div class="form-group"><label>Theme Color</label><input type="color" id="pcColor" value="#0066FF"></div>
+          <div class="form-group">
+            <label>Display Style</label>
+            <select id="pcDisplayStyle">
+              <option value="specs">Specs Layout</option>
+              <option value="poster">Poster Layout</option>
+            </select>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group"><label>Model Name (e.g. Phantom Lite)</label><input type="text" id="pcName"></div>
@@ -2354,6 +2361,7 @@ $('addPcBtn').onclick = () => {
   $('pcMediaType').value = 'image';
   $('pcMediaUrl').value = '';
   $('pcTags').value = '';
+  $('pcDisplayStyle').value = 'specs';
   $('pcImagePreview').innerHTML = '<span style="color:var(--text-secondary);font-size:0.8rem;">No media selected</span>';
   $('pcUploadStatus').textContent = '';
   openPcModal();
@@ -2372,6 +2380,7 @@ window.editPcItem = (item) => {
   $('pcMediaType').value   = item.media_type || 'image';
   $('pcMediaUrl').value    = item.photo_url || '';
   $('pcTags').value        = (item.tags || []).join(', ');
+  $('pcDisplayStyle').value= item.display_style || 'specs';
   $('pcImagePath').value   = item.photo_url || '';
   
   if (item.photo_url) {
@@ -2458,6 +2467,7 @@ $('savePcBtn').onclick = async () => {
       tier_color: $('pcColor').value,
       featured: $('pcFeatured').checked,
       media_type: $('pcMediaType').value,
+      display_style: $('pcDisplayStyle').value,
       tags: $('pcTags').value.split(',').map(t => t.trim()).filter(t => t),
       photo_url: finalImagePath,
       specs: $('pcSpecs').value.split('\n').filter(s => s.trim() !== '')

@@ -4476,3 +4476,33 @@ body.festival-admin .festival-toggle-btn {
 .svc-cta:hover {
   gap: 12px;
 }
+
+/* POSTER STYLE TIER CARD */
+.tier-card.poster-style {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+.tier-card.poster-style .tier-media-wrapper {
+  width: 100%;
+  height: 400px;
+  flex-grow: 1;
+  margin: 0;
+  border-radius: 16px 16px 0 0;
+  background: transparent;
+}
+.tier-card.poster-style .tier-media-wrapper img,
+.tier-card.poster-style .tier-media-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tier-card.poster-style .tier-card-content {
+  padding: 1.5rem;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}

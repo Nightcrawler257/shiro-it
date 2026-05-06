@@ -1068,26 +1068,44 @@ document.addEventListener("DOMContentLoaded", () => {
           const tagsHtml = (pc.tags || []).map(t => `<span class="tier-tag">${t}</span>`).join('');
           const color = pc.tier_color || '#0066FF';
           
-          return `
-            <div class="tier-card${featuredClass}" style="--tier-color: ${color};">
-              ${ribbonHtml}
-              <div class="tier-media-wrapper">
-                ${mediaHtml}
-              </div>
-              <div class="tier-card-content">
-                <div class="tier-badge">${pc.tier_badge || ''}</div>
-                <div class="tier-name">${pc.tier_name || ''}</div>
-                <div class="tier-tags-row">${tagsHtml}</div>
-                <div class="tier-price">
-                  ${pc.price && pc.price > 0 
-                    ? `RM ${Number(pc.price).toLocaleString()}` 
-                    : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
+          if (pc.display_style === 'poster') {
+            return `
+              <div class="tier-card poster-style${featuredClass}" style="--tier-color: ${color};">
+                ${ribbonHtml}
+                <div class="tier-media-wrapper" style="height: 400px;">
+                  ${mediaHtml}
                 </div>
-                ${discountHtml}
-                <div class="tier-specs">${specsHtml}</div>
-                <button onclick="openServiceBooking('${pc.name}')" class="btn btn-primary tier-btn">Order Now <i class="fas fa-shopping-cart"></i></button>
-              </div>
-            </div>`;
+                <div class="tier-card-content" style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05); flex-grow: 0;">
+                  <div class="tier-price" style="text-align: center; margin-bottom: 1rem;">
+                    ${pc.price && pc.price > 0 
+                      ? `RM ${Number(pc.price).toLocaleString()}` 
+                      : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
+                  </div>
+                  <button onclick="openServiceBooking('${pc.name}')" class="btn btn-primary tier-btn" style="width: 100%;">Order Now <i class="fas fa-shopping-cart"></i></button>
+                </div>
+              </div>`;
+          } else {
+            return `
+              <div class="tier-card${featuredClass}" style="--tier-color: ${color};">
+                ${ribbonHtml}
+                <div class="tier-media-wrapper">
+                  ${mediaHtml}
+                </div>
+                <div class="tier-card-content">
+                  <div class="tier-badge">${pc.tier_badge || ''}</div>
+                  <div class="tier-name">${pc.tier_name || ''}</div>
+                  <div class="tier-tags-row">${tagsHtml}</div>
+                  <div class="tier-price">
+                    ${pc.price && pc.price > 0 
+                      ? `RM ${Number(pc.price).toLocaleString()}` 
+                      : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
+                  </div>
+                  ${discountHtml}
+                  <div class="tier-specs">${specsHtml}</div>
+                  <button onclick="openServiceBooking('${pc.name}')" class="btn btn-primary tier-btn">Order Now <i class="fas fa-shopping-cart"></i></button>
+                </div>
+              </div>`;
+          }
         }).join('');
         // Re-run nav listeners for new tier buttons
         container.querySelectorAll('[data-page]').forEach(link => {

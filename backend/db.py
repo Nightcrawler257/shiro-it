@@ -145,7 +145,8 @@ def _create_tables():
             tier_color TEXT DEFAULT '#0066FF',
             featured   INTEGER DEFAULT 0,
             media_type TEXT DEFAULT 'image',
-            tags       TEXT
+            tags       TEXT,
+            display_style TEXT DEFAULT 'specs'
         );
 
         CREATE TABLE IF NOT EXISTS it_tips (
@@ -212,6 +213,7 @@ def _migrate(conn):
         "ALTER TABLE prebuilt_pcs ADD COLUMN featured INTEGER DEFAULT 0",
         "ALTER TABLE prebuilt_pcs ADD COLUMN media_type TEXT DEFAULT 'image'",
         "ALTER TABLE prebuilt_pcs ADD COLUMN tags TEXT DEFAULT ''",
+        "ALTER TABLE prebuilt_pcs ADD COLUMN display_style TEXT DEFAULT 'specs'",
     ]
     for sql in migrations:
         try:
