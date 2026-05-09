@@ -248,3 +248,13 @@ def _migrate(conn):
         conn.executemany("INSERT INTO prebuilt_pcs (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags, display_style, pc_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", seed_pcs)
         conn.commit()
 
+    poster_count = conn.execute("SELECT COUNT(*) FROM prebuilt_pcs WHERE display_style = 'poster'").fetchone()[0]
+    if poster_count == 0:
+        seed_posters = [
+            ("", "", "Office Pro Workstation", "1899.00", "", "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=600&q=80", "[]", "#0066FF", 1, "image", "[]", "poster", "Office PC"),
+            ("", "", "Neon Strike RTX 4060", "3499.00", "", "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=600&q=80", "[]", "#0066FF", 1, "image", "[]", "poster", "Gaming PC"),
+            ("", "", "Titan Xtreme RTX 4080", "8999.00", "", "https://images.unsplash.com/photo-1542393545-10f5cde2c810?w=600&q=80", "[]", "#0066FF", 1, "image", "[]", "poster", "Upgraded Gaming PC")
+        ]
+        conn.executemany("INSERT INTO prebuilt_pcs (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags, display_style, pc_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", seed_posters)
+        conn.commit()
+
