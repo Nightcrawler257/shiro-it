@@ -144,7 +144,7 @@ def admin_add_pc():
          1 if data.get('featured') else 0,
          _s(data.get('media_type', 'image')),
          tags_json, _s(data.get('display_style', 'specs')),
-         _s(data.get('pc_type', 'Standard Gaming PC')))
+         _s(data.get('pc_type', 'Gaming PC')))
     )
     conn.commit()
     new_id = cursor.lastrowid
@@ -176,7 +176,7 @@ def admin_update_pc(pc_id):
          1 if data.get('featured') else 0,
          _s(data.get('media_type', 'image')),
          tags_json, _s(data.get('display_style', 'specs')),
-         _s(data.get('pc_type', 'Standard Gaming PC')), pc_id)
+         _s(data.get('pc_type', 'Gaming PC')), pc_id)
     )
     if result.rowcount == 0:
         conn.close()
