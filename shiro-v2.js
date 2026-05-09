@@ -1039,7 +1039,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ===== DYNAMIC PREBUILT PCs ===== */
   let allPrebuiltPCs = [];
-  let currentPcCategory = 'All';
+  let currentPcCategory = 'Office PC';
 
   async function loadPrebuiltPCs() {
     try {
