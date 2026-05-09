@@ -235,3 +235,16 @@ def _migrate(conn):
         ]
         conn.executemany("INSERT INTO testimonials (name, role, content, rating, image_url) VALUES (?, ?, ?, ?, ?)", seed_data)
         conn.commit()
+
+    # Seed prebuilt PCs if they don't exist
+    import json
+    entry_count = conn.execute("SELECT COUNT(*) FROM prebuilt_pcs WHERE tier_name = 'ENTRY'").fetchone()[0]
+    if entry_count == 0:
+        seed_pcs = [
+            ("ENTRY", "Office Ready", "Essential Office PC", "1499.00", "", "", json.dumps(["Processor: AMD Ryzen 5 5600G", "Motherboard: A520M", "RAM: 16GB DDR4", "Storage: 512GB SSD", "Power Supply: 500W", "Case: X-FIVE CASE"]), "#3b82f6", 1, "image", json.dumps(["Office", "Everyday Use", "Value"]), "specs", "Office PC"),
+            ("MAINSTREAM", "Best Seller", "Advanced Gaming PC", "3299.00", "", "", json.dumps(["Processor: Intel Core i5 10th Gen", "Motherboard: H410M", "RAM: 16GB DDR4", "Storage: 240GB SATA SSD", "Graphics: NVIDIA RTX 4060 8GB", "Power Supply: 550W 80Plus", "Case: Segotep Brave W1 (3x RGB Fans)"]), "#10b981", 1, "image", json.dumps(["Gaming", "1080p", "RGB"]), "specs", "Gaming PC"),
+            ("HIGH-END", "Premium Build", "Elite Ultra Gaming PC", "5899.00", "", "", json.dumps(["Processor: Intel Core i5-13400F", "Motherboard: B760M WiFi", "RAM: 32GB DDR5 5600MHz", "Storage: 1TB NVMe M.2 Gen4 SSD", "Graphics: NVIDIA RTX 4070 12GB", "Power Supply: 750W 80Plus Gold", "Case: Lian Li Lancool 216 RGB"]), "#f59e0b", 1, "image", json.dumps(["1440p Gaming", "Enthusiast", "Performance"]), "specs", "Upgraded Gaming PC")
+        ]
+        conn.executemany("INSERT INTO prebuilt_pcs (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags, display_style, pc_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", seed_pcs)
+        conn.commit()
+
