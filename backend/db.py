@@ -183,6 +183,16 @@ def _create_tables():
             target_page TEXT DEFAULT 'home',
             order_index INTEGER DEFAULT 0
         );
+
+        CREATE TABLE IF NOT EXISTS team_members (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            name        TEXT NOT NULL,
+            role        TEXT,
+            bio         TEXT,
+            image_url   TEXT,
+            order_index INTEGER DEFAULT 0
+        );
+
     """)
     conn.commit()
 
@@ -257,4 +267,16 @@ def _migrate(conn):
         ]
         conn.executemany("INSERT INTO prebuilt_pcs (tier_name, tier_badge, name, price, discount, photo_url, specs, tier_color, featured, media_type, tags, display_style, pc_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", seed_posters)
         conn.commit()
+
+    # Seed team members if empty
+    team_count = conn.execute("SELECT COUNT(*) FROM team_members").fetchone()[0]
+    if team_count == 0:
+        seed_team = [
+            ("Muhammad Syahirul Ammar @ SHIRO", "FOUNDER & CEO", "With 12+ years in IT industry, founded SHIRO IT to bring quality tech services to Kepala Batas. Certified in Microsoft, CompTIA, and networking.", "images/shiro.jpg", 0),
+            ("Ammar", "LEAD TECHNICIAN", "Specializes in custom PC builds and hardware repairs. Gaming enthusiast with extensive knowledge of PC components and performance optimization.", "images/ammar.jpg", 1),
+            ("Muhammad Daniel Zhafran", "SUPERVISOR", "CCNA certified with expertise in business networking, server setup, and cybersecurity solutions for small to medium businesses.", "images/daniel.jpg", 2)
+        ]
+        conn.executemany("INSERT INTO team_members (name, role, bio, image_url, order_index) VALUES (?, ?, ?, ?, ?)", seed_team)
+        conn.commit()
+
 

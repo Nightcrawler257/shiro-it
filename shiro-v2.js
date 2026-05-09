@@ -1848,6 +1848,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* ===== TEAM MEMBERS ===== */
+  (async function loadTeamMembers() {
+    const teamGrid = document.getElementById("teamGrid");
+    if (!teamGrid) return;
+
+    try {
+      const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '' : window.location.origin;
+      const res = await fetch(API + '/api/team');
+      const d = await res.json();
+      
+      if (d.success && d.data && d.data.length > 0) {
+        teamGrid.innerHTML = "";
+        d.data.forEach(m => {
+          const imgUrl = m.image_url 
+            ? (m.image_url.startsWith('http') ? m.image_url : (m.image_url.startsWith('/') ? m.image_url : '/'+m.image_url))
+            : 'images/placeholder-team.jpg';
+
+          const card = document.createElement("div");
+          card.className = "card team-card";
+          card.innerHTML = `
+            <div class="team-avatar">
+                <img src="${imgUrl}" alt="${m.role}">
+            </div>
+            <h4>${m.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</h4>
+            <span class="team-role">${m.role.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
+            <p>${m.bio.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+            <div class="team-social"></div>
+          `;
+          teamGrid.appendChild(card);
+        });
+      }
+    } catch(e) {
+      console.error("Team load failed", e);
+    }
+  })();
+
   /* ===== TESTIMONIALS SLIDER ===== */
   (async function () {
     const track = document.getElementById("tsliderTrack");

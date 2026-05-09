@@ -428,3 +428,68 @@ def admin_delete_slide(slide_id):
     conn.commit()
     conn.close()
     return jsonify({'success': True})
+
+
+# --- Team Members ---
+
+@content_bp.route('/api/team', methods=['GET'])
+def get_public_team():
+    conn = db.get_conn()
+    rows = conn.execute('SELECT * FROM team_members ORDER BY order_index ASC, id ASC').fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
+
+
+@content_bp.route('/admin/api/team', methods=['GET'])
+@login_required
+def admin_get_team():
+    conn = db.get_conn()
+    rows = conn.execute('SELECT * FROM team_members ORDER BY order_index ASC, id ASC').fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
+
+
+@content_bp.route('/admin/api/team', methods=['POST'])
+@login_required
+def admin_add_member():
+    data = request.get_json()
+    conn = db.get_conn()
+    cursor = conn.execute(
+        '''INSERT INTO team_members (name, role, bio, image_url, order_index)
+           VALUES (?, ?, ?, ?, ?)''',
+        (data.get('name', '').strip(), data.get('role', '').strip(),
+         data.get('bio', '').strip(), data.get('image_url', '').strip(),
+         int(data.get('order_index', 0)))
+    )
+    conn.commit()
+    new_id = cursor.lastrowid
+    row = conn.execute('SELECT * FROM team_members WHERE id = ?', (new_id,)).fetchone()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_row(row)})
+
+
+@content_bp.route('/admin/api/team/<int:member_id>', methods=['PUT'])
+@login_required
+def admin_update_member(member_id):
+    data = request.get_json()
+    conn = db.get_conn()
+    conn.execute(
+        '''UPDATE team_members SET name=?, role=?, bio=?, image_url=?, order_index=? WHERE id=?''',
+        (data.get('name', '').strip(), data.get('role', '').strip(),
+         data.get('bio', '').strip(), data.get('image_url', '').strip(),
+         int(data.get('order_index', 0)), member_id)
+    )
+    conn.commit()
+    row = conn.execute('SELECT * FROM team_members WHERE id = ?', (member_id,)).fetchone()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_row(row)})
+
+
+@content_bp.route('/admin/api/team/<int:member_id>', methods=['DELETE'])
+@login_required
+def admin_delete_member(member_id):
+    conn = db.get_conn()
+    conn.execute('DELETE FROM team_members WHERE id = ?', (member_id,))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})

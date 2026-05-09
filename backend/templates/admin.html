@@ -770,6 +770,10 @@
           <i class="fas fa-star nav-icon"></i>
           <span class="nav-label">Testimonials</span>
         </a>
+        <a href="#" class="nav-item" data-tab="team">
+          <i class="fas fa-users nav-icon"></i>
+          <span class="nav-label">Team Members</span>
+        </a>
         <a href="#" class="nav-item" data-tab="settings">
           <i class="fas fa-cogs nav-icon"></i>
           <span class="nav-label">Site Settings</span>
@@ -929,6 +933,9 @@
                 </button>
                 <button class="btn btn-primary btn-sm" id="addTestimonialBtn" style="display:none;">
                   <i class="fas fa-plus"></i> Add Testimonial
+                </button>
+                <button class="btn btn-primary btn-sm" id="addTeamBtn" style="display:none;">
+                  <i class="fas fa-plus"></i> Add Member
                 </button>
                 <button class="btn btn-primary btn-sm" id="addSlideBtn" style="display:none;">
                   <i class="fas fa-plus"></i> Add Slide
@@ -1361,6 +1368,7 @@ const TAB_META = {
   hero:         { h: 'Hero Carousel',    s: 'Manage homepage banner slides', icon: 'fa-images' },
   tips:         { h: 'IT Tips Gallery',  s: 'Manage knowledge base photos & videos', icon: 'fa-lightbulb' },
   testimonials: { h: 'Testimonials',     s: 'Manage customer reviews on the homepage', icon: 'fa-star' },
+  team:         { h: 'Team Members',     s: 'Manage your staff profiles and roles', icon: 'fa-users' },
   settings:     { h: 'Site Settings',    s: 'Manage Festival Animations and Display limits', icon: 'fa-cogs' }
 };
 
@@ -1375,6 +1383,7 @@ const apiDataMap = {
   pcs: '/admin/api/prebuilt_pcs',
   tips: '/admin/api/it_tips',
   testimonials: '/admin/api/testimonials',
+  team: '/admin/api/team',
   settings: '/admin/api/settings'
 };
 
@@ -1707,6 +1716,7 @@ async function loadTab(tab) {
   if (addPcBtn)  addPcBtn.style.display  = tab === 'pcs' ? 'flex' : 'none';
   if (addTipBtn) addTipBtn.style.display = tab === 'tips' ? 'flex' : 'none';
   if (addTestimonialBtn) addTestimonialBtn.style.display = tab === 'testimonials' ? 'flex' : 'none';
+  if (addTeamBtn) addTeamBtn.style.display = tab === 'team' ? 'flex' : 'none';
   if (addSlideBtn) addSlideBtn.style.display = tab === 'hero' ? 'flex' : 'none';
 
   // Update Section Header based on tab
@@ -1724,6 +1734,7 @@ async function loadTab(tab) {
       hero: 'HERO CAROUSEL SLIDES',
       tips: 'IT TIPS GALLERY',
       testimonials: 'TESTIMONIALS',
+      team: 'TEAM MEMBERS',
       settings: 'SITE SETTINGS'
     };
     const icons = {
@@ -1737,6 +1748,7 @@ async function loadTab(tab) {
       hero: 'fa-images',
       tips: 'fa-lightbulb',
       testimonials: 'fa-star',
+      team: 'fa-users',
       settings: 'fa-cogs'
     };
     pTitle.textContent = titles[tab] || 'DASHBOARD';
@@ -2132,6 +2144,22 @@ function renderTable(tab, data) {
             <button class="action-btn del" onclick="deleteItem('testimonials','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
           </div></td>`;
       }
+    },
+    team: {
+      cols: ['Photo', 'Name & Role', 'Bio', 'Actions'],
+      row: r => {
+        const imgHtml = r.image_url ? `<img src="${esc(r.image_url.startsWith('http') ? r.image_url : API + '/' + r.image_url)}" style="width:100%;height:100%;object-fit:cover">` : `<i class="fas fa-users" style="color:var(--text-secondary)"></i>`;
+        return `
+          <td style="width:60px">
+            <div style="width:46px;height:46px;background:rgba(0,0,0,0.4);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);">${imgHtml}</div>
+          </td>
+          <td><div class="name-col">${esc(r.name)}</div><div class="sub-col">${esc(r.role)}</div></td>
+          <td class="msg-col" style="max-width:300px" title="${esc(r.bio)}">${esc(r.bio)}</td>
+          <td><div class="actions">
+            <button class="action-btn ok" onclick='editTeamItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
+            <button class="action-btn del" onclick="deleteItem('team','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+          </div></td>`;
+      }
     }
   };
 
@@ -2179,6 +2207,8 @@ async function deleteItem(type, id) {
       url = API + `/admin/api/it_tips/${id}`;
     } else if (type === 'testimonials') {
       url = API + `/admin/api/testimonials/${id}`;
+    } else if (type === 'team') {
+      url = API + `/admin/api/team/${id}`;
     } else if (type === 'hero_slides') {
       url = API + `/admin/api/hero_slides/${id}`;
     } else {
@@ -2877,6 +2907,156 @@ $('saveTestimonialBtn').onclick = async () => {
     $('saveTestimonialBtn').disabled = false;
   }
 };
+
+/* ══════════════════════════════════════
+     TEAM MODAL
+══════════════════════════════════════ */
+// HTML Modal structure
+document.body.insertAdjacentHTML('beforeend', `
+<div class="modal-overlay" id="teamModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="teamModalTitle">Add Team Member</h3>
+      <button class="modal-close" id="teamModalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="teamForm" autocomplete="off">
+        <input type="hidden" id="teamEditId">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="teamName" required placeholder="e.g. John Doe">
+        </div>
+        <div class="form-group">
+          <label>Role / Designation</label>
+          <input type="text" id="teamRole" required placeholder="e.g. Lead Technician">
+        </div>
+        <div class="form-group">
+          <label>Bio / Description</label>
+          <textarea id="teamBio" rows="4" placeholder="Brief background or expertise..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Photo URL (Optional)</label>
+          <input type="text" id="teamImageUrl" placeholder="Link to photo or upload below">
+        </div>
+        <div class="form-group">
+          <label>Upload Photo</label>
+          <div class="upload-area" id="teamUploadArea">
+            <input type="file" id="teamImageFile" accept="image/*">
+            <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-area-text">Drop image or click to browse</div>
+          </div>
+          <div id="teamUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
+          <div id="teamImagePreview" style="margin-top:0.5rem; text-align:center;"></div>
+        </div>
+        <div class="form-group">
+          <label>Display Order</label>
+          <input type="number" id="teamOrder" value="0">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="teamModalCancel">Cancel</button>
+      <button class="btn btn-primary" id="saveTeamBtn"><i class="fas fa-save"></i> Save Member</button>
+    </div>
+  </div>
+</div>
+`);
+
+$('addTeamBtn').onclick = () => {
+  $('teamForm').reset();
+  $('teamEditId').value = '';
+  $('teamModalTitle').textContent = 'Add Team Member';
+  $('teamImagePreview').innerHTML = '';
+  $('teamUploadStatus').textContent = '';
+  openTeamModal();
+};
+
+$('teamModalClose').onclick = closeTeamModal;
+$('teamModalCancel').onclick = closeTeamModal;
+
+function openTeamModal() { $('teamModalOverlay').classList.add('show'); }
+function closeTeamModal() { $('teamModalOverlay').classList.remove('show'); }
+
+$('teamImageFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('teamImagePreview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%;max-height:120px;border-radius:10px;margin-top:8px;border:1px solid var(--border);">`;
+  };
+  reader.readAsDataURL(file);
+});
+
+window.editTeamItem = (item) => {
+  $('teamEditId').value = item.id;
+  $('teamName').value    = item.name || '';
+  $('teamRole').value    = item.role || '';
+  $('teamBio').value     = item.bio || '';
+  $('teamImageUrl').value = item.image_url || '';
+  $('teamOrder').value   = item.order_index || 0;
+
+  if (item.image_url) {
+    const url = item.image_url.startsWith('http') ? item.image_url : API + '/' + item.image_url;
+    $('teamImagePreview').innerHTML = `<img src="${url}" style="max-width:100%;max-height:120px;border-radius:10px;margin-top:8px;border:1px solid var(--border);">`;
+    $('teamUploadStatus').textContent = 'Current photo loaded.';
+  } else {
+    $('teamImagePreview').innerHTML = '';
+    $('teamUploadStatus').textContent = '';
+  }
+
+  $('teamModalTitle').textContent = 'Edit Team Member';
+  openTeamModal();
+};
+
+$('saveTeamBtn').onclick = async () => {
+  const btn = $('saveTeamBtn');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+  btn.disabled = true;
+
+  try {
+    let finalUrl = $('teamImageUrl').value;
+    const fileInput = $('teamImageFile');
+    if (fileInput.files[0]) {
+      $('teamUploadStatus').textContent = 'Uploading…';
+      const fd = new FormData();
+      fd.append('image', fileInput.files[0]);
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upData = await upRes.json();
+      if (upData.success) {
+        finalUrl = upData.url;
+        $('teamImageUrl').value = finalUrl;
+        $('teamUploadStatus').textContent = '✓ Upload complete';
+      }
+    }
+
+    const id = $('teamEditId').value;
+    const member = {
+      name: $('teamName').value,
+      role: $('teamRole').value,
+      bio: $('teamBio').value,
+      image_url: finalUrl,
+      order_index: parseInt($('teamOrder').value) || 0
+    };
+
+    const url = id ? `${API}/admin/api/team/${id}` : `${API}/admin/api/team`;
+    const res = await fetch(url, {
+      method: id ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(member)
+    });
+    const d = await res.json();
+    if (d.success) {
+      toast('Member Saved', 'ok');
+      closeTeamModal();
+      loadTab('team');
+    } else toast(d.error || 'Save failed', 'err');
+  } catch(e) { toast('Error saving member', 'err'); }
+  finally {
+    btn.innerHTML = '<i class="fas fa-save"></i> Save Member';
+    btn.disabled = false;
+  }
+};
+
 </script>
 
 
