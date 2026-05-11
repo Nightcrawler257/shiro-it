@@ -862,7 +862,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const productsGrid = document.getElementById("productsGrid");
   const emptyState = document.getElementById("emptyState");
-  const categoryTabs = document.querySelectorAll(".cat-tab, .shop-cat-card");
+  const categoryTabs = document.querySelectorAll(".cat-tab");
   const sortSelect = document.getElementById("sortSelect");
   let activeCategory = "All";
   let activeBrand    = "All";
@@ -1298,6 +1298,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const group = document.createElement("div");
       group.className = "card component-group";
+      group.id = "comp-group-" + cat.replace(/\s+/g, "-");
 
       let itemsHTML = itemsInCat.map(
         (item) => `
@@ -1347,6 +1348,18 @@ document.addEventListener("DOMContentLoaded", () => {
       componentsList.appendChild(group);
     });
   }
+
+  window.scrollToComponent = function(category) {
+    const id = "comp-group-" + category.replace(/\s+/g, "-");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Highlight the active nav button
+      document.querySelectorAll(".build-cat-btn").forEach(btn => btn.classList.remove("active"));
+      const activeBtn = document.querySelector(`.build-cat-btn[onclick="scrollToComponent('${category}')"]`);
+      if (activeBtn) activeBtn.classList.add("active");
+    }
+  };
 
   window.toggleInline = function(category) {
     const el = document.getElementById(`inline-${category}`);

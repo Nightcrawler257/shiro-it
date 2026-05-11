@@ -2198,27 +2198,65 @@ body.light .nav-menu > li > a.active {
   color: var(--text-secondary);
 }
 
-/* ========== SHOP CATEGORY ICON GRID ========== */
+/* ========== SHOP (original tabs) ========== */
 .shop-filters {
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-card);
-  padding: 1rem 0 0;
 }
-.shop-cat-grid {
+.filters-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.category-tabs {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.cat-tab {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+.cat-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+.cat-tab.active {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent);
+  font-weight: 600;
+}
+.sort-select {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+/* ========== BUILD PC — Category Quick Nav ========== */
+.build-cat-nav {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 1rem 1.5rem;
-  justify-content: flex-start;
+  padding: 0.75rem 0 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  grid-column: 1 / -1;
 }
-.shop-cat-card {
+.build-cat-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0.6rem 0.85rem;
-  min-width: 68px;
+  gap: 0.3rem;
+  padding: 0.55rem 0.8rem;
+  min-width: 64px;
   background: rgba(255,255,255,0.04);
   border: 1.5px solid var(--border-color);
   border-radius: 12px;
@@ -2226,43 +2264,33 @@ body.light .nav-menu > li > a.active {
   transition: all 0.2s ease;
   text-align: center;
 }
-.shop-cat-card:hover {
+.build-cat-btn:hover {
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.25);
   transform: translateY(-2px);
 }
-.shop-cat-card.active {
+.build-cat-btn.active {
   background: rgba(239,68,68,0.1);
   border-color: var(--accent);
   box-shadow: 0 0 12px rgba(239,68,68,0.2);
 }
-.shop-cat-icon {
-  font-size: 1.25rem;
+.build-cat-icon {
+  font-size: 1.2rem;
   line-height: 1;
   transition: transform 0.2s;
 }
-.shop-cat-card:hover .shop-cat-icon {
+.build-cat-btn:hover .build-cat-icon {
   transform: scale(1.15);
 }
-.shop-cat-card span {
-  font-size: 0.7rem;
+.build-cat-btn span {
+  font-size: 0.68rem;
   font-weight: 600;
   color: var(--text-secondary);
   white-space: nowrap;
-  letter-spacing: 0.02em;
 }
-.shop-cat-card.active span {
+.build-cat-btn.active span {
   color: var(--accent);
 }
-.shop-sort-row {
-  display: flex;
-  justify-content: flex-end;
-  padding: 0.5rem 1.5rem 0.75rem;
-  border-top: 1px solid var(--border-color);
-  margin-top: 0;
-}
-/* Keep old .cat-tab for JS compatibility — hidden visually */
-.cat-tab { display: none; }
 
 /* Brand filter row — full-width blue-themed row below category tabs */
 .brand-filter-row {
