@@ -2239,57 +2239,35 @@ body.light .nav-menu > li > a.active {
   font-size: 0.85rem;
 }
 
-/* ========== BUILD PC — Category Quick Nav ========== */
-.build-cat-nav {
+/* ========== BUILD PC — Category Tabs (simple, like Store) ========== */
+.build-cat-tabs {
   display: flex;
+  gap: 0.25rem;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.75rem 0 1.25rem;
+  padding-bottom: 1.25rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
   grid-column: 1 / -1;
 }
-.build-cat-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  padding: 0.55rem 0.8rem;
-  min-width: 64px;
-  background: rgba(255,255,255,0.04);
-  border: 1.5px solid var(--border-color);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-.build-cat-btn:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.25);
-  transform: translateY(-2px);
-}
-.build-cat-btn.active {
-  background: rgba(239,68,68,0.1);
-  border-color: var(--accent);
-  box-shadow: 0 0 12px rgba(239,68,68,0.2);
-}
-.build-cat-icon {
-  font-size: 1.2rem;
-  line-height: 1;
-  transition: transform 0.2s;
-}
-.build-cat-btn:hover .build-cat-icon {
-  transform: scale(1.15);
-}
-.build-cat-btn span {
-  font-size: 0.68rem;
-  font-weight: 600;
+.build-tab {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px;
   color: var(--text-secondary);
-  white-space: nowrap;
+  transition: var(--transition);
+  cursor: pointer;
+  background: none;
+  border: none;
 }
-.build-cat-btn.active span {
+.build-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+.build-tab.active {
+  background: rgba(239, 68, 68, 0.1);
   color: var(--accent);
+  font-weight: 600;
 }
 
 /* Brand filter row — full-width blue-themed row below category tabs */

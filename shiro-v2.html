@@ -951,59 +951,22 @@
             <section class="section">
                 <div class="container build-layout">
                     <!-- Category Quick Nav -->
-                    <div class="build-cat-nav" id="buildCatNav">
-                        <button class="build-cat-btn" onclick="scrollToComponent('CPU')">
-                            <div class="build-cat-icon" style="color:#3b82f6;"><i class="fas fa-microchip"></i></div>
-                            <span>CPU</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Motherboard')">
-                            <div class="build-cat-icon" style="color:#8b5cf6;"><i class="fas fa-server"></i></div>
-                            <span>Motherboard</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('RAM')">
-                            <div class="build-cat-icon" style="color:#10b981;"><i class="fas fa-memory"></i></div>
-                            <span>RAM</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('GPU')">
-                            <div class="build-cat-icon" style="color:#f59e0b;"><i class="fas fa-tv"></i></div>
-                            <span>GPU</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Storage')">
-                            <div class="build-cat-icon" style="color:#f97316;"><i class="fas fa-hdd"></i></div>
-                            <span>SSD</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('PSU')">
-                            <div class="build-cat-icon" style="color:#ef4444;"><i class="fas fa-bolt"></i></div>
-                            <span>PSU</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Case')">
-                            <div class="build-cat-icon" style="color:#64748b;"><i class="fas fa-cube"></i></div>
-                            <span>Case</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('AIO Cooling')">
-                            <div class="build-cat-icon" style="color:#38bdf8;"><i class="fas fa-wind"></i></div>
-                            <span>AIO Cooling</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Cooling')">
-                            <div class="build-cat-icon" style="color:#34d399;"><i class="fas fa-fan"></i></div>
-                            <span>Air Cooling</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Monitor')">
-                            <div class="build-cat-icon" style="color:#818cf8;"><i class="fas fa-desktop"></i></div>
-                            <span>Monitor</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Keyboard')">
-                            <div class="build-cat-icon" style="color:#f472b6;"><i class="fas fa-keyboard"></i></div>
-                            <span>Keyboard</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Mouse')">
-                            <div class="build-cat-icon" style="color:#fb923c;"><i class="fas fa-mouse"></i></div>
-                            <span>Mouse</span>
-                        </button>
-                        <button class="build-cat-btn" onclick="scrollToComponent('Accessories')">
-                            <div class="build-cat-icon" style="color:#94a3b8;"><i class="fas fa-plug"></i></div>
-                            <span>Accessories</span>
-                        </button>
+                    <!-- Build PC Category Tabs -->
+                    <div class="build-cat-tabs" id="buildCatNav">
+                        <button class="build-tab active" data-buildcat="All" onclick="filterBuildComponent('All', this)">All</button>
+                        <button class="build-tab" data-buildcat="CPU" onclick="filterBuildComponent('CPU', this)">CPU</button>
+                        <button class="build-tab" data-buildcat="Motherboard" onclick="filterBuildComponent('Motherboard', this)">Motherboard</button>
+                        <button class="build-tab" data-buildcat="RAM" onclick="filterBuildComponent('RAM', this)">RAM</button>
+                        <button class="build-tab" data-buildcat="GPU" onclick="filterBuildComponent('GPU', this)">GPU</button>
+                        <button class="build-tab" data-buildcat="Storage" onclick="filterBuildComponent('Storage', this)">SSD</button>
+                        <button class="build-tab" data-buildcat="PSU" onclick="filterBuildComponent('PSU', this)">PSU</button>
+                        <button class="build-tab" data-buildcat="Case" onclick="filterBuildComponent('Case', this)">Case</button>
+                        <button class="build-tab" data-buildcat="AIO Cooling" onclick="filterBuildComponent('AIO Cooling', this)">AIO Cooling</button>
+                        <button class="build-tab" data-buildcat="Cooling" onclick="filterBuildComponent('Cooling', this)">Air Cooling</button>
+                        <button class="build-tab" data-buildcat="Monitor" onclick="filterBuildComponent('Monitor', this)">Monitor</button>
+                        <button class="build-tab" data-buildcat="Keyboard" onclick="filterBuildComponent('Keyboard', this)">Keyboard</button>
+                        <button class="build-tab" data-buildcat="Mouse" onclick="filterBuildComponent('Mouse', this)">Mouse</button>
+                        <button class="build-tab" data-buildcat="Accessories" onclick="filterBuildComponent('Accessories', this)">Accessories</button>
                     </div>
                     <div class="components-list" id="componentsList">
                         <!-- Component groups are inserted by JS -->

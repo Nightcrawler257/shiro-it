@@ -1349,16 +1349,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.scrollToComponent = function(category) {
-    const id = "comp-group-" + category.replace(/\s+/g, "-");
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      // Highlight the active nav button
-      document.querySelectorAll(".build-cat-btn").forEach(btn => btn.classList.remove("active"));
-      const activeBtn = document.querySelector(`.build-cat-btn[onclick="scrollToComponent('${category}')"]`);
-      if (activeBtn) activeBtn.classList.add("active");
-    }
+  window.filterBuildComponent = function(category, clickedBtn) {
+    // Update active tab
+    document.querySelectorAll(".build-tab").forEach(btn => btn.classList.remove("active"));
+    if (clickedBtn) clickedBtn.classList.add("active");
+
+    // Show/hide component groups in place — no scroll
+    const groups = document.querySelectorAll(".component-group");
+    groups.forEach(group => {
+      if (category === "All") {
+        group.style.display = "";
+      } else {
+        const groupId = group.id || "";
+        const groupCat = groupId.replace("comp-group-", "").replace(/-/g, " ");
+        group.style.display = (groupCat === category) ? "" : "none";
+      }
+    });
   };
 
   window.toggleInline = function(category) {
