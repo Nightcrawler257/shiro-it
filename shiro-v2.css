@@ -2534,15 +2534,14 @@ body.light .nav-menu > li > a.active {
 }
 
 .build-summary {
+  z-index: 90;
+}
+.summary-card {
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 100px !important;
-  z-index: 100 !important;
-  align-self: start;
-  will-change: transform;
-}
-.summary-card {
   padding: 2rem;
+  will-change: transform;
 }
 .summary-card h3 {
   margin-bottom: 1.25rem;
