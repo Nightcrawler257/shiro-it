@@ -2336,7 +2336,11 @@ function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
   toast.style.cursor = "pointer"; // Make it look clickable
-  toast.innerHTML = `<i class="${icon}"></i><span>${message}</span> <small style="margin-left:auto; opacity:0.7; font-size:0.7rem; text-decoration:underline;">View Cart</small>`;
+  toast.innerHTML = `
+    <i class="${icon}"></i>
+    <span class="toast-msg">${message}</span>
+    <div class="toast-action">View Cart <i class="fas fa-arrow-right"></i></div>
+  `;
   
   // Click to open cart
   toast.onclick = () => {
