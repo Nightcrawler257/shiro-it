@@ -590,6 +590,27 @@ body.light .nav-menu > li > a.active {
   color: var(--text-secondary);
   transition: var(--transition);
 }
+.build-tab {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.build-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+.build-tab.active {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent);
+  font-weight: 600;
+}
 .nav-menu > li > a:hover,
 .nav-menu > li > a.active {
   color: white;
@@ -2267,9 +2288,10 @@ body.light .nav-menu > li > a.active {
   border-radius: 8px;
   color: var(--text-secondary);
   transition: var(--transition);
-  cursor: pointer;
-  background: none;
+  background: transparent;
   border: none;
+  cursor: pointer;
+  white-space: nowrap;
 }
 .build-tab:hover {
   background: rgba(255, 255, 255, 0.05);
