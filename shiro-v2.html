@@ -1689,51 +1689,6 @@
       </div>
     </div>
 
-    <!-- Global Cart Sidebar/Modal -->
-    <div class="cart-sidebar-overlay" id="cartOverlay">
-        <div class="cart-sidebar">
-            <div class="cart-header">
-                <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
-                <button class="cart-close" id="cartCloseBtn"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="cart-body" id="cartBody">
-                <!-- Cart items injected by JS -->
-                <div class="cart-empty">
-                    <i class="fas fa-shopping-basket"></i>
-                    <p>Your cart is empty</p>
-                    <a href="#shop" data-page="shop" class="btn btn-secondary btn-sm">Browse Shop</a>
-                </div>
-            </div>
-            <div class="cart-footer">
-                <div class="cart-total">
-                    <span>Grand Total</span>
-                    <strong id="cartGrandTotal">RM 0</strong>
-                </div>
-                <button id="checkoutBtn" class="btn btn-whatsapp checkout-btn" onclick="openCheckoutModal()">
-                    <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
-                </button>
-            </div>
-        </div>
-    </div>
-    <script src="shiro-v2.js?v=7"></script>
-    
-    <!-- Festival Animations: dynamically loaded based on Site Settings in Admin -->
-    <script id="festivalLoader">
-      (async () => {
-        try {
-          const backendBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
-            ? 'http://localhost:5000' : window.location.origin;
-          const res = await fetch(backendBase + '/api/site_settings');
-          const d = await res.json();
-          if (d.success && d.data && d.data.active_festival && d.data.active_festival !== 'none') {
-            const s = document.createElement('script');
-            s.src = 'festivals/' + d.data.active_festival + '.js';
-            document.body.appendChild(s);
-          }
-        } catch(e) { console.log('Festival settings not loaded (backend may be offline).'); }
-      })();
-    </script>
-    <!-- ===== CHECK STATUS MODAL ===== -->
     <div class="builder-modal-overlay" id="checkStatusModal" style="z-index:10001;">
         <div class="builder-modal" style="max-width:440px;">
             <div class="builder-modal-header" style="background:linear-gradient(135deg,rgba(56,189,248,0.08),transparent);">
@@ -1754,5 +1709,50 @@
             </div>
         </div>
     </div>
+
+    <!-- Global Cart Sidebar/Modal -->
+    <div class="cart-sidebar-overlay" id="cartOverlay">
+        <div class="cart-sidebar">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+                <button class="cart-close" id="cartCloseBtn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-body" id="cartBody">
+                <!-- Cart items injected by JS -->
+                <div class="cart-empty">
+                    <i class="fas fa-shopping-basket"></i>
+                    <p>Your cart is empty</p>
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('cartCloseBtn').click(); navigateTo('shop');">Browse Shop</button>
+                </div>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Grand Total</span>
+                    <strong id="cartGrandTotal">RM 0</strong>
+                </div>
+                <button id="checkoutBtn" class="btn btn-whatsapp checkout-btn" onclick="openCheckoutModal()">
+                    <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="shiro-v2.js?v=8"></script>
+    
+    <!-- Festival Animations: dynamically loaded based on Site Settings in Admin -->
+    <script id="festivalLoader">
+      (async () => {
+        try {
+          const backendBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+            ? 'http://localhost:5000' : window.location.origin;
+          const res = await fetch(backendBase + '/api/site_settings');
+          const d = await res.json();
+          if (d.success && d.data && d.data.active_festival && d.data.active_festival !== 'none') {
+            const s = document.createElement('script');
+            s.src = 'festivals/' + d.data.active_festival + '.js';
+            document.body.appendChild(s);
+          }
+        } catch(e) { console.log('Festival settings not loaded (backend may be offline).'); }
+      })();
+    </script>
 </body>
 </html>

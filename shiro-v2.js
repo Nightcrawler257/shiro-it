@@ -11,6 +11,34 @@ function resolveImagePath(path) {
   return API_BASE + cleanPath;
 }
 
+let globalCart = [];
+try {
+  const saved = localStorage.getItem("shiro-global-cart");
+  if (saved) globalCart = JSON.parse(saved);
+} catch (e) {
+  console.warn("Could not parse global cart:", e);
+  globalCart = [];
+}
+
+window.openCheckoutModal = function() {
+  if (globalCart.length === 0) {
+    if (typeof showToast === 'function') showToast("Your cart is empty", "error");
+    else alert("Your cart is empty");
+    return;
+  }
+  const overlay = document.getElementById('checkoutInfoOverlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    const form = document.getElementById('checkoutInfoForm');
+    if (form) form.reset();
+    const ciMsg = document.getElementById('ci-msg');
+    if (ciMsg) { ciMsg.style.display = 'none'; ciMsg.textContent = ''; }
+  } else {
+    console.error("checkoutInfoOverlay not found");
+    alert("Checkout system is currently unavailable. Please try again or contact us via WhatsApp directly.");
+  }
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   /* ===== SPA NAVIGATION ===== */
   const pages = document.querySelectorAll(".page");
@@ -976,14 +1004,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let inventoryData = [];
   let cartItems = []; // Current selection in PC Builder
-  let globalCart = [];
-  try {
-    const saved = localStorage.getItem("shiro-global-cart");
-    if (saved) globalCart = JSON.parse(saved);
-  } catch (e) {
-    console.warn("Could not parse global cart:", e);
-    globalCart = [];
-  }
 
   const MANDATORY_COMPONENTS = ["CPU", "Motherboard", "RAM", "Storage", "GPU", "Case", "PSU"];
   const COOLING_COMPONENTS = ["Cooling", "AIO Cooling"];
@@ -1725,22 +1745,6 @@ document.addEventListener("DOMContentLoaded", () => {
     message += `${totalLabel}${total.toLocaleString()}${outro}`;
     return { message, total };
   }
-
-  window.openCheckoutModal = function() {
-    if (globalCart.length === 0) {
-      showToast("Your cart is empty", "error");
-      return;
-    }
-    const overlay = document.getElementById('checkoutInfoOverlay');
-    if (overlay) {
-      overlay.style.display = 'flex';
-      document.getElementById('checkoutInfoForm').reset();
-      const ciMsg = document.getElementById('ci-msg');
-      if (ciMsg) { ciMsg.style.display = 'none'; ciMsg.textContent = ''; }
-    } else {
-      console.error("checkoutInfoOverlay not found");
-    }
-  };
 
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', openCheckoutModal);
