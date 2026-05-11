@@ -1174,7 +1174,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       ? `RM ${Number(pc.price).toLocaleString()}` 
                       : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
                   </div>
-                  <button onclick="openServiceBooking('${pc.name}')" class="btn btn-primary tier-btn" style="width: 100%;">Order Now <i class="fas fa-shopping-cart"></i></button>
+                  <button onclick="fillBuilderFromPrebuilt('${pc.name}')" class="btn btn-primary tier-btn" style="width: 100%;">Order Now <i class="fas fa-shopping-cart"></i></button>
                 </div>
               </div>`;
           } else {
@@ -1195,7 +1195,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>
                   ${discountHtml}
                   <div class="tier-specs">${specsHtml}</div>
-                  <button onclick="openServiceBooking('${pc.name}')" class="btn btn-primary tier-btn">Order Now <i class="fas fa-shopping-cart"></i></button>
+                  <button onclick="fillBuilderFromPrebuilt('${pc.name}')" class="btn btn-primary tier-btn">Order Now <i class="fas fa-shopping-cart"></i></button>
                 </div>
               </div>`;
           }
@@ -1374,6 +1374,72 @@ document.addEventListener("DOMContentLoaded", () => {
       componentsList.appendChild(group);
     });
   }
+
+  window.fillBuilderFromPrebuilt = function(pcName) {
+    const pc = allPrebuiltPCs.find(p => p.name === pcName);
+    if (!pc) return;
+
+    // Reset current build
+    cartItems = [];
+    
+    // Parse specs - assuming they are JSON strings or arrays
+    let specs = [];
+    try {
+      specs = typeof pc.specs === 'string' ? JSON.parse(pc.specs) : pc.specs;
+    } catch(e) {
+      console.warn("Failed to parse specs for", pcName);
+      specs = [];
+    }
+
+    if (specs && specs.length > 0) {
+      specs.forEach(specStr => {
+        // Spec format: "Category: Name"
+        const parts = specStr.split(':');
+        if (parts.length >= 2) {
+          const category = parts[0].trim();
+          const itemName = parts[1].trim();
+          
+          // Map category names if needed
+          let searchCat = category;
+          if (category === 'Processor') searchCat = 'CPU';
+          if (category === 'Graphics') searchCat = 'GPU';
+          if (category === 'Storage') searchCat = 'Storage';
+          if (category === 'Power Supply') searchCat = 'PSU';
+          if (category === 'Case') searchCat = 'Case';
+          if (category === 'AIO Cooling') searchCat = 'AIO Cooling';
+          if (category === 'Air Cooling') searchCat = 'Cooling';
+
+          // Search in inventory
+          const match = inventoryData.find(inv => {
+            const catMatch = inv.category.toLowerCase() === searchCat.toLowerCase();
+            const nameMatch = inv.name.toLowerCase().includes(itemName.toLowerCase()) || itemName.toLowerCase().includes(inv.name.toLowerCase());
+            return catMatch && nameMatch;
+          });
+
+          if (match) {
+            cartItems.push(match);
+          }
+        }
+      });
+    }
+
+    // Refresh UI
+    renderBuilder();
+    updateSummary();
+    
+    // Navigate to Build PC page
+    navigateTo('build-pc-services');
+    
+    // Smooth scroll to builder
+    setTimeout(() => {
+      const builderEl = document.getElementById('componentsList');
+      if (builderEl) {
+        builderEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+    
+    if (typeof showToast === 'function') showToast(`${pcName} configuration loaded into Builder!`, "success");
+  };
 
   window.filterBuildComponent = function(category, clickedBtn) {
     // Update active tab
