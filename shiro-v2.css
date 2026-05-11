@@ -2242,18 +2242,23 @@ body.light .nav-menu > li > a.active {
 /* ========== BUILD PC — Category Tabs (simple, like Store) ========== */
 .build-cat-tabs {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
   /* Sticky behavior */
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: 92px !important;
-  z-index: 100;
+  top: var(--nav-height) !important;
+  z-index: 101 !important;
   background: var(--bg-primary);
   padding-top: 1rem;
+}
+.build-cat-tabs::-webkit-scrollbar {
+  display: none;
 }
 .build-tab {
   padding: 0.5rem 1rem;
@@ -2450,12 +2455,6 @@ body.light .nav-menu > li > a.active {
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: 2rem;
-  /* align-items: stretch by default allows the sidebar column to span the full height */
-}
-.build-left-col {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
 }
 .components-list {
   display: flex;
@@ -2540,7 +2539,7 @@ body.light .nav-menu > li > a.active {
 .summary-card {
   position: -webkit-sticky !important;
   position: sticky !important;
-  top: 100px !important;
+  top: calc(var(--nav-height) + 85px) !important;
   padding: 2rem;
   will-change: transform;
 }
