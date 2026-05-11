@@ -950,26 +950,25 @@
 
             <section class="section">
                     <!-- Build PC Category Tabs -->
-                    <div class="container" style="margin-bottom: 0;">
+                    <div class="container">
                         <div class="build-cat-tabs" id="buildCatNav">
-                            <button class="build-tab active" data-buildcat="All" onclick="filterBuildComponent('All', this)">All</button>
-                            <button class="build-tab" data-buildcat="CPU" onclick="filterBuildComponent('CPU', this)">CPU</button>
-                            <button class="build-tab" data-buildcat="Motherboard" onclick="filterBuildComponent('Motherboard', this)">Motherboard</button>
-                            <button class="build-tab" data-buildcat="RAM" onclick="filterBuildComponent('RAM', this)">RAM</button>
-                            <button class="build-tab" data-buildcat="GPU" onclick="filterBuildComponent('GPU', this)">GPU</button>
-                            <button class="build-tab" data-buildcat="Storage" onclick="filterBuildComponent('Storage', this)">SSD</button>
-                            <button class="build-tab" data-buildcat="PSU" onclick="filterBuildComponent('PSU', this)">PSU</button>
-                            <button class="build-tab" data-buildcat="Case" onclick="filterBuildComponent('Case', this)">Case</button>
-                            <button class="build-tab" data-buildcat="AIO Cooling" onclick="filterBuildComponent('AIO Cooling', this)">AIO Cooling</button>
-                            <button class="build-tab" data-buildcat="Cooling" onclick="filterBuildComponent('Cooling', this)">Air Cooling</button>
-                            <button class="build-tab" data-buildcat="Monitor" onclick="filterBuildComponent('Monitor', this)">Monitor</button>
-                            <button class="build-tab" data-buildcat="Keyboard" onclick="filterBuildComponent('Keyboard', this)">Keyboard</button>
-                            <button class="build-tab" data-buildcat="Mouse" onclick="filterBuildComponent('Mouse', this)">Mouse</button>
-                            <button class="build-tab" data-buildcat="Accessories" onclick="filterBuildComponent('Accessories', this)">Accessories</button>
+                            <button class="build-tab active" data-buildcat="All" onclick="filterBuildComponent('All', this)" data-translate="cat_all">All</button>
+                            <button class="build-tab" data-buildcat="CPU" onclick="filterBuildComponent('CPU', this)" data-translate="cat_cpu">CPU</button>
+                            <button class="build-tab" data-buildcat="Motherboard" onclick="filterBuildComponent('Motherboard', this)" data-translate="cat_motherboard">Motherboard</button>
+                            <button class="build-tab" data-buildcat="RAM" onclick="filterBuildComponent('RAM', this)" data-translate="cat_ram">RAM</button>
+                            <button class="build-tab" data-buildcat="GPU" onclick="filterBuildComponent('GPU', this)" data-translate="cat_gpu">GPU</button>
+                            <button class="build-tab" data-buildcat="Storage" onclick="filterBuildComponent('Storage', this)" data-translate="cat_storage">SSD</button>
+                            <button class="build-tab" data-buildcat="PSU" onclick="filterBuildComponent('PSU', this)" data-translate="cat_psu">PSU</button>
+                            <button class="build-tab" data-buildcat="Case" onclick="filterBuildComponent('Case', this)" data-translate="cat_case">Case</button>
+                            <button class="build-tab" data-buildcat="AIO Cooling" onclick="filterBuildComponent('AIO Cooling', this)" data-translate="cat_aio">AIO Cooling</button>
+                            <button class="build-tab" data-buildcat="Cooling" onclick="filterBuildComponent('Cooling', this)" data-translate="cat_cooling">Air Cooling</button>
+                            <button class="build-tab" data-buildcat="Monitor" onclick="filterBuildComponent('Monitor', this)" data-translate="cat_monitor">Monitor</button>
+                            <button class="build-tab" data-buildcat="Keyboard" onclick="filterBuildComponent('Keyboard', this)" data-translate="cat_keyboard">Keyboard</button>
+                            <button class="build-tab" data-buildcat="Mouse" onclick="filterBuildComponent('Mouse', this)" data-translate="cat_mouse">Mouse</button>
+                            <button class="build-tab" data-buildcat="Accessories" onclick="filterBuildComponent('Accessories', this)" data-translate="cat_accessories">Accessories</button>
                         </div>
-                    </div>
 
-                    <div class="container build-layout" style="padding-top: 0;">
+                        <div class="build-layout" style="padding-top: 0;">
                     <div class="components-list" id="componentsList">
                         <!-- Component groups are inserted by JS -->
                     </div>

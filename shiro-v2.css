@@ -2242,7 +2242,7 @@ body.light .nav-menu > li > a.active {
 /* ========== BUILD PC — Category Tabs (simple, like Store) ========== */
 .build-cat-tabs {
   display: flex;
-  gap: 0.25rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
@@ -2253,6 +2253,7 @@ body.light .nav-menu > li > a.active {
   z-index: 100;
   background: var(--bg-primary);
   padding-top: 1rem;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
 }
 .build-tab {
   padding: 0.5rem 1rem;
@@ -2529,7 +2530,8 @@ body.light .nav-menu > li > a.active {
 
 .build-summary {
   position: sticky;
-  top: 6rem;
+  top: calc(var(--nav-height) + 120px);
+  z-index: 90;
 }
 .summary-card {
   padding: 2rem;
