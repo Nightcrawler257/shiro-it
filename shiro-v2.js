@@ -1665,7 +1665,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addToGlobalCart = function(item) {
     console.log("Adding item to cart:", item);
-    globalCart.push(item);
+    
+    // Check if item already exists (and it's not a unique build)
+    const existingIndex = globalCart.findIndex(i => i.id === item.id && i.type !== 'build');
+    
+    if (existingIndex > -1) {
+      globalCart[existingIndex].quantity = (globalCart[existingIndex].quantity || 1) + 1;
+    } else {
+      item.quantity = 1;
+      globalCart.push(item);
+    }
+    
     localStorage.setItem("shiro-global-cart", JSON.stringify(globalCart));
     updateCartBadge();
     if (typeof showToast === 'function') showToast(`${item.name} added to cart!`, "success");
@@ -1748,7 +1758,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     globalCart.forEach((item, index) => {
-      grandTotal += item.price;
+      const qty = item.quantity || 1;
+      const itemTotal = item.price * qty;
+      grandTotal += itemTotal;
+      
       const el = document.createElement('div');
       el.className = 'cart-item';
       
@@ -1761,7 +1774,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       el.innerHTML = `
         <div class="cart-item-header">
-          <div>
+          <div style="flex:1;">
             <div class="cart-item-name">${item.name}</div>
             <div class="cart-item-price">RM ${item.price.toLocaleString()}</div>
           </div>
@@ -1770,12 +1783,35 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         ${itemsList}
+        <div class="cart-item-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+          <div class="qty-control">
+            <button onclick="updateCartQty(${index}, -1)"><i class="fas fa-minus"></i></button>
+            <span class="qty-num">${qty}</span>
+            <button onclick="updateCartQty(${index}, 1)"><i class="fas fa-plus"></i></button>
+          </div>
+          <div class="cart-item-subtotal" style="font-weight:700; color:white;">RM ${itemTotal.toLocaleString()}</div>
+        </div>
       `;
       cartBody.appendChild(el);
     });
 
     cartGrandTotal.textContent = "RM " + grandTotal.toLocaleString();
   }
+
+  window.updateCartQty = function(index, delta) {
+    if (globalCart[index]) {
+      const newQty = (globalCart[index].quantity || 1) + delta;
+      if (newQty > 0) {
+        globalCart[index].quantity = newQty;
+      } else {
+        // If 0, maybe remove? For now keep min 1 or user can use trash icon
+        globalCart.splice(index, 1);
+      }
+      localStorage.setItem("shiro-global-cart", JSON.stringify(globalCart));
+      renderGlobalCart();
+      updateCartBadge();
+    }
+  };
 
   window.removeFromGlobalCart = function(index) {
     globalCart.splice(index, 1);
