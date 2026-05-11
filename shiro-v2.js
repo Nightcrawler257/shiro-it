@@ -21,20 +21,23 @@ try {
 }
 
 window.openCheckoutModal = function() {
+  console.log("openCheckoutModal called. Current cart size:", globalCart.length);
   if (globalCart.length === 0) {
+    console.warn("Cart is empty, cannot open checkout modal.");
     if (typeof showToast === 'function') showToast("Your cart is empty", "error");
     else alert("Your cart is empty");
     return;
   }
   const overlay = document.getElementById('checkoutInfoOverlay');
   if (overlay) {
+    console.log("Showing checkout overlay.");
     overlay.classList.add('show');
     const form = document.getElementById('checkoutInfoForm');
     if (form) form.reset();
     const ciMsg = document.getElementById('ci-msg');
     if (ciMsg) { ciMsg.style.display = 'none'; ciMsg.textContent = ''; }
   } else {
-    console.error("checkoutInfoOverlay not found");
+    console.error("checkoutInfoOverlay not found in the DOM");
     alert("Checkout system is currently unavailable. Please try again or contact us via WhatsApp directly.");
   }
 };
@@ -1609,10 +1612,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.addToGlobalCart = function(item) {
+    console.log("Adding item to cart:", item);
     globalCart.push(item);
     localStorage.setItem("shiro-global-cart", JSON.stringify(globalCart));
     updateCartBadge();
-    showToast(`${item.name} added to cart!`, "success");
+    if (typeof showToast === 'function') showToast(`${item.name} added to cart!`, "success");
     renderGlobalCart();
   };
 
@@ -1746,9 +1750,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return { message, total };
   }
 
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', openCheckoutModal);
-  }
+  // Note: checkoutBtn listener removed as we use onclick in HTML to avoid double-triggering
 
   // Handle checkout info form submission
   const checkoutInfoForm = document.getElementById('checkoutInfoForm');
