@@ -2250,10 +2250,10 @@ body.light .nav-menu > li > a.active {
   /* Sticky behavior */
   position: sticky;
   top: var(--nav-height);
-  z-index: 100;
+  z-index: 101;
   background: var(--bg-primary);
   padding-top: 1rem;
-  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px -15px rgba(0,0,0,0.7);
 }
 .build-tab {
   padding: 0.5rem 1rem;
@@ -2530,8 +2530,9 @@ body.light .nav-menu > li > a.active {
 
 .build-summary {
   position: sticky;
-  top: calc(var(--nav-height) + 120px);
+  top: calc(var(--nav-height) + 100px);
   z-index: 90;
+  align-self: start;
 }
 .summary-card {
   padding: 2rem;
