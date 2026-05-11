@@ -1726,15 +1726,24 @@ document.addEventListener("DOMContentLoaded", () => {
     return { message, total };
   }
 
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener('click', () => {
-      if (globalCart.length === 0) return;
-      // Open the info modal instead of going straight to WhatsApp
-      document.getElementById('checkoutInfoOverlay').style.display = 'flex';
+  window.openCheckoutModal = function() {
+    if (globalCart.length === 0) {
+      showToast("Your cart is empty", "error");
+      return;
+    }
+    const overlay = document.getElementById('checkoutInfoOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
       document.getElementById('checkoutInfoForm').reset();
       const ciMsg = document.getElementById('ci-msg');
       if (ciMsg) { ciMsg.style.display = 'none'; ciMsg.textContent = ''; }
-    });
+    } else {
+      console.error("checkoutInfoOverlay not found");
+    }
+  };
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', openCheckoutModal);
   }
 
   // Handle checkout info form submission

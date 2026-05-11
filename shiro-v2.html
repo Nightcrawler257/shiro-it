@@ -1709,7 +1709,7 @@
                     <span>Grand Total</span>
                     <strong id="cartGrandTotal">RM 0</strong>
                 </div>
-                <button id="checkoutBtn" class="btn btn-whatsapp checkout-btn">
+                <button id="checkoutBtn" class="btn btn-whatsapp checkout-btn" onclick="openCheckoutModal()">
                     <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
                 </button>
             </div>
@@ -1733,9 +1733,6 @@
         } catch(e) { console.log('Festival settings not loaded (backend may be offline).'); }
       })();
     </script>
-</body>
-
-</html>
     <!-- ===== CHECK STATUS MODAL ===== -->
     <div class="builder-modal-overlay" id="checkStatusModal" style="z-index:10001;">
         <div class="builder-modal" style="max-width:440px;">
@@ -1757,3 +1754,5 @@
             </div>
         </div>
     </div>
+</body>
+</html>
