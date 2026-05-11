@@ -2244,10 +2244,16 @@ body.light .nav-menu > li > a.active {
   display: flex;
   gap: 0.25rem;
   flex-wrap: wrap;
-  padding-bottom: 1.25rem;
+  padding-bottom: 1rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
   grid-column: 1 / -1;
+  /* Sticky behavior */
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 100;
+  background: var(--bg-primary);
+  padding-top: 1rem;
 }
 .build-tab {
   padding: 0.5rem 1rem;
