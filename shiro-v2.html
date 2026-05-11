@@ -579,31 +579,85 @@
             <!-- Filters -->
             <div class="shop-filters">
                 <div class="container filters-inner">
-                    <div class="category-tabs" id="categoryTabs">
-                        <button class="cat-tab active" data-category="All">All Items</button>
-                        <button class="cat-tab" data-category="CPU">CPUs</button>
-                        <button class="cat-tab" data-category="Motherboard">Motherboards</button>
-                        <button class="cat-tab" data-category="RAM">RAM</button>
-                        <button class="cat-tab" data-category="RAM Laptop">RAM (Laptop)</button>
-                        <button class="cat-tab" data-category="GPU">Graphics Cards</button>
-                        <button class="cat-tab" data-category="Storage">SSD</button>
-                        <button class="cat-tab" data-category="SSD Laptop">SSD (Laptop)</button>
-                        <button class="cat-tab" data-category="HDD">HDD</button>
-                        <button class="cat-tab" data-category="Case">Cases</button>
-                        <button class="cat-tab" data-category="PSU">Power Supplies</button>
-                        <button class="cat-tab" data-category="AIO Cooling">AIO Cooling</button>
-                        <button class="cat-tab" data-category="Cooling">Air Cooling</button>
-                        <button class="cat-tab" data-category="Monitor">Monitors</button>
-                        <button class="cat-tab" data-category="Keyboard">Keyboards</button>
-                        <button class="cat-tab" data-category="Mouse">Mouse</button>
-                        <button class="cat-tab" data-category="Accessories">Accessories</button>
-                    </div>
-                    <select class="sort-select" id="sortSelect">
-                        <option value="featured">Featured</option>
-                        <option value="price-low">Price: Low &rarr; High</option>
-                        <option value="price-high">Price: High &rarr; Low</option>
-                    </select>
-                </div>
+            <!-- Category Icon Grid -->
+            <div class="shop-cat-grid" id="categoryTabs">
+                <button class="shop-cat-card active" data-category="All">
+                    <div class="shop-cat-icon" style="color:#ef4444;"><i class="fas fa-th-large"></i></div>
+                    <span>All</span>
+                </button>
+                <button class="shop-cat-card" data-category="CPU">
+                    <div class="shop-cat-icon" style="color:#3b82f6;"><i class="fas fa-microchip"></i></div>
+                    <span>CPU</span>
+                </button>
+                <button class="shop-cat-card" data-category="Motherboard">
+                    <div class="shop-cat-icon" style="color:#8b5cf6;"><i class="fas fa-server"></i></div>
+                    <span>Motherboard</span>
+                </button>
+                <button class="shop-cat-card" data-category="GPU">
+                    <div class="shop-cat-icon" style="color:#f59e0b;"><i class="fas fa-tv"></i></div>
+                    <span>GPU</span>
+                </button>
+                <button class="shop-cat-card" data-category="RAM">
+                    <div class="shop-cat-icon" style="color:#10b981;"><i class="fas fa-memory"></i></div>
+                    <span>RAM</span>
+                </button>
+                <button class="shop-cat-card" data-category="RAM Laptop">
+                    <div class="shop-cat-icon" style="color:#06b6d4;"><i class="fas fa-laptop"></i></div>
+                    <span>RAM Laptop</span>
+                </button>
+                <button class="shop-cat-card" data-category="Storage">
+                    <div class="shop-cat-icon" style="color:#f97316;"><i class="fas fa-hdd"></i></div>
+                    <span>SSD</span>
+                </button>
+                <button class="shop-cat-card" data-category="SSD Laptop">
+                    <div class="shop-cat-icon" style="color:#ec4899;"><i class="fas fa-database"></i></div>
+                    <span>SSD Laptop</span>
+                </button>
+                <button class="shop-cat-card" data-category="HDD">
+                    <div class="shop-cat-icon" style="color:#a78bfa;"><i class="fas fa-compact-disc"></i></div>
+                    <span>HDD</span>
+                </button>
+                <button class="shop-cat-card" data-category="PSU">
+                    <div class="shop-cat-icon" style="color:#ef4444;"><i class="fas fa-bolt"></i></div>
+                    <span>PSU</span>
+                </button>
+                <button class="shop-cat-card" data-category="Case">
+                    <div class="shop-cat-icon" style="color:#64748b;"><i class="fas fa-cube"></i></div>
+                    <span>Case</span>
+                </button>
+                <button class="shop-cat-card" data-category="AIO Cooling">
+                    <div class="shop-cat-icon" style="color:#38bdf8;"><i class="fas fa-wind"></i></div>
+                    <span>AIO Cooling</span>
+                </button>
+                <button class="shop-cat-card" data-category="Cooling">
+                    <div class="shop-cat-icon" style="color:#34d399;"><i class="fas fa-fan"></i></div>
+                    <span>Air Cooling</span>
+                </button>
+                <button class="shop-cat-card" data-category="Monitor">
+                    <div class="shop-cat-icon" style="color:#818cf8;"><i class="fas fa-desktop"></i></div>
+                    <span>Monitor</span>
+                </button>
+                <button class="shop-cat-card" data-category="Keyboard">
+                    <div class="shop-cat-icon" style="color:#f472b6;"><i class="fas fa-keyboard"></i></div>
+                    <span>Keyboard</span>
+                </button>
+                <button class="shop-cat-card" data-category="Mouse">
+                    <div class="shop-cat-icon" style="color:#fb923c;"><i class="fas fa-mouse"></i></div>
+                    <span>Mouse</span>
+                </button>
+                <button class="shop-cat-card" data-category="Accessories">
+                    <div class="shop-cat-icon" style="color:#94a3b8;"><i class="fas fa-plug"></i></div>
+                    <span>Accessories</span>
+                </button>
+            </div>
+            <!-- Sort + Brand Filters Row -->
+            <div class="shop-sort-row container">
+                <select class="sort-select" id="sortSelect">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low &rarr; High</option>
+                    <option value="price-high">Price: High &rarr; Low</option>
+                </select>
+            </div>
                 <!-- Brand Filter Row — appears below category tabs when a category has brand options -->
                 <div class="brand-filter-row" id="brandFilterRow" style="display:none;">
                     <div class="container">

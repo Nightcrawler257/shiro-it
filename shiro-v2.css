@@ -2198,46 +2198,71 @@ body.light .nav-menu > li > a.active {
   color: var(--text-secondary);
 }
 
-/* ========== SHOP ========== */
+/* ========== SHOP CATEGORY ICON GRID ========== */
 .shop-filters {
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-card);
+  padding: 1rem 0 0;
 }
-.filters-inner {
+.shop-cat-grid {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   padding: 1rem 1.5rem;
-  gap: 1rem;
-  flex-wrap: wrap;
+  justify-content: flex-start;
 }
-.category-tabs {
+.shop-cat-card {
   display: flex;
-  gap: 0.25rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.85rem;
+  min-width: 68px;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
 }
-.cat-tab {
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  border-radius: 8px;
-  color: var(--text-secondary);
-  transition: var(--transition);
+.shop-cat-card:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
 }
-.cat-tab:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+.shop-cat-card.active {
+  background: rgba(239,68,68,0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(239,68,68,0.2);
 }
-.cat-tab.active {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--accent);
+.shop-cat-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+.shop-cat-card:hover .shop-cat-icon {
+  transform: scale(1.15);
+}
+.shop-cat-card span {
+  font-size: 0.7rem;
   font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
 }
-.sort-select {
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  font-size: 0.85rem;
+.shop-cat-card.active span {
+  color: var(--accent);
 }
+.shop-sort-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 1.5rem 0.75rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 0;
+}
+/* Keep old .cat-tab for JS compatibility — hidden visually */
+.cat-tab { display: none; }
 
 /* Brand filter row — full-width blue-themed row below category tabs */
 .brand-filter-row {

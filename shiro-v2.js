@@ -862,7 +862,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const productsGrid = document.getElementById("productsGrid");
   const emptyState = document.getElementById("emptyState");
-  const categoryTabs = document.querySelectorAll(".cat-tab");
+  const categoryTabs = document.querySelectorAll(".cat-tab, .shop-cat-card");
   const sortSelect = document.getElementById("sortSelect");
   let activeCategory = "All";
   let activeBrand    = "All";
