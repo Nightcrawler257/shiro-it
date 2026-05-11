@@ -2335,12 +2335,23 @@ function showToast(message, type = "success") {
     type === "success" ? "fas fa-check-circle" : "fas fa-exclamation-circle";
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
-  toast.innerHTML = `<i class="${icon}"></i><span>${message}</span>`;
+  toast.style.cursor = "pointer"; // Make it look clickable
+  toast.innerHTML = `<i class="${icon}"></i><span>${message}</span> <small style="margin-left:auto; opacity:0.7; font-size:0.7rem; text-decoration:underline;">View Cart</small>`;
+  
+  // Click to open cart
+  toast.onclick = () => {
+    const cartOpenBtn = document.getElementById('cartOpenBtn');
+    if (cartOpenBtn) cartOpenBtn.click();
+    toast.remove();
+  };
+
   container.appendChild(toast);
   setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transition = "opacity 0.4s";
-    setTimeout(() => toast.remove(), 400);
+    if (toast.parentNode) {
+      toast.style.opacity = "0";
+      toast.style.transition = "opacity 0.4s";
+      setTimeout(() => toast.remove(), 400);
+    }
   }, 5000);
 }
 
