@@ -952,7 +952,7 @@
                     <!-- Build PC Category Tabs -->
                     <div class="container">
                         <div class="build-layout" style="padding-top: 0;">
-                            <div class="components-list" id="componentsList">
+                            <div class="build-left-col">
                                 <div class="build-cat-tabs" id="buildCatNav" style="margin-top: 0; padding-top: 0.5rem; border-top: none;">
                                     <button class="build-tab active" data-buildcat="All" onclick="filterBuildComponent('All', this)" data-translate="cat_all">All</button>
                                     <button class="build-tab" data-buildcat="CPU" onclick="filterBuildComponent('CPU', this)" data-translate="cat_cpu">CPU</button>
@@ -969,7 +969,9 @@
                                     <button class="build-tab" data-buildcat="Mouse" onclick="filterBuildComponent('Mouse', this)" data-translate="cat_mouse">Mouse</button>
                                     <button class="build-tab" data-buildcat="Accessories" onclick="filterBuildComponent('Accessories', this)" data-translate="cat_accessories">Accessories</button>
                                 </div>
-                                <!-- Component groups are inserted by JS -->
+                                <div class="components-list" id="componentsList">
+                                    <!-- Component groups are inserted by JS -->
+                                </div>
                             </div>
                     <div class="build-summary">
                         <div class="card summary-card">

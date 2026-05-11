@@ -2249,7 +2249,7 @@ body.light .nav-menu > li > a.active {
   border-bottom: 1px solid var(--border-color);
   /* Sticky behavior */
   position: sticky;
-  top: calc(var(--nav-height) + 10px);
+  top: 92px;
   z-index: 100;
   background: var(--bg-primary);
   padding-top: 1rem;
@@ -2451,6 +2451,11 @@ body.light .nav-menu > li > a.active {
   gap: 2rem;
   align-items: start;
 }
+.build-left-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
 .components-list {
   display: flex;
   flex-direction: column;
@@ -2529,9 +2534,10 @@ body.light .nav-menu > li > a.active {
 
 .build-summary {
   position: sticky;
-  top: calc(var(--nav-height) + 10px);
+  top: 92px; /* Fixed value just below navbar */
   z-index: 90;
   align-self: start;
+  transition: top 0.3s ease;
 }
 .summary-card {
   padding: 2rem;
