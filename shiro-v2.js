@@ -1393,6 +1393,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  window.scrollBuildNav = function(amount) {
+    const nav = document.getElementById('buildCatNav');
+    if (nav) {
+      nav.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+  };
+
   window.toggleInline = function(category) {
     const el = document.getElementById(`inline-${category}`);
     if (el) {

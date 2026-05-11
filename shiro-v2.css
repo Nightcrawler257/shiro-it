@@ -2239,26 +2239,59 @@ body.light .nav-menu > li > a.active {
   font-size: 0.85rem;
 }
 
-/* ========== BUILD PC — Category Tabs (simple, like Store) ========== */
-.build-cat-tabs {
-  display: flex !important;
-  gap: 1rem;
-  flex-wrap: nowrap !important;
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 1rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
-  /* Sticky behavior */
+.build-nav-wrapper {
   position: -webkit-sticky !important;
   position: sticky !important;
   top: var(--nav-height) !important;
   z-index: 101 !important;
   background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1.5rem;
+}
+.build-cat-tabs {
+  display: flex !important;
+  gap: 1rem;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
   padding-top: 1rem;
+  flex: 1;
 }
 .build-cat-tabs::-webkit-scrollbar {
-  display: none;
+  height: 3px;
+}
+.build-cat-tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+.build-cat-tabs::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+.scroll-arrow {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0 0.5rem;
+  font-size: 1.2rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.scroll-arrow:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+}
+@media (max-width: 768px) {
+  .scroll-arrow {
+    display: none;
+  }
 }
 .build-tab {
   padding: 0.5rem 1rem;
