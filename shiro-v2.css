@@ -468,14 +468,14 @@ h5 {
 #spa-container {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: visible;
 }
 .page {
   display: none;
   opacity: 0;
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: visible;
   transition: opacity 0.3s ease;
 }
 .page.active {
