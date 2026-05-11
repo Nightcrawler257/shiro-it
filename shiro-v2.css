@@ -2247,7 +2247,6 @@ body.light .nav-menu > li > a.active {
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
-  grid-column: 1 / -1;
   /* Sticky behavior */
   position: sticky;
   top: var(--nav-height);
@@ -2557,7 +2556,7 @@ body.light .nav-menu > li > a.active {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  grid-column: 1/-1;
+  grid-column: 1 / -1;
 }
 .summary-name {
   font-size: 0.85rem;
