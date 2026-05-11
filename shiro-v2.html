@@ -1530,11 +1530,11 @@
     </div>
 
     <!-- ===== CHECKOUT INFO MODAL ===== -->
-    <div class="builder-modal-overlay" id="checkoutInfoOverlay" style="display:none; z-index:10000;">
+    <div class="builder-modal-overlay" id="checkoutInfoOverlay" style="z-index:10000;">
         <div class="builder-modal" style="max-width:480px;">
             <div class="builder-modal-header">
                 <h3><i class="fab fa-whatsapp" style="color:#25d366;"></i> Almost there!</h3>
-                <button class="builder-modal-close" onclick="document.getElementById('checkoutInfoOverlay').style.display='none';"><i class="fas fa-times"></i></button>
+                <button class="builder-modal-close" onclick="document.getElementById('checkoutInfoOverlay').classList.remove('show');"><i class="fas fa-times"></i></button>
             </div>
             <div class="builder-modal-body" style="padding:1.5rem;">
                 <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:0.95rem;">Leave your details so we can follow up on your order. Then we'll open WhatsApp with your full build list.</p>

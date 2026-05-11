@@ -28,7 +28,7 @@ window.openCheckoutModal = function() {
   }
   const overlay = document.getElementById('checkoutInfoOverlay');
   if (overlay) {
-    overlay.style.display = 'flex';
+    overlay.classList.add('show');
     const form = document.getElementById('checkoutInfoForm');
     if (form) form.reset();
     const ciMsg = document.getElementById('ci-msg');
@@ -1767,13 +1767,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const { message, total } = buildCartWhatsAppMessage();
 
-      // Build the quote payload
-      const buildItems = globalCart.filter(i => i.type === 'build').flatMap(i => i.items || []);
-      const shopItems  = globalCart.filter(i => i.type === 'product').map(i => ({ name: i.name, price: i.price }));
-      const buildConfig = [...buildItems, ...shopItems];
+      // Robust buildConfig extraction (handles legacy items)
+      const buildConfig = globalCart.flatMap(item => {
+        if (item.type === 'build' && item.items) return item.items;
+        return [{ name: item.name, price: item.price }];
+      });
 
       try {
-        await fetch(API_BASE + '/api/quote', {
+        const response = await fetch(API_BASE + '/api/quote', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1784,12 +1785,21 @@ document.addEventListener("DOMContentLoaded", () => {
             notes: 'Submitted via website cart checkout'
           })
         });
+        
+        const resData = await response.json();
+        if (!response.ok) {
+           console.error('API Error:', resData);
+           throw new Error(resData.error || 'Failed to save quote');
+        }
+        console.log('Quote saved successfully:', resData);
       } catch (err) {
-        console.warn('Quote save failed (non-blocking):', err);
+        console.warn('Quote save failed:', err);
+        // We still continue to WhatsApp even if API fails, but we show a warning
+        if (typeof showToast === 'function') showToast("Note: Offline copy saved, but cloud sync failed.", "warning");
       }
 
-      // Always open WhatsApp regardless of save result
-      document.getElementById('checkoutInfoOverlay').style.display = 'none';
+      // Hide modal
+      document.getElementById('checkoutInfoOverlay').classList.remove('show');
       window.open(`https://wa.me/60177617672?text=${encodeURIComponent(message)}`, '_blank');
 
       // Reset cart after checkout
