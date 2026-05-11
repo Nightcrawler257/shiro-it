@@ -2249,11 +2249,10 @@ body.light .nav-menu > li > a.active {
   border-bottom: 1px solid var(--border-color);
   /* Sticky behavior */
   position: sticky;
-  top: var(--nav-height);
-  z-index: 101;
+  top: calc(var(--nav-height) + 10px);
+  z-index: 100;
   background: var(--bg-primary);
   padding-top: 1rem;
-  box-shadow: 0 10px 30px -15px rgba(0,0,0,0.7);
 }
 .build-tab {
   padding: 0.5rem 1rem;
@@ -2530,7 +2529,7 @@ body.light .nav-menu > li > a.active {
 
 .build-summary {
   position: sticky;
-  top: calc(var(--nav-height) + 100px);
+  top: calc(var(--nav-height) + 10px);
   z-index: 90;
   align-self: start;
 }
