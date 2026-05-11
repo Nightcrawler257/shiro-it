@@ -537,6 +537,9 @@
     transform: translateY(30px) scale(0.98); opacity: 0;
     transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
     overflow: hidden;
+    resize: both; /* Allow manual resizing */
+    min-width: 400px;
+    min-height: 300px;
   }
   .modal-overlay.show .modal { transform: translateY(0) scale(1); opacity: 1; }
   .modal-header {
