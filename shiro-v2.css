@@ -2242,10 +2242,10 @@ body.light .nav-menu > li > a.active {
 /* ========== BUILD PC — Category Tabs (simple, like Store) ========== */
 .build-cat-tabs {
   display: flex;
-  gap: 0.25rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
-  padding-bottom: 1rem;
-  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 2rem;
   border-bottom: 1px solid var(--border-color);
   /* Sticky behavior */
   position: sticky;
@@ -2253,26 +2253,40 @@ body.light .nav-menu > li > a.active {
   z-index: 100;
   background: var(--bg-primary);
   padding-top: 1rem;
+  transition: var(--transition);
 }
 .build-tab {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
   font-size: 0.85rem;
-  font-weight: 500;
-  border-radius: 8px;
+  font-weight: 600;
   color: var(--text-secondary);
   transition: var(--transition);
   cursor: pointer;
   background: none;
   border: none;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-heading);
+}
+.build-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -0.75rem;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: var(--transition);
 }
 .build-tab:hover {
-  background: rgba(255, 255, 255, 0.05);
   color: white;
 }
 .build-tab.active {
-  background: rgba(239, 68, 68, 0.1);
   color: var(--accent);
-  font-weight: 600;
+}
+.build-tab.active::after {
+  width: 100%;
 }
 
 /* Brand filter row — full-width blue-themed row below category tabs */
