@@ -2248,8 +2248,9 @@ body.light .nav-menu > li > a.active {
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
   /* Sticky behavior */
-  position: sticky;
-  top: 92px;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 92px !important;
   z-index: 100;
   background: var(--bg-primary);
   padding-top: 1rem;
@@ -2533,11 +2534,12 @@ body.light .nav-menu > li > a.active {
 }
 
 .build-summary {
-  position: sticky;
-  top: 92px; /* Fixed value just below navbar */
-  z-index: 90;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 100px !important;
+  z-index: 100 !important;
   align-self: start;
-  transition: top 0.3s ease;
+  will-change: transform;
 }
 .summary-card {
   padding: 2rem;
