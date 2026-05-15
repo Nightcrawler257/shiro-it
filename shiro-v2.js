@@ -1357,9 +1357,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <div>
             <h4>${cat}</h4>
           </div>
-          <button class="btn btn-ghost" style="padding:0.4rem 0.8rem; font-size:0.8rem; color:${cfg.color}" onclick="toggleInline('${cat}')">
-            <i class="fas fa-search"></i> Browse
-          </button>
         </div>
         <div class="comp-options" style="grid-template-columns: 1fr; gap:0.5rem;">${itemsHTML}</div>
         <div id="inline-${cat}" class="inline-selector" style="${itemsInCat.length === 0 ? 'display:block' : 'display:none'}">
