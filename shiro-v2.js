@@ -1628,14 +1628,50 @@ document.addEventListener("DOMContentLoaded", () => {
     summaryItems.innerHTML = "";
     let total = 0;
 
-    cartItems.forEach((opt) => {
+    cartItems.forEach((opt, index) => {
       total += opt.price;
+
+      // Resolve image URL
+      const imgSrc = opt.image
+        ? (opt.image.startsWith('http') ? opt.image : API_BASE + (opt.image.startsWith('/') ? opt.image : '/' + opt.image))
+        : null;
+      const imgHtml = imgSrc
+        ? `<img src="${imgSrc}" alt="${opt.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+           <i class="fas fa-microchip" style="display:none;"></i>`
+        : `<i class="fas fa-microchip"></i>`;
+
+      // Badge
+      const badgeHtml = opt.badge ? `<span class="summary-badge">${opt.badge}</span>` : '';
+
+      // Specs
+      let specsHtml = '';
+      if (opt.specs) {
+        try {
+          const specArr = typeof opt.specs === 'string' ? JSON.parse(opt.specs) : opt.specs;
+          if (Array.isArray(specArr) && specArr.length > 0) {
+            specsHtml = `<div class="summary-specs">${specArr.slice(0,4).join(' · ')}</div>`;
+          }
+        } catch(e) {
+          specsHtml = `<div class="summary-specs">${opt.specs}</div>`;
+        }
+      }
+
       const item = document.createElement("div");
       item.className = "summary-item";
       item.innerHTML = `
-        <span class="summary-cat">${opt.category}</span>
-        <span class="summary-name">${opt.name}</span>
-        <span class="summary-price">RM ${opt.price.toLocaleString()}</span>
+        <div class="summary-item-img">${imgHtml}</div>
+        <div class="summary-item-body">
+          <div class="summary-cat">${opt.category}</div>
+          <div class="summary-name">${opt.name}</div>
+          ${badgeHtml}
+          ${specsHtml}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <span class="summary-price">RM ${opt.price.toLocaleString()}</span>
+          <button class="summary-remove-btn" onclick="removeCartItem(${index})" title="Remove">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
       `;
       summaryItems.appendChild(item);
     });
