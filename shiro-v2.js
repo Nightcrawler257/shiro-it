@@ -1632,27 +1632,33 @@ document.addEventListener("DOMContentLoaded", () => {
       total += opt.price;
 
       // Resolve image URL
-      const imgSrc = opt.image
+      const imgSrc = opt.image && opt.image.trim()
         ? (opt.image.startsWith('http') ? opt.image : API_BASE + (opt.image.startsWith('/') ? opt.image : '/' + opt.image))
         : null;
+
       const imgHtml = imgSrc
-        ? `<img src="${imgSrc}" alt="${opt.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-           <i class="fas fa-microchip" style="display:none;"></i>`
-        : `<i class="fas fa-microchip"></i>`;
+        ? `<img src="${imgSrc}" alt="${opt.name}" style="width:100%;height:100%;object-fit:cover;border-radius:7px;" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-microchip\\' style=\\'font-size:1.4rem;color:rgba(255,255,255,0.25);\\'></i>';">`
+        : `<i class="fas fa-microchip" style="font-size:1.4rem;color:rgba(255,255,255,0.25);"></i>`;
 
       // Badge
-      const badgeHtml = opt.badge ? `<span class="summary-badge">${opt.badge}</span>` : '';
+      const badgeHtml = opt.badge && opt.badge.trim()
+        ? `<span class="summary-badge">${opt.badge}</span>`
+        : '';
 
-      // Specs
+      // Specs — handle JSON array OR plain newline/semicolon-separated string
       let specsHtml = '';
-      if (opt.specs) {
+      if (opt.specs && opt.specs.trim()) {
+        let specLines = [];
         try {
-          const specArr = typeof opt.specs === 'string' ? JSON.parse(opt.specs) : opt.specs;
-          if (Array.isArray(specArr) && specArr.length > 0) {
-            specsHtml = `<div class="summary-specs">${specArr.slice(0,4).join(' · ')}</div>`;
-          }
+          const parsed = JSON.parse(opt.specs);
+          if (Array.isArray(parsed)) specLines = parsed;
         } catch(e) {
-          specsHtml = `<div class="summary-specs">${opt.specs}</div>`;
+          // Plain text string — split by newline or semicolon
+          specLines = opt.specs.split(/\n|;/).map(s => s.trim()).filter(s => s.length > 0);
+        }
+        if (specLines.length > 0) {
+          const displayed = specLines.slice(0, 4);
+          specsHtml = `<div class="summary-specs">${displayed.map(s => `<div>· ${s}</div>`).join('')}</div>`;
         }
       }
 

@@ -2645,9 +2645,6 @@ body.light .nav-menu > li > a.active {
   color: white;
   font-weight: 600;
   line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .summary-badge {
   display: inline-block;
