@@ -1327,17 +1327,51 @@ document.addEventListener("DOMContentLoaded", () => {
       group.id = "comp-group-" + cat.replace(/\s+/g, "-");
 
       let itemsHTML = itemsInCat.map(
-        (item) => `
-        <div class="comp-option active" style="justify-content: space-between; cursor: default;">
-          <div>
-            <span class="opt-name">${item.name}</span>
-            <span class="opt-price" style="display:block; font-size:0.8rem; margin-top:2px;">RM ${item.price.toLocaleString()}</span>
+        (item) => {
+          // Resolve image URL
+          const imgSrc = item.image && item.image.trim()
+            ? (item.image.startsWith('http') ? item.image : API_BASE + (item.image.startsWith('/') ? item.image : '/' + item.image))
+            : null;
+            
+          const imgHtml = imgSrc
+            ? `<img src="${imgSrc}" alt="${item.name}" style="width:100px;height:100px;object-fit:cover;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onerror="this.outerHTML='<div style=\\'width:100px;height:100px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.1);\\'><i class=\\'${cfg.icon || 'fas fa-microchip'}\\' style=\\'font-size:2.5rem;color:rgba(255,255,255,0.2);\\'></i></div>';">`
+            : `<div style="width:100px;height:100px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.1);"><i class="${cfg.icon || 'fas fa-microchip'}" style="font-size:2.5rem;color:rgba(255,255,255,0.2);"></i></div>`;
+
+          // Badge
+          const badgeHtml = item.badge && item.badge.trim()
+            ? `<span style="display:inline-block; font-size:0.7rem; background:rgba(99,102,241,0.2); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3); border-radius:4px; padding:2px 8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">${item.badge}</span>`
+            : '';
+
+          // Specs
+          let specsHtml = '';
+          if (item.specs && item.specs.trim()) {
+            let specLines = [];
+            try {
+              const parsed = JSON.parse(item.specs);
+              if (Array.isArray(parsed)) specLines = parsed;
+            } catch(e) {
+              specLines = item.specs.split(/\n|;/).map(s => s.trim()).filter(s => s.length > 0);
+            }
+            if (specLines.length > 0) {
+              specsHtml = `<div style="font-size:0.85rem; color:var(--text-muted); line-height:1.6; margin-top:8px;">${specLines.map(s => `<div><i class="fas fa-check" style="color:var(--accent); margin-right:6px; font-size:0.75rem;"></i>${s}</div>`).join('')}</div>`;
+            }
+          }
+
+          return `
+          <div class="comp-option active" style="display:flex; gap:1.25rem; align-items:flex-start; cursor:default; padding:1.25rem; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.02); border-radius:12px; flex-direction: row; flex-wrap: wrap;">
+            ${imgHtml}
+            <div style="flex:1; min-width: 200px;">
+              ${badgeHtml}
+              <div style="font-size:1.1rem; font-weight:600; color:white; margin-bottom:4px;">${item.name}</div>
+              <div style="font-size:1.1rem; font-weight:700; color:#4ade80;">RM ${item.price.toLocaleString()}</div>
+              ${specsHtml}
+            </div>
+            <button class="btn btn-ghost" style="padding:0.6rem; color:var(--accent-red); background:rgba(239,68,68,0.1); border-radius:8px;" onclick="removeCartItem(${item.cartIndex})" title="Remove item">
+              <i class="fas fa-trash"></i>
+            </button>
           </div>
-          <div style="display:flex; gap:0.5rem; flex-shrink:0;">
-            <button class="btn btn-ghost" style="padding:0.4rem; font-size:0.8rem;" onclick="removeCartItem(${item.cartIndex})"><i class="fas fa-trash" style="color:var(--accent-red)"></i></button>
-          </div>
-        </div>
-      `
+          `;
+        }
       ).join("");
 
       if (itemsInCat.length === 0) {
@@ -1346,9 +1380,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       group.innerHTML = `
         ${
-          cfg.svg
-            ? `<div class="comp-img-wrap">${cfg.svg}</div>`
-            : `<div class="comp-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:${cfg.color}50;"><i class="${cfg.icon}"></i></div>`
+          itemsInCat.length === 0
+            ? (cfg.svg
+                ? `<div class="comp-img-wrap">${cfg.svg}</div>`
+                : `<div class="comp-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:${cfg.color}50;"><i class="${cfg.icon}"></i></div>`)
+            : ''
         }
         <div class="comp-header">
           <div class="comp-icon" style="color:${cfg.color}; background:${cfg.color}20;">
