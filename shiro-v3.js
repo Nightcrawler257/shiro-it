@@ -1915,6 +1915,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const desktopMq = window.matchMedia("(min-width: 901px)");
     let placeholder = null;
 
+    const summaryCard = summary.querySelector(".summary-card");
+
     function clearPin() {
       if (placeholder) {
         placeholder.remove();
@@ -1926,6 +1928,15 @@ document.addEventListener("DOMContentLoaded", () => {
       summary.style.left = "";
       summary.style.width = "";
       summary.style.zIndex = "";
+      summary.style.maxHeight = "";
+      if (summaryCard) summaryCard.style.maxHeight = "";
+    }
+
+    function applyViewportHeight(top) {
+      const maxH = Math.max(280, window.innerHeight - top - 16);
+      summary.style.maxHeight = maxH + "px";
+      if (summaryCard) summaryCard.style.maxHeight = "100%";
+      return maxH;
     }
 
     function pinTop() {
@@ -1950,14 +1961,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const top = pinTop();
       const layoutRect = layout.getBoundingClientRect();
-      const summaryH = summary.offsetHeight;
+      const maxH = Math.max(280, window.innerHeight - top - 16);
+      const effectiveH = Math.min(summary.scrollHeight, maxH);
       const shouldPin =
-        layoutRect.top <= top && layoutRect.bottom > top + summaryH + 8;
+        layoutRect.top <= top && layoutRect.bottom > top + effectiveH + 8;
 
       if (!shouldPin) {
         clearPin();
         return;
       }
+
+      applyViewportHeight(top);
+      const visibleH = summary.offsetHeight;
 
       const width = summary.offsetWidth;
       const left = summary.getBoundingClientRect().left;
@@ -1968,14 +1983,15 @@ document.addEventListener("DOMContentLoaded", () => {
         placeholder.setAttribute("aria-hidden", "true");
         summary.parentNode.insertBefore(placeholder, summary);
       }
-      placeholder.style.height = summaryH + "px";
+      placeholder.style.height = visibleH + "px";
       placeholder.style.width = width + "px";
 
-      if (layoutRect.bottom <= top + summaryH + 12) {
+      if (layoutRect.bottom <= top + visibleH + 12) {
         summary.classList.remove("is-pinned");
         summary.classList.add("is-pinned-bottom");
+        applyViewportHeight(top);
         summary.style.position = "absolute";
-        summary.style.top = layout.offsetHeight - summaryH + "px";
+        summary.style.top = layout.offsetHeight - summary.offsetHeight + "px";
         summary.style.left = "";
         summary.style.width = "";
         summary.style.zIndex = "90";
@@ -1984,6 +2000,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       summary.classList.remove("is-pinned-bottom");
       summary.classList.add("is-pinned");
+      applyViewportHeight(top);
       summary.style.position = "fixed";
       summary.style.top = top + "px";
       summary.style.left = left + "px";
