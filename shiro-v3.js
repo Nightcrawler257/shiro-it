@@ -922,6 +922,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let displayStock = "";
       let displayPrice = p.price > 0 ? "RM " + p.price.toLocaleString() : "Ask for Price";
       let displayBtn = "Add to Cart";
+      let isSoldOut = (p.stock <= 0);
 
       if (currentLang === 'bm') {
         const catKey = "cat_" + p.category.toLowerCase().replace(/\s+/g, '_');
@@ -931,14 +932,18 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (p.stock > 1) displayStock = `${p.stock} ${translations.bm.shop_in_stock}`;
         else if (p.stock === 1) displayStock = translations.bm.shop_only_left;
+        else displayStock = "HABIS DIJUAL";
       } else {
         if (p.stock > 1) displayStock = `${p.stock} in stock`;
         else if (p.stock === 1) displayStock = "Only 1 left!";
+        else displayStock = "SOLD OUT";
       }
+
+      const stockIconColor = isSoldOut ? "color:var(--accent-red); font-weight:bold;" : "";
 
       card.innerHTML = `
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ""}
-        <div class="product-image">
+        <div class="product-image" ${isSoldOut ? 'style="opacity:0.4; filter:grayscale(100%);"' : ''}>
           ${p.image && (p.image.startsWith('/') || p.image.startsWith('http'))
             ? `<img src="${resolveImagePath(p.image)}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;">`
             : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${getCategoryIcon(p.category)}</div>`}
@@ -947,11 +952,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3>${p.name}</h3>
         <p class="product-specs">${p.specs}</p>
         ${p.health ? `<p class="product-health"><i class="fas fa-heartbeat"></i> Health: ${p.health}</p>` : ""}
-        ${displayStock ? `<p class="product-stock"><i class="fas fa-boxes"></i> ${displayStock}</p>` : ""}
+        ${displayStock ? `<p class="product-stock" style="${stockIconColor}"><i class="fas ${isSoldOut ? 'fa-ban' : 'fa-boxes'}"></i> ${displayStock}</p>` : ""}
         <div class="product-bottom">
           <div class="product-price">${p.price > 0 ? "RM " + p.price.toLocaleString() : `<span style="color:var(--accent-blue);font-size:0.85em;">${displayPrice}</span>`}</div>
-          <button class="btn btn-primary product-btn" onclick="addShopItemToCart(this)">
-            <i class="fas fa-cart-plus"></i> ${displayBtn}
+          <button class="btn btn-primary product-btn" ${isSoldOut ? 'disabled style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); cursor:not-allowed;"' : 'onclick="addShopItemToCart(this)"'}>
+            <i class="fas ${isSoldOut ? 'fa-times' : 'fa-cart-plus'}"></i> ${isSoldOut ? (currentLang === 'bm' ? 'HABIS' : 'SOLD OUT') : displayBtn}
           </button>
         </div>
       `;
@@ -1541,9 +1546,20 @@ document.addEventListener("DOMContentLoaded", () => {
         ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
         : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
       
+      const isSoldOut = item.stock !== undefined && item.stock <= 0;
+      const opacity = isSoldOut ? '0.4' : (isSelected ? '0.6' : '1');
+      const cursor = isSoldOut || isSelected ? 'default' : 'pointer';
+      const border = isSelected ? 'border-color:var(--border-color);' : (isSoldOut ? 'border-color:rgba(239,68,68,0.2);' : '');
+      const actionHtml = isSoldOut 
+        ? `<div style="color:var(--accent-red); font-weight:bold; font-size:0.8rem; text-transform:uppercase;"><i class="fas fa-ban"></i> Sold Out</div>`
+        : `<span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
+           <div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}">
+             <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
+           </div>`;
+
       return `
-      <div class="inline-item" ${!isSelected ? `onclick="addInlineItem('${itemId}', '${category}')"` : ''} style="${isSelected ? 'opacity:0.6; cursor:default; border-color:var(--border-color);' : ''}">
-        <div style="display:flex; align-items:center; gap:1rem;">
+      <div class="inline-item" ${!isSelected && !isSoldOut ? `onclick="addInlineItem('${itemId}', '${category}')"` : ''} style="opacity:${opacity}; cursor:${cursor}; ${border}">
+        <div style="display:flex; align-items:center; gap:1rem; filter:${isSoldOut ? 'grayscale(100%)' : 'none'};">
           ${displayImage}
           <div class="inline-item-info">
             <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.7rem;'></i>" : ""}</h4>
@@ -1551,10 +1567,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         <div class="inline-item-action">
-          <span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
-          <div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}">
-            <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
-          </div>
+          ${actionHtml}
         </div>
       </div>
     `}).join("");
@@ -1608,8 +1621,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const el = document.createElement("div");
       el.className = "builder-item";
       
+      const isSoldOut = item.stock !== undefined && item.stock <= 0;
+
       el.innerHTML = `
-        <div style="display:flex; align-items:center; gap:1rem;">
+        <div style="display:flex; align-items:center; gap:1rem; filter:${isSoldOut ? 'grayscale(100%)' : 'none'};">
           ${item.image && item.image.includes('/') 
             ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
             : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
@@ -1618,19 +1633,27 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>${item.category} ${item.specs ? " | " + item.specs : ""}</p>
           </div>
         </div>
-        <div class="builder-item-price">RM ${item.price.toLocaleString()}</div>
+        <div class="builder-item-price">
+          ${isSoldOut ? '<span style="color:var(--accent-red);font-weight:bold;font-size:0.8rem;text-transform:uppercase;"><i class="fas fa-ban"></i> Sold Out</span>' : 'RM ' + item.price.toLocaleString()}
+        </div>
       `;
-      el.onclick = () => {
-        cartItems.push({
-          id: item._id || item.id,
-          name: item.name,
-          category: item.category,
-          price: item.price
-        });
-        builderModal.classList.remove("show");
-        renderBuilder();
-        updateSummary();
-      };
+
+      if (isSoldOut) {
+        el.style.opacity = '0.5';
+        el.style.cursor = 'not-allowed';
+      } else {
+        el.onclick = () => {
+          cartItems.push({
+            id: item._id || item.id,
+            name: item.name,
+            category: item.category,
+            price: item.price
+          });
+          builderModal.classList.remove("show");
+          renderBuilder();
+          updateSummary();
+        };
+      }
       builderModalBody.appendChild(el);
     });
   }
