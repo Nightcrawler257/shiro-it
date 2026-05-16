@@ -2638,26 +2638,35 @@ body.light .nav-menu > li > a.active {
 }
 .build-summary.is-pinned .summary-items,
 .build-summary.is-pinned-bottom .summary-items {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 1 auto;
   margin-bottom: 0;
+  max-height: min(36vh, 320px);
   overflow-y: auto;
-  padding-right: 4px;
+  overflow-x: hidden;
+  padding-right: 2px;
+  scrollbar-width: thin;
 }
-.build-summary.is-pinned .summary-items::-webkit-scrollbar,
-.build-summary.is-pinned-bottom .summary-items::-webkit-scrollbar {
-  width: 4px;
+.build-summary.is-pinned .summary-items:not(:empty) {
+  margin-bottom: 0.5rem;
 }
-.build-summary.is-pinned .summary-items::-webkit-scrollbar-thumb,
-.build-summary.is-pinned-bottom .summary-items::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
+.summary-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
 }
-.summary-card > .summary-total,
-.summary-card > .summary-note,
-.summary-card > #buildValidation,
-.summary-card > .summary-btn,
-.summary-card > .summary-extras {
+.build-summary.is-pinned .summary-extras,
+.build-summary.is-pinned-bottom .summary-extras {
+  display: none;
+}
+.summary-footer .summary-total {
+  border-top: none;
+  padding-top: 0;
+}
+.summary-footer .summary-total,
+.summary-footer .summary-note,
+.summary-footer #buildValidation,
+.summary-footer .summary-btn {
   flex-shrink: 0;
 }
 .summary-item {
@@ -2753,9 +2762,8 @@ body.light .nav-menu > li > a.active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
-  border-top: 2px solid var(--border-color);
-  margin-bottom: 0.75rem;
+  padding: 0.5rem 0 0.75rem;
+  margin-bottom: 0.5rem;
 }
 .summary-total span {
   font-size: 0.9rem;
@@ -4608,11 +4616,11 @@ body.festival-admin .festival-toggle-btn {
   line-height: 1.35;
   flex-shrink: 0;
 }
-.summary-card .validation-msg .missing-list {
-  max-height: 4.5rem;
-  overflow-y: auto;
-  margin-bottom: 0;
-  padding-right: 4px;
+.summary-card .validation-msg .missing-summary {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #ffb4b4;
 }
 .validation-msg.error {
   background: rgba(239, 68, 68, 0.1);

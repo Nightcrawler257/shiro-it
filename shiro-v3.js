@@ -1769,17 +1769,16 @@ document.addEventListener("DOMContentLoaded", () => {
           whatsappOrder.style.pointerEvents = "auto";
         }
       } else {
+        const missingText = validation.missing.join(", ");
         validationEl.innerHTML = `
           <div class="validation-msg error">
-            <i class="fas fa-exclamation-triangle"></i> Incomplete Build
-            <ul class="missing-list">
-              ${validation.missing.map(m => `<li>Missing ${m}</li>`).join('')}
-            </ul>
+            <i class="fas fa-exclamation-triangle"></i> <strong>Incomplete build</strong>
+            <p class="missing-summary">Still needed: ${missingText}</p>
           </div>
         `;
-        if(whatsappOrder) {
-          whatsappOrder.innerHTML = `<i class="fas fa-lock"></i> Incomplete Build`;
-          whatsappOrder.classList.add('disabled');
+        if (whatsappOrder) {
+          whatsappOrder.innerHTML = `<i class="fas fa-cart-plus"></i> Add to Cart`;
+          whatsappOrder.classList.add("disabled");
           whatsappOrder.style.opacity = "0.5";
           whatsappOrder.style.pointerEvents = "none";
         }
@@ -1933,7 +1932,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function applyViewportHeight(top) {
-      const maxH = Math.max(280, window.innerHeight - top - 16);
+      const maxH = Math.max(340, window.innerHeight - top - 12);
       summary.style.maxHeight = maxH + "px";
       if (summaryCard) summaryCard.style.maxHeight = "100%";
       return maxH;
