@@ -228,6 +228,13 @@ html {
   overflow-x: hidden;
   max-width: 100%;
 }
+/* overflow-x: hidden on html/body breaks position:sticky — clip avoids that */
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
 body {
   font-family: var(--font-body);
   background: var(--bg-primary);
@@ -2488,8 +2495,15 @@ body.light .nav-menu > li > a.active {
 
 /* ========== BUILD PC ========== */
 /* transform on .page breaks position:sticky — keep build page neutral */
+#page-build-pc-services.page,
 #page-build-pc-services.page.active {
   transform: none;
+  transition: opacity 0.3s ease;
+}
+#page-build-pc-services .section,
+#page-build-pc-services .container,
+#page-build-pc-services .build-layout {
+  overflow: visible;
 }
 
 .build-layout {
@@ -2497,6 +2511,7 @@ body.light .nav-menu > li > a.active {
   grid-template-columns: 1fr 380px;
   gap: 2rem;
   align-items: start;
+  position: relative;
   --build-sticky-top: calc(var(--nav-height) + 5.25rem);
 }
 .components-list {
@@ -2576,19 +2591,25 @@ body.light .nav-menu > li > a.active {
 }
 
 .build-summary {
-  position: -webkit-sticky;
-  position: sticky;
-  top: var(--build-sticky-top);
   align-self: start;
   z-index: 90;
-  max-height: calc(100dvh - var(--build-sticky-top) - 1.25rem);
+}
+.build-summary.is-pinned {
+  z-index: 90;
+}
+.build-summary.is-pinned-bottom {
+  position: absolute;
+  right: 0;
+  width: 100%;
+  max-width: 380px;
+}
+.build-summary-placeholder {
+  display: block;
+  flex-shrink: 0;
 }
 .summary-card {
   padding: 2rem;
   overflow: visible;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 .summary-card:hover {
   transform: none;
@@ -2606,15 +2627,7 @@ body.light .nav-menu > li > a.active {
   flex-direction: column;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
-  flex: 1;
-  min-height: 0;
-  max-height: min(50vh, calc(100dvh - var(--nav-height) - 22rem));
-  overflow-y: auto;
-  padding-right: 4px;
 }
-.summary-items::-webkit-scrollbar { width: 4px; }
-.summary-items::-webkit-scrollbar-track { background: transparent; }
-.summary-items::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 .summary-item {
   display: flex;
   gap: 0.75rem;
@@ -3624,10 +3637,6 @@ body.light .social-float-btn::before {
   }
   .build-summary {
     position: static;
-    max-height: none;
-  }
-  .summary-items {
-    max-height: none;
   }
   .services-detail-grid {
     grid-template-columns: 1fr;

@@ -1802,6 +1802,10 @@ document.addEventListener("DOMContentLoaded", () => {
         timestamp: new Date().toISOString()
       };
     }
+
+    if (typeof window.__updateBuildSummaryPin === "function") {
+      window.__updateBuildSummaryPin();
+    }
   }
 
   function validateBuild() {
@@ -1901,6 +1905,98 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSummary();
     });
   }
+
+  (function initBuildSummaryPin() {
+    const page = document.getElementById("page-build-pc-services");
+    const layout = page && page.querySelector(".build-layout");
+    const summary = page && page.querySelector(".build-summary");
+    if (!layout || !summary) return;
+
+    const desktopMq = window.matchMedia("(min-width: 901px)");
+    let placeholder = null;
+
+    function clearPin() {
+      if (placeholder) {
+        placeholder.remove();
+        placeholder = null;
+      }
+      summary.classList.remove("is-pinned", "is-pinned-bottom");
+      summary.style.position = "";
+      summary.style.top = "";
+      summary.style.left = "";
+      summary.style.width = "";
+      summary.style.zIndex = "";
+    }
+
+    function pinTop() {
+      const nav =
+        parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue("--nav-height")
+        ) || 82;
+      const tabs = document.querySelector(".build-nav-wrapper");
+      let tabsH = 0;
+      if (tabs) {
+        const r = tabs.getBoundingClientRect();
+        if (r.top <= nav + 2) tabsH = tabs.offsetHeight;
+      }
+      return nav + tabsH + 12;
+    }
+
+    function updatePin() {
+      if (!desktopMq.matches || !page.classList.contains("active")) {
+        clearPin();
+        return;
+      }
+
+      const top = pinTop();
+      const layoutRect = layout.getBoundingClientRect();
+      const summaryH = summary.offsetHeight;
+      const shouldPin =
+        layoutRect.top <= top && layoutRect.bottom > top + summaryH + 8;
+
+      if (!shouldPin) {
+        clearPin();
+        return;
+      }
+
+      const width = summary.offsetWidth;
+      const left = summary.getBoundingClientRect().left;
+
+      if (!placeholder) {
+        placeholder = document.createElement("div");
+        placeholder.className = "build-summary-placeholder";
+        placeholder.setAttribute("aria-hidden", "true");
+        summary.parentNode.insertBefore(placeholder, summary);
+      }
+      placeholder.style.height = summaryH + "px";
+      placeholder.style.width = width + "px";
+
+      if (layoutRect.bottom <= top + summaryH + 12) {
+        summary.classList.remove("is-pinned");
+        summary.classList.add("is-pinned-bottom");
+        summary.style.position = "absolute";
+        summary.style.top = layout.offsetHeight - summaryH + "px";
+        summary.style.left = "";
+        summary.style.width = "";
+        summary.style.zIndex = "90";
+        return;
+      }
+
+      summary.classList.remove("is-pinned-bottom");
+      summary.classList.add("is-pinned");
+      summary.style.position = "fixed";
+      summary.style.top = top + "px";
+      summary.style.left = left + "px";
+      summary.style.width = width + "px";
+      summary.style.zIndex = "90";
+    }
+
+    window.__updateBuildSummaryPin = updatePin;
+    window.addEventListener("scroll", updatePin, { passive: true });
+    window.addEventListener("resize", updatePin);
+    desktopMq.addEventListener("change", updatePin);
+    updatePin();
+  })();
 
   function renderGlobalCart() {
     if (!cartBody) return;
