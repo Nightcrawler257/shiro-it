@@ -2569,13 +2569,12 @@ body.light .nav-menu > li > a.active {
 }
 
 .build-summary {
+  align-self: flex-start;
+  position: sticky;
+  top: calc(var(--nav-height) + 16px);
   z-index: 90;
-  height: 100%;
 }
 .summary-card {
-  position: -webkit-sticky !important;
-  position: sticky !important;
-  top: calc(var(--nav-height) + 85px) !important;
   padding: 2rem;
   will-change: transform;
 }
@@ -2588,13 +2587,7 @@ body.light .nav-menu > li > a.active {
   flex-direction: column;
   gap: 0.75rem;
   margin-bottom: 1.25rem;
-  max-height: 55vh;
-  overflow-y: auto;
-  padding-right: 4px;
 }
-.summary-items::-webkit-scrollbar { width: 4px; }
-.summary-items::-webkit-scrollbar-track { background: transparent; }
-.summary-items::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 .summary-item {
   display: flex;
   gap: 0.75rem;
