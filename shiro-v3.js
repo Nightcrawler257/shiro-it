@@ -1769,11 +1769,12 @@ document.addEventListener("DOMContentLoaded", () => {
           whatsappOrder.style.pointerEvents = "auto";
         }
       } else {
-        const missingText = validation.missing.join(", ");
         validationEl.innerHTML = `
           <div class="validation-msg error">
-            <i class="fas fa-exclamation-triangle"></i> <strong>Incomplete build</strong>
-            <p class="missing-summary">Still needed: ${missingText}</p>
+            <i class="fas fa-exclamation-triangle"></i> Incomplete Build
+            <ul class="missing-list">
+              ${validation.missing.map((m) => `<li>Missing ${m}</li>`).join("")}
+            </ul>
           </div>
         `;
         if (whatsappOrder) {
@@ -1928,13 +1929,19 @@ document.addEventListener("DOMContentLoaded", () => {
       summary.style.width = "";
       summary.style.zIndex = "";
       summary.style.maxHeight = "";
-      if (summaryCard) summaryCard.style.maxHeight = "";
+      if (summaryCard) {
+        summaryCard.style.maxHeight = "";
+        summaryCard.style.overflowY = "";
+      }
     }
 
     function applyViewportHeight(top) {
-      const maxH = Math.max(340, window.innerHeight - top - 12);
+      const maxH = Math.max(320, window.innerHeight - top - 12);
       summary.style.maxHeight = maxH + "px";
-      if (summaryCard) summaryCard.style.maxHeight = "100%";
+      if (summaryCard) {
+        summaryCard.style.maxHeight = "100%";
+        summaryCard.style.overflowY = "auto";
+      }
       return maxH;
     }
 

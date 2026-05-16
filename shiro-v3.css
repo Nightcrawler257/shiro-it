@@ -2615,8 +2615,20 @@ body.light .nav-menu > li > a.active {
 }
 .build-summary.is-pinned .summary-card,
 .build-summary.is-pinned-bottom .summary-card {
-  overflow: hidden;
   max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.build-summary.is-pinned .summary-card::-webkit-scrollbar,
+.build-summary.is-pinned-bottom .summary-card::-webkit-scrollbar {
+  width: 5px;
+}
+.build-summary.is-pinned .summary-card::-webkit-scrollbar-thumb,
+.build-summary.is-pinned-bottom .summary-card::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
 }
 .summary-card:hover {
   transform: none;
@@ -2636,28 +2648,10 @@ body.light .nav-menu > li > a.active {
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
-.build-summary.is-pinned .summary-items,
-.build-summary.is-pinned-bottom .summary-items {
-  flex: 0 1 auto;
-  margin-bottom: 0;
-  max-height: min(36vh, 320px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 2px;
-  scrollbar-width: thin;
-}
-.build-summary.is-pinned .summary-items:not(:empty) {
-  margin-bottom: 0.5rem;
-}
 .summary-footer {
   flex-shrink: 0;
-  margin-top: auto;
   padding-top: 0.75rem;
   border-top: 1px solid var(--border-color);
-}
-.build-summary.is-pinned .summary-extras,
-.build-summary.is-pinned-bottom .summary-extras {
-  display: none;
 }
 .summary-footer .summary-total {
   border-top: none;
@@ -4615,12 +4609,6 @@ body.festival-admin .festival-toggle-btn {
   font-size: 0.8rem;
   line-height: 1.35;
   flex-shrink: 0;
-}
-.summary-card .validation-msg .missing-summary {
-  margin: 0.35rem 0 0;
-  font-size: 0.78rem;
-  line-height: 1.4;
-  color: #ffb4b4;
 }
 .validation-msg.error {
   background: rgba(239, 68, 68, 0.1);
