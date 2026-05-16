@@ -2129,19 +2129,28 @@ function renderTable(tab, data) {
       cols: ['Preview', 'Tier', 'Model Name', 'Price', 'Media Type', 'Tags', 'Actions'],
       row: r => {
         const url = r.photo_url || '';
+        const resolvedUrl = url.startsWith('http') ? url : (url ? API + url : '');
         const previewHtml = r.media_type === 'video' 
           ? `<i class="fas fa-video" style="color:var(--neon-red)"></i>`
-          : (url ? `<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover">` : `<i class="fas fa-desktop" style="color:var(--text-secondary)"></i>`);
+          : (resolvedUrl ? `<img src="${esc(resolvedUrl)}" style="width:100%;height:100%;object-fit:cover">` : `<i class="fas fa-desktop" style="color:var(--text-secondary)"></i>`);
         
+        const tierColor = r.tier_color || '#3b82f6';
+        const tierBadgeHtml = r.tier_name
+          ? `<span class="badge" style="background:${tierColor}20; color:${tierColor}; border:1px solid ${tierColor}50; font-weight:700; font-size:0.72rem; letter-spacing:0.05em;">${esc(r.tier_name)}</span>`
+          : `<span style="color:var(--text-secondary);font-size:0.75rem;">—</span>`;
+        const tierSubHtml = r.tier_badge 
+          ? `<br><span style="font-size:0.7rem;color:var(--text-secondary)">${esc(r.tier_badge)}</span>`
+          : '';
+
         return `
           <td style="width:60px">
             <div style="width:46px;height:46px;background:rgba(0,0,0,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);">${previewHtml}</div>
           </td>
-          <td><span class="badge" style="background:var(--blue);color:white">${esc(r.tier_name)}</span><br><span style="font-size:0.7rem;color:var(--text-secondary)">${esc(r.tier_badge)}</span></td>
+          <td>${tierBadgeHtml}${tierSubHtml}</td>
           <td><div class="name-col">${esc(r.name)}</div></td>
           <td><div style="font-weight:800;color:var(--neon-green);font-family:var(--font-head);">RM ${Number(r.price||0).toLocaleString()}</div>${r.discount ? `<div style="font-size:0.75rem;color:var(--neon-red)"><i class="fas fa-tag"></i> Promo: ${esc(r.discount)}</div>` : ''}</td>
           <td><span class="badge" style="background:rgba(255,255,255,0.1)">${esc(r.media_type || 'image').toUpperCase()}</span></td>
-          <td>${(r.tags || []).map(t => `<span class="badge badge-cat">${esc(t)}</span>`).join(' ')}</td>
+          <td><div style="display:flex;gap:4px;flex-wrap:wrap;max-width:180px;">${(r.tags || []).map(t => `<span class="badge badge-cat">${esc(t)}</span>`).join('')}</div></td>
           <td><div class="actions">
             <button class="action-btn ok" onclick='editPcItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
             <button class="action-btn del" onclick="deleteItem('prebuilt_pcs','${r._id || r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
