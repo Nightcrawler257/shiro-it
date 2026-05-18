@@ -976,6 +976,22 @@
                                 <!-- Component groups are inserted by JS -->
                             </div>
                             <div class="build-summary">
+                                <!-- Selected Product Display -->
+                                <div class="selected-product-card card" id="selectedProductCard" style="display: none; margin-bottom: 1.5rem;">
+                                    <div class="selected-product-content">
+                                        <div class="selected-product-image" id="selectedProductImage"></div>
+                                        <div class="selected-product-info">
+                                            <h4 id="selectedProductTitle"></h4>
+                                            <div class="selected-product-category" id="selectedProductCategory"></div>
+                                            <div class="selected-product-specs" id="selectedProductSpecs"></div>
+                                            <div class="selected-product-price" id="selectedProductPrice"></div>
+                                            <button class="selected-product-close" onclick="closeSelectedProduct()">✕</button>
+                                        </div>
+                                    </div>
+                                    <div class="selection-arrow">→</div>
+                                </div>
+
+                                <!-- Your Build Summary -->
                                 <div class="card summary-card">
                             <h3>Your Build</h3>
                             <div class="summary-items" id="summaryItems"></div>

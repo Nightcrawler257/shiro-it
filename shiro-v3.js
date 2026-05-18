@@ -1810,7 +1810,65 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof window.__updateBuildSummaryPin === "function") {
       window.__updateBuildSummaryPin();
     }
+
+    // Display the last selected product in the upper card
+    if (cartItems.length > 0) {
+      const lastItem = cartItems[cartItems.length - 1];
+      displaySelectedProduct(lastItem);
+    }
   }
+
+  // Display selected product in the upper card
+  window.displaySelectedProduct = function(item) {
+    const selectedCard = document.getElementById('selectedProductCard');
+    if (!selectedCard) return;
+
+    // Get full item data from inventory for image and full specs
+    const fullItem = inventoryData.find(i => String(i.id || i._id) === String(item.id));
+    
+    if (!fullItem) return;
+
+    const imgSrc = fullItem.image && fullItem.image.trim()
+      ? (fullItem.image.startsWith('http') ? fullItem.image : API_BASE + (fullItem.image.startsWith('/') ? fullItem.image : '/' + fullItem.image))
+      : null;
+
+    const imageHtml = imgSrc
+      ? `<img src="${imgSrc}" alt="${fullItem.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+      : '';
+    
+    const fallbackIcon = `<i class="fas fa-microchip" style="font-size:2rem;"></i>`;
+
+    const specsText = fullItem.specs 
+      ? fullItem.specs.replace(/\n/g, '<br>')
+      : `${fullItem.brand || fullItem.category} | Ask for details`;
+
+    // Format category label
+    const categoryLabel = fullItem.category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+    document.getElementById('selectedProductImage').innerHTML = `${imageHtml}<div style="display:${!imgSrc ? 'flex' : 'none'}; align-items:center; justify-content:center; width:100%; height:100%; color:var(--blue-neon);">${fallbackIcon}</div>`;
+    
+    document.getElementById('selectedProductTitle').textContent = fullItem.name;
+    document.getElementById('selectedProductCategory').textContent = categoryLabel;
+    document.getElementById('selectedProductSpecs').innerHTML = specsText;
+    document.getElementById('selectedProductPrice').textContent = `RM ${fullItem.price.toLocaleString()}`;
+
+    selectedCard.style.display = 'block';
+
+    // Auto-hide after 4 seconds (optional)
+    if (selectedCard.__hideTimeout) clearTimeout(selectedCard.__hideTimeout);
+    selectedCard.__hideTimeout = setTimeout(() => {
+      selectedCard.style.display = 'none';
+    }, 4000);
+  };
+
+  // Close the selected product display
+  window.closeSelectedProduct = function() {
+    const selectedCard = document.getElementById('selectedProductCard');
+    if (selectedCard) {
+      selectedCard.style.display = 'none';
+      if (selectedCard.__hideTimeout) clearTimeout(selectedCard.__hideTimeout);
+    }
+  };
 
   function validateBuild() {
     const selectedCats = new Set(cartItems.map(item => item.category));
@@ -1975,6 +2033,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const top = pinTop();
       const layoutRect = layout.getBoundingClientRect();
       const maxH = Math.max(280, window.innerHeight - top - 16);
+      
+      // Temporarily clear inline positioning to read natural layout during resize/zoom
+      const wasPinned = summary.classList.contains("is-pinned");
+      if (wasPinned) {
+        summary.style.position = "";
+        summary.style.left = "";
+        summary.style.width = "";
+      }
+
       const effectiveH = Math.min(summary.scrollHeight, maxH);
       const shouldPin =
         layoutRect.top <= top && layoutRect.bottom > top + effectiveH + 8;
@@ -1997,7 +2064,8 @@ document.addEventListener("DOMContentLoaded", () => {
         summary.parentNode.insertBefore(placeholder, summary);
       }
       placeholder.style.height = visibleH + "px";
-      placeholder.style.width = width + "px";
+      // Removed fixed width so placeholder naturally fills its grid cell
+      placeholder.style.width = "100%"; 
 
       if (layoutRect.bottom <= top + visibleH + 12) {
         summary.classList.remove("is-pinned");
@@ -2006,7 +2074,7 @@ document.addEventListener("DOMContentLoaded", () => {
         summary.style.position = "absolute";
         summary.style.top = layout.offsetHeight - summary.offsetHeight + "px";
         summary.style.left = "";
-        summary.style.width = "";
+        summary.style.width = "100%";
         summary.style.zIndex = "90";
         return;
       }
