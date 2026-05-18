@@ -1852,12 +1852,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('selectedProductSpecs').innerHTML = specsText;
     document.getElementById('selectedProductPrice').textContent = `RM ${fullItem.price.toLocaleString()}`;
 
-    selectedCard.style.display = 'block';
+    selectedCard.classList.add('active');
 
     // Auto-hide after 4 seconds (optional)
     if (selectedCard.__hideTimeout) clearTimeout(selectedCard.__hideTimeout);
     selectedCard.__hideTimeout = setTimeout(() => {
-      selectedCard.style.display = 'none';
+      selectedCard.classList.remove('active');
     }, 4000);
   };
 
@@ -1865,7 +1865,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.closeSelectedProduct = function() {
     const selectedCard = document.getElementById('selectedProductCard');
     if (selectedCard) {
-      selectedCard.style.display = 'none';
+      selectedCard.classList.remove('active');
       if (selectedCard.__hideTimeout) clearTimeout(selectedCard.__hideTimeout);
     }
   };
