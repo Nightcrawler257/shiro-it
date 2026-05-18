@@ -1941,10 +1941,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function applyViewportHeight(top) {
       const maxH = Math.max(320, window.innerHeight - top - 12);
-      summary.style.maxHeight = maxH + "px";
       if (summaryCard) {
-        summaryCard.style.maxHeight = "100%";
+        summary.style.maxHeight = maxH + "px";
+        summaryCard.style.maxHeight = maxH + "px";
         summaryCard.style.overflowY = "auto";
+      } else {
+        summary.style.maxHeight = maxH + "px";
+        summary.style.overflowY = "auto";
       }
       return maxH;
     }
