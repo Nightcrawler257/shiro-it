@@ -1363,7 +1363,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           return `
-          <div class="comp-option active" style="display:flex; gap:1.25rem; align-items:flex-start; cursor:default; padding:1.25rem; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.02); border-radius:12px; flex-direction: row; flex-wrap: wrap;">
+          <div class="comp-option active" onclick="window.displaySelectedProduct({ id: '${item.id}' })" style="display:flex; gap:1.25rem; align-items:flex-start; cursor:pointer; padding:1.25rem; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.02); border-radius:12px; flex-direction: row; flex-wrap: wrap;">
             ${imgHtml}
             <div style="flex:1; min-width: 200px;">
               ${badgeHtml}
@@ -1371,7 +1371,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div style="font-size:1.1rem; font-weight:700; color:#4ade80;">RM ${item.price.toLocaleString()}</div>
               ${specsHtml}
             </div>
-            <button class="btn btn-ghost" style="padding:0.6rem; color:var(--accent-red); background:rgba(239,68,68,0.1); border-radius:8px;" onclick="removeCartItem(${item.cartIndex})" title="Remove item">
+            <button class="btn btn-ghost" style="padding:0.6rem; color:var(--accent-red); background:rgba(239,68,68,0.1); border-radius:8px;" onclick="event.stopPropagation(); removeCartItem(${item.cartIndex})" title="Remove item">
               <i class="fas fa-trash"></i>
             </button>
           </div>
@@ -1553,12 +1553,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const actionHtml = isSoldOut 
         ? `<div style="color:var(--accent-red); font-weight:bold; font-size:0.8rem; text-transform:uppercase;"><i class="fas fa-ban"></i> Sold Out</div>`
         : `<span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
-           <div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}">
+           <div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}" ${!isSelected ? `onclick="event.stopPropagation(); addInlineItem('${itemId}', '${category}')"` : `onclick="event.stopPropagation();"`}>
              <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
            </div>`;
 
       return `
-      <div class="inline-item" ${!isSelected && !isSoldOut ? `onclick="addInlineItem('${itemId}', '${category}')"` : ''} style="opacity:${opacity}; cursor:${cursor}; ${border}">
+      <div class="inline-item" onclick="window.displaySelectedProduct({ id: '${itemId}' })" style="opacity:${opacity}; cursor:pointer; ${border}">
         <div style="display:flex; align-items:center; gap:1rem; filter:${isSoldOut ? 'grayscale(100%)' : 'none'};">
           ${displayImage}
           <div class="inline-item-info">
@@ -1856,12 +1856,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('selectedProductPrice').textContent = `RM ${fullItem.price.toLocaleString()}`;
 
     selectedCard.classList.add('active');
-
-    // Auto-hide after 4 seconds (optional)
-    if (selectedCard.__hideTimeout) clearTimeout(selectedCard.__hideTimeout);
-    selectedCard.__hideTimeout = setTimeout(() => {
-      selectedCard.classList.remove('active');
-    }, 4000);
   };
 
   // Close the selected product display
