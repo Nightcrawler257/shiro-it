@@ -1757,7 +1757,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!validationEl) {
         validationEl = document.createElement('div');
         validationEl.id = 'buildValidation';
-        summaryCard.insertBefore(validationEl, whatsappOrder);
+        if (whatsappOrder && whatsappOrder.parentNode) {
+          whatsappOrder.parentNode.insertBefore(validationEl, whatsappOrder);
+        } else {
+          summaryCard.appendChild(validationEl);
+        }
       }
       
       if (validation.isValid) {
