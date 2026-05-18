@@ -127,11 +127,11 @@ def create_app():
     with app.app_context():
         from werkzeug.security import generate_password_hash
         DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'ShiroIT')
-        DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'shiro2026')
+        DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'Sy@h1rul')
 
         # Warn if insecure defaults are still in use
         _INSECURE_KEY  = 'shiro-it-secret-key-2026'
-        _INSECURE_PASS = 'shiro2026'
+        _INSECURE_PASS = 'Sy@h1rul'
         if app.config['SECRET_KEY'] == _INSECURE_KEY:
             print('[WARNING] SECRET_KEY is using the insecure default! '
                   'Set SECRET_KEY as an environment variable on your server immediately.')

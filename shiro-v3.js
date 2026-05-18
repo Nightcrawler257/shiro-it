@@ -1647,7 +1647,10 @@ document.addEventListener("DOMContentLoaded", () => {
             id: item._id || item.id,
             name: item.name,
             category: item.category,
-            price: item.price
+            price: item.price,
+            image: item.image,
+            specs: item.specs,
+            badge: item.badge
           });
           builderModal.classList.remove("show");
           renderBuilder();
@@ -1969,131 +1972,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   (function initBuildSummaryPin() {
-    const page = document.getElementById("page-build-pc-services");
-    const layout = page && page.querySelector(".build-layout");
-    const summary = page && page.querySelector(".build-summary");
-    if (!layout || !summary) return;
-
-    const desktopMq = window.matchMedia("(min-width: 901px)");
-    let placeholder = null;
-
-    const summaryCard = summary.querySelector(".summary-card");
-
-    function clearPin() {
-      if (placeholder) {
-        placeholder.remove();
-        placeholder = null;
-      }
-      summary.classList.remove("is-pinned", "is-pinned-bottom");
-      summary.style.position = "";
-      summary.style.top = "";
-      summary.style.left = "";
-      summary.style.width = "";
-      summary.style.zIndex = "";
-      summary.style.maxHeight = "";
-      if (summaryCard) {
-        summaryCard.style.maxHeight = "";
-        summaryCard.style.overflowY = "";
-      }
-    }
-
-    function applyViewportHeight(top) {
-      const maxH = Math.max(320, window.innerHeight - top - 12);
-      if (summaryCard) {
-        summary.style.maxHeight = maxH + "px";
-        summaryCard.style.maxHeight = maxH + "px";
-        summaryCard.style.overflowY = "auto";
-      } else {
-        summary.style.maxHeight = maxH + "px";
-        summary.style.overflowY = "auto";
-      }
-      return maxH;
-    }
-
-    function pinTop() {
-      const nav =
-        parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue("--nav-height")
-        ) || 82;
-      const tabs = document.querySelector(".build-nav-wrapper");
-      let tabsH = 0;
-      if (tabs) {
-        const r = tabs.getBoundingClientRect();
-        if (r.top <= nav + 2) tabsH = tabs.offsetHeight;
-      }
-      return nav + tabsH + 12;
-    }
-
-    function updatePin() {
-      if (!desktopMq.matches || !page.classList.contains("active")) {
-        clearPin();
-        return;
-      }
-
-      const top = pinTop();
-      const layoutRect = layout.getBoundingClientRect();
-      const maxH = Math.max(280, window.innerHeight - top - 16);
-      
-      // Temporarily clear inline positioning to read natural layout during resize/zoom
-      const wasPinned = summary.classList.contains("is-pinned");
-      if (wasPinned) {
-        summary.style.position = "";
-        summary.style.left = "";
-        summary.style.width = "";
-      }
-
-      const effectiveH = Math.min(summary.scrollHeight, maxH);
-      const shouldPin =
-        layoutRect.top <= top && layoutRect.bottom > top + effectiveH + 8;
-
-      if (!shouldPin) {
-        clearPin();
-        return;
-      }
-
-      applyViewportHeight(top);
-      const visibleH = summary.offsetHeight;
-
-      const width = summary.offsetWidth;
-      const left = summary.getBoundingClientRect().left;
-
-      if (!placeholder) {
-        placeholder = document.createElement("div");
-        placeholder.className = "build-summary-placeholder";
-        placeholder.setAttribute("aria-hidden", "true");
-        summary.parentNode.insertBefore(placeholder, summary);
-      }
-      placeholder.style.height = visibleH + "px";
-      // Removed fixed width so placeholder naturally fills its grid cell
-      placeholder.style.width = "100%"; 
-
-      if (layoutRect.bottom <= top + visibleH + 12) {
-        summary.classList.remove("is-pinned");
-        summary.classList.add("is-pinned-bottom");
-        applyViewportHeight(top);
-        summary.style.position = "absolute";
-        summary.style.top = layout.offsetHeight - summary.offsetHeight + "px";
-        summary.style.left = "";
-        summary.style.width = "100%";
-        summary.style.zIndex = "90";
-        return;
-      }
-
-      summary.classList.remove("is-pinned-bottom");
-      summary.classList.add("is-pinned");
-      applyViewportHeight(top);
-      summary.style.position = "fixed";
-      summary.style.top = top + "px";
-      summary.style.left = left + "px";
-      summary.style.width = width + "px";
-      summary.style.zIndex = "90";
-    }
-
-    window.__updateBuildSummaryPin = updatePin;
-    window.addEventListener("scroll", updatePin, { passive: true });
-    window.addEventListener("resize", updatePin);
-    desktopMq.addEventListener("change", updatePin);
-    updatePin();
+    window.__updateBuildSummaryPin = () => {};
   })();
 
   function renderGlobalCart() {
