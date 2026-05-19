@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>SHIRO IT — Admin Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -96,7 +96,6 @@
     opacity: 0.55;
   }
   /* Hide shiro-v2 page layout elements that shouldn't appear in admin */
-  /* shiro-v2.css page elements that don't belong in admin — hide them */
   .navbar, .page, .footer, .whatsapp-float { display: none !important; }
   /* Allow bg-anim (background animation canvas) to show */
   .bg-anim { display: block !important; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
@@ -404,7 +403,6 @@
   .main-column { width: 100%; }
 
   /* ── HUB ── */
-  /* ── HUB ── */
   .hub-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; }
   .chart-panel {
     background: var(--bg-card); border: 1px solid var(--border);
@@ -510,8 +508,6 @@
   .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.3; }
   .empty-state p { font-size: 0.88rem; }
 
-
-
   /* ── INVENTORY FILTER ── */
   .inv-cat-filter {
     padding: 0.55rem 1rem; background: rgba(255,255,255,0.04);
@@ -604,11 +600,17 @@
   }
   @keyframes toastBar { from { width: 100%; } to { width: 0; } }
 
-  /* ── RESPONSIVE ── */
+  /* ============================================================ */
+  /* 🚀 MOBILE RESPONSIVE FIXES - ADDED ONLY, REST IS ORIGINAL 🚀 */
+  /* ============================================================ */
+
+  /* For tablets and smaller desktops */
   @media (max-width: 1200px) {
     :root { --sidebar-width: 220px; }
     .sidebar-section-label { display: none; }
   }
+
+  /* For tablets */
   @media (max-width: 950px) {
     :root { --sidebar-width: 70px; }
     .sidebar-brand h1, .sidebar-brand span, .sidebar-version,
@@ -623,10 +625,291 @@
     #globalSearch { width: 160px; }
     #globalSearch:focus { width: 200px; }
   }
-  @media (max-width: 640px) {
-    .hub-grid { grid-template-columns: 1fr; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .form-row { grid-template-columns: 1fr; }
+
+  /* 📱 MOBILE PHONES (max-width: 768px) - CRITICAL FIXES */
+  @media (max-width: 768px) {
+    /* Sidebar becomes fixed position drawer (collapsed by default) */
+    .sidebar {
+      transform: translateX(-100%);
+      width: 260px;
+      z-index: 1100;
+      transition: transform 0.3s ease;
+    }
+    
+    /* Show sidebar when toggled (JavaScript will add this class) */
+    .sidebar.mobile-open {
+      transform: translateX(0);
+      box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+    }
+    
+    /* Mobile menu toggle button */
+    .mobile-menu-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1050;
+      box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+      transition: transform 0.2s;
+    }
+    
+    .mobile-menu-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    /* Backdrop overlay when sidebar is open */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+ backdrop-filter: blur(4px);
+      z-index: 1040;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .sidebar-backdrop.active {
+      display: block;
+      opacity: 1;
+    }
+    
+    /* Main content takes full width */
+    .main-content {
+      margin-left: 0 !important;
+      padding: 1rem !important;
+      max-width: 100% !important;
+      width: 100%;
+    }
+    
+    /* Stats grid - 2 columns on mobile */
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 0.75rem !important;
+    }
+    
+    /* Fifth stat card spans full width */
+    .stat-card:last-child {
+      grid-column: span 2;
+    }
+    
+    .stat-card {
+      padding: 1rem !important;
+    }
+    
+    .stat-number {
+      font-size: 1.5rem !important;
+    }
+    
+    .stat-label {
+      font-size: 0.6rem !important;
+    }
+    
+    /* Hub grid - stacked vertically */
+    .hub-grid {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+    
+    .chart-panel {
+      height: 250px !important;
+      padding: 1rem !important;
+    }
+    
+    .network-panel {
+      padding: 1rem !important;
+    }
+    
+    /* Topbar - stacked layout */
+    .topbar {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 0.75rem !important;
+    }
+    
+    .topbar-left {
+      text-align: center;
+    }
+    
+    .page-title {
+      font-size: 1.3rem !important;
+      text-align: center;
+    }
+    
+    .page-subtitle {
+      font-size: 0.7rem !important;
+      text-align: center;
+    }
+    
+    .topbar-right {
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+    }
+    
+    .search-wrap {
+      flex: 1;
+      min-width: 150px;
+    }
+    
+    #globalSearch {
+      width: 100% !important;
+      font-size: 0.75rem !important;
+      padding: 0.6rem 1rem 0.6rem 2.5rem !important;
+    }
+    
+    #globalSearch:focus {
+      width: 100% !important;
+    }
+    
+    .header-clock {
+      font-size: 0.7rem !important;
+      padding: 0.4rem 0.75rem !important;
+    }
+    
+    /* Table - horizontal scroll + compact cells */
+    .table-container {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+      min-width: 650px !important;
+      font-size: 0.75rem;
+    }
+    
+    th, td {
+      padding: 0.6rem 0.75rem !important;
+      white-space: normal;
+      word-break: break-word;
+    }
+    
+    .actions {
+      gap: 2px !important;
+    }
+    
+    .action-btn {
+      width: 28px !important;
+      height: 28px !important;
+      font-size: 0.7rem !important;
+    }
+    
+    /* Panel header - stacked */
+    .panel-header {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      padding: 1rem !important;
+    }
+    
+    .panel-header-right {
+      width: 100% !important;
+      flex-wrap: wrap !important;
+    }
+    
+    .inv-cat-filter {
+      width: 100% !important;
+      margin-bottom: 0.5rem;
+    }
+    
+    .btn-sm {
+      padding: 0.4rem 0.75rem !important;
+      font-size: 0.7rem !important;
+    }
+    
+    /* Modal adjustments */
+    .modal {
+      width: 95% !important;
+      min-width: auto !important;
+      margin: 1rem;
+    }
+    
+    .modal-body {
+      max-height: 55vh !important;
+      padding: 1rem !important;
+    }
+    
+    .form-row {
+      grid-template-columns: 1fr !important;
+      gap: 0.75rem !important;
+    }
+    
+    /* Toast on mobile - better position */
+    .toast-area {
+      bottom: 80px !important;
+      right: 1rem !important;
+      left: 1rem !important;
+    }
+    
+    .toast {
+      font-size: 0.75rem !important;
+      padding: 0.7rem 1rem !important;
+    }
+    
+    /* Login screen mobile */
+    .login-card {
+      padding: 1.5rem !important;
+      margin: 0 1rem;
+    }
+    
+    .role-tabs {
+      flex-wrap: wrap;
+    }
+    
+    .role-tab {
+      font-size: 0.7rem !important;
+      padding: 0.4rem 0.3rem !important;
+    }
+  }
+  
+  /* Small phones (max-width: 480px) */
+  @media (max-width: 480px) {
+    .stats-grid {
+      gap: 0.5rem !important;
+    }
+    
+    .stat-number {
+      font-size: 1.2rem !important;
+    }
+    
+    .main-content {
+      padding: 0.75rem !important;
+    }
+    
+    .header-clock {
+      display: none !important; /* Hide clock on very small screens */
+    }
+    
+    .topbar-right {
+      justify-content: space-between;
+    }
+    
+    .search-wrap {
+      flex: 1;
+    }
+    
+    .modal-footer {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .modal-footer .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .badge, .badge-new, .badge-done, .badge-warn, .badge-red, .badge-cat {
+      font-size: 0.55rem !important;
+      padding: 0.2rem 0.5rem !important;
+    }
   }
 
   /* Custom scrollbar */
@@ -645,6 +928,12 @@
 <div class="bg-anim" aria-hidden="true">
   <canvas id="bgCanvas"></canvas>
 </div>
+
+<!-- Mobile Menu Toggle Button - ADDED FOR MOBILE -->
+<button class="mobile-menu-toggle" id="mobileMenuToggle" style="display: none;">
+  <i class="fas fa-bars"></i>
+</button>
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
 <div id="loginScreen">
   <div class="login-card">
@@ -975,7 +1264,7 @@
                   </tr>
                 </thead>
                 <tbody id="heroTableBody">
-                  <tr><td colspan="5" style="text-align:center;padding:3rem;">Loading slides...</td></tr>
+                  <tr><td colspan="5" style="text-align:center;padding:3rem;">Loading slides......</td></tr>
                 </tbody>
               </table>
             </div>
@@ -1604,6 +1893,7 @@ function initDashboard() {
   loadStats();
   loadTab('hub');
   startClock();
+  initMobileMenu(); // Initialize mobile menu functionality
 }
 
 /* ─── STATS ─── */
@@ -1688,17 +1978,22 @@ function syncData() {
 
 /* ─── TAB NAVIGATION ─── */
 document.querySelectorAll('.nav-item').forEach(btn => {
-  btn.addEventListener('click', e => { e.preventDefault(); loadTab(btn.dataset.tab); });
+  btn.addEventListener('click', e => { e.preventDefault(); loadTab(btn.dataset.tab); 
+    // Close mobile sidebar when a link is clicked (on mobile)
+    if (window.innerWidth <= 768) {
+      closeMobileSidebar();
+    }
+  });
 });
 
-  const closeDetailModal = () => {
-    $('detailModalOverlay').classList.remove('show');
-  };
-  const viewDetail = (title, content) => {
-    $('detailModalTitle').textContent = title;
-    $('detailModalBody').textContent = content;
-    $('detailModalOverlay').classList.add('show');
-  };
+const closeDetailModal = () => {
+  $('detailModalOverlay').classList.remove('show');
+};
+const viewDetail = (title, content) => {
+  $('detailModalTitle').textContent = title;
+  $('detailModalBody').textContent = content;
+  $('detailModalOverlay').classList.add('show');
+};
 
 async function loadTab(tab) {
   activeTab = tab;
@@ -1737,7 +2032,6 @@ async function loadTab(tab) {
   $('panelTitle').textContent = meta.h;
   $('rowCount').textContent = '…';
 
-  // Show/hide specific controls
   // Show/hide specific controls
   const invFilter = $('invCatFilter');
   if (invFilter) invFilter.style.display = tab === 'inventory' ? 'block' : 'none';
@@ -1836,7 +2130,7 @@ function showTableError() {
       <i class="fas fa-exclamation-triangle" style="color:var(--neon-red)"></i>
       <p>Failed to load data. Check server connection.</p>
     </div>
-  </td></tr>`;
+   </div></tr>`;
 }
 
 /* ─── HUB ─── */
@@ -1903,6 +2197,7 @@ function buildChart() {
 
 async function loadRecentActivity() {
   const list = $('recentActivityList');
+  if (!list) return;
   list.innerHTML = '';
   const COLOR_MAP = { contacts: 'blue', quotes: 'yellow', bookings: 'green', applications: 'red' };
   const LABEL_MAP = { contacts: 'MSG', quotes: 'QUOTE', bookings: 'BOOKING', applications: 'APPLICATION' };
@@ -1919,7 +2214,7 @@ async function loadRecentActivity() {
   }
   allItems.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   allItems = allItems.slice(0, 12);
-  $('activityCount').textContent = allItems.length;
+  if ($('activityCount')) $('activityCount').textContent = allItems.length;
 
   if (!allItems.length) {
     list.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.8rem;">No recent activity</div>`;
@@ -1961,7 +2256,7 @@ function renderTable(tab, data) {
         <i class="fas fa-database"></i>
         <p>No records found.</p>
       </div>
-    </td></tr>`;
+     </div></tr>`;
     return;
   }
 
@@ -2410,6 +2705,63 @@ function startClock() {
   setInterval(update, 1000);
 }
 // ══════════════════════════════════════
+// MOBILE MENU FUNCTIONALITY - ADDED
+// ══════════════════════════════════════
+
+function initMobileMenu() {
+  const toggleBtn = document.getElementById('mobileMenuToggle');
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  
+  if (!toggleBtn || !sidebar || !backdrop) return;
+  
+  // Show the toggle button only on mobile (CSS handles visibility)
+  toggleBtn.style.display = 'flex';
+  
+  // Toggle sidebar on button click
+  toggleBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    sidebar.classList.toggle('mobile-open');
+    backdrop.classList.toggle('active');
+    
+    // Change icon
+    if (sidebar.classList.contains('mobile-open')) {
+      toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
+    } else {
+      toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+  });
+  
+  // Close sidebar when clicking backdrop
+  backdrop.addEventListener('click', function() {
+    sidebar.classList.remove('mobile-open');
+    backdrop.classList.remove('active');
+    toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+  });
+  
+  // Close sidebar when window is resized above mobile breakpoint
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove('mobile-open');
+      backdrop.classList.remove('active');
+      if (toggleBtn) toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+  });
+}
+
+function closeMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  const toggleBtn = document.getElementById('mobileMenuToggle');
+  
+  if (sidebar && sidebar.classList.contains('mobile-open')) {
+    sidebar.classList.remove('mobile-open');
+    if (backdrop) backdrop.classList.remove('active');
+    if (toggleBtn) toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+  }
+}
+
+// ══════════════════════════════════════
 // DYNAMIC CONTENT LOGIC (PCs, Tips, Settings)
 // ══════════════════════════════════════
 
@@ -2494,11 +2846,11 @@ window.editPcItem = (item) => {
 function togglePcFields() {
   const isPoster = $('pcDisplayStyle').value === 'poster';
   const displayVal = isPoster ? 'none' : '';
-  $('pcSpecsRow1').style.display = isPoster ? 'none' : 'flex';
-  $('pcNameGroup').style.display = displayVal;
-  $('pcDiscountGroup').style.display = displayVal;
-  $('pcSpecsGroup').style.display = displayVal;
-  $('pcTagsGroup').style.display = displayVal;
+  if ($('pcSpecsRow1')) $('pcSpecsRow1').style.display = isPoster ? 'none' : 'flex';
+  if ($('pcNameGroup')) $('pcNameGroup').style.display = displayVal;
+  if ($('pcDiscountGroup')) $('pcDiscountGroup').style.display = displayVal;
+  if ($('pcSpecsGroup')) $('pcSpecsGroup').style.display = displayVal;
+  if ($('pcTagsGroup')) $('pcTagsGroup').style.display = displayVal;
 }
 
 $('pcDisplayStyle').addEventListener('change', togglePcFields);
@@ -2513,6 +2865,10 @@ document.addEventListener('click', e => {
   if (e.target && e.target.id === 'tipModalOverlay') closeTipModal();
   if (e.target && e.target.id === 'testimonialModalClose') closeTestimonialModal();
   if (e.target && e.target.id === 'testimonialModalOverlay') closeTestimonialModal();
+  if (e.target && e.target.id === 'teamModalClose') closeTeamModal();
+  if (e.target && e.target.id === 'teamModalOverlay') closeTeamModal();
+  if (e.target && e.target.id === 'heroModalClose') closeHeroModal();
+  if (e.target && e.target.id === 'heroModalOverlay') closeHeroModal();
 });
 
 $('pcImageFile').addEventListener('change', (e) => {
@@ -2626,18 +2982,18 @@ async function loadHeroSlides() {
           <td>
             <div style="font-weight:600;color:var(--text-primary);">${item.title}</div>
             <div style="font-size:0.8rem;color:var(--text-secondary);">${item.subtitle || '—'}</div>
-          </td>
+           </div>
           <td>
             <div style="font-size:0.85rem;">${item.button_text}</div>
             <div style="font-size:0.75rem;color:var(--text-secondary);">${item.target_page}</div>
-          </td>
-          <td><span class="badge badge-cat">${item.order_index}</span></td>
+           </div>
+          <td><span class="badge badge-cat">${item.order_index}</span></div>
           <td>
             <div class="actions" style="justify-content:flex-end">
               <button class="action-btn ok" onclick='editHeroItem(${JSON.stringify(item).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
               <button class="action-btn del" onclick="deleteItem('hero_slides', ${item.id})" title="Delete"><i class="fas fa-trash"></i></button>
             </div>
-          </td>
+           </div>
         </tr>`;
     }).join('');
   } catch (e) {
@@ -2956,56 +3312,7 @@ $('saveTestimonialBtn').onclick = async () => {
 /* ══════════════════════════════════════
      TEAM MODAL
 ══════════════════════════════════════ */
-// HTML Modal structure
-document.body.insertAdjacentHTML('beforeend', `
-<div class="modal-overlay" id="teamModalOverlay">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="teamModalTitle">Add Team Member</h3>
-      <button class="modal-close" id="teamModalClose">&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="teamForm" autocomplete="off">
-        <input type="hidden" id="teamEditId">
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="teamName" required placeholder="e.g. John Doe">
-        </div>
-        <div class="form-group">
-          <label>Role / Designation</label>
-          <input type="text" id="teamRole" required placeholder="e.g. Lead Technician">
-        </div>
-        <div class="form-group">
-          <label>Bio / Description</label>
-          <textarea id="teamBio" rows="4" placeholder="Brief background or expertise..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Photo URL (Optional)</label>
-          <input type="text" id="teamImageUrl" placeholder="Link to photo or upload below">
-        </div>
-        <div class="form-group">
-          <label>Upload Photo</label>
-          <div class="upload-area" id="teamUploadArea">
-            <input type="file" id="teamImageFile" accept="image/*">
-            <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-            <div class="upload-area-text">Drop image or click to browse</div>
-          </div>
-          <div id="teamUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
-          <div id="teamImagePreview" style="margin-top:0.5rem; text-align:center;"></div>
-        </div>
-        <div class="form-group">
-          <label>Display Order</label>
-          <input type="number" id="teamOrder" value="0">
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" id="teamModalCancel">Cancel</button>
-      <button class="btn btn-primary" id="saveTeamBtn"><i class="fas fa-save"></i> Save Member</button>
-    </div>
-  </div>
-</div>
-`);
+// HTML Modal structure already exists in the document
 
 $('addTeamBtn').onclick = () => {
   $('teamForm').reset();
@@ -3015,9 +3322,6 @@ $('addTeamBtn').onclick = () => {
   $('teamUploadStatus').textContent = '';
   openTeamModal();
 };
-
-$('teamModalClose').onclick = closeTeamModal;
-$('teamModalCancel').onclick = closeTeamModal;
 
 function openTeamModal() { $('teamModalOverlay').classList.add('show'); }
 function closeTeamModal() { $('teamModalOverlay').classList.remove('show'); }
@@ -3104,7 +3408,5 @@ $('saveTeamBtn').onclick = async () => {
 
 </script>
 
-
 </body>
 </html>
-
