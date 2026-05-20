@@ -2618,125 +2618,7 @@ function showToast(message, type = "success") {
   }
 
   let W, H;
-  let meteors = [];
-  let rings   = [];
-  let stars   = [];
   let comps   = [];
-  let nodes   = [];        // ← network nodes
-  let mouseX  = 0, mouseY = 0;
-
-  // Track mouse for node attraction
-  window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-
-  /* -- Network nodes (connected particle web) -- */
-  function initNodes() {
-    nodes = Array.from({ length: 72 }, () => ({
-      x:     Math.random() * W,
-      y:     Math.random() * H,
-      vx:    (Math.random() - 0.5) * 0.55,
-      vy:    (Math.random() - 0.5) * 0.55,
-      r:     Math.random() * 2 + 1.5,
-      col:   Math.random() > 0.5 ? 'a' : 'b',
-      pulse: Math.random() * Math.PI * 2,
-    }));
-  }
-
-  function drawNetwork(p) {
-    const MAX_D  = 170;
-    const MAX_D2 = MAX_D * MAX_D;
-
-    // Move nodes
-    nodes.forEach(n => {
-      // Subtle mouse attraction
-      const dx = mouseX - n.x, dy = mouseY - n.y;
-      const md = Math.sqrt(dx * dx + dy * dy);
-      if (md < 220 && md > 0) {
-        n.vx += (dx / md) * 0.018;
-        n.vy += (dy / md) * 0.018;
-      }
-      // Speed cap
-      const spd = Math.sqrt(n.vx * n.vx + n.vy * n.vy);
-      if (spd > 1.4) { n.vx *= 0.94; n.vy *= 0.94; }
-      n.x += n.vx;
-      n.y += n.vy;
-      n.pulse += 0.028;
-      // Bounce
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-      n.x = Math.max(0, Math.min(W, n.x));
-      n.y = Math.max(0, Math.min(H, n.y));
-    });
-
-    // Draw connections
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const a = nodes[i], b = nodes[j];
-        const dx = b.x - a.x, dy = b.y - a.y;
-        const d2 = dx * dx + dy * dy;
-        if (d2 > MAX_D2) continue;
-        const d    = Math.sqrt(d2);
-        const t    = 1 - d / MAX_D;          // 0→1 as nodes get closer
-        const alpha = t * 0.18;              // subtle lines
-
-        // Use solid color instead of expensive gradient
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = rgba(p[a.col], alpha);
-        ctx.lineWidth   = t * 1.2;
-        ctx.stroke();
-
-        // Bloom glow on close connections
-        if (d < 90) {
-          const ca = p[a.col], cb = p[b.col];
-          const gt = 1 - d / 90;
-          const gr2 = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-          gr2.addColorStop(0, rgba(ca, gt * 0.06));
-          gr2.addColorStop(1, rgba(cb, gt * 0.06));
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = gr2;
-          ctx.lineWidth   = gt * 4;
-          ctx.stroke();
-        }
-      }
-    }
-
-    // Draw glowing node dots
-    nodes.forEach(n => {
-      const c    = p[n.col];
-      const pls  = Math.sin(n.pulse) * 0.5 + 0.5;
-      const gRad = n.r + pls * 5;
-
-      // Radial glow halo
-      const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, gRad * 3);
-      grd.addColorStop(0, rgba(c, 0.12 + pls * 0.08));
-      grd.addColorStop(1, rgba(c, 0));
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, gRad * 3, 0, Math.PI * 2);
-      ctx.fillStyle = grd;
-      ctx.fill();
-
-      // Core dot
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r + pls * 0.8, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(c, 0.45 + pls * 0.15);
-      ctx.fill();
-    });
-  }
-
-  /* -- Stars (twinkle dots) -- */
-  function initStars() {
-    stars = Array.from({ length: 130 }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 2.5 + 0.8,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.025 + 0.01,
-      col: Math.random() > 0.5 ? "a" : "b",
-    }));
-  }
 
   /* -- PC Component icons -- */
   const COMP_TYPES = ["cpu", "gpu", "ram", "ssd", "fan", "psu"];
@@ -2969,67 +2851,15 @@ function showToast(message, type = "success") {
     ctx.restore();
   }
 
-  /* -- Pulse rings -- */
-  function spawnRing() {
-    if (rings.length > 10) return;
-    const p = palettes();
-    const col = Math.random() > 0.5 ? p.a : p.b;
-    rings.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: 0,
-      maxR: Math.random() * 120 + 60,
-      life: 1,
-      decay: Math.random() * 0.008 + 0.005,
-      color: col,
-    });
-  }
-
-  /* -- Meteors -- */
-  function spawnMeteor() {
-    if (meteors.length > 15) return;
-    const p = palettes();
-    const col = Math.random() > 0.5 ? p.a : p.b;
-    meteors.push({
-      x: Math.random() * W,
-      y: 0,
-      vx: (Math.random() - 0.5) * 6,
-      vy: Math.random() * 5 + 4,
-      len: Math.random() * 120 + 60,
-      life: 1,
-      decay: Math.random() * 0.02 + 0.015,
-      color: col,
-    });
-  }
-
-  setInterval(spawnMeteor, 900);
-  setInterval(spawnRing, 1800);
-
   function resize() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
-    mouseX = W / 2;
-    mouseY = H / 2;
-    initStars();
     initComponents();
-    initNodes();
   }
 
   function draw() {
     const p = palettes();
     ctx.clearRect(0, 0, W, H);
-
-    /* -- Connected node network -- */
-    drawNetwork(p);
-
-    stars.forEach((s) => {
-      s.phase += s.speed;
-      const alpha = (Math.sin(s.phase) * 0.5 + 0.5) * 0.78 + 0.12;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = rgba(p[s.col], alpha);
-      ctx.fill();
-    });
 
     /* -- Drifting PC components -- */
     comps.forEach((h, i) => {
@@ -3040,54 +2870,6 @@ function showToast(message, type = "success") {
         comps[i] = spawnComponent();
       }
       drawComponent(h, p[h.col]);
-    });
-
-    /* -- Pulse rings -- */
-    rings = rings.filter((r) => r.life > 0);
-    rings.forEach((r) => {
-      r.r += 1.6;
-      r.life -= r.decay;
-      const progress = r.r / r.maxR;
-      const alpha = r.life * (1 - progress) * 0.65;
-      ctx.beginPath();
-      ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
-      ctx.strokeStyle = rgba(r.color, alpha);
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(r.x, r.y, r.r * 0.6, 0, Math.PI * 2);
-      ctx.strokeStyle = rgba(r.color, alpha * 0.5);
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      if (r.r >= r.maxR) r.life = 0;
-    });
-
-    /* -- Meteors -- */
-    meteors = meteors.filter((m) => m.life > 0);
-    meteors.forEach((m) => {
-      ctx.beginPath();
-      ctx.moveTo(m.x, m.y);
-      ctx.lineTo(m.x - (m.vx * m.len) / 8, m.y - (m.vy * m.len) / 8);
-      const mg = ctx.createLinearGradient(
-        m.x,
-        m.y,
-        m.x - (m.vx * m.len) / 8,
-        m.y - (m.vy * m.len) / 8,
-      );
-      mg.addColorStop(0, rgba(m.color, Math.min(m.life * 1.2, 1)));
-      mg.addColorStop(1, rgba(m.color, 0));
-      ctx.strokeStyle = mg;
-      ctx.lineWidth = 2.5;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(m.x, m.y);
-      ctx.lineTo(m.x - m.vx * 4, m.y - m.vy * 4);
-      ctx.strokeStyle = rgba(m.color, m.life * 0.6);
-      ctx.lineWidth = 4;
-      ctx.stroke();
-      m.x += m.vx;
-      m.y += m.vy;
-      m.life -= m.decay;
     });
 
     requestAnimationFrame(draw);
