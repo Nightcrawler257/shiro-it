@@ -193,6 +193,18 @@ def _create_tables():
             order_index INTEGER DEFAULT 0
         );
 
+        CREATE TABLE IF NOT EXISTS career_listings (
+            id            INTEGER PRIMARY KEY AUTOINCREMENT,
+            title         TEXT NOT NULL,
+            job_type      TEXT DEFAULT 'Full-time',
+            description   TEXT,
+            requirements  TEXT,
+            whatsapp_msg  TEXT,
+            is_active     INTEGER DEFAULT 1,
+            order_index   INTEGER DEFAULT 0,
+            created_at    TEXT DEFAULT (strftime('%Y-%m-%d %H:%M:%S','now'))
+        );
+
     """)
     conn.commit()
 
@@ -277,6 +289,20 @@ def _migrate(conn):
             ("Muhammad Daniel Zhafran", "SUPERVISOR", "CCNA certified with expertise in business networking, server setup, and cybersecurity solutions for small to medium businesses.", "images/daniel.jpg", 2)
         ]
         conn.executemany("INSERT INTO team_members (name, role, bio, image_url, order_index) VALUES (?, ?, ?, ?, ?)", seed_team)
+        conn.commit()
+
+    # Seed career listings if empty
+    career_count = conn.execute("SELECT COUNT(*) FROM career_listings").fetchone()[0]
+    if career_count == 0:
+        seed_careers = [
+            ("PC Build Technician", "Full-time", "Assemble and test custom gaming PCs with attention to detail and cable management.", "", "Hi, I would like to apply for the PC Build Technician position", 1, 0),
+            ("IT Support Intern", "Internship", "Learn the ropes of IT support while assisting with real client systems.", "", "Hi, I would like to apply for the IT Support Intern position", 1, 1),
+            ("Sales & Customer Service", "Full-time", "Help customers choose the right PC build and provide excellent after-sales support.", "", "Hi, I would like to apply for the Sales & Customer Service position", 1, 2),
+        ]
+        conn.executemany(
+            "INSERT INTO career_listings (title, job_type, description, requirements, whatsapp_msg, is_active, order_index) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            seed_careers
+        )
         conn.commit()
 
 

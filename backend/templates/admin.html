@@ -1076,6 +1076,10 @@
           <i class="fas fa-users nav-icon"></i>
           <span class="nav-label">Team Members</span>
         </a>
+        <a href="#" class="nav-item" data-tab="careers">
+          <i class="fas fa-briefcase nav-icon"></i>
+          <span class="nav-label">Career Listings</span>
+        </a>
         <a href="#" class="nav-item" data-tab="settings">
           <i class="fas fa-cogs nav-icon"></i>
           <span class="nav-label">Site Settings</span>
@@ -1238,6 +1242,9 @@
                 </button>
                 <button class="btn btn-primary btn-sm" id="addTeamBtn" style="display:none;">
                   <i class="fas fa-plus"></i> Add Member
+                </button>
+                <button class="btn btn-primary btn-sm" id="addCareerBtn" style="display:none;">
+                  <i class="fas fa-plus"></i> Add Listing
                 </button>
                 <button class="btn btn-primary btn-sm" id="addSlideBtn" style="display:none;">
                   <i class="fas fa-plus"></i> Add Slide
@@ -1660,6 +1667,57 @@
   </div>
 </div>
 
+<!-- CAREER MODAL -->
+<div class="modal-overlay" id="careerModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="careerModalTitle">Add Career Listing</h3>
+      <button class="modal-close" id="careerModalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="careerForm">
+        <input type="hidden" id="careerEditId">
+        <div class="form-row">
+          <div class="form-group"><label>Job Title</label><input type="text" id="careerTitle" required></div>
+          <div class="form-group">
+            <label>Job Type</label>
+            <select id="careerJobType">
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Internship">Internship</option>
+              <option value="Contract">Contract</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="careerDescription" rows="4" placeholder="Job description and responsibilities"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Requirements</label>
+          <textarea id="careerRequirements" rows="4" placeholder="Required qualifications, experience, skills"></textarea>
+        </div>
+        <div class="form-group">
+          <label>WhatsApp Message (Optional)</label>
+          <textarea id="careerWhatsappMsg" rows="3" placeholder="Pre-filled message for WhatsApp applications"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Display Order</label>
+            <input type="number" id="careerOrder" value="0" min="0">
+          </div>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:0.5rem;"><input type="checkbox" id="careerActive" checked> Active</label>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="saveCareerBtn"><i class="fas fa-save"></i> Save Career</button>
+    </div>
+  </div>
+</div>
+
 <!-- TEAM MODAL -->
 <div class="modal-overlay" id="teamModalOverlay">
   <div class="modal">
@@ -1692,6 +1750,11 @@
             </div>
             <div id="teamUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
             <div id="teamImagePreview" style="margin-top:0.5rem;"></div>
+            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+              <button type="button" class="btn btn-danger btn-sm" id="deleteTeamPhotoBtn" style="display:none;" title="Delete current photo">
+                <i class="fas fa-trash"></i> Delete Photo
+              </button>
+            </div>
             <input type="hidden" id="teamImageUrl">
           </div>
         </div>
@@ -1728,6 +1791,7 @@ const TAB_META = {
   tips:         { h: 'IT Tips Gallery',  s: 'Manage knowledge base photos & videos', icon: 'fa-lightbulb' },
   testimonials: { h: 'Testimonials',     s: 'Manage customer reviews on the homepage', icon: 'fa-star' },
   team:         { h: 'Team Members',     s: 'Manage your staff profiles and roles', icon: 'fa-users' },
+  careers:      { h: 'Career Listings',  s: 'Manage job openings and positions', icon: 'fa-briefcase' },
   settings:     { h: 'Site Settings',    s: 'Manage Festival Animations and Display limits', icon: 'fa-cogs' }
 };
 
@@ -1743,6 +1807,7 @@ const apiDataMap = {
   tips: '/admin/api/it_tips',
   testimonials: '/admin/api/testimonials',
   team: '/admin/api/team',
+  careers: '/admin/api/careers',
   settings: '/admin/api/settings'
 };
 
@@ -2083,6 +2148,8 @@ async function loadTab(tab) {
   const addPcBtn  = $('addPcBtn');
   const addTipBtn = $('addTipBtn');
   const addTestimonialBtn = $('addTestimonialBtn');
+  const addTeamBtn = $('addTeamBtn');
+  const addCareerBtn = $('addCareerBtn');
   const addSlideBtn = $('addSlideBtn');
 
   if (addInvBtn) addInvBtn.style.display = tab === 'inventory' ? 'flex' : 'none';
@@ -2090,6 +2157,7 @@ async function loadTab(tab) {
   if (addTipBtn) addTipBtn.style.display = tab === 'tips' ? 'flex' : 'none';
   if (addTestimonialBtn) addTestimonialBtn.style.display = tab === 'testimonials' ? 'flex' : 'none';
   if (addTeamBtn) addTeamBtn.style.display = tab === 'team' ? 'flex' : 'none';
+  if (addCareerBtn) addCareerBtn.style.display = tab === 'careers' ? 'flex' : 'none';
   if (addSlideBtn) addSlideBtn.style.display = tab === 'hero' ? 'flex' : 'none';
 
   // Update Section Header based on tab
@@ -2108,6 +2176,7 @@ async function loadTab(tab) {
       tips: 'IT TIPS GALLERY',
       testimonials: 'TESTIMONIALS',
       team: 'TEAM MEMBERS',
+      careers: 'CAREER LISTINGS',
       settings: 'SITE SETTINGS'
     };
     const icons = {
@@ -2122,6 +2191,7 @@ async function loadTab(tab) {
       tips: 'fa-lightbulb',
       testimonials: 'fa-star',
       team: 'fa-users',
+      careers: 'fa-briefcase',
       settings: 'fa-cogs'
     };
     pTitle.textContent = titles[tab] || 'DASHBOARD';
@@ -2543,6 +2613,18 @@ function renderTable(tab, data) {
             <button class="action-btn del" onclick="deleteItem('team','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
           </div></td>`;
       }
+    },
+    careers: {
+      cols: ['Position', 'Type', 'Status', 'Requirements', 'Actions'],
+      row: r => `
+        <td><div class="name-col">${esc(r.title)}</div><div class="sub-col">Order: ${r.order_index || 0}</div></td>
+        <td><span class="badge badge-new">${esc(r.job_type || 'Full-time')}</span></td>
+        <td>${statusBadge(r.is_active ? 'Active' : 'Inactive')}</td>
+        <td class="msg-col" onclick="viewDetail('Requirements - ${esc(r.title)}', \`${esc(r.requirements)}\`)">${esc(r.requirements)}</td>
+        <td><div class="actions">
+          <button class="action-btn ok" onclick='editCareerItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
+          <button class="action-btn del" onclick="deleteCareerItem('${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+        </div></td>`
     }
   };
 
@@ -2910,6 +2992,8 @@ document.addEventListener('click', e => {
   if (e.target && e.target.id === 'testimonialModalOverlay') closeTestimonialModal();
   if (e.target && e.target.id === 'teamModalClose') closeTeamModal();
   if (e.target && e.target.id === 'teamModalOverlay') closeTeamModal();
+  if (e.target && e.target.id === 'careerModalClose') closeCareerModal();
+  if (e.target && e.target.id === 'careerModalOverlay') closeCareerModal();
   if (e.target && e.target.id === 'heroModalClose') closeHeroModal();
   if (e.target && e.target.id === 'heroModalOverlay') closeHeroModal();
 });
@@ -3363,6 +3447,7 @@ $('addTeamBtn').onclick = () => {
   $('teamModalTitle').textContent = 'Add Team Member';
   $('teamImagePreview').innerHTML = '';
   $('teamUploadStatus').textContent = '';
+  $('deleteTeamPhotoBtn').style.display = 'none';
   openTeamModal();
 };
 
@@ -3391,13 +3476,27 @@ window.editTeamItem = (item) => {
     const url = item.image_url.startsWith('http') ? item.image_url : API + '/' + item.image_url;
     $('teamImagePreview').innerHTML = `<img src="${url}" style="max-width:100%;max-height:120px;border-radius:10px;margin-top:8px;border:1px solid var(--border);">`;
     $('teamUploadStatus').textContent = 'Current photo loaded.';
+    $('deleteTeamPhotoBtn').style.display = 'flex';
   } else {
     $('teamImagePreview').innerHTML = '';
     $('teamUploadStatus').textContent = '';
+    $('deleteTeamPhotoBtn').style.display = 'none';
   }
 
   $('teamModalTitle').textContent = 'Edit Team Member';
   openTeamModal();
+};
+
+$('deleteTeamPhotoBtn').onclick = (e) => {
+  e.preventDefault();
+  if (confirm('Delete this team member\'s photo?')) {
+    $('teamImageUrl').value = '';
+    $('teamImagePreview').innerHTML = '';
+    $('teamUploadStatus').textContent = 'Photo deleted. Save to apply changes.';
+    $('teamUploadStatus').style.color = 'var(--neon-yellow)';
+    $('deleteTeamPhotoBtn').style.display = 'none';
+    $('teamImageFile').value = '';
+  }
 };
 
 $('saveTeamBtn').onclick = async () => {
@@ -3447,6 +3546,80 @@ $('saveTeamBtn').onclick = async () => {
     btn.innerHTML = '<i class="fas fa-save"></i> Save Member';
     btn.disabled = false;
   }
+};
+
+// ─── CAREER MANAGEMENT ───
+$('addCareerBtn').onclick = () => {
+  $('careerForm').reset();
+  $('careerEditId').value = '';
+  $('careerModalTitle').textContent = 'Add Career Listing';
+  $('careerActive').checked = true;
+  openCareerModal();
+};
+
+function openCareerModal() { $('careerModalOverlay').classList.add('show'); }
+function closeCareerModal() { $('careerModalOverlay').classList.remove('show'); }
+
+window.editCareerItem = (item) => {
+  $('careerEditId').value = item.id;
+  $('careerTitle').value = item.title || '';
+  $('careerJobType').value = item.job_type || 'Full-time';
+  $('careerDescription').value = item.description || '';
+  $('careerRequirements').value = item.requirements || '';
+  $('careerWhatsappMsg').value = item.whatsapp_msg || '';
+  $('careerOrder').value = item.order_index || 0;
+  $('careerActive').checked = item.is_active ? true : false;
+
+  $('careerModalTitle').textContent = 'Edit Career Listing';
+  openCareerModal();
+};
+
+$('saveCareerBtn').onclick = async () => {
+  const btn = $('saveCareerBtn');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
+  btn.disabled = true;
+
+  try {
+    const id = $('careerEditId').value;
+    const career = {
+      title: $('careerTitle').value,
+      job_type: $('careerJobType').value,
+      description: $('careerDescription').value,
+      requirements: $('careerRequirements').value,
+      whatsapp_msg: $('careerWhatsappMsg').value,
+      order_index: parseInt($('careerOrder').value) || 0,
+      is_active: $('careerActive').checked
+    };
+
+    const url = id ? `${API}/admin/api/careers/${id}` : `${API}/admin/api/careers`;
+    const res = await fetch(url, {
+      method: id ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(career)
+    });
+    const d = await res.json();
+    if (d.success) {
+      toast('Career Listing Saved', 'ok');
+      closeCareerModal();
+      loadTab('careers');
+    } else toast(d.error || 'Save failed', 'err');
+  } catch(e) { toast('Error saving career listing', 'err'); }
+  finally {
+    btn.innerHTML = '<i class="fas fa-save"></i> Save Career';
+    btn.disabled = false;
+  }
+};
+
+window.deleteCareerItem = async (id) => {
+  if (!confirm('Delete this career listing?')) return;
+  try {
+    const res = await fetch(`${API}/admin/api/careers/${id}`, { method: 'DELETE' });
+    const d = await res.json();
+    if (d.success) {
+      toast('Career Listing Deleted', 'ok');
+      loadTab('careers');
+    } else toast(d.error || 'Delete failed', 'err');
+  } catch(e) { toast('Error deleting career listing', 'err'); }
 };
 
 </script>

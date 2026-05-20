@@ -486,3 +486,94 @@ def upload_image():
     upload_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
     file.save(upload_path)
     return jsonify({'success': True, 'url': f'/uploads/{filename}'})
+
+
+# ---------------------------------------------------------------------------
+# Careers
+# ---------------------------------------------------------------------------
+
+@admin_bp.route('/admin/api/careers', methods=['GET'])
+@login_required
+def get_careers():
+    """List all career listings."""
+    conn = db.get_conn()
+    rows = conn.execute(
+        'SELECT * FROM career_listings ORDER BY order_index, created_at DESC'
+    ).fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
+
+
+@admin_bp.route('/admin/api/careers', methods=['POST'])
+@login_required
+def add_career():
+    """Add a new career listing."""
+    data = request.get_json()
+    if not data or not data.get('title'):
+        return jsonify({'success': False, 'error': 'Title is required'}), 400
+
+    conn = db.get_conn()
+    cursor = conn.execute(
+        '''INSERT INTO career_listings (title, job_type, description, requirements, whatsapp_msg, is_active, order_index)
+           VALUES (?, ?, ?, ?, ?, ?, ?)''',
+        (data.get('title'),           data.get('job_type', 'Full-time'),
+         data.get('description', ''), data.get('requirements', ''),
+         data.get('whatsapp_msg', ''), 1 if data.get('is_active', True) else 0,
+         data.get('order_index', 0))
+    )
+    conn.commit()
+    new_id = cursor.lastrowid
+    conn.close()
+    return jsonify({'success': True, 'message': 'Career listing created', 'id': new_id})
+
+
+@admin_bp.route('/admin/api/careers/<int:career_id>', methods=['PUT'])
+@login_required
+def update_career(career_id):
+    """Update an existing career listing."""
+    data = request.get_json()
+    if not data:
+        return jsonify({'success': False, 'error': 'No data provided'}), 400
+
+    fields = []
+    values = []
+    allowed = ['title', 'job_type', 'description', 'requirements', 'whatsapp_msg', 'order_index']
+    
+    for key in allowed:
+        if key in data:
+            fields.append(f'{key} = ?')
+            values.append(data[key])
+    
+    if 'is_active' in data:
+        fields.append('is_active = ?')
+        values.append(1 if data['is_active'] else 0)
+
+    if not fields:
+        return jsonify({'success': False, 'error': 'No valid fields to update'}), 400
+
+    values.append(career_id)
+    conn = db.get_conn()
+    result = conn.execute(
+        f"UPDATE career_listings SET {', '.join(fields)} WHERE id = ?",
+        values
+    )
+    conn.commit()
+    conn.close()
+
+    if result.rowcount == 0:
+        return jsonify({'success': False, 'error': 'Career listing not found'}), 404
+    return jsonify({'success': True, 'message': 'Career listing updated'})
+
+
+@admin_bp.route('/admin/api/careers/<int:career_id>', methods=['DELETE'])
+@login_required
+def delete_career(career_id):
+    """Delete a career listing."""
+    conn = db.get_conn()
+    result = conn.execute('DELETE FROM career_listings WHERE id = ?', (career_id,))
+    conn.commit()
+    conn.close()
+
+    if result.rowcount == 0:
+        return jsonify({'success': False, 'error': 'Career listing not found'}), 404
+    return jsonify({'success': True, 'message': 'Career listing deleted'})
