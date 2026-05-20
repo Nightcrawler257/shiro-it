@@ -951,7 +951,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="product-category">${displayCategory}</div>
         <h3>${p.name}</h3>
         <p class="product-specs">${p.specs}</p>
-        ${p.health ? `<p class="product-health"><i class="fas fa-heartbeat"></i> Health: ${p.health}</p>` : ""}
         ${displayStock ? `<p class="product-stock" style="${stockIconColor}"><i class="fas ${isSoldOut ? 'fa-ban' : 'fa-boxes'}"></i> ${displayStock}</p>` : ""}
         <div class="product-bottom">
           <div class="product-price">${p.price > 0 ? "RM " + p.price.toLocaleString() : `<span style="color:var(--accent-blue);font-size:0.85em;">${displayPrice}</span>`}</div>
