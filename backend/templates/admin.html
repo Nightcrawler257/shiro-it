@@ -1660,6 +1660,49 @@
   </div>
 </div>
 
+<!-- TEAM MODAL -->
+<div class="modal-overlay" id="teamModalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="teamModalTitle">Add Team Member</h3>
+      <button class="modal-close" id="teamModalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="teamForm">
+        <input type="hidden" id="teamEditId">
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input type="text" id="teamName" required></div>
+          <div class="form-group"><label>Role</label><input type="text" id="teamRole" required></div>
+        </div>
+        <div class="form-group">
+          <label>Bio</label>
+          <textarea id="teamBio" rows="4"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Display Order</label>
+            <input type="number" id="teamOrder" value="0" min="0">
+          </div>
+          <div class="form-group">
+            <label>Photo</label>
+            <div class="upload-area" id="teamUploadArea">
+              <input type="file" id="teamImageFile" accept="image/*">
+              <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+              <div class="upload-area-text" style="font-size:0.7rem;">Drop photo or browse</div>
+            </div>
+            <div id="teamUploadStatus" style="font-size:0.75rem;margin-top:0.4rem;"></div>
+            <div id="teamImagePreview" style="margin-top:0.5rem;"></div>
+            <input type="hidden" id="teamImageUrl">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="saveTeamBtn"><i class="fas fa-save"></i> Save Team Member</button>
+    </div>
+  </div>
+</div>
+
 <!-- Background canvas animation (from shiro-v2 theme) -->
 <script src="/bg-animation.js"></script>
 
