@@ -70,14 +70,8 @@ body.light {
   --accent-glow:  rgba(37, 99, 235, 0.25);
 }
 
-/* ========== ANIMATED BACKGROUND ========== */
-.bg-anim {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
+/* ========== ANIMATED BACKGROUND - REMOVED ========== */
+/* Background animation disabled for better UX */
 
 /* ========== GAMING ANIMATION LIBRARY ========== */
 
@@ -196,15 +190,9 @@ body.light {
 
 .bg-orb {
   display: none;
-} /* handled by canvas now */
+}
 #bgCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 /* Ensure all page content sits above the background */
