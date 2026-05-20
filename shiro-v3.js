@@ -2224,13 +2224,11 @@ document.addEventListener("DOMContentLoaded", () => {
         d.data.forEach(m => {
           const imgUrl = m.image_url 
             ? (m.image_url.startsWith('http') ? m.image_url : (m.image_url.startsWith('/') ? m.image_url : '/'+m.image_url))
-            : 'images/placeholder-team.jpg';
-
-          const card = document.createElement("div");
+        : null;
           card.className = "card team-card";
           card.innerHTML = `
             <div class="team-avatar">
-                <img src="${imgUrl}" alt="${m.role}">
+                ${imgUrl ? `<img src="${imgUrl}" alt="${m.role}">` : ''}
             </div>
             <h4>${m.name.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</h4>
             <span class="team-role">${m.role.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
