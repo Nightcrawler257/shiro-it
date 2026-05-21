@@ -2622,6 +2622,7 @@ function renderTable(tab, data) {
         <td>${statusBadge(r.is_active ? 'Active' : 'Inactive')}</td>
         <td class="msg-col" onclick="viewDetail('Requirements - ${esc(r.title)}', \`${esc(r.requirements)}\`)">${esc(r.requirements)}</td>
         <td><div class="actions">
+          <button class="action-btn ok" onclick='editCareerItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
           <button class="action-btn del" onclick="deleteCareerItem('${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
         </div></td>`
     }
@@ -3559,6 +3560,9 @@ $('addCareerBtn').onclick = () => {
 function openCareerModal() { $('careerModalOverlay').classList.add('show'); }
 function closeCareerModal() { $('careerModalOverlay').classList.remove('show'); }
 
+$('careerModalClose').onclick = closeCareerModal;
+$('careerModalOverlay').addEventListener('click', e => { if (e.target === $('careerModalOverlay')) closeCareerModal(); });
+
 $('saveCareerBtn').onclick = async () => {
   const btn = $('saveCareerBtn');
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving…';
@@ -3593,6 +3597,20 @@ $('saveCareerBtn').onclick = async () => {
     btn.innerHTML = '<i class="fas fa-save"></i> Save Career';
     btn.disabled = false;
   }
+};
+
+window.editCareerItem = (item) => {
+  $('careerEditId').value = item.id || '';
+  $('careerTitle').value = item.title || '';
+  $('careerJobType').value = item.job_type || 'Full-time';
+  $('careerDescription').value = item.description || '';
+  $('careerRequirements').value = item.requirements || '';
+  $('careerWhatsappMsg').value = item.whatsapp_msg || '';
+  $('careerOrder').value = item.order_index || 0;
+  $('careerActive').checked = !!item.is_active;
+  
+  $('careerModalTitle').textContent = 'Edit Career Listing';
+  openCareerModal();
 };
 
 window.deleteCareerItem = async (id) => {
