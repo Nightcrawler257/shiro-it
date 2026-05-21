@@ -2214,6 +2214,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const teamGrid = document.getElementById("teamGrid");
   if (!teamGrid) return;
 
+  // Helper function to get initials from name
+  function getInitials(name) {
+    if (!name) return '?';
+    const nameParts = name.trim().split(/\s+/);
+    if (nameParts.length === 1) return nameParts[0].charAt(0).toUpperCase();
+    return (nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0)).toUpperCase();
+  }
+
+  // Helper function to generate a consistent color based on name
+  function getAvatarColor(name) {
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = hash % 360;
+    return `hsl(${hue}, 70%, 55%)`;
+  }
+
   try {
     const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '' : window.location.origin;
     const res = await fetch(API + '/api/team');
@@ -2226,17 +2244,27 @@ document.addEventListener("DOMContentLoaded", () => {
           ? (m.image_url.startsWith('http') ? m.image_url : (m.image_url.startsWith('/') ? m.image_url : '/' + m.image_url))
           : null;
         
-        // Fixed: declare card variable
+        const name = (m.name || '').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const role = (m.role || '').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const bio = (m.bio || '').replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const initials = getInitials(name);
+        const avatarColor = getAvatarColor(name);
+        
         const card = document.createElement('div');
         card.className = "card team-card";
         
         card.innerHTML = `
           <div class="team-avatar">
-            ${imgUrl ? `<img src="${imgUrl}" alt="${(m.role || m.name || '').replace(/</g, "&lt;").replace(/>/g, "&gt;")}">` : ''}
+            ${imgUrl ? 
+              `<img src="${imgUrl}" alt="${name}" class="avatar-img">` : 
+              `<div class="avatar-placeholder" style="background-color: ${avatarColor};">
+                 <span class="avatar-initials">${initials}</span>
+               </div>`
+            }
           </div>
-          <h4>${(m.name || '').replace(/</g, "&lt;").replace(/>/g, "&gt;")}</h4>
-          <span class="team-role">${(m.role || '').replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>
-          <p>${(m.bio || '').replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+          <h4>${name || 'No Name'}</h4>
+          <span class="team-role">${role || 'No Role'}</span>
+          <p>${bio || ''}</p>
           <div class="team-social"></div>
         `;
         teamGrid.appendChild(card);
