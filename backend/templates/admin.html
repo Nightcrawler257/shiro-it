@@ -1697,19 +1697,6 @@
           <label>Requirements</label>
           <textarea id="careerRequirements" rows="4" placeholder="Required qualifications, experience, skills"></textarea>
         </div>
-        <div class="form-group">
-          <label>WhatsApp Message (Optional)</label>
-          <textarea id="careerWhatsappMsg" rows="3" placeholder="Pre-filled message for WhatsApp applications"></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Display Order</label>
-            <input type="number" id="careerOrder" value="0" min="0">
-          </div>
-          <div class="form-group">
-            <label style="display:flex;align-items:center;gap:0.5rem;"><input type="checkbox" id="careerActive" checked> Active</label>
-          </div>
-        </div>
       </form>
     </div>
     <div class="modal-footer">
@@ -2615,11 +2602,10 @@ function renderTable(tab, data) {
       }
     },
     careers: {
-      cols: ['Position', 'Type', 'Status', 'Requirements', 'Actions'],
+      cols: ['Position', 'Type', 'Requirements', 'Actions'],
       row: r => `
-        <td><div class="name-col">${esc(r.title)}</div><div class="sub-col">Order: ${r.order_index || 0}</div></td>
+        <td><div class="name-col">${esc(r.title)}</div></td>
         <td><span class="badge badge-new">${esc(r.job_type || 'Full-time')}</span></td>
-        <td>${statusBadge(r.is_active ? 'Active' : 'Inactive')}</td>
         <td class="msg-col" onclick="viewDetail('Requirements - ${esc(r.title)}', \`${esc(r.requirements)}\`)">${esc(r.requirements)}</td>
         <td><div class="actions">
           <button class="action-btn ok" onclick='editCareerItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
@@ -3553,7 +3539,6 @@ $('addCareerBtn').onclick = () => {
   $('careerForm').reset();
   $('careerEditId').value = '';
   $('careerModalTitle').textContent = 'Add Career Listing';
-  $('careerActive').checked = true;
   openCareerModal();
 };
 
@@ -3574,10 +3559,7 @@ $('saveCareerBtn').onclick = async () => {
       title: $('careerTitle').value,
       job_type: $('careerJobType').value,
       description: $('careerDescription').value,
-      requirements: $('careerRequirements').value,
-      whatsapp_msg: $('careerWhatsappMsg').value,
-      order_index: parseInt($('careerOrder').value) || 0,
-      is_active: $('careerActive').checked
+      requirements: $('careerRequirements').value
     };
 
     const url = id ? `${API}/admin/api/careers/${id}` : `${API}/admin/api/careers`;
@@ -3605,9 +3587,6 @@ window.editCareerItem = (item) => {
   $('careerJobType').value = item.job_type || 'Full-time';
   $('careerDescription').value = item.description || '';
   $('careerRequirements').value = item.requirements || '';
-  $('careerWhatsappMsg').value = item.whatsapp_msg || '';
-  $('careerOrder').value = item.order_index || 0;
-  $('careerActive').checked = !!item.is_active;
   
   $('careerModalTitle').textContent = 'Edit Career Listing';
   openCareerModal();
