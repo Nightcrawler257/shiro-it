@@ -1225,6 +1225,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
   loadPrebuiltPCs();
+  loadCareerListings();
+
+  /* ===== DYNAMIC CAREER LISTINGS ===== */
+  async function loadCareerListings() {
+    const grid = document.querySelector('.careers-grid');
+    if (!grid) return;
+    try {
+      const res = await fetch(API_BASE + '/api/careers');
+      const d = await res.json();
+      if (!d.success || !Array.isArray(d.data) || d.data.length === 0) {
+        grid.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:2rem;">No job openings are available right now.</p>';
+        return;
+      }
+
+      grid.innerHTML = d.data.map(career => {
+        const typeLabel = career.job_type || 'Full-time';
+        const title = career.title || 'Job Opening';
+        const description = career.description || '';
+        const whatsappUrl = career.whatsapp_msg
+          ? (career.whatsapp_msg.startsWith('http')
+              ? career.whatsapp_msg
+              : `https://wa.me/60177617672?text=${encodeURIComponent(career.whatsapp_msg)}`)
+          : `https://wa.me/60177617672?text=${encodeURIComponent(`Hi, I would like to apply for the ${title} position.`)}`;
+
+        return `
+          <div class="card career-card">
+            <span class="badge badge-${typeLabel.toLowerCase().includes('intern') ? 'red' : 'blue'}">${typeLabel}</span>
+            <h4>${title}</h4>
+            <p>${description}</p>
+            <a href="${whatsappUrl}" target="_blank" class="svc-cta">Apply Now <i class="fas fa-arrow-right"></i></a>
+          </div>`;
+      }).join('');
+    } catch (err) {
+      console.warn('Failed to load career listings:', err);
+    }
+  }
 
   /* ===== DYNAMIC IT TIPS GALLERY ===== */
   async function loadITTips() {

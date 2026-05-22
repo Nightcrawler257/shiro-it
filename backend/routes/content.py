@@ -107,6 +107,14 @@ def get_public_slides():
     conn.close()
     return jsonify({'success': True, 'data': serialize_rows(rows)})
 
+@content_bp.route('/api/careers', methods=['GET'])
+def get_public_careers():
+    conn = db.get_conn()
+    rows = conn.execute(
+        'SELECT * FROM career_listings WHERE is_active = 1 ORDER BY order_index, created_at DESC'
+    ).fetchall()
+    conn.close()
+    return jsonify({'success': True, 'data': serialize_rows(rows)})
 
 # ===========================================================================
 # ADMIN ENDPOINTS  (CRUD — require login)
