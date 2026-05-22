@@ -30,7 +30,7 @@ def login_required(f):
 # Pages
 # ---------------------------------------------------------------------------
 
-@admin_bp.route('/admin')
+@admin_bp.route('/admin', strict_slashes=False)
 def admin_page():
     """Render the admin dashboard."""
     if session.get('admin_logged_in'):
