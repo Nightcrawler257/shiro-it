@@ -1820,10 +1820,10 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
         if (whatsappOrder) {
-          whatsappOrder.innerHTML = `<i class="fas fa-cart-plus"></i> Add to Cart`;
-          whatsappOrder.classList.add("disabled");
-          whatsappOrder.style.opacity = "0.5";
-          whatsappOrder.style.pointerEvents = "none";
+          whatsappOrder.innerHTML = `<i class="fas fa-cart-plus"></i> Add Selected Parts to Cart`;
+          whatsappOrder.classList.remove("disabled");
+          whatsappOrder.style.opacity = "1";
+          whatsappOrder.style.pointerEvents = "auto";
         }
       }
     }
