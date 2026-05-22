@@ -2727,7 +2727,7 @@ async function uploadFileIfNeeded() {
   formData.append('image', fileInput.files[0]);
   $('uploadStatus').textContent = 'Uploading…';
   try {
-    const res = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: formData });
+    const res = await fetch(API + '/admin/api/upload-image', { method: 'POST', credentials: 'include', body: formData });
     const d = await res.json();
     if (d.success) {
       $('itemImagePath').value = d.url;
@@ -3026,7 +3026,7 @@ $('savePcBtn').onclick = async () => {
     if (fileInput.files[0]) {
       const fd = new FormData();
       fd.append('image', fileInput.files[0]);
-      const res = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const res = await fetch(API + '/admin/api/upload-image', { method: 'POST', credentials: 'include', body: fd });
       const d = await res.json();
       if (d.success) finalImagePath = d.url;
     }
@@ -3051,6 +3051,7 @@ $('savePcBtn').onclick = async () => {
     const url = id ? `${API}/admin/api/prebuilt_pcs/${id}` : `${API}/admin/api/prebuilt_pcs`;
     const res2 = await fetch(url, {
       method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(item)
     });
     const d2 = await res2.json();
@@ -3174,7 +3175,7 @@ $('saveHeroBtn').onclick = async () => {
     if (fileInput.files[0]) {
       const fd = new FormData();
       fd.append('file', fileInput.files[0]);
-      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', credentials: 'include', body: fd });
       const upData = await upRes.json();
       if (upData.success) finalUrl = upData.url;
     }
@@ -3195,6 +3196,7 @@ $('saveHeroBtn').onclick = async () => {
     const res = await fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(item)
     });
     const d = await res.json();
@@ -3287,7 +3289,7 @@ $('saveTipBtn').onclick = async () => {
       $('tipUploadStatus').textContent = 'Uploading…';
       const fd = new FormData();
       fd.append('image', fileInput.files[0]);
-      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', credentials: 'include', body: fd });
       const upData = await upRes.json();
       if (upData.success) {
         finalMediaUrl = upData.url;
@@ -3310,6 +3312,7 @@ $('saveTipBtn').onclick = async () => {
     const url = id ? `${API}/admin/api/it_tips/${id}` : `${API}/admin/api/it_tips`;
     const res = await fetch(url, {
       method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(item)
     });
     const d = await res.json();
@@ -3383,7 +3386,7 @@ $('saveTestimonialBtn').onclick = async () => {
       $('testUploadStatus').textContent = 'Uploading…';
       const fd = new FormData();
       fd.append('image', fileInput.files[0]);
-      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', credentials: 'include', body: fd });
       const upData = await upRes.json();
       if (upData.success) {
         finalImageUrl = upData.url;
@@ -3407,6 +3410,7 @@ $('saveTestimonialBtn').onclick = async () => {
     const url = id ? `${API}/admin/api/testimonials/${id}` : `${API}/admin/api/testimonials`;
     const res = await fetch(url, {
       method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(item)
     });
     const d = await res.json();
@@ -3497,7 +3501,7 @@ $('saveTeamBtn').onclick = async () => {
       $('teamUploadStatus').textContent = 'Uploading…';
       const fd = new FormData();
       fd.append('image', fileInput.files[0]);
-      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', body: fd });
+      const upRes = await fetch(API + '/admin/api/upload-image', { method: 'POST', credentials: 'include', body: fd });
       const upData = await upRes.json();
       if (upData.success) {
         finalUrl = upData.url;
@@ -3519,6 +3523,7 @@ $('saveTeamBtn').onclick = async () => {
     const res = await fetch(url, {
       method: id ? 'PUT' : 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(member)
     });
     const d = await res.json();
