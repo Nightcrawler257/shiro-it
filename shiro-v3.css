@@ -2495,14 +2495,14 @@ body.light .nav-menu > li > a.active {
 
 /* ========== BUILD PC ========== */
 /* transform on .page breaks position:sticky — keep build page neutral */
-#page-build-pc-services.page,
-#page-build-pc-services.page.active {
+#page-build-pc.page,
+#page-build-pc.page.active {
   transform: none;
   transition: opacity 0.3s ease;
 }
-#page-build-pc-services .section,
-#page-build-pc-services .container,
-#page-build-pc-services .build-layout {
+#page-build-pc .section,
+#page-build-pc .container,
+#page-build-pc .build-layout {
   overflow: visible;
 }
 

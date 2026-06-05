@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const navMenu = document.getElementById("navMenu");
 
   window.navigateTo = function(pageId) {
+    if (pageId === 'build-pc-services') pageId = 'build-pc';
     pages.forEach((p) => p.classList.remove("active"));
     const target = document.getElementById("page-" + pageId);
     if (target) {
@@ -79,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const rawTarget = link.getAttribute("data-page") || link.getAttribute("href") || "";
     let cleanTarget = rawTarget.replace("#", "");
     if (cleanTarget === 'jobs') cleanTarget = 'contact#careers-section';
+    if (cleanTarget === 'build-pc-services') cleanTarget = 'build-pc';
+    if (cleanTarget === 'build-pc-services#services') cleanTarget = 'it-services';
     const [pageId, sectionId] = cleanTarget.split("#"); 
     const page = pageId || link.getAttribute("data-page");
     const href = link.getAttribute("href") || "";
@@ -1501,7 +1504,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSummary();
     
     // Navigate to Build PC page
-    navigateTo('build-pc-services');
+    navigateTo('build-pc');
     
     // Smooth scroll to builder
     setTimeout(() => {
