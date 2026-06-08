@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
       shop_cta_h2: "Can't Find What You Need?",
       shop_cta_desc: "We can source any component or build a custom PC just for you.",
       build_badge: "PC configurator",
-      build_h1_1: "Build PC",
+      build_h1_1: "Build PC & Shop",
       build_h1_2: "",
       build_desc: "Select your components below and get an instant price estimate. Order via WhatsApp!",
       contact_badge: "Contact Us",
