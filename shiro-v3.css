@@ -2493,17 +2493,104 @@ body.light .nav-menu > li > a.active {
   background: var(--bg-secondary);
 }
 
-/* ========== BUILD PC ========== */
-/* transform on .page breaks position:sticky — keep build page neutral */
-#page-build-pc.page,
-#page-build-pc.page.active {
+/* ========== BUILD PC (inside Shop) ========== */
+/* transform on .page breaks position:sticky — keep shop page neutral */
+#page-shop.page,
+#page-shop.page.active {
   transform: none;
   transition: opacity 0.3s ease;
 }
-#page-build-pc .section,
-#page-build-pc .container,
-#page-build-pc .build-layout {
+#page-shop .section,
+#page-shop .container,
+#page-shop .build-layout {
   overflow: visible;
+}
+
+/* ===== Shop Page Tab Switcher ===== */
+.shop-page-tabs-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0 1rem;
+}
+.shop-page-tabs {
+  position: relative;
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.shop-page-tab {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.6rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.15s ease;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.shop-page-tab i {
+  font-size: 0.95rem;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+.shop-page-tab:hover {
+  color: var(--text-primary);
+}
+.shop-page-tab:hover i {
+  transform: scale(1.1);
+}
+.shop-page-tab:active {
+  transform: scale(0.97);
+}
+.shop-page-tab.active {
+  color: white;
+}
+.shop-page-tab.active i {
+  color: var(--blue-neon);
+}
+.tab-indicator {
+  position: absolute;
+  z-index: 1;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(99, 102, 241, 0.18));
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Sub-view transitions */
+.shop-sub-view {
+  animation: shopViewFadeIn 0.35s ease;
+}
+@keyframes shopViewFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 500px) {
+  .shop-page-tab {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.8rem;
+  }
+  .shop-page-tab i {
+    font-size: 0.85rem;
+  }
 }
 
 .build-layout {

@@ -62,7 +62,7 @@
                                 data-translate="nav_about">About</span></a></li>
                     <li><a href="#contact" data-page="contact"><i class="fas fa-envelope"></i> <span
                                 data-translate="nav_contact">Contact</span></a></li>
-                    <li><a href="#build-pc" data-page="build-pc" class="nav-cta"><i class="fas fa-desktop"></i> <span data-translate="nav_build_1">Build PC</span></a></li>
+                    <li><a href="#shop" data-page="shop" class="nav-cta" onclick="scrollToBuildPC()"><i class="fas fa-desktop"></i> <span data-translate="nav_build_1">Build PC</span></a></li>
                     <li><a href="#it-services" data-page="it-services" class="nav-cta nav-cta-alt"><i class="fas fa-tools"></i> <span data-translate="nav_it_services">IT Services</span></a></li>
                 </ul>
 
@@ -152,7 +152,7 @@
                         </div>
 
                         <div class="hero-buttons animate-on-load">
-                            <a href="#build-pc" data-page="build-pc" class="btn btn-primary">
+                            <a href="#shop" data-page="shop" class="btn btn-primary" onclick="setTimeout(() => scrollToBuildPC(), 100)">
                                 <i class="fas fa-desktop"></i>
                                 <span data-translate="hero_cta1">Build Your PC</span>
                             </a>
@@ -560,6 +560,7 @@
 
         <!-- ========== SHOP PAGE ========== -->
         <div id="page-shop" class="page">
+            <!-- SHOP SECTION -->
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
@@ -914,24 +915,23 @@
                 </div>
             </section>
 
-            <!-- Shop CTA -->
-            <section class="shop-cta">
+            <!-- Shop CTA (removed as Build PC is now below) -->
+            <!-- <section class="shop-cta">
                 <div class="container" style="text-align:center;">
                     <h2 data-translate="shop_cta_h2">Can't Find What You Need?</h2>
                     <p style="color:var(--text-secondary); margin-bottom:1.5rem;" data-translate="shop_cta_desc">We can source any component or build a
                         custom PC just for you.</p>
                     <div class="cta-buttons">
-                        <a href="#build-pc" data-page="build-pc" class="btn btn-primary"><i class="fas fa-desktop"></i>
+                        <a href="#shop" data-page="shop" class="btn btn-primary" onclick="setTimeout(() => scrollToBuildPC(), 100)"><i class="fas fa-desktop"></i>
                             Custom Build</a>
                         <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
                             class="btn btn-secondary"><i class="fab fa-whatsapp"></i> Ask Us</a>
                     </div>
                 </div>
             </section>
-        </div>
 
-        <!-- ========== BUILD PC PAGE ========== -->
-        <div id="page-build-pc" class="page">
+            <!-- BUILD PC SECTION BELOW -->
+            <hr style="margin: 4rem 0; border: none; height: 1px; background: var(--border-color);">
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
@@ -1437,7 +1437,7 @@
                 <div class="footer-col">
                     <h4>Services</h4>
                     <ul>
-                        <li><a href="#build-pc" data-page="build-pc">Custom PC Build</a></li>
+                        <li><a href="#shop" data-page="shop" onclick="setTimeout(() => scrollToBuildPC(), 100)">Custom PC Build</a></li>
                         <li><a href="#it-services" data-page="it-services">IT Services</a></li>
                         <li><a href="#it-services" data-page="it-services">PC Repair</a></li>
                         <li><a href="#it-services" data-page="it-services">Networking</a></li>
@@ -1459,7 +1459,7 @@
                         <li><a href="#shop" data-page="shop">Gaming PCs</a></li>
                         <li><a href="#shop" data-page="shop">Workstations</a></li>
                         <li><a href="#shop" data-page="shop">Components</a></li>
-                        <li><a href="#build-pc" data-page="build-pc">Build Your PC</a></li>
+                        <li><a href="#shop" data-page="shop" onclick="setTimeout(() => scrollToBuildPC(), 100)">Build Your PC</a></li>
                     </ul>
                 </div>
             </div>

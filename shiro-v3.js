@@ -42,6 +42,19 @@ window.openCheckoutModal = function() {
   }
 };
 
+window.scrollToBuildPC = function() {
+  setTimeout(() => {
+    const buildSection = document.querySelector('section.page-hero:nth-of-type(2)');
+    if (buildSection) {
+      const navbarHeight = document.querySelector('.navbar').offsetHeight || 80;
+      window.scrollTo({
+        top: buildSection.offsetTop - navbarHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, 100);
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   /* ===== SPA NAVIGATION ===== */
   const pages = document.querySelectorAll(".page");
