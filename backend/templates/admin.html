@@ -482,9 +482,6 @@
   .badge-warn   { background: rgba(245,158,11,0.12); color: var(--yellow);      border: 1px solid rgba(245,158,11,0.22); }
   .badge-red    { background: rgba(239,68,68,0.12);  color: var(--red-light);   border: 1px solid rgba(239,68,68,0.22); }
   .badge-cat    { background: rgba(168,85,247,0.12); color: var(--purple);      border: 1px solid rgba(168,85,247,0.22); }
-  .stock-ok     { color: var(--green);  font-weight: 700; font-size: 0.9rem; }
-  .stock-low    { color: var(--yellow); font-weight: 700; font-size: 0.9rem; }
-  .stock-out    { color: var(--red);    font-weight: 700; font-size: 0.9rem; }
 
   /* Actions */
   .actions { display: flex; gap: 4px; }
@@ -1382,15 +1379,9 @@
           <label>Brand <span style="color:var(--text-secondary);font-size:0.8rem;">(e.g. AMD, Intel, Samsung)</span></label>
           <input type="text" id="itemBrand" placeholder="e.g. AMD, Intel, Samsung, Corsair...">
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Stock Count</label>
-            <input type="number" id="itemStock" value="1" min="0">
-          </div>
-          <div class="form-group">
-            <label>Badge / Health (%)</label>
-            <input type="text" id="itemHealth" placeholder="e.g. 100 or Featured">
-          </div>
+        <div class="form-group">
+          <label>Badge / Health (%)</label>
+          <input type="text" id="itemHealth" placeholder="e.g. 100 or Featured">
         </div>
         <div class="form-group">
           <label>Specifications</label>
@@ -2024,9 +2015,7 @@ async function loadStats() {
       $('s-apps-sub').innerHTML       = d.stats.applications_new > 0
         ? `<span class="stat-badge-new">${d.stats.applications_new} NEW</span>`
         : 'No new applications';
-      $('s-inventory-sub').innerHTML  = d.stats.inventory_low > 0
-        ? `<span class="stat-badge-new" style="border-color:rgba(255,238,0,0.3);color:var(--neon-yellow);background:rgba(255,238,0,0.1);">${d.stats.inventory_low} LOW STOCK</span>`
-        : 'Stock levels OK';
+      $('s-inventory-sub').innerHTML  = 'Ready to manage inventory';
 
       // Sidebar badges
       setBadge('badge-contacts',    d.stats.contacts_unread);
@@ -2034,7 +2023,6 @@ async function loadStats() {
       setBadge('badge-bookings',    d.stats.bookings_new);
       setBadge('badge-appointments',d.stats.appointments_pending);
       setBadge('badge-applications',d.stats.applications_new);
-      setBadge('badge-inventory',   d.stats.inventory_low);
     }
   } catch(e) { console.error('Stats load failed', e); }
 }
@@ -2391,7 +2379,7 @@ function renderTable(tab, data) {
     return `<a href="mailto:${email}?subject=SHIRO IT Inquiry&body=Hi ${name}," class="action-btn mail" title="Email"><i class="fas fa-paper-plane"></i></a>`;
   };
 
-  const stockClass = (n) => n > 5 ? 'stock-ok' : n > 0 ? 'stock-low' : 'stock-out';
+  // No stock class needed anymore
 
   const CONFIGS = {
     contacts: {
@@ -2492,7 +2480,7 @@ function renderTable(tab, data) {
         </div></td>`
     },
     inventory: {
-      cols: ['Image', 'Product', 'Category', 'Brand', 'Price', 'Stock', 'Actions'],
+      cols: ['Image', 'Product', 'Category', 'Brand', 'Price', 'Actions'],
       row: r => {
         const imgHtml = (() => {
           if (!r.image) return `<i class="fas fa-image" style="color:var(--text-secondary)"></i>`;
@@ -2500,7 +2488,6 @@ function renderTable(tab, data) {
           const url = r.image.startsWith('http') ? r.image : API + (r.image.startsWith('/') ? r.image : '/' + r.image);
           return `<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-exclamation-triangle\\' style=\\'color:var(--neon-red)\\'></i>'">`;
         })();
-        const stock = Number(r.stock || 0);
         return `
           <td style="width:60px">
             <div style="width:46px;height:46px;background:rgba(0,0,0,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid var(--border);">${imgHtml}</div>
@@ -2512,7 +2499,6 @@ function renderTable(tab, data) {
           <td><span class="badge badge-cat">${esc(r.category)}</span></td>
           <td><span style="color:var(--neon-blue);font-size:0.85rem;">${esc(r.brand || '—')}</span></td>
           <td style="font-weight:800;color:var(--neon-green);font-family:var(--font-head);">RM ${Number(r.price||0).toLocaleString()}</td>
-          <td><span class="${stockClass(stock)}">${stock}</span></td>
           <td><div class="actions">
             <button class="action-btn ok" onclick='editInventoryItem(${JSON.stringify(r).replace(/'/g, "&#39;")})' title="Edit"><i class="fas fa-edit"></i></button>
             <button class="action-btn del" onclick="deleteItem('inventory','${r.id}')" title="Delete"><i class="fas fa-trash"></i></button>
@@ -2688,7 +2674,6 @@ window.editInventoryItem = (item) => {
   $('itemPrice').value = item.price;
   $('itemCat').value   = item.category;
   $('itemBrand').value = item.brand || '';
-  $('itemStock').value = item.stock;
   $('itemHealth').value = item.health || item.badge || '';
   $('itemSpecs').value = item.specs || '';
   $('itemImagePath').value = item.image || '';
@@ -2759,7 +2744,6 @@ $('saveBtn').onclick = async () => {
     price: Number(priceVal),
     category: $('itemCat').value,
     brand: $('itemBrand').value.trim(),
-    stock: Number($('itemStock').value),
     health: $('itemHealth').value,
     specs: $('itemSpecs').value,
     image: imagePath,

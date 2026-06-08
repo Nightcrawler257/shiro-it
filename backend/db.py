@@ -127,7 +127,6 @@ def _create_tables():
             price    REAL    DEFAULT 0,
             specs    TEXT,
             badge    TEXT,
-            stock    INTEGER DEFAULT 1,
             featured INTEGER DEFAULT 0,
             image    TEXT,
             health   TEXT

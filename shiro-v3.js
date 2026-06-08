@@ -403,8 +403,6 @@ document.addEventListener("DOMContentLoaded", () => {
       careers_h2_2: "Team",
       language_english: "English",
       language_bm: "Bahasa Malaysia",
-      shop_in_stock: "in stock",
-      shop_only_left: "Only 1 left!",
       shop_add_cart: "Add to Cart",
       shop_ask_price: "Ask Price",
       cat_all: "All",
@@ -670,8 +668,6 @@ document.addEventListener("DOMContentLoaded", () => {
       careers_h2_2: "Kerjaya Bersama Kami",
       language_english: "English",
       language_bm: "Bahasa Melayu",
-      shop_in_stock: "Stok Tersedia",
-      shop_only_left: "Stok Terhad: 1 Sahaja!",
       shop_add_cart: "Tambah ke Troli",
       shop_ask_price: "Hubungi untuk Harga",
       cat_all: "Semua",
@@ -935,31 +931,19 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "product-card" + (p.featured ? " featured" : "");
       
       let displayCategory = p.category;
-      let displayStock = "";
       let displayPrice = p.price > 0 ? "RM " + p.price.toLocaleString() : "Ask for Price";
       let displayBtn = "Add to Cart";
-      let isSoldOut = (p.stock <= 0);
 
       if (currentLang === 'bm') {
         const catKey = "cat_" + p.category.toLowerCase().replace(/\s+/g, '_');
         displayCategory = translations.bm[catKey] || p.category;
         displayBtn = translations.bm.shop_add_cart;
         if (p.price <= 0) displayPrice = translations.bm.shop_ask_price;
-        
-        if (p.stock > 1) displayStock = `${p.stock} ${translations.bm.shop_in_stock}`;
-        else if (p.stock === 1) displayStock = translations.bm.shop_only_left;
-        else displayStock = "HABIS DIJUAL";
-      } else {
-        if (p.stock > 1) displayStock = `${p.stock} in stock`;
-        else if (p.stock === 1) displayStock = "Only 1 left!";
-        else displayStock = "SOLD OUT";
       }
-
-      const stockIconColor = isSoldOut ? "color:var(--accent-red); font-weight:bold;" : "";
 
       card.innerHTML = `
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ""}
-        <div class="product-image" ${isSoldOut ? 'style="opacity:0.4; filter:grayscale(100%);"' : ''}>
+        <div class="product-image">
           ${p.image && (p.image.startsWith('/') || p.image.startsWith('http'))
             ? `<img src="${resolveImagePath(p.image)}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;">`
             : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${getCategoryIcon(p.category)}</div>`}
@@ -967,11 +951,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="product-category">${displayCategory}</div>
         <h3>${p.name}</h3>
         <p class="product-specs">${p.specs}</p>
-        ${displayStock ? `<p class="product-stock" style="${stockIconColor}"><i class="fas ${isSoldOut ? 'fa-ban' : 'fa-boxes'}"></i> ${displayStock}</p>` : ""}
         <div class="product-bottom">
           <div class="product-price">${p.price > 0 ? "RM " + p.price.toLocaleString() : `<span style="color:var(--accent-blue);font-size:0.85em;">${displayPrice}</span>`}</div>
-          <button class="btn btn-primary product-btn" ${isSoldOut ? 'disabled style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); cursor:not-allowed;"' : 'onclick="addShopItemToCart(this)"'}>
-            <i class="fas ${isSoldOut ? 'fa-times' : 'fa-cart-plus'}"></i> ${isSoldOut ? (currentLang === 'bm' ? 'HABIS' : 'SOLD OUT') : displayBtn}
+          <button class="btn btn-primary product-btn" onclick="addShopItemToCart(this)">
+            <i class="fas fa-cart-plus"></i> ${displayBtn}
           </button>
         </div>
       `;
@@ -1100,11 +1083,10 @@ document.addEventListener("DOMContentLoaded", () => {
           category: item.category,
           brand: item.brand || '',
           price: item.price || 0,
-          badge: item.stock > 0 ? (item.featured ? "Featured 🔥" : "In Stock") : "Out of Stock",
+          badge: item.featured ? "Featured 🔥" : "",
           specs: item.specs || (item.category + " | Ask for details"),
           image: item.image || null,
           featured: item.featured || false,
-          stock: item.stock || 0,
           health: item.health || null
         }));
         
@@ -1597,20 +1579,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
         : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
       
-      const isSoldOut = item.stock !== undefined && item.stock <= 0;
-      const opacity = isSoldOut ? '0.4' : (isSelected ? '0.6' : '1');
-      const cursor = isSoldOut || isSelected ? 'default' : 'pointer';
-      const border = isSelected ? 'border-color:var(--border-color);' : (isSoldOut ? 'border-color:rgba(239,68,68,0.2);' : '');
-      const actionHtml = isSoldOut 
-        ? `<div style="color:var(--accent-red); font-weight:bold; font-size:0.8rem; text-transform:uppercase;"><i class="fas fa-ban"></i> Sold Out</div>`
-        : `<span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
+      const opacity = isSelected ? '0.6' : '1';
+      const cursor = isSelected ? 'default' : 'pointer';
+      const border = isSelected ? 'border-color:var(--border-color);' : '';
+      const actionHtml = `<span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
            <div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}" ${!isSelected ? `onclick="event.stopPropagation(); addInlineItem('${itemId}', '${category}')"` : `onclick="event.stopPropagation();"`}>
              <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
            </div>`;
 
       return `
-      <div class="inline-item" onclick="window.displaySelectedProduct({ id: '${itemId}' })" style="opacity:${opacity}; cursor:pointer; ${border}">
-        <div style="display:flex; align-items:center; gap:1rem; filter:${isSoldOut ? 'grayscale(100%)' : 'none'};">
+      <div class="inline-item" onclick="window.displaySelectedProduct({ id: '${itemId}' })" style="opacity:${opacity}; cursor:${cursor}; ${border}">
+        <div style="display:flex; align-items:center; gap:1rem;">
           ${displayImage}
           <div class="inline-item-info">
             <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.7rem;'></i>" : ""}</h4>
@@ -1671,11 +1650,9 @@ document.addEventListener("DOMContentLoaded", () => {
     items.forEach(item => {
       const el = document.createElement("div");
       el.className = "builder-item";
-      
-      const isSoldOut = item.stock !== undefined && item.stock <= 0;
 
       el.innerHTML = `
-        <div style="display:flex; align-items:center; gap:1rem; filter:${isSoldOut ? 'grayscale(100%)' : 'none'};">
+        <div style="display:flex; align-items:center; gap:1rem;">
           ${item.image && item.image.includes('/') 
             ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
             : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
@@ -1685,29 +1662,24 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         <div class="builder-item-price">
-          ${isSoldOut ? '<span style="color:var(--accent-red);font-weight:bold;font-size:0.8rem;text-transform:uppercase;"><i class="fas fa-ban"></i> Sold Out</span>' : 'RM ' + item.price.toLocaleString()}
+          RM ${item.price.toLocaleString()}
         </div>
       `;
 
-      if (isSoldOut) {
-        el.style.opacity = '0.5';
-        el.style.cursor = 'not-allowed';
-      } else {
-        el.onclick = () => {
-          cartItems.push({
-            id: item._id || item.id,
-            name: item.name,
-            category: item.category,
-            price: item.price,
-            image: item.image,
-            specs: item.specs,
-            badge: item.badge
-          });
-          builderModal.classList.remove("show");
-          renderBuilder();
+      el.onclick = () => {
+        cartItems.push({
+          id: item._id || item.id,
+          name: item.name,
+          category: item.category,
+          price: item.price,
+          image: item.image,
+          specs: item.specs,
+          badge: item.badge
+        });
+        builderModal.classList.remove("show");
+        renderBuilder();
           updateSummary();
         };
-      }
       builderModalBody.appendChild(el);
     });
   }
