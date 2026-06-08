@@ -148,24 +148,36 @@ body.light {
 .gradient-text {
   background: linear-gradient(270deg, #f87171, #38bdf8, #ef4444, #3b82f6);
   background-size: 400% 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   animation: rgbShift 5s ease infinite;
 }
 
-/* Fusion text: tighter letter spacing and same animated gradient for combined label */
-.fusion-text {
-  display: inline-block;
-  letter-spacing: -0.4px;
-  font-family: var(--font-heading);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  background: linear-gradient(270deg, #f87171, #38bdf8, #ef4444, #3b82f6);
-  background-size: 400% 400%;
-  animation: rgbShift 5s ease infinite;
-  transform: translateZ(0);
+/* Use the text-clip trick only when supported; otherwise fall back to a readable color */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .gradient-text {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .fusion-text {
+    display: inline-block;
+    letter-spacing: -0.4px;
+    font-family: var(--font-heading);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background: linear-gradient(270deg, #f87171, #38bdf8, #ef4444, #3b82f6);
+    background-size: 400% 400%;
+    animation: rgbShift 5s ease infinite;
+    transform: translateZ(0);
+  }
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .gradient-text,
+  .fusion-text {
+    color: var(--text-primary);
+    background: none;
+    -webkit-text-fill-color: initial;
+  }
 }
 
 /* -- Glowing headings (hero only) -- */
