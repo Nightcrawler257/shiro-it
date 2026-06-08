@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_shop: "Shop",
       nav_about: "About",
       nav_contact: "Contact",
-      nav_build_1: "Build PC",
+      nav_build_1: "Build PC & Shop",
       nav_build_2: "IT Services",
       hero_badge: "Malaysia's Custom PC Builder",
       hero_title_1: "Build Your Dream",
