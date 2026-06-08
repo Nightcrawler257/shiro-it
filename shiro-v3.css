@@ -154,6 +154,20 @@ body.light {
   animation: rgbShift 5s ease infinite;
 }
 
+/* Fusion text: tighter letter spacing and same animated gradient for combined label */
+.fusion-text {
+  display: inline-block;
+  letter-spacing: -0.4px;
+  font-family: var(--font-heading);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background: linear-gradient(270deg, #f87171, #38bdf8, #ef4444, #3b82f6);
+  background-size: 400% 400%;
+  animation: rgbShift 5s ease infinite;
+  transform: translateZ(0);
+}
+
 /* -- Glowing headings (hero only) -- */
 .hero-title { animation: glowPulse 5s ease-in-out infinite; }
 
