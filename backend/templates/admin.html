@@ -1315,6 +1315,14 @@
                   <input type="number" id="setHeroLimit" min="0" max="20" placeholder="e.g. 5">
                   <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">Maximum number of slides to show on the public page. Set to 0 to show all.</p>
                 </div>
+
+                <div class="form-group" style="margin-top:2rem; border-top:1px solid var(--border); padding-top:2rem;">
+                  <label style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;font-weight:600;">
+                    <input type="checkbox" id="setHidePrice" style="width:18px;height:18px;accent-color:var(--neon-red);cursor:pointer;">
+                    <span><i class="fas fa-eye-slash" style="color:var(--neon-red);margin-right:0.5rem;"></i>Hide Price in Build PC & Shop</span>
+                  </label>
+                  <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.4rem;">When enabled, prices will be hidden in the Build PC & Shop sections. Users will see "Price on Request" instead.</p>
+                </div>
                 
                 <button type="button" class="btn btn-primary" onclick="saveSettings()" style="margin-top: 1.5rem;"><i class="fas fa-save"></i> Save Settings</button>
               </form>
@@ -2869,6 +2877,7 @@ async function loadSettings() {
       $('setTipsCount').value = d.data.tips_display_count || 0;
       $('setHeroDuration').value = d.data.hero_slide_duration || 8;
       $('setHeroLimit').value = d.data.hero_display_limit || 0;
+      $('setHidePrice').checked = parseInt(d.data.hide_price) === 1;
     }
   } catch(e) { console.error('Failed to load settings', e); }
 }
@@ -2878,10 +2887,11 @@ window.saveSettings = async () => {
   const tips_display_count = $('setTipsCount').value;
   const hero_slide_duration = $('setHeroDuration').value;
   const hero_display_limit = $('setHeroLimit').value;
+  const hide_price = $('setHidePrice').checked ? 1 : 0;
   try {
     const res = await fetch(API + '/admin/api/settings', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ active_festival, tips_display_count, hero_slide_duration, hero_display_limit })
+      body: JSON.stringify({ active_festival, tips_display_count, hero_slide_duration, hero_display_limit, hide_price })
     });
     const d = await res.json();
     if (d.success) toast('Settings Saved', 'ok');

@@ -926,6 +926,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     emptyState.style.display = "none";
 
+    // Helper function to format price or return "Price on Request"
+    function getPriceDisplay(price) {
+      const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+      if (hidePrice) {
+        return `<span style="color:var(--accent-blue);font-size:0.85em;">Price on Request</span>`;
+      }
+      return price > 0 ? "RM " + price.toLocaleString() : `<span style="color:var(--accent-blue);font-size:0.85em;">Price on Request</span>`;
+    }
+
     filtered.forEach((p) => {
       const card = document.createElement("div");
       card.className = "product-card" + (p.featured ? " featured" : "");
@@ -952,7 +961,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3>${p.name}</h3>
         <p class="product-specs">${p.specs}</p>
         <div class="product-bottom">
-          <div class="product-price">${p.price > 0 ? "RM " + p.price.toLocaleString() : `<span style="color:var(--accent-blue);font-size:0.85em;">${displayPrice}</span>`}</div>
+          <div class="product-price">${getPriceDisplay(p.price)}</div>
           <button class="btn btn-primary product-btn" onclick="addShopItemToCart(this)">
             <i class="fas fa-cart-plus"></i> ${displayBtn}
           </button>
@@ -1647,6 +1656,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+
     items.forEach(item => {
       const el = document.createElement("div");
       el.className = "builder-item";
@@ -1662,7 +1673,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         <div class="builder-item-price">
-          RM ${item.price.toLocaleString()}
+          ${hidePrice ? `<span style="color:var(--accent-blue);font-size:0.85em;">On Request</span>` : `RM ${item.price.toLocaleString()}`}
         </div>
       `;
 
@@ -1713,6 +1724,8 @@ document.addEventListener("DOMContentLoaded", () => {
     summaryItems.innerHTML = "";
     let total = 0;
 
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+
     cartItems.forEach((opt, index) => {
       total += opt.price;
 
@@ -1758,7 +1771,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ${specsHtml}
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-          <span class="summary-price">RM ${opt.price.toLocaleString()}</span>
+          <span class="summary-price">${hidePrice ? `<span style="color:var(--accent-blue);font-size:0.85em;">On Request</span>` : `RM ${opt.price.toLocaleString()}`}</span>
           <button class="summary-remove-btn" onclick="removeCartItem(${index})" title="Remove">
             <i class="fas fa-times"></i>
           </button>
@@ -1771,7 +1784,7 @@ document.addEventListener("DOMContentLoaded", () => {
       summaryItems.innerHTML = `<div style="text-align:center; color:var(--text-secondary); font-size:0.9rem; padding: 1rem 0;">Selection is empty.</div>`;
     }
 
-    summaryTotal.textContent = "RM " + total.toLocaleString();
+    summaryTotal.textContent = hidePrice ? `Price on Request` : "RM " + total.toLocaleString();
 
     // Validation
     const validation = validateBuild();

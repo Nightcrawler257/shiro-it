@@ -85,7 +85,7 @@ def get_public_settings():
     conn.close()
     settings = {r['key']: r['value'] for r in rows}
     if not settings:
-        settings = {'active_festival': 'none', 'tips_display_count': '0', 'hero_slide_duration': '8'}
+        settings = {'active_festival': 'none', 'tips_display_count': '0', 'hero_slide_duration': '8', 'hide_price': '0'}
     return jsonify({'success': True, 'data': settings})
 
 
@@ -332,6 +332,7 @@ def admin_get_settings():
     settings.setdefault('tips_display_count', '0')
     settings.setdefault('hero_slide_duration', '8')
     settings.setdefault('hero_display_limit', '0')
+    settings.setdefault('hide_price', '0')
     return jsonify({'success': True, 'data': settings})
 
 
@@ -349,6 +350,7 @@ def admin_update_settings():
     tips_display_count   = str(_safe_int(data.get('tips_display_count'), 0))
     hero_slide_duration  = str(_safe_int(data.get('hero_slide_duration'), 8))
     hero_display_limit   = str(_safe_int(data.get('hero_display_limit'), 0))
+    hide_price           = str(_safe_int(data.get('hide_price'), 0))
     if int(hero_slide_duration) < 1: hero_slide_duration = '8'
 
     conn = db.get_conn()
@@ -368,13 +370,18 @@ def admin_update_settings():
         "INSERT OR REPLACE INTO site_settings (key, value) VALUES ('hero_display_limit', ?)",
         (hero_display_limit,)
     )
+    conn.execute(
+        "INSERT OR REPLACE INTO site_settings (key, value) VALUES ('hide_price', ?)",
+        (hide_price,)
+    )
     conn.commit()
     conn.close()
     return jsonify({'success': True, 'data': {
         'active_festival': active_festival,
         'tips_display_count': int(tips_display_count),
         'hero_slide_duration': int(hero_slide_duration),
-        'hero_display_limit': int(hero_display_limit)
+        'hero_display_limit': int(hero_display_limit),
+        'hide_price': int(hide_price)
     }})
 
 
