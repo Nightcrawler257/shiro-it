@@ -354,10 +354,8 @@ h5 {
 }
 
 /* ========== UTILITY ========== */
-.gradient-text {
-  color: var(--accent);
-  background: none;
-}
+/* NOTE: .gradient-text animated styles are defined above in the @supports block.
+   Do not override background/text-fill here or text becomes invisible. */
 /* ── Badge ── */
 .badge {
   display: inline-flex;
