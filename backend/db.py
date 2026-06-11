@@ -237,6 +237,8 @@ def _migrate(conn):
         "ALTER TABLE prebuilt_pcs ADD COLUMN tags TEXT DEFAULT ''",
         "ALTER TABLE prebuilt_pcs ADD COLUMN display_style TEXT DEFAULT 'specs'",
         "ALTER TABLE prebuilt_pcs ADD COLUMN pc_type TEXT DEFAULT 'Standard Gaming PC'",
+        # Per-item hide price flag for prebuilt PCs
+        "ALTER TABLE prebuilt_pcs ADD COLUMN hide_price INTEGER DEFAULT 0",
     ]
     for sql in migrations:
         try:

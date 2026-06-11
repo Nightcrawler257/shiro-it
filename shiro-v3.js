@@ -1151,6 +1151,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     container.innerHTML = filteredPCs.map(pc => {
       const photoUrl = pc.photo_url || "";
+          const siteHide = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+          const pcHide = siteHide || parseInt(pc.hide_price || 0) === 1;
           const isVideo = pc.media_type === 'video';
           const fullUrl = photoUrl.startsWith('http') ? photoUrl : API_BASE + (photoUrl.startsWith('/') ? photoUrl : '/' + photoUrl);
           
@@ -1181,7 +1183,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="tier-card-content" style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05); flex-grow: 0;">
                   <div class="tier-price" style="text-align: center; margin-bottom: 1rem;">
-                    ${pc.price && pc.price > 0 
+                    ${!pcHide && pc.price && pc.price > 0 
                       ? `RM ${Number(pc.price).toLocaleString()}` 
                       : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
                   </div>
@@ -1200,7 +1202,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="tier-name">${pc.tier_name || ''}</div>
                   <div class="tier-tags-row">${tagsHtml}</div>
                   <div class="tier-price">
-                    ${pc.price && pc.price > 0 
+                    ${!pcHide && pc.price && pc.price > 0 
                       ? `RM ${Number(pc.price).toLocaleString()}` 
                       : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
                   </div>
