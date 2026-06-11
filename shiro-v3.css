@@ -533,8 +533,8 @@ h5 {
   z-index: 1000;
   height: var(--nav-height);
   background: rgba(5, 7, 15, 0.88);
-  backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
   border-bottom: 1px solid rgba(59, 130, 246, 0.15);
   transition: var(--transition);
 }
@@ -781,8 +781,8 @@ body.light .nav-menu > li > a.active {
   inset: 0;
   background: rgba(0,0,0,0.6);
   z-index: 998;
-  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   opacity: 0;
   pointer-events: none;        /* NEVER block clicks when menu is closed */
   visibility: hidden;
@@ -797,7 +797,7 @@ body.light .nav-menu > li > a.active {
 /* ========== HERO ========== */
 .hero-section {
   position: relative;
-  min-height: auto;
+  min-height: 0;
   display: flex;
   align-items: center;
   padding: calc(var(--nav-height) + 3rem) 0 3.5rem;
@@ -1254,6 +1254,7 @@ body.light .nav-menu > li > a.active {
   height: 36px;
   border-radius: 50%;
   background: rgba(7, 9, 15, 0.7);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.8);
@@ -2019,6 +2020,7 @@ body.light .nav-menu > li > a.active {
 .service-detail-card {
   padding: 2.5rem 2rem;
   background: rgba(10, 13, 24, 0.4);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.4s var(--ease);
@@ -2297,7 +2299,7 @@ body.light .nav-menu > li > a.active {
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+
   padding-bottom: 0.5rem;
   padding-top: 1rem;
   flex: 1;
@@ -2546,8 +2548,8 @@ body.light .nav-menu > li > a.active {
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .shop-page-tab {
@@ -2847,7 +2849,6 @@ body.light .nav-menu > li > a.active {
   padding: 1.25rem;
   overflow-x: hidden;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   display: flex;
   flex-direction: column;
@@ -3835,6 +3836,7 @@ body.light .comp-img-wrap::after {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -4024,8 +4026,8 @@ body.light .social-float-btn::before {
     right: 1rem;
     bottom: auto;                   /* auto height — no full screen */
     background: rgba(7, 9, 20, 0.98);
-    backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
     border: 1px solid rgba(59, 130, 246, 0.2);
     border-top: none;
     border-radius: 0 0 16px 16px;
@@ -4286,7 +4288,7 @@ body.light .social-float-btn::before {
   }
   .hero-section {
     padding: calc(var(--nav-height) + 1.5rem) 0 2rem;
-    min-height: auto;
+    min-height: 0;
   }
 }
 
@@ -4634,6 +4636,7 @@ body.festival-admin .festival-toggle-btn {
   width: 280px;
   z-index: 10001;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   transform: translateY(10px) scale(0.95);
   opacity: 0;
@@ -4781,6 +4784,7 @@ body.festival-admin .festival-toggle-btn {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   z-index: 2000;
   display: none;
@@ -4919,6 +4923,7 @@ body.festival-admin .festival-toggle-btn {
   position: relative;
   background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
   border: 1px solid rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   overflow: hidden;
   display: flex;
