@@ -2849,7 +2849,6 @@ body.light .nav-menu > li > a.active {
   padding: 1.25rem;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: thin;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(59, 130, 246, 0.25) !important;
