@@ -926,13 +926,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     emptyState.style.display = "none";
 
-    // Helper function to format price or return "Price on Request"
+    // Helper function to format price or return blank when hidden
     function getPriceDisplay(price) {
       const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
       if (hidePrice) {
-        return `<span style="color:var(--accent-blue);font-size:0.85em;">Price on Request</span>`;
+        return '';
       }
-      return price > 0 ? "RM " + price.toLocaleString() : `<span style="color:var(--accent-blue);font-size:0.85em;">Price on Request</span>`;
+      return price > 0 ? "RM " + price.toLocaleString() : '';
     }
 
     filtered.forEach((p) => {
@@ -1185,7 +1185,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="tier-price" style="text-align: center; margin-bottom: 1rem;">
                     ${!pcHide && pc.price && pc.price > 0 
                       ? `RM ${Number(pc.price).toLocaleString()}` 
-                      : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
+                      : ''}
                   </div>
                   <button onclick="fillBuilderFromPrebuilt('${pc.name}')" class="btn btn-primary tier-btn" style="width: 100%;">Order Now <i class="fas fa-shopping-cart"></i></button>
                 </div>
@@ -1204,7 +1204,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="tier-price">
                     ${!pcHide && pc.price && pc.price > 0 
                       ? `RM ${Number(pc.price).toLocaleString()}` 
-                      : '<span style="font-size:1rem; opacity:0.8; text-transform:uppercase; letter-spacing:1px; font-weight:700; font-family:var(--font-heading);">Contact for Price</span>'}
+                      : ''}
                   </div>
                   ${discountHtml}
                   <div class="tier-specs">${specsHtml}</div>
@@ -1675,7 +1675,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         <div class="builder-item-price">
-          ${hidePrice ? `<span style="color:var(--accent-blue);font-size:0.85em;">On Request</span>` : `RM ${item.price.toLocaleString()}`}
+          ${hidePrice ? '' : `RM ${item.price.toLocaleString()}`}
         </div>
       `;
 
@@ -1773,7 +1773,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ${specsHtml}
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-          <span class="summary-price">${hidePrice ? `<span style="color:var(--accent-blue);font-size:0.85em;">On Request</span>` : `RM ${opt.price.toLocaleString()}`}</span>
+          <span class="summary-price">${hidePrice ? '' : `RM ${opt.price.toLocaleString()}`}</span>
           <button class="summary-remove-btn" onclick="removeCartItem(${index})" title="Remove">
             <i class="fas fa-times"></i>
           </button>
@@ -1786,7 +1786,7 @@ document.addEventListener("DOMContentLoaded", () => {
       summaryItems.innerHTML = `<div style="text-align:center; color:var(--text-secondary); font-size:0.9rem; padding: 1rem 0;">Selection is empty.</div>`;
     }
 
-    summaryTotal.textContent = hidePrice ? `Price on Request` : "RM " + total.toLocaleString();
+    summaryTotal.textContent = hidePrice ? '' : "RM " + total.toLocaleString();
 
     // Validation
     const validation = validateBuild();
