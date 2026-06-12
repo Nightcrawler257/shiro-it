@@ -149,6 +149,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (settings.hero_slide_duration) {
           window.heroInterval = parseInt(settings.hero_slide_duration) * 1000;
         }
+        // Re-render UI that depends on siteSettings (e.g., hide_price)
+        renderProducts();
+        renderBuilder();
+        updateSummary();
+        renderPrebuiltPCs();
+        renderGlobalCart();
       }
     } catch (err) {}
   }
@@ -1406,13 +1412,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }
 
+          const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
           return `
           <div class="comp-option active" onclick="window.displaySelectedProduct({ id: '${item.id}' })" style="display:flex; gap:1.25rem; align-items:flex-start; cursor:pointer; padding:1.25rem; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.02); border-radius:12px; flex-direction: row; flex-wrap: wrap;">
             ${imgHtml}
             <div style="flex:1; min-width: 200px;">
               ${badgeHtml}
               <div style="font-size:1.1rem; font-weight:600; color:white; margin-bottom:4px;">${item.name}</div>
-              <div style="font-size:1.1rem; font-weight:700; color:#4ade80;">RM ${item.price.toLocaleString()}</div>
+              ${hidePrice ? '' : `<div style="font-size:1.1rem; font-weight:700; color:#4ade80;">RM ${item.price.toLocaleString()}</div>`}
               ${specsHtml}
             </div>
             <button class="btn btn-ghost" style="padding:0.6rem; color:var(--accent-red); background:rgba(239,68,68,0.1); border-radius:8px;" onclick="event.stopPropagation(); removeCartItem(${item.cartIndex})" title="Remove item">
@@ -1556,6 +1563,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function renderInlineOptions(category, selectedBrand = 'All') {
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
     let items = inventoryData
       .filter(c => c.category === category);
 
@@ -1593,7 +1601,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const opacity = isSelected ? '0.6' : '1';
       const cursor = isSelected ? 'default' : 'pointer';
       const border = isSelected ? 'border-color:var(--border-color);' : '';
-      const actionHtml = `<span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
+      const actionHtml = hidePrice
+        ? `<div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}" ${!isSelected ? `onclick="event.stopPropagation(); addInlineItem('${itemId}', '${category}')"` : `onclick="event.stopPropagation();"`}>
+             <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
+           </div>`
+        : `<span class="inline-item-price">RM ${item.price.toLocaleString()}</span>
            <div class="inline-add-btn" style="${isSelected ? 'background:#22c55e; color:white;' : ''}" ${!isSelected ? `onclick="event.stopPropagation(); addInlineItem('${itemId}', '${category}')"` : `onclick="event.stopPropagation();"`}>
              <i class="fas ${isSelected ? 'fa-check' : 'fa-plus'}"></i>
            </div>`;
@@ -1832,9 +1844,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Build WhatsApp message (legacy or for direct order later)
-    const lines = cartItems.map((opt) => `• ${opt.category}: ${opt.name} (RM ${opt.price.toLocaleString()})`);
+    const lines = hidePrice 
+      ? cartItems.map((opt) => `• ${opt.category}: ${opt.name}`)
+      : cartItems.map((opt) => `• ${opt.category}: ${opt.name} (RM ${opt.price.toLocaleString()})`);
     const msg = encodeURIComponent(
-      `Hi SHIRO IT! I'd like to order a custom PC build:\n\n${lines.length > 0 ? lines.join("\n") : "Empty Build"}\n\nTotal: RM ${total.toLocaleString()}\n\nPlease confirm availability and delivery time. Thank you!`
+      hidePrice
+        ? `Hi SHIRO IT! I'd like to order a custom PC build:\n\n${lines.length > 0 ? lines.join("\n") : "Empty Build"}\n\nPlease confirm availability and pricing. Thank you!`
+        : `Hi SHIRO IT! I'd like to order a custom PC build:\n\n${lines.length > 0 ? lines.join("\n") : "Empty Build"}\n\nTotal: RM ${total.toLocaleString()}\n\nPlease confirm availability and delivery time. Thank you!`
     );
     // We'll handle the click in the event listener instead of href
     if(whatsappOrder) whatsappOrder.dataset.msg = msg;
@@ -1891,7 +1907,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('selectedProductTitle').textContent = fullItem.name;
     document.getElementById('selectedProductCategory').textContent = categoryLabel;
     document.getElementById('selectedProductSpecs').innerHTML = specsText;
-    document.getElementById('selectedProductPrice').textContent = `RM ${fullItem.price.toLocaleString()}`;
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+    document.getElementById('selectedProductPrice').textContent = hidePrice ? '' : `RM ${fullItem.price.toLocaleString()}`;
 
     selectedCard.classList.add('active');
   };
@@ -2012,6 +2029,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cartBody.innerHTML = "";
     let grandTotal = 0;
 
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+
     if (globalCart.length === 0) {
       const emptyText = currentLang === 'bm' ? translations.bm.cart_empty : "Your cart is empty";
       const browseText = currentLang === 'bm' ? translations.bm.cart_browse : "Browse Shop";
@@ -2022,7 +2041,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="btn btn-secondary btn-sm" onclick="document.getElementById('cartCloseBtn').click(); navigateTo('shop');">${browseText}</button>
         </div>
       `;
-      cartGrandTotal.textContent = "RM 0";
+      cartGrandTotal.textContent = hidePrice ? '' : "RM 0";
       return;
     }
 
@@ -2045,7 +2064,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="cart-item-header">
           <div style="flex:1;">
             <div class="cart-item-name">${item.name}</div>
-            <div class="cart-item-price">RM ${item.price.toLocaleString()}</div>
+            ${hidePrice ? '' : `<div class="cart-item-price">RM ${item.price.toLocaleString()}</div>`}
           </div>
           <div class="cart-item-remove" onclick="removeFromGlobalCart(${index})">
             <i class="fas fa-trash"></i>
@@ -2058,13 +2077,13 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="qty-num">${qty}</span>
             <button onclick="updateCartQty(${index}, 1)"><i class="fas fa-plus"></i></button>
           </div>
-          <div class="cart-item-subtotal" style="font-weight:700; color:white;">RM ${itemTotal.toLocaleString()}</div>
+          ${hidePrice ? '' : `<div class="cart-item-subtotal" style="font-weight:700; color:white;">RM ${itemTotal.toLocaleString()}</div>`}
         </div>
       `;
       cartBody.appendChild(el);
     });
 
-    cartGrandTotal.textContent = "RM " + grandTotal.toLocaleString();
+    cartGrandTotal.textContent = hidePrice ? '' : "RM " + grandTotal.toLocaleString();
   }
 
   window.updateCartQty = function(index, delta) {
@@ -2091,19 +2110,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Build the WhatsApp message from current cart
   function buildCartWhatsAppMessage() {
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
     let intro = currentLang === 'bm' ? translations.bm.wa_order_intro : "Hi SHIRO IT! I'd like to place an order:\n\n";
     let totalLabel = currentLang === 'bm' ? translations.bm.wa_order_total : "Total: RM ";
     let outro = currentLang === 'bm' ? translations.bm.wa_order_outro : "\n\nPlease confirm availability. Thank you!";
     let message = intro;
     globalCart.forEach((item, idx) => {
-      message += `${idx + 1}. ${item.name} (RM ${item.price.toLocaleString()})\n`;
+      if (hidePrice) {
+        message += `${idx + 1}. ${item.name}\n`;
+      } else {
+        message += `${idx + 1}. ${item.name} (RM ${item.price.toLocaleString()})\n`;
+      }
       if (item.type === 'build' && item.items) {
         item.items.forEach(i => { message += `   - ${i.category}: ${i.name}\n`; });
       }
       message += "\n";
     });
     const total = globalCart.reduce((sum, item) => sum + item.price, 0);
-    message += `${totalLabel}${total.toLocaleString()}${outro}`;
+    if (hidePrice) {
+      message += outro;
+    } else {
+      message += `${totalLabel}${total.toLocaleString()}${outro}`;
+    }
     return { message, total };
   }
 
