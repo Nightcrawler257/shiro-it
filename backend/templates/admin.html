@@ -1170,7 +1170,7 @@
           <div id="panelHub">
             <div class="hub-grid">
               <div class="chart-panel">
-                <h4><i class="fas fa-chart-line"></i> &nbsp;SUBMISSION OVERVIEW</h4>
+                <h4><i class="fas fa-chart-bar"></i> &nbsp;SUBMISSION OVERVIEW</h4>
                 <div style="position: relative; height: 230px; width: 100%;">
                   <canvas id="mainChart"></canvas>
                 </div>
@@ -2249,11 +2249,11 @@ function buildChart() {
   const s = statsCache;
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-  gradient.addColorStop(0, 'rgba(0, 242, 255, 0.5)');
-  gradient.addColorStop(1, 'rgba(0, 242, 255, 0.05)');
+  gradient.addColorStop(0, 'rgba(0, 242, 255, 0.8)');
+  gradient.addColorStop(1, 'rgba(0, 242, 255, 0.15)');
 
   chart = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
       labels: ['Messages', 'PC Quotes', 'Bookings', 'Appointments', 'Applications', 'Inventory'],
       datasets: [{
@@ -2268,15 +2268,11 @@ function buildChart() {
         ],
         backgroundColor: gradient,
         borderColor: 'rgba(0, 242, 255, 1)',
-        borderWidth: 3,
-        pointBackgroundColor: '#0c0f1a',
-        pointBorderColor: 'rgba(0, 242, 255, 1)',
-        pointBorderWidth: 2,
-        pointRadius: 5,
-        pointHoverRadius: 8,
-        pointHoverBackgroundColor: 'rgba(0, 242, 255, 1)',
-        fill: true,
-        tension: 0.4
+        borderWidth: 2,
+        borderRadius: 8,
+        borderSkipped: 'bottom',
+        hoverBackgroundColor: 'rgba(0, 242, 255, 0.95)',
+        hoverBorderColor: 'rgba(0, 242, 255, 1)'
       }]
     },
     options: {
