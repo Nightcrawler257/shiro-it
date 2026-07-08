@@ -23,7 +23,7 @@
 </div>
 
 <!-- Mobile Menu Toggle Button - ADDED FOR MOBILE -->
-<button class="mobile-menu-toggle" id="mobileMenuToggle">
+<button class="mobile-menu-toggle" id="mobileMenuToggle" title="Toggle mobile menu" aria-label="Toggle mobile menu">
   <i class="fas fa-bars"></i>
 </button>
 <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -79,8 +79,8 @@
     <div id="panelRegister">
       <p class="error-msg" id="regError"></p>
       <p id="regSuccess"></p>
-      <input type="text" id="regUser">
-      <input type="password" id="regPass">
+      <input type="text" id="regUser" placeholder="Username" title="Register Username">
+      <input type="password" id="regPass" placeholder="Password" title="Register Password">
     </div>
 
   </div>
@@ -302,7 +302,7 @@
                 <span class="row-count" id="rowCount">0 records</span>
               </div>
               <div class="panel-header-right">
-                <select class="inv-cat-filter" id="invCatFilter">
+                <select class="inv-cat-filter" id="invCatFilter" title="Filter Category" aria-label="Filter Category">
                   <option value="All">All Categories</option>
                   <option value="CPU">CPU</option>
                   <option value="Motherboard">Motherboard</option>
@@ -381,8 +381,8 @@
             <div >
               <form id="settingsForm">
                 <div class="form-group">
-                  <label><i class="fas fa-fire" style="color:var(--neon-red)"></i> Active Festival Animation</label>
-                  <select id="setFestival">
+                  <label for="setFestival"><i class="fas fa-fire text-neon-red"></i> Active Festival Animation</label>
+                  <select id="setFestival" title="Active Festival Animation">
                     <option value="none">None (Disabled)</option>
                     <option value="cny">Chinese New Year</option>
                     <option value="raya">Hari Raya</option>
@@ -395,26 +395,26 @@
                 </div>
                 
                 <div class="form-group" >
-                  <label><i class="fas fa-th" style="color:var(--neon-blue)"></i> IT Tips Display Count (Widget Limit)</label>
-                  <input type="number" id="setTipsCount" min="0" max="50" placeholder="e.g. 4">
+                  <label for="setTipsCount"><i class="fas fa-th text-neon-blue"></i> IT Tips Display Count (Widget Limit)</label>
+                  <input type="number" id="setTipsCount" min="0" max="50" placeholder="e.g. 4" title="IT Tips Display Count">
                   <p >How many knowledge base widgets to show on the public page. Set to 0 to show all.</p>
                 </div>
                 
                 <div class="form-group">
-                  <label><i class="fas fa-clock" style="color:var(--neon-blue)"></i> Carousel Slide Duration (Seconds)</label>
-                  <input type="number" id="setHeroDuration" min="1" max="60" placeholder="e.g. 8">
+                  <label for="setHeroDuration"><i class="fas fa-clock text-neon-blue"></i> Carousel Slide Duration (Seconds)</label>
+                  <input type="number" id="setHeroDuration" min="1" max="60" placeholder="e.g. 8" title="Carousel Slide Duration (Seconds)">
                   <p >How long each slide stays on screen before rotating.</p>
                 </div>
 
                 <div class="form-group">
-                  <label><i class="fas fa-images" style="color:var(--neon-blue)"></i> Carousel Display Count (Slide Limit)</label>
-                  <input type="number" id="setHeroLimit" min="0" max="20" placeholder="e.g. 5">
+                  <label for="setHeroLimit"><i class="fas fa-images text-neon-blue"></i> Carousel Display Count (Slide Limit)</label>
+                  <input type="number" id="setHeroLimit" min="0" max="20" placeholder="e.g. 5" title="Carousel Display Count (Slide Limit)">
                   <p >Maximum number of slides to show on the public page. Set to 0 to show all.</p>
                 </div>
 
                 <div class="form-group" >
-                  <label >
-                    <input type="checkbox" id="setHidePrice" >
+                  <label for="setHidePrice">
+                    <input type="checkbox" id="setHidePrice" title="Hide Price in Build PC & Shop">
                     <span><i class="fas fa-eye-slash" ></i>Hide Price in Build PC & Shop</span>
                   </label>
                   <p >When enabled, prices will be hidden in the Build PC & Shop sections. Users will see "Price on Request" instead.</p>
@@ -449,17 +449,17 @@
       <form id="inventoryForm" autocomplete="off">
         <input type="hidden" id="editId">
         <div class="form-group">
-          <label>Product Name</label>
-          <input type="text" id="itemName" required placeholder="e.g. Intel Core i9-14900K">
+          <label for="itemName">Product Name</label>
+          <input type="text" id="itemName" required placeholder="e.g. Intel Core i9-14900K" title="Product Name">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Price (RM)</label>
-            <input type="number" id="itemPrice" required placeholder="0.00" step="0.01" min="0">
+            <label for="itemPrice">Price (RM)</label>
+            <input type="number" id="itemPrice" required placeholder="0.00" step="0.01" min="0" title="Price">
           </div>
           <div class="form-group">
-            <label>Category</label>
-            <select id="itemCat">
+            <label for="itemCat">Category</label>
+            <select id="itemCat" title="Category">
               <option value="CPU">CPU</option>
               <option value="Motherboard">Motherboard</option>
               <option value="RAM">RAM</option>
@@ -480,21 +480,21 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Brand <span >(e.g. AMD, Intel, Samsung)</span></label>
-          <input type="text" id="itemBrand" placeholder="e.g. AMD, Intel, Samsung, Corsair...">
+          <label for="itemBrand">Brand <span >(e.g. AMD, Intel, Samsung)</span></label>
+          <input type="text" id="itemBrand" placeholder="e.g. AMD, Intel, Samsung, Corsair..." title="Brand">
         </div>
         <div class="form-group">
-          <label>Badge / Health (%)</label>
-          <input type="text" id="itemHealth" placeholder="e.g. 100 or Featured">
+          <label for="itemHealth">Badge / Health (%)</label>
+          <input type="text" id="itemHealth" placeholder="e.g. 100 or Featured" title="Badge / Health (%)">
         </div>
         <div class="form-group">
-          <label>Specifications</label>
-          <textarea id="itemSpecs" rows="3" placeholder="Key specs, socket, wattage, etc."></textarea>
+          <label for="itemSpecs">Specifications</label>
+          <textarea id="itemSpecs" rows="3" placeholder="Key specs, socket, wattage, etc." title="Specifications"></textarea>
         </div>
         <div class="form-group">
-          <label>Product Image</label>
+          <label for="itemImageFile">Product Image</label>
           <div class="upload-area" id="uploadArea">
-            <input type="file" id="itemImageFile" accept="image/*">
+            <input type="file" id="itemImageFile" accept="image/*" title="Product Image File" placeholder="Upload product image">
             <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
             <div class="upload-area-text">Drop image here or <span>click to browse</span></div>
           </div>
@@ -503,8 +503,8 @@
           <input type="hidden" id="itemImagePath">
         </div>
         <div class="form-group" class="form-group-flex">
-          <input type="checkbox" id="itemFeatured" >
-          <label >Feature this item on the main store</label>
+          <input type="checkbox" id="itemFeatured" title="Feature this item" placeholder="">
+          <label for="itemFeatured">Feature this item on the main store</label>
         </div>
       </form>
     </div>
@@ -548,62 +548,62 @@
         <input type="hidden" id="pcEditId">
         <div class="form-row">
           <div class="form-group">
-            <label>Display Style</label>
-            <select id="pcDisplayStyle">
+            <label for="pcDisplayStyle">Display Style</label>
+            <select id="pcDisplayStyle" title="Display Style">
               <option value="specs">Specs Layout</option>
               <option value="poster">Poster Layout</option>
             </select>
           </div>
           <div class="form-group">
-            <label>PC Category / Type</label>
-            <select id="pcType">
+            <label for="pcType">PC Category / Type</label>
+            <select id="pcType" title="PC Category / Type">
               <option value="Office PC">Office PC</option>
               <option value="Gaming PC">Gaming PC</option>
             </select>
           </div>
         </div>
         <div class="form-row" id="pcSpecsRow1">
-          <div class="form-group"><label>Tier Name (e.g. ENTRY)</label><input type="text" id="pcTierName"></div>
-          <div class="form-group"><label>Badge (e.g. Best Value)</label><input type="text" id="pcTierBadge"></div>
-          <div class="form-group"><label>Theme Color</label><input type="color" id="pcColor" value="#0066FF"></div>
+          <div class="form-group"><label for="pcTierName">Tier Name (e.g. ENTRY)</label><input type="text" id="pcTierName" placeholder="e.g. ENTRY" title="Tier Name"></div>
+          <div class="form-group"><label for="pcTierBadge">Badge (e.g. Best Value)</label><input type="text" id="pcTierBadge" placeholder="e.g. Best Value" title="Badge"></div>
+          <div class="form-group"><label for="pcColor">Theme Color</label><input type="color" id="pcColor" value="#0066FF" placeholder="#0066FF" title="Theme Color"></div>
         </div>
         <div class="form-row">
-          <div class="form-group" id="pcNameGroup"><label>Model Name (e.g. Phantom Lite)</label><input type="text" id="pcName"></div>
-          <div class="form-group"><label>Price (RM)</label><input type="number" id="pcPrice" step="0.01"></div>
+          <div class="form-group" id="pcNameGroup"><label for="pcName">Model Name (e.g. Phantom Lite)</label><input type="text" id="pcName" placeholder="e.g. Phantom Lite" title="Model Name"></div>
+          <div class="form-group"><label for="pcPrice">Price (RM)</label><input type="number" id="pcPrice" step="0.01" placeholder="0.00" title="Price"></div>
           <div class="form-group" class="form-group-flex compact">
-            <label >
-              <input type="checkbox" id="pcHidePrice" >
+            <label for="pcHidePrice">
+              <input type="checkbox" id="pcHidePrice" title="Hide Price" placeholder="">
               <span >Hide Price</span>
             </label>
             <div class="help-text">When checked, this PC's price will be hidden on the public site.</div>
           </div>
-          <div class="form-group" id="pcDiscountGroup"><label>Promo text (e.g. 10% OFF)</label><input type="text" id="pcDiscount"></div>
+          <div class="form-group" id="pcDiscountGroup"><label for="pcDiscount">Promo text (e.g. 10% OFF)</label><input type="text" id="pcDiscount" placeholder="e.g. 10% OFF" title="Promo text"></div>
         </div>
         <div class="form-group" id="pcSpecsGroup">
-          <label>Specifications (One per line)</label>
-          <textarea id="pcSpecs" rows="4"></textarea>
+          <label for="pcSpecs">Specifications (One per line)</label>
+          <textarea id="pcSpecs" rows="4" placeholder="One specification per line" title="Specifications"></textarea>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Media Type</label>
-            <select id="pcMediaType">
+            <label for="pcMediaType">Media Type</label>
+            <select id="pcMediaType" title="Media Type">
               <option value="image">Image / Photo</option>
               <option value="video">Video / Motion</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Media Source / URL (Optional)</label>
-            <input type="text" id="pcMediaUrl" placeholder="Direct link (e.g. https://...) or upload below">
+            <label for="pcMediaUrl">Media Source / URL (Optional)</label>
+            <input type="text" id="pcMediaUrl" placeholder="Direct link (e.g. https://...) or upload below" title="Media Source / URL">
           </div>
         </div>
         <div class="form-group" id="pcTagsGroup">
-          <label>Tags (Comma separated)</label>
-          <input type="text" id="pcTags" placeholder="e.g. 1080p Gaming, RGB, Value">
+          <label for="pcTags">Tags (Comma separated)</label>
+          <input type="text" id="pcTags" placeholder="e.g. 1080p Gaming, RGB, Value" title="Tags">
         </div>
         <div class="form-group">
-          <label>Featured Image / Video Upload</label>
+          <label for="pcImageFile">Featured Image / Video Upload</label>
           <div class="upload-area">
-            <input type="file" id="pcImageFile" accept="image/*,video/*">
+            <input type="file" id="pcImageFile" accept="image/*,video/*" title="Featured Image / Video Upload" placeholder="Choose file">
             <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
             <div class="upload-area-text">Drop file or click to browse</div>
           </div>
@@ -611,12 +611,9 @@
           <div id="pcImagePreview" ></div>
           <input type="hidden" id="pcImagePath">
         </div>
-        <div class="form-group">
-          <label>Tags (Comma separated, e.g. RGB, RTX 4070)</label>
-          <input type="text" id="pcTags" placeholder="Tags for searching and filtering">
-        </div>
         <div class="form-group" class="form-group-flex gap-10">
-          <input type="checkbox" id="pcFeatured"><label>Featured Slider (Large format)</label>
+          <input type="checkbox" id="pcFeatured" title="Featured Slider" placeholder="">
+          <label for="pcFeatured">Featured Slider (Large format)</label>
         </div>
       </form>
     </div>
@@ -637,21 +634,21 @@
       <form id="heroForm">
         <input type="hidden" id="heroEditId">
         <div class="form-row">
-          <div class="form-group"><label>Title (Main Heading) (Optional)</label><input type="text" id="heroTitle"></div>
-          <div class="form-group"><label>Subtitle (Small Text) (Optional)</label><input type="text" id="heroSubtitle"></div>
+          <div class="form-group"><label for="heroTitle">Title (Main Heading) (Optional)</label><input type="text" id="heroTitle" placeholder="Main Heading" title="Title"></div>
+          <div class="form-group"><label for="heroSubtitle">Subtitle (Small Text) (Optional)</label><input type="text" id="heroSubtitle" placeholder="Small Text" title="Subtitle"></div>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Media Type</label>
-            <select id="heroMediaType">
+            <label for="heroMediaType">Media Type</label>
+            <select id="heroMediaType" title="Media Type">
               <option value="image">Image / Poster</option>
               <option value="video">Video</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Media File (Optional)</label>
+            <label for="heroMediaFile">Media File (Optional)</label>
             <div class="upload-area" id="heroUploadArea">
-              <input type="file" id="heroMediaFile" accept="image/*,video/*">
+              <input type="file" id="heroMediaFile" accept="image/*,video/*" title="Media File" placeholder="Choose file">
               <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
               <div class="upload-area-text">Drop file or click to browse</div>
             </div>
@@ -661,10 +658,10 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>Button Text (Optional)</label><input type="text" id="heroBtnText" placeholder="e.g. View Services"></div>
+          <div class="form-group"><label for="heroBtnText">Button Text (Optional)</label><input type="text" id="heroBtnText" placeholder="e.g. View Services" title="Button Text"></div>
           <div class="form-group">
-            <label>Navigation Target (Optional)</label>
-            <select id="heroTarget">
+            <label for="heroTarget">Navigation Target (Optional)</label>
+            <select id="heroTarget" title="Navigation Target">
               <option value="home">Home Page</option>
               <option value="shop">Shop / Store</option>
               <option value="build-pc">Build Your PC</option>
@@ -674,7 +671,7 @@
               <option value="contact">Contact Us</option>
             </select>
           </div>
-          <div class="form-group"><label>Order Index</label><input type="number" id="heroOrder" value="0"></div>
+          <div class="form-group"><label for="heroOrder">Order Index</label><input type="number" id="heroOrder" value="0" placeholder="0" title="Order Index"></div>
         </div>
       </form>
     </div>
@@ -694,20 +691,20 @@
     <div class="modal-body">
       <form id="tipForm">
         <input type="hidden" id="tipEditId">
-        <div class="form-group"><label>Title (Optional)</label><input type="text" id="tipTitle"></div>
-        <div class="form-group"><label>Description (Optional)</label><textarea id="tipDesc" rows="2"></textarea></div>
+        <div class="form-group"><label for="tipTitle">Title (Optional)</label><input type="text" id="tipTitle" placeholder="Title" title="Title"></div>
+        <div class="form-group"><label for="tipDesc">Description (Optional)</label><textarea id="tipDesc" rows="2" placeholder="Description" title="Description"></textarea></div>
         <div class="form-row">
           <div class="form-group">
-            <label>Media Type</label>
-            <select id="tipMediaType">
+            <label for="tipMediaType">Media Type</label>
+            <select id="tipMediaType" title="Media Type">
               <option value="video">Video</option>
               <option value="image">Image / Photo</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Media File (Optional)</label>
+            <label for="tipMediaFile">Media File (Optional)</label>
             <div class="upload-area" id="tipUploadArea">
-              <input type="file" id="tipMediaFile" accept="video/*,image/*">
+              <input type="file" id="tipMediaFile" accept="video/*,image/*" title="Media File" placeholder="Choose file">
               <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
               <div class="upload-area-text">Drop file or click to browse</div>
             </div>
@@ -737,22 +734,22 @@
       <form id="testimonialForm">
         <input type="hidden" id="testEditId">
         <div class="form-row">
-          <div class="form-group"><label>Reviewer Name</label><input type="text" id="testName" required></div>
-          <div class="form-group"><label>Role / Subtitle</label><input type="text" id="testRole"></div>
+          <div class="form-group"><label for="testName">Reviewer Name</label><input type="text" id="testName" required placeholder="Reviewer Name" title="Reviewer Name"></div>
+          <div class="form-group"><label for="testRole">Role / Subtitle</label><input type="text" id="testRole" placeholder="Role / Subtitle" title="Role / Subtitle"></div>
         </div>
         <div class="form-group">
-          <label>Review Content</label>
-          <textarea id="testContent" rows="4" required></textarea>
+          <label for="testContent">Review Content</label>
+          <textarea id="testContent" rows="4" required placeholder="Review Content" title="Review Content"></textarea>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Rating (1-5)</label>
-            <input type="number" id="testRating" value="5" min="1" max="5">
+            <label for="testRating">Rating (1-5)</label>
+            <input type="number" id="testRating" value="5" min="1" max="5" placeholder="5" title="Rating">
           </div>
           <div class="form-group">
-            <label>Reviewer Photo</label>
+            <label for="testImageFile">Reviewer Photo</label>
             <div class="upload-area" id="testUploadArea">
-              <input type="file" id="testImageFile" accept="image/*">
+              <input type="file" id="testImageFile" accept="image/*" title="Reviewer Photo" placeholder="Choose file">
               <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
               <div class="upload-area-text" class="upload-area-text compact">Drop photo or browse</div>
             </div>
@@ -780,10 +777,10 @@
       <form id="careerForm">
         <input type="hidden" id="careerEditId">
         <div class="form-row">
-          <div class="form-group"><label>Job Title</label><input type="text" id="careerTitle" required></div>
+          <div class="form-group"><label for="careerTitle">Job Title</label><input type="text" id="careerTitle" required placeholder="Job Title" title="Job Title"></div>
           <div class="form-group">
-            <label>Job Type</label>
-            <select id="careerJobType">
+            <label for="careerJobType">Job Type</label>
+            <select id="careerJobType" title="Job Type">
               <option value="Full-time">Full-time</option>
               <option value="Part-time">Part-time</option>
               <option value="Internship">Internship</option>
@@ -792,12 +789,12 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Description</label>
-          <textarea id="careerDescription" rows="4" placeholder="Job description and responsibilities"></textarea>
+          <label for="careerDescription">Description</label>
+          <textarea id="careerDescription" rows="4" placeholder="Job description and responsibilities" title="Description"></textarea>
         </div>
         <div class="form-group">
-          <label>Requirements</label>
-          <textarea id="careerRequirements" rows="4" placeholder="Required qualifications, experience, skills"></textarea>
+          <label for="careerRequirements">Requirements</label>
+          <textarea id="careerRequirements" rows="4" placeholder="Required qualifications, experience, skills" title="Requirements"></textarea>
         </div>
       </form>
     </div>
@@ -818,22 +815,22 @@
       <form id="teamForm">
         <input type="hidden" id="teamEditId">
         <div class="form-row">
-          <div class="form-group"><label>Name</label><input type="text" id="teamName" required></div>
-          <div class="form-group"><label>Role</label><input type="text" id="teamRole" required></div>
+          <div class="form-group"><label for="teamName">Name</label><input type="text" id="teamName" required placeholder="Name" title="Name"></div>
+          <div class="form-group"><label for="teamRole">Role</label><input type="text" id="teamRole" required placeholder="Role" title="Role"></div>
         </div>
         <div class="form-group">
-          <label>Bio</label>
-          <textarea id="teamBio" rows="4"></textarea>
+          <label for="teamBio">Bio</label>
+          <textarea id="teamBio" rows="4" placeholder="Biography/Details" title="Bio"></textarea>
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label>Display Order</label>
-            <input type="number" id="teamOrder" value="0" min="0">
+            <label for="teamOrder">Display Order</label>
+            <input type="number" id="teamOrder" value="0" min="0" placeholder="0" title="Display Order">
           </div>
           <div class="form-group">
-            <label>Photo</label>
+            <label for="teamImageFile">Photo</label>
             <div class="upload-area" id="teamUploadArea">
-              <input type="file" id="teamImageFile" accept="image/*">
+              <input type="file" id="teamImageFile" accept="image/*" title="Photo" placeholder="Choose photo">
               <div class="upload-area-icon"><i class="fas fa-cloud-upload-alt"></i></div>
               <div class="upload-area-text" class="upload-area-text compact">Drop photo or browse</div>
             </div>

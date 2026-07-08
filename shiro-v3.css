@@ -590,7 +590,7 @@ body.light .nav-menu > li > a.active {
   width: auto;
 }
 .logo-fallback {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 8px;
 }
@@ -1381,6 +1381,9 @@ body.light .nav-menu > li > a.active {
   width: 100%;
   overflow: hidden;
 }
+.hero-slide.loading .slide-poster-fallback {
+  display: flex;
+}
 .slide-poster-fallback h3 {
   font-size: 1.4rem;
   line-height: 1.25;
@@ -1527,9 +1530,13 @@ body.light .nav-menu > li > a.active {
 }
 .service-card-action {
   margin-top: auto;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 .service-card-action .btn {
-  width: 100%;
+  flex: 1;
+  width: auto;
   font-size: 0.85rem;
   padding: 0.6rem 1rem;
 }
@@ -2362,6 +2369,7 @@ body.light .nav-menu > li > a.active {
 
 /* Brand filter row — full-width blue-themed row below category tabs */
 .brand-filter-row {
+  display: none;
   background: rgba(59, 130, 246, 0.06);
   border-top: 1px solid rgba(59, 130, 246, 0.2);
   border-bottom: 1px solid rgba(59, 130, 246, 0.15);
@@ -2507,6 +2515,7 @@ body.light .nav-menu > li > a.active {
 }
 
 .empty-state {
+  display: none;
   text-align: center;
   padding: 4rem 2rem;
   color: var(--text-muted);
@@ -2628,6 +2637,7 @@ body.light .nav-menu > li > a.active {
   align-items: start;
   position: relative;
   --build-sticky-top: calc(var(--nav-height) + 5.25rem);
+  padding-top: 0;
 }
 .components-list {
   display: flex;
@@ -3356,6 +3366,7 @@ body.light .comp-img-wrap::after {
 }
 .map-container iframe {
   display: block;
+  border: 0;
 }
 .social-widgets-grid {
   display: grid;
@@ -4773,7 +4784,7 @@ body.festival-admin .festival-toggle-btn {
   font-size: 0.65rem;
   font-weight: 800;
   border-radius: 50%;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   border: 2px solid var(--bg-primary);
@@ -5439,3 +5450,106 @@ body.festival-admin .festival-toggle-btn {
   background: rgba(239, 68, 68, 0.2);
   color: #fff;
 }
+
+/* ========== PC CATEGORY TABS ========== */
+.pc-category-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ========== METHOD ICON BRAND COLORS ========== */
+.method-icon.whatsapp {
+  background: rgba(37, 211, 102, 0.15);
+  color: #25d366;
+}
+.method-icon.blue {
+  background: rgba(0, 102, 255, 0.15);
+  color: #0066FF;
+}
+.method-icon.red {
+  background: rgba(255, 0, 51, 0.15);
+  color: #FF0033;
+}
+
+/* ========== MODAL LAYOUT MODIFIERS ========== */
+#jobModalOverlay { z-index: 9999; }
+#checkoutInfoOverlay { z-index: 10000; }
+#serviceBookingOverlay { z-index: 10000; }
+#checkStatusModal { z-index: 10001; }
+
+.modal-xs { max-width: 440px !important; }
+.modal-sm { max-width: 480px !important; }
+.modal-md { max-width: 520px !important; }
+.modal-lg { max-width: 650px !important; }
+
+.builder-modal-header.glow-blue {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), transparent);
+}
+.builder-modal-header.glow-cyan {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), transparent);
+}
+.builder-modal-header.glow-cyan i {
+  color: #38bdf8;
+}
+
+.p-1-5 {
+  padding: 1.5rem !important;
+}
+
+/* ========== CHECK STATUS MODAL UTILITIES ========== */
+.status-desc {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+.mb-1-25 {
+  margin-bottom: 1.25rem;
+}
+.flex-gap-0-5 {
+  display: flex;
+  gap: 0.5rem;
+}
+.flex-1 {
+  flex: 1;
+}
+.btn-status-check {
+  background: #38bdf8;
+  color: #000;
+  font-weight: 700;
+  padding: 0 1.25rem;
+  border-radius: 10px;
+}
+#statusResult {
+  max-height: 250px;
+  overflow-y: auto;
+  display: none;
+}
+#statusError {
+  display: none;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}
+
+/* ========== GENERAL UTILITIES ========== */
+.mb-1 { margin-bottom: 1rem !important; }
+.mb-1-5 { margin-bottom: 1.5rem !important; }
+.w-full { width: 100% !important; }
+.display-none { display: none !important; }
+.text-center { text-align: center !important; }
+.fs-0-9 { font-size: 0.9rem !important; }
+.mt-10 { margin-top: 10px !important; }
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+
