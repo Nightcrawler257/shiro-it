@@ -530,7 +530,7 @@
                     </div>
 
                     <!-- Video Grid -->
-                    <div class="section-header" style="text-align: left; margin-bottom: 1.5rem;">
+                    <div class="section-header section-header--left">
                         <h3>More Video Tips</h3>
                     </div>
                     
@@ -913,7 +913,7 @@
             <!-- Shop CTA (removed as Build PC is now below) -->
  
             <!-- BUILD PC SECTION BELOW -->
-            <hr style="margin: 4rem 0; border: none; height: 1px; background: var(--border-color);">
+            <hr class="section-divider">
             <section class="page-hero">
                 <div class="page-hero-bg"></div>
                 <div class="container page-hero-content">
@@ -1007,8 +1007,8 @@
                     <h1><span data-translate="svcp_h1_1">Professional</span> <span data-translate="svcp_h1_2">IT Solutions</span></h1>
                     <p class="page-hero-desc" data-translate="svcp_desc">From hardware repair to enterprise IT support — we deliver reliable,
                         high-quality technology services tailored to your needs.</p>
-                    <div style="margin-top:2rem;display:flex;justify-content:center;">
-                        <button onclick="document.getElementById('checkStatusModal').classList.add('show')" class="btn" style="background:rgba(56,189,248,0.1);border:1px solid #38bdf8;color:#38bdf8;padding:.8rem 1.8rem;border-radius:12px;display:flex;align-items:center;gap:.6rem;cursor:pointer;transition:.2s;">
+                    <div class="check-status-wrapper">
+                        <button onclick="document.getElementById('checkStatusModal').classList.add('show')" class="btn btn-check-status">
                             <i class="fas fa-search-location"></i> <span data-translate="check_status_btn">Check My Booking Status</span>
                         </button>
                     </div>
@@ -1019,7 +1019,7 @@
                 <div class="container">
                     <div class="services-detail-grid">
                         <!-- E-Waste Collection -->
-                        <div class="card service-detail-card" style="--svc-color: #10b981;">
+                        <div class="card service-detail-card svc-green">
                             <div class="svc-icon"><i class="fas fa-recycle"></i></div>
                             <h3 data-translate="svc_ewaste_title">E-Waste Collection</h3>
                             <p data-translate="svc_ewaste_desc">Properly dispose of your old electronics. We ensure eco-friendly recycling and 100% data destruction.</p>
@@ -1033,7 +1033,7 @@
                         </div>
                         
                         <!-- Repair -->
-                        <div class="card service-detail-card" style="--svc-color: #ef4444;">
+                        <div class="card service-detail-card svc-red">
                             <div class="svc-icon"><i class="fas fa-tools"></i></div>
                             <h3 data-translate="svc_repair_title">Expert Hardware Repair</h3>
                             <p data-translate="svc_repair_desc">Fast diagnosis for desktops and laptops. We specialize in logic board and hardware level troubleshooting.</p>
@@ -1047,7 +1047,7 @@
                         </div>
 
                         <!-- Laptop Spa -->
-                        <div class="card service-detail-card" style="--svc-color: #38bdf8;">
+                        <div class="card service-detail-card svc-blue">
                             <div class="svc-icon"><i class="fas fa-wind"></i></div>
                             <h3 data-translate="svc_spa_title">Laptop Spa & Cooling</h3>
                             <p data-translate="svc_spa_desc">Overheating? We provide deep cleaning and high-performance thermal paste re-application.</p>
@@ -1061,7 +1061,7 @@
                         </div>
 
                         <!-- Networking -->
-                        <div class="card service-detail-card" style="--svc-color: #ef4444;">
+                        <div class="card service-detail-card svc-red">
                             <div class="svc-icon"><i class="fas fa-network-wired"></i></div>
                             <h3 data-translate="svc_net_title">Network Solutions</h3>
                             <p data-translate="svc_net_desc">Enterprise-grade network solutions for SMEs and high-performance WiFi 6 setups for modern homes.</p>
@@ -1075,7 +1075,7 @@
                         </div>
 
                         <!-- E-Waste Collection -->
-                        <div class="card service-detail-card" style="--svc-color: #10b981;">
+                        <div class="card service-detail-card svc-green">
                             <div class="svc-icon"><i class="fas fa-recycle"></i></div>
                             <h3 data-translate="svc_ewaste_title">E-Waste Collection</h3>
                             <p data-translate="svc_ewaste_desc">Properly dispose of your old electronics. We ensure eco-friendly recycling and 100% data destruction.</p>
@@ -1089,7 +1089,7 @@
                         </div>
                         
                         <!-- Trade-In -->
-                        <div class="card service-detail-card" style="--svc-color: #38bdf8;">
+                        <div class="card service-detail-card svc-blue">
                             <div class="svc-icon"><i class="fas fa-hand-holding-usd"></i></div>
                             <h3 data-translate="svc_trade_title">PC & Laptop Trade-In</h3>
                             <p data-translate="svc_trade_desc">Upgrade your setup by trading in your old hardware. We offer fair market value for working systems and components.</p>
@@ -1305,7 +1305,7 @@
                             <p data-translate="contact_intel_desc">For immediate assistance, stock availability, or quick technical questions. Connect with our team instantly.</p>
                             
                             <a href="https://wa.me/60177617672" target="_blank" rel="noopener noreferrer"
-                                class="btn btn-whatsapp whatsapp-tactical" style="margin-top:1.25rem; width: 100%; justify-content: center;">
+                                class="btn btn-whatsapp whatsapp-tactical">
                                 <i class="fab fa-whatsapp"></i> <span data-translate="contact_whatsapp_btn">CHAT ON WHATSAPP</span>
                             </a>
                             
@@ -1347,7 +1347,7 @@
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.440233623818!2d100.43446697364342!3d5.501461334198477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x304ad1f1e6a68247%3A0x5efe09b44d91cb33!2sShiro%20It%20Computer%20%26%20Laptop%20Penang!5e0!3m2!1sen!2smy!4v1772011452780!5m2!1sen!2smy" 
                             width="1200" height="400" 
                             allowfullscreen="" loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade"
+                            referrerpolicy="no-referrer"
                             title="SHIRO IT location on Google Maps">
                         </iframe>
                     </div>
@@ -1490,8 +1490,8 @@
     </div>
 
     <!-- Job Application Modal -->
-    <div class="builder-modal-overlay" id="jobModalOverlay" style="z-index:9999;">
-        <div class="builder-modal" style="max-width: 650px;">
+    <div class="builder-modal-overlay" id="jobModalOverlay">
+        <div class="builder-modal modal-lg">
             <div class="builder-modal-header">
                 <h3><i class="fas fa-briefcase"></i> Apply for <span id="jobModalPositionText">Position</span></h3>
                 <button class="builder-modal-close" onclick="closeJobModal()"><i class="fas fa-times"></i></button>
@@ -1500,7 +1500,7 @@
                 <form id="jobApplicationForm" enctype="multipart/form-data">
                     <input type="hidden" id="jobPositionInput" name="position" value="">
                     
-                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="job-form-grid">
                         <div class="form-group">
                             <label>Full Name *</label>
                             <input type="text" name="name" class="form-control" required>
@@ -1511,7 +1511,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="job-form-grid">
                         <div class="form-group">
                             <label>Phone *</label>
                             <input type="tel" name="phone" class="form-control" required>
@@ -1522,57 +1522,57 @@
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1rem;">
+                    <div class="form-group job-form-group">
                         <label>Highest Education Level *</label>
                         <input type="text" name="education" class="form-control" required>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1rem;">
+                    <div class="form-group job-form-group">
                         <label>Relevant Experience *</label>
                         <textarea name="experience" class="form-control" rows="3" placeholder="Briefly describe your relevant experience..." required></textarea>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1rem;">
+                    <div class="form-group job-form-group">
                         <label>Cover Letter (Optional)</label>
                         <textarea name="cover_letter" class="form-control" rows="3" placeholder="Why do you want to join us?"></textarea>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 1rem;">
+                    <div class="form-group job-form-group">
                         <label>Resume * (PDF, DOC, DOCX - up to 5MB)</label>
                         <input type="file" name="resume" class="form-control" accept=".pdf,.doc,.docx" required>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Application</button>
-                    <p id="jobFormMessage" style="margin-top: 10px; font-size: 0.9rem; text-align: center; display: none;"></p>
+                    <button type="submit" class="btn btn-primary btn-submit-full">Submit Application</button>
+                    <p id="jobFormMessage" class="form-message"></p>
                 </form>
             </div>
         </div>
     </div>
 
     <!-- ===== CHECKOUT INFO MODAL ===== -->
-    <div class="builder-modal-overlay" id="checkoutInfoOverlay" style="z-index:10000;">
-        <div class="builder-modal" style="max-width:480px;">
+    <div class="builder-modal-overlay" id="checkoutInfoOverlay">
+        <div class="builder-modal modal-sm">
             <div class="builder-modal-header">
-                <h3><i class="fab fa-whatsapp" style="color:#25d366;"></i> Almost there!</h3>
+                <h3><i class="fab fa-whatsapp icon-whatsapp-green"></i> Almost there!</h3>
                 <button class="builder-modal-close" onclick="document.getElementById('checkoutInfoOverlay').classList.remove('show');"><i class="fas fa-times"></i></button>
             </div>
-            <div class="builder-modal-body" style="padding:1.5rem;">
-                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:0.95rem;">Leave your details so we can follow up on your order. Then we'll open WhatsApp with your full build list.</p>
+            <div class="builder-modal-body p-1-5">
+                <p class="checkout-desc">Leave your details so we can follow up on your order. Then we'll open WhatsApp with your full build list.</p>
                 <form id="checkoutInfoForm">
-                    <div class="form-group" style="margin-bottom:1rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Your Name *</label>
+                    <div class="form-group checkout-form-group">
+                        <label class="checkout-label">Your Name *</label>
                         <input type="text" id="ci-name" class="form-control" placeholder="e.g. Ahmad" required>
                     </div>
-                    <div class="form-group" style="margin-bottom:1rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">WhatsApp Number *</label>
+                    <div class="form-group checkout-form-group">
+                        <label class="checkout-label">WhatsApp Number *</label>
                         <input type="tel" id="ci-phone" class="form-control" placeholder="e.g. 0177617672" required>
                     </div>
-                    <div class="form-group" style="margin-bottom:1.25rem;">
-                        <label style="display:block;margin-bottom:.4rem;font-size:.9rem;">Email (Optional)</label>
+                    <div class="form-group checkout-form-group-last">
+                        <label class="checkout-label">Email (Optional)</label>
                         <input type="email" id="ci-email" class="form-control" placeholder="e.g. ahmad@email.com">
                     </div>
-                    <p id="ci-msg" style="display:none;margin-bottom:.75rem;font-size:.85rem;text-align:center;"></p>
-                    <button type="submit" class="btn btn-whatsapp" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;">
+                    <p id="ci-msg" class="checkout-msg"></p>
+                    <button type="submit" class="btn btn-whatsapp btn-whatsapp-full">
                         <i class="fab fa-whatsapp"></i> Save & Open WhatsApp
                     </button>
                 </form>
@@ -1581,25 +1581,25 @@
     </div>
 
     <!-- ===== SERVICE BOOKING MODAL ===== -->
-    <div class="builder-modal-overlay" id="serviceBookingOverlay" style="z-index:10000;">
-        <div class="builder-modal" style="max-width:520px;">
-            <div class="builder-modal-header" style="background:linear-gradient(135deg,rgba(37,99,235,0.08),transparent);">
-                <h3><i class="fas fa-tools" style="color:var(--accent-blue);"></i> Book a Service</h3>
+    <div class="builder-modal-overlay" id="serviceBookingOverlay">
+        <div class="builder-modal modal-md">
+            <div class="builder-modal-header glow-blue">
+                <h3><i class="fas fa-tools icon-accent-blue"></i> Book a Service</h3>
                 <button class="builder-modal-close" onclick="document.getElementById('serviceBookingOverlay').classList.remove('show');"><i class="fas fa-times"></i></button>
             </div>
-            <div class="builder-modal-body" style="padding:1.5rem;">
-                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:.9rem;"><i class="fas fa-info-circle" style="color:var(--accent-blue);margin-right:6px;"></i>Fill in your details — we'll save it and open WhatsApp so our team can respond fast.</p>
+            <div class="builder-modal-body p-1-5">
+                <p class="sb-desc"><i class="fas fa-info-circle"></i>Fill in your details — we'll save it and open WhatsApp so our team can respond fast.</p>
                 <form id="serviceBookingForm">
                     <input type="hidden" id="sb-service">
 
                     <!-- Service (read-only) -->
-                    <div class="form-group" style="margin-bottom:.9rem;">
+                    <div class="form-group sb-form-group">
                         <label class="sb-label"><i class="fas fa-wrench"></i> <span data-translate="sb_service">Service</span></label>
-                        <input type="text" id="sb-service-display" class="form-control" readonly style="opacity:.65;cursor:default;">
+                        <input type="text" id="sb-service-display" class="form-control sb-input-readonly" readonly>
                     </div>
 
                     <!-- Name + Phone -->
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.9rem;">
+                    <div class="sb-form-row">
                         <div class="form-group">
                             <label class="sb-label"><i class="fas fa-user"></i> <span data-translate="sb_name">Your Name</span> *</label>
                             <input type="text" id="sb-name" class="form-control" placeholder="e.g. Ahmad" required>
@@ -1611,39 +1611,39 @@
                     </div>
 
                     <!-- Device Model -->
-                    <div class="form-group" style="margin-bottom:.9rem;">
-                        <label class="sb-label"><i class="fas fa-laptop"></i> <span data-translate="sb_device">Device / Item</span> <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
+                    <div class="form-group sb-form-group">
+                        <label class="sb-label"><i class="fas fa-laptop"></i> <span data-translate="sb_device">Device / Item</span> <span class="sb-optional-tag">(optional)</span></label>
                         <input type="text" id="sb-device" class="form-control" placeholder="e.g. Dell XPS 15, iPhone 13, Custom PC...">
                     </div>
 
                     <!-- Problem Description -->
-                    <div class="form-group" style="margin-bottom:.9rem;">
+                    <div class="form-group sb-form-group">
                         <label class="sb-label"><i class="fas fa-exclamation-circle"></i> <span data-translate="sb_problem">Describe the Problem</span> *</label>
-                        <textarea id="sb-problem" class="form-control" rows="3" placeholder="e.g. My laptop overheats and shuts down after 20 minutes. The fan is very loud..." required style="resize:vertical;min-height:80px;"></textarea>
+                        <textarea id="sb-problem" class="form-control sb-textarea" rows="3" placeholder="e.g. My laptop overheats and shuts down after 20 minutes. The fan is very loud..." required></textarea>
                     </div>
 
                     <!-- Photo/Video Upload -->
-                    <div class="form-group" style="margin-bottom:.9rem;">
+                    <div class="form-group sb-form-group">
                         <label class="sb-label"><i class="fas fa-camera"></i> <span data-translate="sb_photo_title">Attach Photos / Videos</span></label>
-                        <div id="sb-photo-area" style="border:2px dashed rgba(255,255,255,0.1);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;transition:.2s;position:relative;">
-                            <input type="file" id="sb-photo" accept="image/*,video/*" multiple style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;">
-                            <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--text-secondary);margin-bottom:.4rem;display:block;"></i>
-                            <div id="sb-photo-label" style="font-size:.82rem;color:var(--text-secondary);" data-translate="sb_photo_ph">Click or drag photos/videos here</div>
+                        <div id="sb-photo-area" class="sb-photo-area">
+                            <input type="file" id="sb-photo" accept="image/*,video/*" multiple class="sb-photo-input">
+                            <i class="fas fa-cloud-upload-alt sb-photo-icon"></i>
+                            <div id="sb-photo-label" class="sb-photo-label-text" data-translate="sb_photo_ph">Click or drag photos/videos here</div>
                         </div>
-                        <div id="sb-photo-preview-container" style="margin-top:.5rem;display:none;">
-                            <div id="sb-photo-preview" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;"></div>
-                            <button type="button" onclick="clearBookingPhoto()" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:.8rem;"><i class="fas fa-times"></i> Remove All</button>
+                        <div id="sb-photo-preview-container" class="sb-preview-container">
+                            <div id="sb-photo-preview" class="sb-preview-flex"></div>
+                            <button type="button" onclick="clearBookingPhoto()" class="sb-remove-btn"><i class="fas fa-times"></i> Remove All</button>
                         </div>
                     </div>
 
                     <!-- Date -->
-                    <div class="form-group" style="margin-bottom:1.25rem;">
-                        <label class="sb-label"><i class="fas fa-calendar-alt"></i> <span data-translate="sb_date">Preferred Date</span> <span style="opacity:.55;font-size:.78rem;">(optional)</span></label>
+                    <div class="form-group sb-date-group">
+                        <label class="sb-label"><i class="fas fa-calendar-alt"></i> <span data-translate="sb_date">Preferred Date</span> <span class="sb-optional-tag">(optional)</span></label>
                         <input type="date" id="sb-date" class="form-control">
                     </div>
 
-                    <p id="sb-msg" style="display:none;margin-bottom:.75rem;font-size:.85rem;text-align:center;padding:.6rem;border-radius:8px;"></p>
-                    <button type="submit" id="sb-submit-btn" class="btn btn-whatsapp" style="width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:1rem;padding:.9rem;">
+                    <p id="sb-msg" class="sb-msg"></p>
+                    <button type="submit" id="sb-submit-btn" class="btn btn-whatsapp btn-whatsapp-submit">
                         <i class="fab fa-whatsapp"></i> <span data-translate="sb_submit">Confirm Booking via WhatsApp</span>
                     </button>
                 </form>
@@ -1693,7 +1693,7 @@
       
       /* Hide modal if we don't need it or keep as backup */
     </style>
-    <div class="builder-modal-overlay" id="builderModalOverlay" style="display:none;">
+    <div class="builder-modal-overlay" id="builderModalOverlay">
       <div class="builder-modal">
         <div class="builder-modal-header">
           <h3 id="builderModalTitle">Select Component</h3>
@@ -1708,23 +1708,23 @@
       </div>
     </div>
 
-    <div class="builder-modal-overlay" id="checkStatusModal" style="z-index:10001;">
-        <div class="builder-modal" style="max-width:440px;">
-            <div class="builder-modal-header" style="background:linear-gradient(135deg,rgba(56,189,248,0.08),transparent);">
-                <h3 data-translate="check_status_title"><i class="fas fa-search-location" style="color:#38bdf8;"></i> Check Status</h3>
+    <div class="builder-modal-overlay" id="checkStatusModal">
+        <div class="builder-modal modal-xs">
+            <div class="builder-modal-header glow-cyan">
+                <h3 data-translate="check_status_title"><i class="fas fa-search-location icon-accent-blue"></i> Check Status</h3>
                 <button class="builder-modal-close" onclick="document.getElementById('checkStatusModal').classList.remove('show');"><i class="fas fa-times"></i></button>
             </div>
-            <div class="builder-modal-body" style="padding:1.5rem;">
-                <p style="color:var(--text-secondary);margin-bottom:1.25rem;font-size:.9rem;">Enter the WhatsApp number used for booking to see its current status.</p>
-                <div class="form-group" style="margin-bottom:1.25rem;">
+            <div class="builder-modal-body p-1-5">
+                <p class="check-status-desc">Enter the WhatsApp number used for booking to see its current status.</p>
+                <div class="form-group check-status-form-group">
                     <label class="sb-label">WhatsApp Number</label>
-                    <div style="display:flex;gap:.5rem;">
-                        <input type="tel" id="statusPhone" class="form-control" placeholder="e.g. 0177617672" style="flex:1;">
-                        <button onclick="checkBookingStatus()" id="statusBtn" class="btn" style="background:#38bdf8;color:#000;font-weight:700;padding:0 1.25rem;border-radius:10px;" data-translate="check_status_action">Check</button>
+                    <div class="flex-gap-0-5">
+                        <input type="tel" id="statusPhone" class="form-control flex-1" placeholder="e.g. 0177617672">
+                        <button onclick="checkBookingStatus()" id="statusBtn" class="btn btn-status-check" data-translate="check_status_action">Check</button>
                     </div>
                 </div>
-                <div id="statusResult" style="max-height:250px;overflow-y:auto;display:none;"></div>
-                <div id="statusError" style="display:none;color:#ef4444;background:rgba(239,68,68,0.08);padding:.8rem;border-radius:10px;font-size:.85rem;margin-top:1rem;"></div>
+                <div id="statusResult"></div>
+                <div id="statusError"></div>
             </div>
         </div>
     </div>

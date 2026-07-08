@@ -5552,4 +5552,224 @@ body.festival-admin .festival-toggle-btn {
   margin-bottom: 1rem;
 }
 
+/* ========== SECTION DIVIDER (replaces inline hr) ========== */
+.section-divider {
+  margin: 4rem 0;
+  border: none;
+  height: 1px;
+  background: var(--border-color);
+}
+
+/* ========== VIDEO TIPS SUB-HEADER ========== */
+.section-header.section-header--left {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+/* ========== IT SERVICES CHECK STATUS BUTTON ========== */
+.check-status-wrapper {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+.btn-check-status {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid #38bdf8;
+  color: #38bdf8;
+  padding: 0.8rem 1.8rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-check-status:hover {
+  background: rgba(56, 189, 248, 0.2);
+}
+
+/* ========== SERVICE CARD COLOR VARIANTS (CSS custom prop) ========== */
+.service-detail-card.svc-green  { --svc-color: #10b981; }
+.service-detail-card.svc-red    { --svc-color: #ef4444; }
+.service-detail-card.svc-blue   { --svc-color: #38bdf8; }
+
+/* ========== WHATSAPP TACTICAL BUTTON ========== */
+.whatsapp-tactical {
+  margin-top: 1.25rem;
+  width: 100%;
+  justify-content: center;
+}
+
+/* ========== JOB APPLICATION MODAL FORM LAYOUT ========== */
+.job-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.job-form-group {
+  margin-bottom: 1rem;
+}
+.btn-submit-full {
+  width: 100%;
+}
+.form-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+  display: none;
+}
+
+/* ========== CHECKOUT INFO MODAL ========== */
+.checkout-desc {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+.checkout-form-group {
+  margin-bottom: 1rem;
+}
+.checkout-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+.checkout-form-group-last {
+  margin-bottom: 1.25rem;
+}
+.checkout-msg {
+  display: none;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+.btn-whatsapp-full {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* ========== WHATSAPP ICON GREEN ========== */
+.icon-whatsapp-green {
+  color: #25d366;
+}
+
+/* ========== SERVICE BOOKING MODAL ========== */
+.sb-desc {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+.sb-desc i {
+  color: var(--accent-blue);
+  margin-right: 6px;
+}
+.sb-form-group {
+  margin-bottom: 0.9rem;
+}
+.sb-input-readonly {
+  opacity: 0.65;
+  cursor: default;
+}
+.sb-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+.sb-optional-tag {
+  opacity: 0.55;
+  font-size: 0.78rem;
+}
+.sb-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.sb-photo-area {
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  position: relative;
+}
+.sb-photo-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.sb-photo-icon {
+  font-size: 1.6rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+.sb-photo-label-text {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+.sb-preview-container {
+  margin-top: 0.5rem;
+  display: none;
+}
+.sb-preview-flex {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.sb-remove-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.sb-date-group {
+  margin-bottom: 1.25rem;
+}
+.sb-msg {
+  display: none;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0.6rem;
+  border-radius: 8px;
+}
+.btn-whatsapp-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0.9rem;
+}
+
+/* ========== BUILDER MODAL HIDDEN ========== */
+#builderModalOverlay {
+  display: none;
+}
+
+/* ========== ICON ACCENT BLUE ========== */
+.icon-accent-blue {
+  color: var(--accent-blue);
+}
+
+/* ========== CHECK STATUS MODAL STYLES ========== */
+.check-status-desc {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+.check-status-form-group {
+  margin-bottom: 1.25rem;
+}
+
 
