@@ -1910,6 +1910,22 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('selectedProductPrice').textContent = hidePrice ? '' : `RM ${fullItem.price.toLocaleString()}`;
 
     selectedCard.classList.add('active');
+
+    // Also populate the large top preview box (green area)
+    const topPreview = document.getElementById('buildTopPreview');
+    if (topPreview) {
+      topPreview.innerHTML = `
+        <div class="preview-inner">
+          <div class="preview-image">${imageHtml || `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--blue-neon);">${fallbackIcon}</div>`}</div>
+          <div class="preview-info">
+            <h2 class="preview-title">${fullItem.name}</h2>
+            <div class="preview-specs">${specsText}</div>
+            <div class="preview-price">${hidePrice ? '' : `RM ${fullItem.price.toLocaleString()}`}</div>
+          </div>
+        </div>`;
+      topPreview.classList.add('active');
+      topPreview.setAttribute('aria-hidden', 'false');
+    }
   };
 
   // Close the selected product display
@@ -1918,6 +1934,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedCard) {
       selectedCard.classList.remove('active');
       if (selectedCard.__hideTimeout) clearTimeout(selectedCard.__hideTimeout);
+    }
+
+    const topPreview = document.getElementById('buildTopPreview');
+    if (topPreview) {
+      topPreview.classList.remove('active');
+      topPreview.innerHTML = '';
+      topPreview.setAttribute('aria-hidden', 'true');
     }
   };
 
