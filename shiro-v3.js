@@ -441,7 +441,6 @@ document.addEventListener("DOMContentLoaded", () => {
       cart_browse: "Browse Shop",
       cart_checkout: "Order on WhatsApp",
       cart_total: "Grand Total",
-      check_status_btn: "Check My Booking Status",
       check_status_title: "Check Status",
       check_status_action: "Check",
       svc_ewaste_title: "E-Waste Collection",
