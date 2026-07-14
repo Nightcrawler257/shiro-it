@@ -4861,6 +4861,30 @@ body.festival-admin .festival-toggle-btn {
   flex-direction: column;
   gap: 1rem;
 }
+
+/* Mobile responsive: full-screen cart on small devices */
+@media (max-width: 768px) {
+  .cart-sidebar-overlay {
+    justify-content: center; /* center overlay so full-width panel aligns */
+  }
+  .cart-sidebar {
+    width: 100%;
+    max-width: 100%;
+    transform: translateX(-100%);
+    border-right: none;
+    box-shadow: none;
+    height: 100%;
+  }
+  .cart-sidebar-overlay.open .cart-sidebar {
+    transform: translateX(0);
+  }
+  .cart-header,
+  .cart-body,
+  .cart-footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
 .cart-footer {
   padding: 1.5rem;
   border-top: 1px solid var(--border-color);
