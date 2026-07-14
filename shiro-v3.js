@@ -161,6 +161,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.heroInterval = 8000;
   applySiteSettings();
 
+  // Ensure language is available early — used by functions that run during init
+  let currentLang = localStorage.getItem("shiro-lang") || "en";
+
   async function loadHeroSlides() {
     const track = document.getElementById("heroSliderTrack");
     if (!track) return;
@@ -251,7 +254,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const langToggle = document.getElementById("languageToggle");
   const langDropdown = document.getElementById("languageDropdown");
   const langOptions = document.querySelectorAll(".language-option");
-  let currentLang = localStorage.getItem("shiro-lang") || "en";
 
   const translations = {
     en: {
