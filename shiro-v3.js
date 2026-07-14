@@ -470,7 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sb_name: "Your Name",
       sb_phone: "WhatsApp No.",
       sb_device: "Device / Item",
-      sb_problem: "Describe the Problem",
+      sb_problem: "Describe the Spec and Problem",
       sb_photo_title: "Attach Photos / Videos",
       sb_photo_ph: "Click or drag photos/videos here",
       sb_date: "Preferred Service Date",
