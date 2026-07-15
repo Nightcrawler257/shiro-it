@@ -944,7 +944,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     filtered.forEach((p) => {
       const card = document.createElement("div");
-      card.className = "product-card" + (p.featured ? " featured" : "");
+      card.className = "product-card";
       
       let displayCategory = p.category;
       let displayPrice = p.price > 0 ? "RM " + p.price.toLocaleString() : "Ask for Price";
@@ -1099,7 +1099,7 @@ document.addEventListener("DOMContentLoaded", () => {
           category: item.category,
           brand: item.brand || '',
           price: item.price || 0,
-          badge: item.featured ? "Featured 🔥" : "",
+          badge: "",
           specs: item.specs || (item.category + " | Ask for details"),
           image: item.image || null,
           featured: item.featured || false,
