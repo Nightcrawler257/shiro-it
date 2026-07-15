@@ -484,8 +484,12 @@
           <input type="text" id="itemBrand" placeholder="e.g. AMD, Intel, Samsung, Corsair..." title="Brand">
         </div>
         <div class="form-group">
-          <label for="itemHealth">Badge / Health (%)</label>
-          <input type="text" id="itemHealth" placeholder="e.g. 100 or Featured" title="Badge / Health (%)">
+          <label for="itemBadge">Badge Text (Red box)</label>
+          <input type="text" id="itemBadge" placeholder="e.g. Featured, New, 100%" title="Badge Text (red box)">
+        </div>
+        <div class="form-group">
+          <label for="itemHealth">Health (%)</label>
+          <input type="text" id="itemHealth" placeholder="e.g. 100" title="Health percentage">
         </div>
         <div class="form-group">
           <label for="itemSpecs">Specifications</label>
@@ -1778,7 +1782,8 @@ window.editInventoryItem = (item) => {
   $('itemPrice').value = item.price;
   $('itemCat').value   = item.category;
   $('itemBrand').value = item.brand || '';
-  $('itemHealth').value = item.health || item.badge || '';
+  $('itemBadge').value = item.badge || '';
+  $('itemHealth').value = item.health || '';
   $('itemSpecs').value = item.specs || '';
   $('itemImagePath').value = item.image || '';
   $('itemFeatured').checked = !!item.featured;
@@ -1848,6 +1853,7 @@ $('saveBtn').onclick = async () => {
     price: Number(priceVal),
     category: $('itemCat').value,
     brand: $('itemBrand').value.trim(),
+    badge: $('itemBadge').value,
     health: $('itemHealth').value,
     specs: $('itemSpecs').value,
     image: imagePath,
