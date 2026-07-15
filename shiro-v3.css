@@ -2639,14 +2639,18 @@ body.light .nav-menu > li > a.active {
 
 .build-layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 1fr 380px;
   gap: 2rem;
   align-items: start;
   position: relative;
   --build-sticky-top: calc(var(--nav-height) + 5.25rem);
   padding-top: 0;
 }
+.build-summary {
+  grid-column: 2;
+}
 .components-column {
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   gap: 0;
