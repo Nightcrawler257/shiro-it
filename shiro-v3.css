@@ -2632,12 +2632,18 @@ body.light .nav-menu > li > a.active {
 
 .build-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 380px 1fr;
   gap: 2rem;
   align-items: start;
   position: relative;
   --build-sticky-top: calc(var(--nav-height) + 5.25rem);
   padding-top: 0;
+}
+.components-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
 }
 .components-list {
   display: flex;
@@ -3965,6 +3971,9 @@ body.light .social-float-btn::before {
   }
   .build-layout {
     grid-template-columns: 1fr;
+  }
+  .components-column {
+    width: 100%;
   }
   .build-summary {
     position: static;
