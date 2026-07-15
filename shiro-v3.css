@@ -1892,12 +1892,12 @@ body.light .nav-menu > li > a.active {
   padding: 0 2rem 2rem;
 }
 .timeline-item.left {
-  left: 0;
-  text-align: right;
-}
-.timeline-item.right {
   left: 50%;
   text-align: left;
+}
+.timeline-item.right {
+  left: 0;
+  text-align: right;
 }
 .timeline-dot {
   position: absolute;
@@ -1909,10 +1909,10 @@ body.light .nav-menu > li > a.active {
   border: 3px solid var(--bg-primary);
 }
 .timeline-item.left .timeline-dot {
-  right: -7px;
+  left: -7px;
 }
 .timeline-item.right .timeline-dot {
-  left: -7px;
+  right: -7px;
 }
 .timeline-card {
   padding: 1.5rem;
