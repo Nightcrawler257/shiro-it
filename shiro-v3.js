@@ -945,6 +945,7 @@ document.addEventListener("DOMContentLoaded", () => {
     filtered.forEach((p) => {
       const card = document.createElement("div");
       card.className = "product-card";
+      if (p.featured) card.classList.add('featured');
       
       let displayCategory = p.category;
       let displayPrice = p.price > 0 ? "RM " + p.price.toLocaleString() : "Ask for Price";
@@ -975,6 +976,13 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
       productsGrid.appendChild(card);
+      // attach metadata so addShopItemToCart can pick up the real values (including image/specs)
+      try {
+        card.dataset.id = p.id;
+        card.dataset.price = String(p.price || 0);
+        card.dataset.image = p.image || '';
+        card.dataset.specs = p.specs || '';
+      } catch (e) {}
     });
     // Re-run animations for new cards
     setTimeout(runScrollAnimations, 50);
@@ -2084,10 +2092,19 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`;
       }
 
+      // Include thumbnail and specs for product items
+      const thumbHtml = (item.image && item.image.length > 0) ? `
+        <div class="cart-item-thumb"><img src="${(item.image.startsWith('http') ? item.image : (API_BASE + (item.image.startsWith('/') ? item.image : '/' + item.image)))}" alt="${item.name}"></div>
+      ` : '';
+
+      const specsHtml = (item.specs && item.specs.length > 0) ? `<div class="cart-item-specs">${item.specs}</div>` : '';
+
       el.innerHTML = `
         <div class="cart-item-header">
-          <div style="flex:1;">
+          ${thumbHtml}
+          <div style="flex:1; min-width:0;">
             <div class="cart-item-name">${item.name}</div>
+            ${specsHtml}
             ${hidePrice ? '' : `<div class="cart-item-price">RM ${item.price.toLocaleString()}</div>`}
           </div>
           <div class="cart-item-remove" onclick="removeFromGlobalCart(${index})">
@@ -2227,15 +2244,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const card = btn.closest('.product-card');
     if (!card) return;
     
-    const name = card.querySelector('h3').textContent;
-    const priceText = card.querySelector('.product-price').textContent;
-    const price = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;
-    
+    const name = card.querySelector('h3') ? card.querySelector('h3').textContent : (card.dataset.name || 'Product');
+    // Prefer dataset price (numeric) but fallback to displayed price
+    let price = parseInt(card.dataset.price || '0', 10) || 0;
+    if (!price) {
+      const priceText = card.querySelector('.product-price') ? card.querySelector('.product-price').textContent : '';
+      price = parseInt(priceText.replace(/[^0-9]/g, '')) || 0;
+    }
+
+    const image = card.dataset.image || '';
+    const specs = card.dataset.specs || (card.querySelector('.product-specs') ? card.querySelector('.product-specs').textContent : '');
+    const pid = card.dataset.id || ('prod-' + Date.now());
+
     addToGlobalCart({
       type: 'product',
+      id: pid,
       name: name,
       price: price,
-      id: 'prod-' + Date.now()
+      image: image,
+      specs: specs
     });
   };
 
