@@ -2648,6 +2648,18 @@ body.light .nav-menu > li > a.active {
   --build-sticky-top: calc(var(--nav-height) + 5.25rem);
   padding-top: 0;
 }
+.build-layout.build-layout--summary-only {
+  grid-template-columns: 1fr;
+}
+.build-layout.build-layout--summary-only .components-column {
+  display: none;
+}
+.build-layout.build-layout--summary-only .build-summary {
+  position: static;
+  top: auto;
+  width: 100%;
+  max-width: none;
+}
 .build-summary {
   grid-column: 2;
 }

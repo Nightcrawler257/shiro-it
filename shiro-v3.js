@@ -1069,6 +1069,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const summaryItems = document.getElementById("summaryItems");
   const summaryTotal = document.getElementById("summaryTotal");
   const whatsappOrder = document.getElementById("whatsappOrder");
+  const buildLayout = document.querySelector(".build-layout");
+
+  function updateBuildLayoutMode() {
+    if (!buildLayout || !componentsList) return;
+    const isEmpty = componentsList.innerHTML.trim() === "" && !document.querySelector(".build-top-preview.active");
+    buildLayout.classList.toggle("build-layout--summary-only", isEmpty);
+  }
 
   // Modal elements
   const builderModal = document.getElementById("builderModal");
@@ -1472,6 +1479,8 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       componentsList.appendChild(group);
     });
+
+    updateBuildLayoutMode();
   }
 
   window.fillBuilderFromPrebuilt = function(pcName) {
