@@ -1819,7 +1819,7 @@ body.light .nav-menu > li > a.active {
 /* ========== PAGE HERO (inner pages) ========== */
 .page-hero {
   position: relative;
-  padding: 10rem 0 4rem;
+  padding: 4rem 0 4rem;
   text-align: center;
   overflow: hidden;
 }
