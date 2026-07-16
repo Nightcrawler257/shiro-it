@@ -2652,7 +2652,7 @@ body.light .nav-menu > li > a.active {
   grid-template-columns: 1fr;
 }
 .build-layout.build-layout--summary-only .components-column {
-  display: none;
+  display: none !important;
 }
 .build-layout.build-layout--summary-only .build-summary {
   position: static;

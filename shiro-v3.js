@@ -1073,7 +1073,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateBuildLayoutMode() {
     if (!buildLayout || !componentsList) return;
-    const isEmpty = componentsList.innerHTML.trim() === "" && !document.querySelector(".build-top-preview.active");
+
+    const hasInventory = Array.isArray(inventoryData) && inventoryData.length > 0;
+    const hasGroups = componentsList.querySelectorAll('.component-group').length > 0;
+    const isEmpty = !hasInventory || !hasGroups;
+
     buildLayout.classList.toggle("build-layout--summary-only", isEmpty);
   }
 
