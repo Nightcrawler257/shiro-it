@@ -1076,9 +1076,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const hasInventory = Array.isArray(inventoryData) && inventoryData.length > 0;
     const hasGroups = componentsList.querySelectorAll('.component-group').length > 0;
-    const isEmpty = !hasInventory || !hasGroups;
+    const hasVisibleContent = hasInventory && hasGroups;
 
-    buildLayout.classList.toggle("build-layout--summary-only", isEmpty);
+    buildLayout.classList.toggle("show-components", hasVisibleContent);
+    buildLayout.classList.remove("build-layout--summary-only");
   }
 
   // Modal elements

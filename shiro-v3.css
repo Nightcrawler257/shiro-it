@@ -2641,27 +2641,30 @@ body.light .nav-menu > li > a.active {
 
 .build-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr;
   gap: 2rem;
   align-items: start;
   position: relative;
   --build-sticky-top: calc(var(--nav-height) + 5.25rem);
   padding-top: 0;
 }
-.build-layout.build-layout--summary-only {
-  grid-template-columns: 1fr;
+.build-layout.show-components {
+  grid-template-columns: 1fr 380px;
 }
-.build-layout.build-layout--summary-only .components-column {
+.build-layout .components-column {
   display: none !important;
 }
-.build-layout.build-layout--summary-only .build-summary {
-  position: static;
-  top: auto;
+.build-layout.show-components .components-column {
+  display: flex !important;
+}
+.build-layout.show-components .build-summary {
+  position: sticky;
+  top: var(--build-sticky-top, calc(var(--nav-height) + 5.25rem));
   width: 100%;
-  max-width: none;
+  max-width: 380px;
 }
 .build-summary {
-  grid-column: 2;
+  grid-column: 1;
 }
 .components-column {
   grid-column: 1;
