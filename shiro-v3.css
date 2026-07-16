@@ -1731,14 +1731,16 @@ body.light .nav-menu > li > a.active {
 }
 .stat-value {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: 800;
   color: var(--accent);
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.1);
 }
 .stat-label {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 /* ========== TESTIMONIALS ========== */

@@ -877,7 +877,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const target = parseInt(el.dataset.count, 10);
       const suffix = el.dataset.suffix || "";
       let current = 0;
-      const increment = Math.ceil(target / 60);
+      const stepCount = 45;
+      const increment = Math.max(1, Math.ceil(target / stepCount));
       const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
@@ -885,7 +886,7 @@ document.addEventListener("DOMContentLoaded", () => {
           clearInterval(timer);
         }
         el.textContent = current + suffix;
-      }, 25);
+      }, 20);
     });
     statsAnimated = true;
   }
