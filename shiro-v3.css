@@ -2552,6 +2552,11 @@ body.light .nav-menu > li > a.active {
   overflow: visible;
 }
 
+/* Reduce padding for build section */
+#page-shop .section:has(.build-layout) {
+  padding: 2rem 0;
+}
+
 /* ===== Shop Page Tab Switcher ===== */
 .shop-page-tabs-container {
   display: flex;
