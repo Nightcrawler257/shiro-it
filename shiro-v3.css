@@ -2670,6 +2670,8 @@ body.light .nav-menu > li > a.active {
 }
 .build-summary {
   grid-column: 1;
+  width: 100%;
+  max-width: none;
 }
 .components-column {
   grid-column: 1;
@@ -2929,7 +2931,8 @@ body.light .nav-menu > li > a.active {
   transition: border-color 0.2s ease;
   margin: 0 !important;
   flex: 1;
-  max-height: calc(100vh - var(--build-sticky-top, calc(var(--nav-height) + 5.25rem)) - 2rem);
+  max-height: none;
+  min-height: 0;
 }
 
 .summary-card::before {
