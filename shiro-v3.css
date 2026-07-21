@@ -4852,7 +4852,7 @@ body.festival-admin .festival-toggle-btn {
   backdrop-filter: blur(8px);
   z-index: 2000;
   display: none;
-  /* anchor to left so sidebar opens from left */
+  /* anchor to right so sidebar opens from right */
   justify-content: flex-start;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -4868,12 +4868,12 @@ body.festival-admin .festival-toggle-btn {
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* start off-screen to the left */
-  transform: translateX(-100%);
+  /* start off-screen to the right */
+  transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  /* border and shadow on the right edge for left-side panel */
-  border-right: 1px solid var(--border-color);
-  box-shadow: 10px 0 40px rgba(0,0,0,0.5);
+  /* border and shadow on the right edge for right-side panel */
+  border-left: 1px solid var(--border-color);
+  box-shadow: -10px 0 40px rgba(0,0,0,0.5);
 }
 .cart-sidebar-overlay.open .cart-sidebar {
   transform: translateX(0);
