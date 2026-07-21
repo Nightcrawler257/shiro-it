@@ -2654,7 +2654,7 @@ body.light .nav-menu > li > a.active {
   padding-top: 0;
 }
 .build-layout.show-components {
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 380px 1fr;
 }
 .build-layout .components-column {
   display: none !important;
@@ -2667,11 +2667,11 @@ body.light .nav-menu > li > a.active {
   top: var(--build-sticky-top, calc(var(--nav-height) + 5.25rem));
   width: 100%;
   max-width: 380px;
-  grid-column: 2; /* place summary in the right column */
-}
-/* ensure components list occupies the left column when showing components */
-.build-layout.show-components .components-column {
   grid-column: 1;
+}
+/* ensure components list occupies the right column when showing components */
+.build-layout.show-components .components-column {
+  grid-column: 2;
 }
 .build-summary {
   grid-column: 1;
