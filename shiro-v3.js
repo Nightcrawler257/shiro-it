@@ -489,7 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
       svc_data_title: "Data Recovery",
       svc_data_desc: "Advanced recovery for corrupted SSDs, dead HDDs, and accidental file deletions.",
       svc_data_cta: "Emergency Help",
-      svc_trade_title: "PC & Laptop Trade-In",
+      svc_trade_title: "PC & Laptop Specifications & Parts Trade-in",
       svc_trade_desc: "Upgrade your setup by trading in your old hardware. We offer fair market value for working systems and components.",
       svc_trade_cta: "Get Valuation",
       proc_step1_title: "Consultation",
