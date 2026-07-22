@@ -1379,6 +1379,75 @@ document.addEventListener("DOMContentLoaded", () => {
     return categoryConfigs.find((c) => c.id === cat) || { id: cat, icon: "fas fa-cog", color: "#888", svg: null };
   }
 
+  function renderCategoryViewBox(cat, itemData = null) {
+    const cfg = getCategoryConfig(cat);
+    const catId = cat.replace(/\s+/g, "-");
+
+    if (!itemData) {
+      // Default SVG Blueprint / Icon state
+      const svgHtml = cfg.svg
+        ? cfg.svg
+        : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3.5rem;color:${cfg.color}50;"><i class="${cfg.icon}"></i></div>`;
+
+      return `
+        <div class="comp-img-wrap" id="comp-img-wrap-${catId}">
+          ${svgHtml}
+          <div class="comp-img-hint"><i class="fas fa-mouse-pointer"></i> Click any component below to view picture & details</div>
+        </div>
+      `;
+    }
+
+    // Resolve full item details from inventory
+    const fullItem = (itemData && itemData.specs !== undefined) 
+      ? itemData 
+      : (inventoryData.find(i => String(i.id || i._id) === String(itemData.id || itemData._id)) || itemData);
+
+    const imgSrc = fullItem.image && fullItem.image.trim()
+      ? (fullItem.image.startsWith('http') ? fullItem.image : API_BASE + (fullItem.image.startsWith('/') ? fullItem.image : '/' + fullItem.image))
+      : null;
+
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+
+    // Specs parsing into pills
+    let specPills = [];
+    if (fullItem.specs && fullItem.specs.trim()) {
+      try {
+        const parsed = JSON.parse(fullItem.specs);
+        if (Array.isArray(parsed)) specPills = parsed;
+      } catch(e) {
+        specPills = fullItem.specs.split(/\n|;/).map(s => s.trim()).filter(s => s.length > 0);
+      }
+    }
+
+    const specsHtml = specPills.length > 0
+      ? specPills.slice(0, 3).map(s => `<span class="comp-spec-pill"><i class="fas fa-check"></i> ${s}</span>`).join('')
+      : `<span class="comp-spec-pill"><i class="fas fa-info-circle"></i> High Performance ${cat}</span>`;
+
+    const bgHtml = imgSrc
+      ? `<img src="${imgSrc}" class="comp-img-bg" alt="${fullItem.name}" onerror="this.style.display='none';">`
+      : (cfg.svg
+          ? `<div style="position:absolute;inset:0;opacity:0.25;padding:1rem;display:flex;align-items:center;justify-content:center;">${cfg.svg}</div>`
+          : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.5rem;color:${cfg.color}30;"><i class="${cfg.icon}"></i></div>`);
+
+    return `
+      <div class="comp-img-wrap active-preview" id="comp-img-wrap-${catId}">
+        ${bgHtml}
+        <div class="comp-img-overlay">
+          <div class="comp-img-content">
+            <div class="comp-img-badges">
+              <span class="comp-badge-cat">${cat}</span>
+              ${fullItem.brand ? `<span class="comp-badge-brand">${fullItem.brand}</span>` : ''}
+              ${fullItem.featured ? `<span class="comp-badge-star"><i class="fas fa-star"></i> Featured</span>` : ''}
+            </div>
+            <h4 class="comp-img-title" title="${fullItem.name}">${fullItem.name}</h4>
+            ${hidePrice ? '' : `<div class="comp-img-price">RM ${fullItem.price.toLocaleString()}</div>`}
+            <div class="comp-img-specs">${specsHtml}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function renderBuilder() {
     if (!componentsList) return;
     componentsList.innerHTML = "";
@@ -1400,6 +1469,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Object.keys(cartByCategory).forEach((cat, i) => {
       const itemsInCat = cartByCategory[cat];
       const cfg = getCategoryConfig(cat);
+      const selectedItem = itemsInCat.length > 0 ? itemsInCat[itemsInCat.length - 1] : null;
 
       const group = document.createElement("div");
       group.className = "card component-group";
@@ -1459,13 +1529,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       group.innerHTML = `
-        ${
-          itemsInCat.length === 0
-            ? (cfg.svg
-                ? `<div class="comp-img-wrap">${cfg.svg}</div>`
-                : `<div class="comp-img-wrap" style="display:flex;align-items:center;justify-content:center;font-size:3rem;color:${cfg.color}50;"><i class="${cfg.icon}"></i></div>`)
-            : ''
-        }
+        ${renderCategoryViewBox(cat, selectedItem)}
         <div class="comp-header">
           <div class="comp-icon" style="color:${cfg.color}; background:${cfg.color}20;">
             <i class="${cfg.icon}"></i>
@@ -1901,46 +1965,83 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Display selected product in the upper card
+  // Display selected product in category SVG view box and upper cards
   window.displaySelectedProduct = function(item) {
-    const selectedCard = document.getElementById('selectedProductCard');
-    if (!selectedCard) return;
+    if (!item) return;
 
     // Get full item data from inventory for image and full specs
-    const fullItem = inventoryData.find(i => String(i.id || i._id) === String(item.id));
-    
-    if (!fullItem) return;
+    const fullItem = inventoryData.find(i => String(i.id || i._id) === String(item.id || item._id)) || item;
+    if (!fullItem || !fullItem.category) return;
 
-    const imgSrc = fullItem.image && fullItem.image.trim()
-      ? (fullItem.image.startsWith('http') ? fullItem.image : API_BASE + (fullItem.image.startsWith('/') ? fullItem.image : '/' + fullItem.image))
-      : null;
+    // 1. Always update the component category's SVG View Box (.comp-img-wrap)
+    const cat = fullItem.category;
+    const catId = cat.replace(/\s+/g, "-");
+    const wrapEl = document.getElementById(`comp-img-wrap-${catId}`);
+    if (wrapEl) {
+      wrapEl.outerHTML = renderCategoryViewBox(cat, fullItem);
+      // Smooth scroll to the component group if needed
+      const groupEl = document.getElementById(`comp-group-${catId}`);
+      if (groupEl && typeof groupEl.scrollIntoView === 'function') {
+        const rect = groupEl.getBoundingClientRect();
+        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+          groupEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
 
-    const imageHtml = imgSrc
-      ? `<img src="${imgSrc}" alt="${fullItem.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
-      : '';
-    
-    const fallbackIcon = `<i class="fas fa-microchip" style="font-size:2rem;"></i>`;
+    // 2. Populate selectedProductCard if present
+    const selectedCard = document.getElementById('selectedProductCard');
+    if (selectedCard) {
+      const imgSrc = fullItem.image && fullItem.image.trim()
+        ? (fullItem.image.startsWith('http') ? fullItem.image : API_BASE + (fullItem.image.startsWith('/') ? fullItem.image : '/' + fullItem.image))
+        : null;
 
-    const specsText = fullItem.specs 
-      ? fullItem.specs.replace(/\n/g, '<br>')
-      : `${fullItem.brand || fullItem.category} | Ask for details`;
+      const imageHtml = imgSrc
+        ? `<img src="${imgSrc}" alt="${fullItem.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+        : '';
+      
+      const fallbackIcon = `<i class="fas fa-microchip" style="font-size:2rem;"></i>`;
 
-    // Format category label
-    const categoryLabel = fullItem.category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      const specsText = fullItem.specs 
+        ? fullItem.specs.replace(/\n/g, '<br>')
+        : `${fullItem.brand || fullItem.category} | Ask for details`;
 
-    document.getElementById('selectedProductImage').innerHTML = `${imageHtml}<div style="display:${!imgSrc ? 'flex' : 'none'}; align-items:center; justify-content:center; width:100%; height:100%; color:var(--blue-neon);">${fallbackIcon}</div>`;
-    
-    document.getElementById('selectedProductTitle').textContent = fullItem.name;
-    document.getElementById('selectedProductCategory').textContent = categoryLabel;
-    document.getElementById('selectedProductSpecs').innerHTML = specsText;
-    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
-    document.getElementById('selectedProductPrice').textContent = hidePrice ? '' : `RM ${fullItem.price.toLocaleString()}`;
+      const categoryLabel = fullItem.category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
-    selectedCard.classList.add('active');
+      const selImgEl = document.getElementById('selectedProductImage');
+      if (selImgEl) selImgEl.innerHTML = `${imageHtml}<div style="display:${!imgSrc ? 'flex' : 'none'}; align-items:center; justify-content:center; width:100%; height:100%; color:var(--blue-neon);">${fallbackIcon}</div>`;
+      
+      const selTitleEl = document.getElementById('selectedProductTitle');
+      if (selTitleEl) selTitleEl.textContent = fullItem.name;
+      
+      const selCatEl = document.getElementById('selectedProductCategory');
+      if (selCatEl) selCatEl.textContent = categoryLabel;
 
-    // Also populate the large top preview box (green area)
+      const selSpecsEl = document.getElementById('selectedProductSpecs');
+      if (selSpecsEl) selSpecsEl.innerHTML = specsText;
+
+      const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+      const selPriceEl = document.getElementById('selectedProductPrice');
+      if (selPriceEl) selPriceEl.textContent = hidePrice ? '' : `RM ${fullItem.price.toLocaleString()}`;
+
+      selectedCard.classList.add('active');
+    }
+
+    // 3. Populate topPreview if present
     const topPreview = document.getElementById('buildTopPreview');
     if (topPreview) {
+      const imgSrc = fullItem.image && fullItem.image.trim()
+        ? (fullItem.image.startsWith('http') ? fullItem.image : API_BASE + (fullItem.image.startsWith('/') ? fullItem.image : '/' + fullItem.image))
+        : null;
+
+      const imageHtml = imgSrc
+        ? `<img src="${imgSrc}" alt="${fullItem.name}">`
+        : '';
+
+      const fallbackIcon = `<i class="fas fa-microchip" style="font-size:2rem;"></i>`;
+      const specsText = fullItem.specs ? fullItem.specs.replace(/\n/g, '<br>') : `${fullItem.brand || fullItem.category} | Ask for details`;
+      const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+
       topPreview.innerHTML = `
         <div class="preview-inner">
           <div class="preview-image">${imageHtml || `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--blue-neon);">${fallbackIcon}</div>`}</div>
