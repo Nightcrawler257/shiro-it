@@ -2193,7 +2193,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return { message, total };
   }
 
-  // Note: checkoutBtn listener removed as we use onclick in HTML to avoid double-triggering
+  window.openCheckoutModal = function() {
+    if (!globalCart || globalCart.length === 0) {
+      if (typeof showToast === 'function') showToast("Your cart is empty!", "warning");
+      return;
+    }
+    const modal = document.getElementById('checkoutInfoOverlay');
+    if (modal) {
+      modal.classList.add('show');
+    } else {
+      const { message } = buildCartWhatsAppMessage();
+      window.open(`https://wa.me/60177617672?text=${encodeURIComponent(message)}`, '_blank');
+    }
+  };
 
   // Handle checkout info form submission
   const checkoutInfoForm = document.getElementById('checkoutInfoForm');
