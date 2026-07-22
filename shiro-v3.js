@@ -20,53 +20,7 @@ try {
   globalCart = [];
 }
 
-// Function to update cart summary
-function updateCartSummary() {
-  // Get cart items (example - replace with your actual cart data)
-  const cartItems = getCartItems(); // Your function to get cart items
-  
-  let subtotal = 0;
-  cartItems.forEach(item => {
-    subtotal += item.price * item.quantity;
-  });
-  
-  const shipping = subtotal > 50 ? 0 : 5.99; // Free shipping over $50
-  const tax = subtotal * 0.10; // 10% tax
-  const total = subtotal + shipping + tax;
-  
-  // Update the DOM
-  document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-  document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
-  document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
-  document.getElementById('total').textContent = `$${total.toFixed(2)}`;
-}
 
-// Example checkout function
-function checkout() {
-  // Your checkout logic here
-  alert('Proceeding to checkout...');
-}
-
-// Example cart toggle functions
-function openCart() {
-  const sidebar = document.getElementById('cartSidebar');
-  sidebar.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  updateCartSummary();
-}
-
-function closeCart() {
-  const sidebar = document.getElementById('cartSidebar');
-  sidebar.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// Close cart on overlay click
-document.getElementById('cartSidebar').addEventListener('click', function(e) {
-  if (e.target === this) {
-    closeCart();
-  }
-});
 
 window.openCheckoutModal = function() {
   console.log("openCheckoutModal called. Current cart size:", globalCart.length);
