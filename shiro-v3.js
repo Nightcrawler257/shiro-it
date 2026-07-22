@@ -1430,7 +1430,7 @@ document.addEventListener("DOMContentLoaded", () => {
           : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.5rem;color:${cfg.color}30;"><i class="${cfg.icon}"></i></div>`);
 
     return `
-      <div class="comp-img-wrap active-preview" id="comp-img-wrap-${catId}">
+      <div class="comp-img-wrap active-preview" id="comp-img-wrap-${catId}" onclick="window.openComponentModal({ id: '${fullItem.id || fullItem._id}' })" style="cursor:pointer;" title="Click to view clear picture & full specifications">
         ${bgHtml}
         <div class="comp-img-overlay">
           <div class="comp-img-content">
@@ -1483,12 +1483,17 @@ document.addEventListener("DOMContentLoaded", () => {
             : null;
             
           const imgHtml = imgSrc
-            ? `<img src="${imgSrc}" alt="${item.name}" style="width:100px;height:100px;object-fit:cover;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);" onerror="this.outerHTML='<div style=\\'width:100px;height:100px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.1);\\'><i class=\\'${cfg.icon || 'fas fa-microchip'}\\' style=\\'font-size:2.5rem;color:rgba(255,255,255,0.2);\\'></i></div>';">`
-            : `<div style="width:100px;height:100px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.1);"><i class="${cfg.icon || 'fas fa-microchip'}" style="font-size:2.5rem;color:rgba(255,255,255,0.2);"></i></div>`;
+            ? `<div class="comp-opt-img-wrap" onclick="event.stopPropagation(); window.openComponentModal({ id: '${item.id || item._id}' })" title="Click for clear picture & details">
+                <img src="${imgSrc}" alt="${item.name}" onerror="this.outerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;\\'><i class=\\'${cfg.icon || 'fas fa-microchip'}\\' style=\\'font-size:2.5rem;color:rgba(255,255,255,0.2);\\'></i></div>';">
+                <div class="comp-opt-zoom-overlay"><i class="fas fa-search-plus"></i></div>
+               </div>`
+            : `<div class="comp-opt-img-wrap" onclick="event.stopPropagation(); window.openComponentModal({ id: '${item.id || item._id}' })" title="Click for clear picture & details">
+                <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><i class="${cfg.icon || 'fas fa-microchip'}" style="font-size:2.5rem;color:rgba(255,255,255,0.2);"></i></div>
+               </div>`;
 
           // Badge
           const badgeHtml = item.badge && item.badge.trim()
-            ? `<span style="display:inline-block; font-size:0.7rem; background:rgba(99,102,241,0.2); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3); border-radius:4px; padding:2px 8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">${item.badge}</span>`
+            ? `<span style="display:inline-block; font-size:0.7rem; background:rgba(99,102,241,0.2); color:#a5b4fc; border:1px solid rgba(99,102,241,0.3); border-radius:4px; padding:2px 8px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">${item.badge}</span>`
             : '';
 
           // Specs
@@ -1508,13 +1513,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
           return `
-          <div class="comp-option active" onclick="window.displaySelectedProduct({ id: '${item.id}' })" style="display:flex; gap:1.25rem; align-items:flex-start; cursor:pointer; padding:1.25rem; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.02); border-radius:12px; flex-direction: row; flex-wrap: wrap;">
+          <div class="comp-option active" onclick="window.displaySelectedProduct({ id: '${item.id || item._id}' }); window.openComponentModal({ id: '${item.id || item._id}' })" style="display:flex; gap:1.25rem; align-items:center; cursor:pointer; padding:1.25rem; border:1px solid rgba(0,102,255,0.3); background:rgba(0,102,255,0.06); border-radius:12px; flex-direction: row; flex-wrap: wrap; transition: all 0.25s ease;" title="Click to view clear picture and details">
             ${imgHtml}
             <div style="flex:1; min-width: 200px;">
-              ${badgeHtml}
+              <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:4px;">
+                ${item.brand ? `<span style="font-size:0.7rem; background:rgba(255,255,255,0.1); color:#e2e8f0; border:1px solid rgba(255,255,255,0.15); border-radius:4px; padding:2px 8px; font-weight:600;">${item.brand}</span>` : ''}
+                ${badgeHtml}
+              </div>
               <div style="font-size:1.1rem; font-weight:600; color:white; margin-bottom:4px;">${item.name}</div>
               ${hidePrice ? '' : `<div style="font-size:1.1rem; font-weight:700; color:#4ade80;">RM ${item.price.toLocaleString()}</div>`}
               ${specsHtml}
+              <div style="font-size:0.75rem; color:var(--blue-light, #60a5fa); margin-top:6px;"><i class="fas fa-search-plus"></i> Click picture or option to view clear image & details</div>
             </div>
             <button class="btn btn-ghost" style="padding:0.6rem; color:var(--accent-red); background:rgba(239,68,68,0.1); border-radius:8px;" onclick="event.stopPropagation(); removeCartItem(${item.cartIndex})" title="Remove item">
               <i class="fas fa-trash"></i>
@@ -2070,6 +2079,95 @@ document.addEventListener("DOMContentLoaded", () => {
       topPreview.innerHTML = '';
       topPreview.setAttribute('aria-hidden', 'true');
     }
+  };
+
+  // Open Clear Picture Component Lightbox Modal
+  window.openComponentModal = function(itemData) {
+    if (!itemData) return;
+    const fullItem = (itemData && itemData.specs !== undefined) 
+      ? itemData 
+      : (inventoryData.find(i => String(i.id || i._id) === String(itemData.id || itemData._id)) || itemData);
+
+    if (!fullItem) return;
+
+    const modal = document.getElementById('componentImageModal');
+    if (!modal) return;
+
+    const imgSrc = fullItem.image && fullItem.image.trim()
+      ? (fullItem.image.startsWith('http') ? fullItem.image : API_BASE + (fullItem.image.startsWith('/') ? fullItem.image : '/' + fullItem.image))
+      : null;
+
+    const imgEl = document.getElementById('compModalImg');
+    const imgWrapEl = document.getElementById('compModalImgWrap');
+    if (imgEl && imgWrapEl) {
+      if (imgSrc) {
+        imgEl.src = imgSrc;
+        imgEl.style.display = 'block';
+        imgWrapEl.style.display = 'flex';
+      } else {
+        imgEl.style.display = 'none';
+        imgWrapEl.style.display = 'flex';
+      }
+      imgEl.classList.remove('zoomed');
+    }
+
+    const titleEl = document.getElementById('compModalTitle');
+    if (titleEl) titleEl.textContent = fullItem.name || 'Component Details';
+
+    const catEl = document.getElementById('compModalCategory');
+    if (catEl) catEl.textContent = fullItem.category || 'Component';
+
+    const brandEl = document.getElementById('compModalBrand');
+    if (brandEl) {
+      if (fullItem.brand && fullItem.brand.trim()) {
+        brandEl.textContent = fullItem.brand;
+        brandEl.style.display = 'inline-block';
+      } else {
+        brandEl.style.display = 'none';
+      }
+    }
+
+    const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
+    const priceEl = document.getElementById('compModalPrice');
+    if (priceEl) {
+      priceEl.textContent = hidePrice ? '' : `RM ${(fullItem.price || 0).toLocaleString()}`;
+    }
+
+    // Specs breakdown
+    const specsContainer = document.getElementById('compModalSpecs');
+    if (specsContainer) {
+      let specLines = [];
+      if (fullItem.specs && fullItem.specs.trim()) {
+        try {
+          const parsed = JSON.parse(fullItem.specs);
+          if (Array.isArray(parsed)) specLines = parsed;
+        } catch(e) {
+          specLines = fullItem.specs.split(/\n|;/).map(s => s.trim()).filter(s => s.length > 0);
+        }
+      }
+      if (specLines.length > 0) {
+        specsContainer.innerHTML = specLines.map(s => `
+          <div class="comp-modal-spec-item">
+            <i class="fas fa-check-circle"></i>
+            <span>${s}</span>
+          </div>
+        `).join('');
+      } else {
+        specsContainer.innerHTML = `
+          <div class="comp-modal-spec-item">
+            <i class="fas fa-info-circle"></i>
+            <span>High performance ${fullItem.category || 'PC component'} for custom builds.</span>
+          </div>
+        `;
+      }
+    }
+
+    modal.classList.add('active');
+  };
+
+  window.closeComponentModal = function() {
+    const modal = document.getElementById('componentImageModal');
+    if (modal) modal.classList.remove('active');
   };
 
   function validateBuild() {

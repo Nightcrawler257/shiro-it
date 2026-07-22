@@ -1727,8 +1727,39 @@
                     <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
                 </button>
             </div>
+    <!-- Component Clear Picture Lightbox Modal -->
+    <div id="componentImageModal" class="comp-modal-overlay" onclick="if(event.target===this) window.closeComponentModal()">
+        <div class="comp-modal-card">
+            <button class="comp-modal-close" onclick="window.closeComponentModal()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="comp-modal-body">
+                <div class="comp-modal-img-wrap" id="compModalImgWrap">
+                    <img id="compModalImg" src="" alt="Component Picture" onclick="this.classList.toggle('zoomed')">
+                    <div class="comp-modal-zoom-hint"><i class="fas fa-search-plus"></i> Click image to zoom</div>
+                </div>
+                <div class="comp-modal-info">
+                    <div class="comp-modal-header">
+                        <span class="comp-modal-badge" id="compModalCategory">Category</span>
+                        <span class="comp-modal-brand" id="compModalBrand">Brand</span>
+                    </div>
+                    <h3 class="comp-modal-title" id="compModalTitle">Component Name</h3>
+                    <div class="comp-modal-price" id="compModalPrice">RM 0</div>
+                    <hr class="comp-modal-divider">
+                    <div class="comp-modal-specs-section">
+                        <h4><i class="fas fa-list-ul"></i> Specifications & Details</h4>
+                        <div class="comp-modal-specs-list" id="compModalSpecs"></div>
+                    </div>
+                    <div class="comp-modal-footer">
+                        <button class="btn btn-primary btn-sm" onclick="window.closeComponentModal()">
+                            <i class="fas fa-check"></i> Done
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     <script src="shiro-v3.js?v=6"></script>
     
     <!-- Festival Animations: dynamically loaded based on Site Settings in Admin -->
