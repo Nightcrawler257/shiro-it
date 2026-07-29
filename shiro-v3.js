@@ -2406,17 +2406,19 @@ document.addEventListener("DOMContentLoaded", () => {
     let outro = currentLang === 'bm' ? translations.bm.wa_order_outro : "\n\nPlease confirm availability. Thank you!";
     let message = intro;
     globalCart.forEach((item, idx) => {
+      const qty = item.quantity || 1;
       if (hidePrice) {
-        message += `${idx + 1}. ${item.name}\n`;
+        message += `${idx + 1}. ${item.name} x${qty}\n`;
       } else {
-        message += `${idx + 1}. ${item.name} (RM ${item.price.toLocaleString()})\n`;
+        const subtotal = item.price * qty;
+        message += `${idx + 1}. ${item.name} x${qty} (RM ${item.price.toLocaleString()} each = RM ${subtotal.toLocaleString()})\n`;
       }
       if (item.type === 'build' && item.items) {
         item.items.forEach(i => { message += `   - ${i.category}: ${i.name}\n`; });
       }
       message += "\n";
     });
-    const total = globalCart.reduce((sum, item) => sum + item.price, 0);
+    const total = globalCart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
     if (hidePrice) {
       message += outro;
     } else {
@@ -2459,9 +2461,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // Robust buildConfig extraction (handles legacy items)
       const buildConfig = globalCart.flatMap(item => {
         if (item.type === 'build' && item.items) return item.items;
-        return [{ name: item.name, price: item.price }];
+        return [{ name: item.name, price: item.price, quantity: item.quantity || 1 }];
       });
 
+      // Hide modal and open WhatsApp FIRST (before async fetch) to avoid popup blocker
+      document.getElementById('checkoutInfoOverlay').classList.remove('show');
+      window.open(`https://wa.me/60177617672?text=${encodeURIComponent(message)}`, '_blank');
+
+      // Save quote to backend (non-blocking)
       try {
         const response = await fetch(API_BASE + '/api/quote', {
           method: 'POST',
@@ -2483,13 +2490,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('Quote saved successfully:', resData);
       } catch (err) {
         console.warn('Quote save failed:', err);
-        // We still continue to WhatsApp even if API fails, but we show a warning
-        if (typeof showToast === 'function') showToast("Note: Offline copy saved, but cloud sync failed.", "warning");
+        // WhatsApp already opened, just log the error
       }
-
-      // Hide modal
-      document.getElementById('checkoutInfoOverlay').classList.remove('show');
-      window.open(`https://wa.me/60177617672?text=${encodeURIComponent(message)}`, '_blank');
 
       // Reset cart after checkout
       globalCart = [];
