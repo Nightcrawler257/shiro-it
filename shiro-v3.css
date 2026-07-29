@@ -2913,7 +2913,7 @@ body.light .nav-menu > li > a.active {
   flex-direction: column;
   border: 1px solid rgba(59, 130, 246, 0.25) !important;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(20, 30, 50, 0.8)) !important;
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary)) !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   transition: border-color 0.2s ease;
   margin: 0 !important;
