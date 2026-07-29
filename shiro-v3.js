@@ -1430,7 +1430,7 @@ document.addEventListener("DOMContentLoaded", () => {
           : `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:3.5rem;color:${cfg.color}30;"><i class="${cfg.icon}"></i></div>`);
 
     return `
-      <div class="comp-img-wrap active-preview" id="comp-img-wrap-${catId}" onclick="window.openComponentModal({ id: '${fullItem.id || fullItem._id}' })" style="cursor:pointer;" title="Click to view clear picture & full specifications">
+      <div class="comp-img-wrap active-preview" id="comp-img-wrap-${catId}" onclick="window.openComponentModal(inventoryData.find(i => String(i.id || i._id) === '${fullItem.id || fullItem._id}') || cartItems.find(i => String(i.id || i._id) === '${fullItem.id || fullItem._id}') || cartItems[0] || inventoryData[0])" style="cursor:pointer;" title="Click to view clear picture & full specifications">
         ${bgHtml}
         <div class="comp-img-overlay">
           <div class="comp-img-content">
@@ -1483,11 +1483,11 @@ document.addEventListener("DOMContentLoaded", () => {
             : null;
             
           const imgHtml = imgSrc
-            ? `<div class="comp-opt-img-wrap" onclick="event.stopPropagation(); window.openComponentModal({ id: '${item.id || item._id}' })" title="Click for clear picture & details">
+            ? `<div class="comp-opt-img-wrap" onclick="event.stopPropagation(); window.openComponentModal(cartItems[${item.cartIndex}])" title="Click for clear picture & details">
                 <img src="${imgSrc}" alt="${item.name}" onerror="this.outerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;\\'><i class=\\'${cfg.icon || 'fas fa-microchip'}\\' style=\\'font-size:2.5rem;color:rgba(255,255,255,0.2);\\'></i></div>';">
                 <div class="comp-opt-zoom-overlay"><i class="fas fa-search-plus"></i></div>
                </div>`
-            : `<div class="comp-opt-img-wrap" onclick="event.stopPropagation(); window.openComponentModal({ id: '${item.id || item._id}' })" title="Click for clear picture & details">
+            : `<div class="comp-opt-img-wrap" onclick="event.stopPropagation(); window.openComponentModal(cartItems[${item.cartIndex}])" title="Click for clear picture & details">
                 <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><i class="${cfg.icon || 'fas fa-microchip'}" style="font-size:2.5rem;color:rgba(255,255,255,0.2);"></i></div>
                </div>`;
 
@@ -1513,7 +1513,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const hidePrice = window.siteSettings && parseInt(window.siteSettings.hide_price) === 1;
           return `
-          <div class="comp-option active" onclick="window.displaySelectedProduct({ id: '${item.id || item._id}' }); window.openComponentModal({ id: '${item.id || item._id}' })" style="display:flex; gap:1.25rem; align-items:center; cursor:pointer; padding:1.25rem; border:1px solid rgba(0,102,255,0.3); background:rgba(0,102,255,0.06); border-radius:12px; flex-direction: row; flex-wrap: wrap; transition: all 0.25s ease;" title="Click to view clear picture and details">
+          <div class="comp-option active" onclick="window.displaySelectedProduct(cartItems[${item.cartIndex}]); window.openComponentModal(cartItems[${item.cartIndex}])" style="display:flex; gap:1.25rem; align-items:center; cursor:pointer; padding:1.25rem; border:1px solid rgba(0,102,255,0.3); background:rgba(0,102,255,0.06); border-radius:12px; flex-direction: row; flex-wrap: wrap; transition: all 0.25s ease;" title="Click to view clear picture and details">
             ${imgHtml}
             <div style="flex:1; min-width: 200px;">
               <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:4px;">
@@ -2089,9 +2089,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Open Clear Picture Component Lightbox Modal
   window.openComponentModal = function(itemData) {
     if (!itemData) return;
-    const fullItem = (itemData && itemData.specs !== undefined) 
-      ? itemData 
-      : (inventoryData.find(i => String(i.id || i._id) === String(itemData.id || itemData._id)) || itemData);
+    
+    let fullItem = null;
+    if (typeof itemData === 'object' && (itemData.image !== undefined || itemData.name !== undefined || itemData.specs !== undefined)) {
+      fullItem = itemData;
+    } else if (itemData) {
+      const targetId = String(typeof itemData === 'object' ? (itemData.id || itemData._id) : itemData);
+      fullItem = inventoryData.find(i => String(i.id || i._id) === targetId)
+        || cartItems.find(i => String(i.id || i._id) === targetId)
+        || (typeof itemData === 'object' ? itemData : null);
+    }
 
     if (!fullItem) return;
 
