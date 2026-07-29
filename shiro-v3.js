@@ -2220,7 +2220,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     localStorage.setItem("shiro-global-cart", JSON.stringify(globalCart));
     updateCartBadge();
-    if (typeof showToast === 'function') showToast(`${item.name} added to cart!`, "success");
+    if (typeof showToast === 'function') showToast(`${item.name} added to cart!`, "success", true);
     renderGlobalCart();
   };
 
@@ -2942,7 +2942,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.head.appendChild(style);
 })();
 
-function showToast(message, type = "success") {
+function showToast(message, type = "success", showAction = false) {
   let container = document.querySelector(".toast-container");
   if (!container) {
     container = document.createElement("div");
@@ -2953,19 +2953,26 @@ function showToast(message, type = "success") {
     type === "success" ? "fas fa-check-circle" : "fas fa-exclamation-circle";
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
-  toast.style.cursor = "pointer"; // Make it look clickable
-  toast.innerHTML = `
-    <i class="${icon}"></i>
-    <span class="toast-msg">${message}</span>
-    <div class="toast-action">View Cart <i class="fas fa-arrow-right"></i></div>
-  `;
   
-  // Click to open cart
-  toast.onclick = () => {
-    const cartOpenBtn = document.getElementById('cartOpenBtn');
-    if (cartOpenBtn) cartOpenBtn.click();
-    toast.remove();
-  };
+  if (showAction) {
+    toast.style.cursor = "pointer";
+    toast.innerHTML = `
+      <i class="${icon}"></i>
+      <span class="toast-msg">${message}</span>
+      <div class="toast-action">View Cart <i class="fas fa-arrow-right"></i></div>
+    `;
+    toast.onclick = () => {
+      const cartOpenBtn = document.getElementById('cartOpenBtn');
+      if (cartOpenBtn) cartOpenBtn.click();
+      toast.remove();
+    };
+  } else {
+    toast.style.cursor = "default";
+    toast.innerHTML = `
+      <i class="${icon}"></i>
+      <span class="toast-msg">${message}</span>
+    `;
+  }
 
   container.appendChild(toast);
   setTimeout(() => {
