@@ -266,10 +266,11 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_shop: "Shop",
       nav_about: "About",
       nav_contact: "Contact",
+      nav_it_services: "IT Services",
       nav_build_1: "Build PC & Shop",
       nav_build_2: "IT Services",
       hero_badge: "Malaysia's Custom PC Builder",
-      hero__1: "Build Your Dream",
+      hero_title_1: "Build Your Dream",
       hero_title_2: "Gaming PC",
       hero_desc: "From budget builds to ultimate powerhouses — we craft custom PCs that match your performance needs and style. Expert IT services in Kepala Batas, Penang.",
       hero_f1: "Quick Response",
@@ -332,6 +333,10 @@ document.addEventListener("DOMContentLoaded", () => {
       about_tl5_desc: "Opened our Penang showroom and grew to serve over 500 customers.",
       about_tl6_title: "Innovation",
       about_tl6_desc: "Introduced AI-powered build recommendations and real-time compatibility checks.",
+      about_tl7_title: "Sustainability",
+      about_tl7_desc: "Launched eco-friendly PC builds and began offering carbon-neutral shipping options.",
+      about_tl8_title: "Global Reach",
+      about_tl8_desc: "Expanded our services and introduced 24/7 customer support.",
       about_values_badge: "Our Values",
       about_values1: "What Drives",
       about_values2: "Us",
@@ -375,7 +380,10 @@ document.addEventListener("DOMContentLoaded", () => {
       shop_desc: "Pre-built gaming PCs, workstations, components, and accessories — all picked by SHIRO IT.",
       shop_cta_h2: "Can't Find What You Need?",
       shop_cta_desc: "We can source any component or build a custom PC just for you.",
-      build_badge: "PC configurator",
+      svc_build_title: "Build Custom PC",
+      svc_build_desc: "Design your perfect PC with real components. From budget gaming to professional workstations.",
+      svc_trade_f1: "Instant Market Valuation",
+      build_badge: "PC Configurator",
       build_h1_1: "Build PC & Shop",
       build_h1_2: "",
       build_desc: "Select your components below and get an instant price estimate. Order via WhatsApp!",
@@ -500,8 +508,8 @@ document.addEventListener("DOMContentLoaded", () => {
       proc_step2_desc: "We design a tailored solution with transparent pricing.",
       proc_step3_title: "Execution",
       proc_step3_desc: "Our experts build or repair your system with precision.",
-      proc_step4_title: "Testing",
-      proc_step4_desc: "Rigorous testing ensures your system is stable and ready.",
+      proc_step4_title: "Delivery",
+      proc_step4_desc: "Quality-tested and delivered with full warranty and support.",
       career_full_time: "Full-time",
       career_internship: "Internship",
       career_pc_tech_title: "PC Build Technician",
@@ -533,7 +541,8 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_shop: "Kedai",
       nav_about: "Tentang Kami",
       nav_contact: "Hubungi Kami",
-      nav_build_1: "Konfigurasi PC",
+      nav_it_services: "Perkhidmatan IT",
+      nav_build_1: "Bina PC & Kedai",
       nav_build_2: "Penyelesaian IT",
       hero_badge: "Pakar Bina PC Custom Malaysia",
       hero_title_1: "Realisasikan Impian",
@@ -596,6 +605,10 @@ document.addEventListener("DOMContentLoaded", () => {
       about_tl5_desc: "Membuka bilik pameran di Pulau Pinang dan melayani lebih 500 pelanggan setia.",
       about_tl6_title: "Inovasi",
       about_tl6_desc: "Memperkenalkan cadangan binaan berasaskan AI dan semakan keserasian masa nyata.",
+      about_tl7_title: "Kelestarian",
+      about_tl7_desc: "Melancarkan binaan PC mesra alam dan memulakan pilihan penghantaran neutral karbon.",
+      about_tl8_title: "Jangkauan Global",
+      about_tl8_desc: "Memperluas perkhidmatan kami dan memperkenalkan sokongan pelanggan 24/7.",
       about_values_badge: "Nilai Kami",
       about_values1: "Tunjang",
       about_values2: "Utama Kami",
@@ -639,9 +652,12 @@ document.addEventListener("DOMContentLoaded", () => {
       shop_desc: "PC gaming siap bina, stesen kerja, komponen, dan aksesori — semuanya dipilih rapi oleh pakar kami.",
       shop_cta_h2: "Tidak Menemui Apa Yang Anda Cari?",
       shop_cta_desc: "Kami boleh mendapatkan sebarang komponen khusus atau membina PC custom mengikut impian anda.",
-      build_badge: "Konfigurator & Perkhidmatan",
+      svc_build_title: "Bina PC Custom",
+      svc_build_desc: "Reka bentuk PC anda dengan komponen sebenar. Dari gaming bajet hingga stesen kerja profesional.",
+      svc_trade_f1: "Penilaian Pasaran Segera",
+      build_badge: "Konfigurator PC",
       build_h1_1: "Bina PC & Kedai",
-      build_h1_2: "Servis IT",
+      build_h1_2: "",
       build_desc: "Pilih komponen anda di bawah dan dapatkan anggaran harga segera. Tempah terus melalui WhatsApp!",
       contact_badge: "Hubungi Kami",
       contact_h1_1: "Hubungi",
@@ -709,7 +725,7 @@ document.addEventListener("DOMContentLoaded", () => {
       cart_browse: "Lihat Kedai",
       cart_checkout: "Tempah via WhatsApp",
       cart_total: "Jumlah Keseluruhan",
-      cta_start: "Mula Membina",
+      cta_start: "Mula Bina",
       cta_whatsapp: "WhatsApp Kami",
       test_badge: "Testimoni",
       check_status_btn: "Semak Status Tempahan",
@@ -768,8 +784,8 @@ document.addEventListener("DOMContentLoaded", () => {
       proc_step2_desc: "Kami merangka penyelesaian khusus dengan harga yang telus.",
       proc_step3_title: "Pelaksanaan",
       proc_step3_desc: "Pakar kami membina atau membaiki sistem anda dengan penuh ketepatan.",
-      proc_step4_title: "Pengujian",
-      proc_step4_desc: "Ujian rapi memastikan sistem anda stabil dan sedia untuk digunakan.",
+      proc_step4_title: "Penghantaran",
+      proc_step4_desc: "Diuji dengan teliti dan dihantar lengkap dengan waranti serta sokongan penuh.",
       career_full_time: "Sepenuh Masa",
       career_internship: "Latihan Industri (Internship)",
       career_pc_tech_title: "Juruteknik Binaan PC",
@@ -809,14 +825,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     document.querySelectorAll("[data-translate]").forEach((el) => {
       const key = el.getAttribute("data-translate");
-      if (translations[lang] && translations[lang][key]) {
+      const t = translations[lang];
+      if (t && t[key] !== undefined) {
         if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-          el.placeholder = translations[lang][key];
+          el.placeholder = t[key];
+        } else if (el.hasAttribute("placeholder")) {
+          el.placeholder = t[key];
         } else {
-          el.textContent = translations[lang][key];
+          el.textContent = t[key];
         }
       }
     });
+    // Update html lang attribute
+    document.documentElement.lang = lang === 'bm' ? 'ms' : 'en';
     const ld = document.getElementById("languageDropdown");
     if (ld) ld.classList.remove("open");
   }
