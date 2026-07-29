@@ -963,13 +963,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       card.innerHTML = `
         ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ""}
-        <div class="product-image">
+        <div class="product-image" onclick="event.stopPropagation(); window.openComponentModal({ name: '${(p.name || '').replace(/'/g, "\\'")}', image: '${p.image || ''}', price: ${p.price || 0}, specs: '${(p.specs || '').replace(/'/g, "\\'")}', brand: '${p.brand || ''}', category: '${p.category || 'Product'}' })" style="cursor:pointer;" title="Click to view clear picture & details">
           ${p.image && (p.image.startsWith('/') || p.image.startsWith('http'))
             ? `<img src="${resolveImagePath(p.image)}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain;">`
             : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">${getCategoryIcon(p.category)}</div>`}
         </div>
         <div class="product-category">${displayCategory}</div>
-        <h3>${p.name}</h3>
+        <h3 onclick="window.openComponentModal({ name: '${(p.name || '').replace(/'/g, "\\'")}', image: '${p.image || ''}', price: ${p.price || 0}, specs: '${(p.specs || '').replace(/'/g, "\\'")}', brand: '${p.brand || ''}', category: '${p.category || 'Product'}' })" style="cursor:pointer;">${p.name}</h3>
         <p class="product-specs">${p.specs}</p>
         <div class="product-bottom">
           <div class="product-price">${getPriceDisplay(p.price)}</div>
@@ -1208,7 +1208,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return `
               <div class="tier-card poster-style${featuredClass}" style="--tier-color: ${color};">
                 ${ribbonHtml}
-                <div class="tier-media-wrapper" style="height: 400px;">
+                <div class="tier-media-wrapper" onclick="event.stopPropagation(); window.openComponentModal({ name: '${(pc.name || '').replace(/'/g, "\\'")}', image: '${photoUrl}', price: ${pc.price || 0}, specs: '${((pc.specs || []).join(' \\n ') || '').replace(/'/g, "\\'")}', category: '${pc.pc_type || 'Prebuilt PC'}' })" style="height: 400px; cursor:pointer;" title="Click to view clear picture & details">
                   ${mediaHtml}
                 </div>
                 <div class="tier-card-content" style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05); flex-grow: 0;">
@@ -1224,7 +1224,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return `
               <div class="tier-card${featuredClass}" style="--tier-color: ${color};">
                 ${ribbonHtml}
-                <div class="tier-media-wrapper">
+                <div class="tier-media-wrapper" onclick="event.stopPropagation(); window.openComponentModal({ name: '${(pc.name || '').replace(/'/g, "\\'")}', image: '${photoUrl}', price: ${pc.price || 0}, specs: '${((pc.specs || []).join(' \\n ') || '').replace(/'/g, "\\'")}', category: '${pc.pc_type || 'Prebuilt PC'}' })" style="cursor:pointer;" title="Click to view clear picture & details">
                   ${mediaHtml}
                 </div>
                 <div class="tier-card-content">
@@ -1694,7 +1694,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const isSelected = cartItems.some(ci => ci.id === itemId);
       
       const displayImage = item.image && item.image.includes('/') 
-        ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
+        ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" onclick="event.stopPropagation(); window.openComponentModal(inventoryData.find(i => String(i.id || i._id) === '${itemId}') || { name: '${(item.name || '').replace(/'/g, "\\'")}', image: '${item.image || ''}', price: ${item.price || 0}, specs: '${(item.specs || '').replace(/'/g, "\\'")}', brand: '${item.brand || ''}', category: '${category}' })" style="width:40px; height:40px; object-fit:cover; border-radius:4px; cursor:pointer;" title="Click to view clear picture">`
         : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.2rem;">${getCategoryIcon(category)}</div>`;
       
       const opacity = isSelected ? '0.6' : '1';
@@ -1782,7 +1782,7 @@ document.addEventListener("DOMContentLoaded", () => {
       el.innerHTML = `
         <div style="display:flex; align-items:center; gap:1rem;">
           ${item.image && item.image.includes('/') 
-            ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">`
+            ? `<img src="${resolveImagePath(item.image)}" alt="${item.name}" onclick="event.stopPropagation(); window.openComponentModal(inventoryData.find(i => String(i.id || i._id) === '${item.id || item._id}') || { name: '${(item.name || '').replace(/'/g, "\\'")}', image: '${item.image || ''}', price: ${item.price || 0}, specs: '${(item.specs || '').replace(/'/g, "\\'")}', brand: '${item.brand || ''}', category: '${item.category || ''}' })" style="width:40px; height:40px; object-fit:cover; border-radius:4px; cursor:pointer;" title="Click to view clear picture">`
             : `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:6px;font-size:1.1rem;">${getCategoryIcon(item.category)}</div>`}
           <div class="builder-item-info">
             <h4>${item.name} ${item.featured ? "<i class='fas fa-star' style='color:var(--accent-yellow);font-size:0.8rem;'></i>" : ""}</h4>

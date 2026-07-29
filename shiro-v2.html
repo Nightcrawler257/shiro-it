@@ -1737,6 +1737,9 @@
                 <div class="comp-modal-img-wrap" id="compModalImgWrap">
                     <img id="compModalImg" src="" alt="Component Picture" onclick="this.classList.toggle('zoomed')">
                     <div class="comp-modal-zoom-hint"><i class="fas fa-search-plus"></i> Click image to zoom</div>
+                    <button class="comp-modal-fullres-btn" onclick="event.stopPropagation(); if(document.getElementById('compModalImg').src) window.open(document.getElementById('compModalImg').src, '_blank')" title="Open full resolution photo in new tab">
+                        <i class="fas fa-external-link-alt"></i> Full Image
+                    </button>
                 </div>
                 <div class="comp-modal-info">
                     <div class="comp-modal-header">
