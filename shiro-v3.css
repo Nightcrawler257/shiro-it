@@ -6143,8 +6143,8 @@ body.festival-admin .festival-toggle-btn {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6163,8 +6163,8 @@ body.festival-admin .festival-toggle-btn {
   inset: 0;
   z-index: 10000;
   background: rgba(5, 8, 18, 0.85);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6263,6 +6263,7 @@ body.festival-admin .festival-toggle-btn {
   font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.6);
   background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   padding: 3px 10px;
   border-radius: 12px;
