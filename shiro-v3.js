@@ -1739,7 +1739,11 @@ document.addEventListener("DOMContentLoaded", () => {
         id: item._id || item.id,
         name: item.name,
         category: item.category,
-        price: item.price
+        price: item.price,
+        image: item.image,
+        specs: item.specs,
+        badge: item.badge,
+        brand: item.brand
       });
       showToast(`${item.name} added to your build!`, "success");
       renderBuilder();
@@ -1798,7 +1802,8 @@ document.addEventListener("DOMContentLoaded", () => {
           price: item.price,
           image: item.image,
           specs: item.specs,
-          badge: item.badge
+          badge: item.badge,
+          brand: item.brand
         });
         builderModal.classList.remove("show");
         renderBuilder();
