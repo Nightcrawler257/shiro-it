@@ -30,6 +30,12 @@ window.openCheckoutModal = function() {
     else alert("Your cart is empty");
     return;
   }
+  // Automatically close cart sidebar when opening checkout modal
+  const cartOverlay = document.getElementById('cartOverlay');
+  if (cartOverlay) {
+    cartOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
   const overlay = document.getElementById('checkoutInfoOverlay');
   if (overlay) {
     console.log("Showing checkout overlay.");
