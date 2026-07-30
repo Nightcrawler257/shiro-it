@@ -2217,16 +2217,21 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function updateCartBadge() {
+  function updateCartBadge(animate = true) {
     const badge = document.getElementById('cartBadge');
     if (badge) {
-      const itemsCount = globalCart.length;
+      const itemsCount = globalCart.reduce((sum, item) => sum + (item.quantity || 1), 0);
       badge.textContent = itemsCount;
       badge.style.display = itemsCount > 0 ? "flex" : "none";
+      if (animate && itemsCount > 0) {
+        badge.classList.remove('bump');
+        void badge.offsetWidth; // trigger reflow
+        badge.classList.add('bump');
+      }
     }
   }
 
-  window.addToGlobalCart = function(item) {
+  window.addToGlobalCart = function(item, sourceBtn) {
     console.log("Adding item to cart:", item);
     
     // Check if item already exists (and it's not a unique build)
@@ -2240,9 +2245,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     localStorage.setItem("shiro-global-cart", JSON.stringify(globalCart));
-    updateCartBadge();
+    updateCartBadge(true);
     if (typeof showToast === 'function') showToast(`${item.name} added to cart!`, "success", true);
     renderGlobalCart();
+
+    if (sourceBtn && sourceBtn instanceof HTMLElement) {
+      const origText = sourceBtn.innerHTML;
+      sourceBtn.classList.add('added-success');
+      sourceBtn.innerHTML = '<i class="fas fa-check"></i> Added!';
+      setTimeout(() => {
+        sourceBtn.classList.remove('added-success');
+        sourceBtn.innerHTML = origText;
+      }, 1200);
+    }
   };
 
   // Cart UI Logic
@@ -2526,7 +2541,7 @@ document.addEventListener("DOMContentLoaded", () => {
       price: price,
       image: image,
       specs: specs
-    });
+    }, btn);
   };
 
 

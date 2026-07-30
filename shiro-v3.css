@@ -748,6 +748,66 @@ body.light .nav-menu > li > a.active {
 .language-option:hover {
   background: rgba(255, 255, 255, 0.06);
 }
+.cart-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: var(--transition, all 0.2s ease);
+}
+.cart-btn:hover {
+  border-color: var(--border-hover, rgba(255, 255, 255, 0.2));
+  color: white;
+  background: rgba(0, 102, 255, 0.1);
+}
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5), 0 0 0 2px var(--bg-dark, #0f172a);
+  line-height: 1;
+  pointer-events: none;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 2;
+}
+
+@keyframes cartBadgePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35) rotate(-6deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.cart-badge.bump {
+  animation: cartBadgePop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.product-btn.added-success, .btn.added-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
+  transform: scale(0.98);
+}
+
 .theme-toggle {
   width: 36px;
   height: 36px;
