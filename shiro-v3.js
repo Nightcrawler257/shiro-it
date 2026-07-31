@@ -781,7 +781,7 @@ document.addEventListener("DOMContentLoaded", () => {
       svc_data_title: "Pemulihan Data",
       svc_data_desc: "Pemulihan lanjutan untuk SSD yang rosak, HDD yang mati, dan pemadaman fail secara tidak sengaja.",
       svc_data_cta: "Bantuan Kecemasan",
-      svc_trade_title: "Trade-In PC & Laptop",
+      svc_trade_title: "Trade-In bahagian PC & Laptop",
       svc_trade_desc: "Naik taraf sistem anda dengan trade-in perkakasan lama. Kami menawarkan nilai pasaran yang adil untuk sistem anda.",
       svc_trade_cta: "Dapatkan Penilaian",
       proc_step1_title: "Konsultasi",
