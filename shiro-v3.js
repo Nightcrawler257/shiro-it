@@ -499,7 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
       svc_spa_title: "PC & Laptop Spa",
       svc_spa_desc: "Overheating? We provide deep cleaning and high-performance thermal paste re-application.",
       svc_spa_cta: "Book Spa",
-      svc_net_title: "Network Solutions PC,Laptop & Printer",
+      svc_net_title: "Network Solutions",
       svc_net_desc: "Enterprise-grade network solutions for SMEs and high-performance WiFi 6 setups for modern homes.",
       svc_net_cta: "Get Quote",
       svc_data_title: "Data Recovery",
