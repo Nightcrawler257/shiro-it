@@ -22,12 +22,6 @@
   <canvas id="bgCanvas"></canvas>
 </div>
 
-<!-- Mobile Menu Toggle Button - ADDED FOR MOBILE -->
-<button class="mobile-menu-toggle" id="mobileMenuToggle" title="Toggle mobile menu" aria-label="Toggle mobile menu">
-  <i class="fas fa-bars"></i>
-</button>
-<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-
 <div id="loginScreen">
   <div class="login-card">
 
@@ -90,6 +84,11 @@
      DASHBOARD
 ══════════════════════════════════════ -->
 <div id="dashboard">
+  <!-- Mobile Menu Toggle Button - ADDED FOR MOBILE -->
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" title="Toggle mobile menu" aria-label="Toggle mobile menu">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
   <div class="dashboard-wrapper">
 
     <!-- ── SIDEBAR ── -->
@@ -1914,6 +1913,9 @@ function startClock() {
 // ══════════════════════════════════════
 
 function initMobileMenu() {
+  if (window.mobileMenuInitialized) return;
+  window.mobileMenuInitialized = true;
+
   const toggleBtn = document.getElementById('mobileMenuToggle');
   const sidebar = document.querySelector('.sidebar');
   const backdrop = document.getElementById('sidebarBackdrop');
