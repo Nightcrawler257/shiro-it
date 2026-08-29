@@ -70,6 +70,73 @@ body.light {
   --accent-glow:  rgba(37, 99, 235, 0.25);
 }
 
+/* ========== GLOBAL GAMING CUSTOM SCROLLBAR ========== */
+/* Standard Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, 0.5) rgba(10, 13, 24, 0.7);
+}
+
+body.light * {
+  scrollbar-color: rgba(37, 99, 235, 0.5) rgba(228, 228, 238, 0.8);
+}
+
+/* WebKit Scrollbars (Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 13, 24, 0.75);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #38bdf8);
+  border-radius: 8px;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3), 0 0 8px rgba(56, 189, 248, 0.35);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #60a5fa, #38bdf8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.75);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #2563eb, #0284c7);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.9);
+}
+
+/* Hide native scrollbar arrow buttons */
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(10, 13, 24, 0.8);
+}
+
+/* Light mode overrides */
+body.light ::-webkit-scrollbar-track {
+  background: rgba(228, 228, 238, 0.8);
+  border: 1px solid rgba(30, 58, 138, 0.08);
+}
+
+body.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+}
+
+body.light ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+}
+
 /* ========== ANIMATED BACKGROUND ========== */
 .bg-anim {
   position: fixed;
@@ -2381,14 +2448,20 @@ body.light .nav-menu > li > a.active {
   flex: 1;
 }
 .build-cat-tabs::-webkit-scrollbar {
-  height: 3px;
+  height: 5px;
 }
 .build-cat-tabs::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(10, 13, 24, 0.6);
+  border-radius: 10px;
 }
 .build-cat-tabs::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: linear-gradient(90deg, #3b82f6, #38bdf8);
   border-radius: 10px;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+}
+.build-cat-tabs::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #60a5fa, #38bdf8);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
 }
 .scroll-arrow {
   background: transparent;
@@ -2991,11 +3064,11 @@ body.light .nav-menu > li > a.active {
 }
 
 .summary-card::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 .summary-card::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
+  background: linear-gradient(180deg, #3b82f6, #38bdf8);
+  border-radius: 6px;
 }
 .summary-card:hover {
   transform: none;
@@ -5726,15 +5799,17 @@ body.festival-admin .festival-toggle-btn {
   width: 6px;
 }
 .summary-card::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(10, 13, 24, 0.6);
   border-radius: 8px;
 }
 .summary-card::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #3b82f6, #38bdf8);
   border-radius: 8px;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
 }
 .summary-card::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(180deg, #60a5fa, #38bdf8);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
 }
 
 /* Make Your Build panel internally scrollable */
@@ -5754,15 +5829,17 @@ body.festival-admin .festival-toggle-btn {
   width: 6px;
 }
 .summary-items::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(10, 13, 24, 0.6);
   border-radius: 8px;
 }
 .summary-items::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #3b82f6, #38bdf8);
   border-radius: 8px;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
 }
 .summary-items::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(180deg, #60a5fa, #38bdf8);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
 }
 
 /* ========== CART SUMMARY ITEMS ========== */
