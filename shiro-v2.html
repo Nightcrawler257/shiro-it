@@ -1735,11 +1735,26 @@
             </button>
             <div class="comp-modal-body">
                 <div class="comp-modal-img-wrap" id="compModalImgWrap">
-                    <img id="compModalImg" src="" alt="Component Picture" onclick="this.classList.toggle('zoomed')">
-                    <div class="comp-modal-zoom-hint"><i class="fas fa-search-plus"></i> Click image to zoom</div>
-                    <button class="comp-modal-fullres-btn" onclick="event.stopPropagation(); if(document.getElementById('compModalImg').src) window.open(document.getElementById('compModalImg').src, '_blank')" title="Open full resolution photo in new tab">
-                        <i class="fas fa-external-link-alt"></i> Full Image
-                    </button>
+                    <div class="comp-modal-img-stage" id="compModalImgStage">
+                        <img id="compModalImg" src="" alt="Component Picture">
+                    </div>
+                    <div class="comp-modal-zoom-hint" id="compModalZoomHint">
+                        <i class="fas fa-search-plus"></i> Click, Drag or Scroll to Zoom & Pan
+                    </div>
+                    <div class="comp-modal-toolbar">
+                        <button type="button" class="comp-modal-tool-btn" onclick="zoomModalImage(0.3)" title="Zoom In">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button type="button" class="comp-modal-tool-btn" onclick="zoomModalImage(-0.3)" title="Zoom Out">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button type="button" class="comp-modal-tool-btn" onclick="resetModalImageZoom()" title="Reset Zoom">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button type="button" class="comp-modal-tool-btn comp-modal-fullres-btn" onclick="event.stopPropagation(); if(document.getElementById('compModalImg').src) window.open(document.getElementById('compModalImg').src, '_blank')" title="Open Full Resolution Photo in New Tab">
+                            <i class="fas fa-external-link-alt"></i> Full Image
+                        </button>
+                    </div>
                 </div>
                 <div class="comp-modal-info">
                     <div class="comp-modal-header">
