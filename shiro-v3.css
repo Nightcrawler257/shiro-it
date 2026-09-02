@@ -427,6 +427,19 @@ h5 {
   padding: 0 1.25rem;
 }
 
+/* Widescreen / PC Monitor Scaling */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1360px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1440px;
+  }
+}
+
 /* ========== UTILITY ========== */
 /* NOTE: .gradient-text animated styles are defined above in the @supports block.
    Do not override background/text-fill here or text becomes invisible. */
