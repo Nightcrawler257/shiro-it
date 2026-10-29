@@ -1,14 +1,16 @@
 /* ============================================================
-   SHIRO IT — Secret Staff Portal (staff-portal.js)
-   Trigger: Shift + Ctrl + S  (staff & developers only)
-   Not linked anywhere on the public website.
+   SHIRO IT — Staff Portal (staff-portal.js)
+   Triggers:
+   - Click "Staff Portal" in footer or shield icon in navbar
+   - Keyboard shortcut: Ctrl + Shift + L or Ctrl + Shift + S
+   - Global function: window.openStaffPortal()
    ============================================================ */
 
 (function () {
   'use strict';
 
   /* ── API base ─────────────────────────────────────────────── */
-  const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
     ? 'http://localhost:5000'
     : window.location.origin;
 
@@ -43,7 +45,7 @@
           </div>
           <button class="sp-login-btn" id="sp-login-btn">Sign In</button>
           <div class="sp-login-error" id="sp-login-error"></div>
-          <div class="sp-shortcut-hint">Press <kbd>Shift+Ctrl+S</kbd> to toggle this panel</div>
+          <div class="sp-shortcut-hint">Shortcut: <kbd>Ctrl+Shift+L</kbd> or <kbd>Ctrl+Shift+S</kbd></div>
         </div>
       </div>
 
@@ -377,7 +379,7 @@
         err.style.display = 'block';
       }
     } catch(e) {
-      err.textContent = 'Connection error. Is the backend running?';
+      err.textContent = 'Connection error. Make sure the backend server is running (port 5000).';
       err.style.display = 'block';
     }
     btn.disabled = false;
@@ -385,7 +387,9 @@
   }
 
   async function doLogout() {
-    await spPost('/admin/logout', {});
+    try {
+      await spPost('/admin/logout', {});
+    } catch(e) { /* ignore */ }
     spLoggedIn = false;
     document.getElementById('sp-dashboard').classList.remove('active');
     spToast('Signed out', 'info');
@@ -395,8 +399,8 @@
   function openDashboard() {
     const dash = document.getElementById('sp-dashboard');
     dash.classList.add('active');
-    document.getElementById('sp-sidebar-username').textContent = spUsername;
-    document.getElementById('sp-avatar-letter').textContent = spUsername[0].toUpperCase();
+    document.getElementById('sp-sidebar-username').textContent = spUsername || 'Staff';
+    document.getElementById('sp-avatar-letter').textContent = (spUsername ? spUsername[0] : 'S').toUpperCase();
     switchPanel('dashboard');
     loadStats();
   }
@@ -1472,32 +1476,78 @@
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  /* ── Portal open / close / toggle ──────────────────────────── */
+  function openPortal() {
+    if (spLoggedIn) {
+      openDashboard();
+    } else {
+      const overlay = document.getElementById('sp-login-overlay');
+      if (overlay) {
+        overlay.classList.add('active');
+        setTimeout(() => {
+          document.getElementById('sp-username')?.focus();
+        }, 80);
+      }
+    }
+  }
+
+  function closePortal() {
+    if (spLoggedIn) {
+      closeDashboard();
+    } else {
+      document.getElementById('sp-login-overlay')?.classList.remove('active');
+    }
+  }
+
+  function togglePortal() {
+    if (spLoggedIn) {
+      const dash = document.getElementById('sp-dashboard');
+      if (dash && dash.classList.contains('active')) {
+        closeDashboard();
+      } else {
+        openDashboard();
+      }
+    } else {
+      const overlay = document.getElementById('sp-login-overlay');
+      if (overlay && overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+      } else if (overlay) {
+        overlay.classList.add('active');
+        setTimeout(() => {
+          document.getElementById('sp-username')?.focus();
+        }, 80);
+      }
+    }
+  }
+
+  // Expose global methods
+  window.openStaffPortal   = openPortal;
+  window.closeStaffPortal  = closePortal;
+  window.toggleStaffPortal = togglePortal;
+  window.openStaffLogin    = openPortal;
+
   /* ── Init & event wiring ──────────────────────────────────── */
   function init() {
     injectDOM();
 
-    // Keyboard shortcut: Shift + Ctrl + S
+    // Keyboard shortcuts:
+    // 1) Ctrl + Shift + L (recommended, avoids browser screenshot conflicts)
+    // 2) Ctrl + Shift + S (fixed for lowercase/CapsLock/Mac)
     document.addEventListener('keydown', function(e) {
-      if (e.shiftKey && e.ctrlKey && e.key === 'S') {
+      const isCmdOrCtrl = e.ctrlKey || e.metaKey;
+      const isShift = e.shiftKey;
+      const keyUpper = (e.key || '').toUpperCase();
+      const code = e.code || '';
+
+      const isS = keyUpper === 'S' || code === 'KeyS';
+      const isL = keyUpper === 'L' || code === 'KeyL';
+
+      if (isCmdOrCtrl && isShift && (isS || isL)) {
         e.preventDefault();
-        if (spLoggedIn) {
-          // Toggle dashboard
-          const dash = document.getElementById('sp-dashboard');
-          if (dash.classList.contains('active')) {
-            closeDashboard();
-          } else {
-            openDashboard();
-          }
-        } else {
-          const overlay = document.getElementById('sp-login-overlay');
-          if (overlay.classList.contains('active')) {
-            overlay.classList.remove('active');
-          } else {
-            overlay.classList.add('active');
-            document.getElementById('sp-username').focus();
-          }
-        }
+        e.stopPropagation();
+        togglePortal();
       }
+
       // Escape closes panels
       if (e.key === 'Escape') {
         document.getElementById('sp-form-overlay')?.classList.remove('active');

@@ -94,6 +94,11 @@
                         <span class="cart-badge" id="cartBadge">0</span>
                     </button>
 
+                    <!-- Staff Portal Trigger -->
+                    <button class="theme-toggle" id="staffPortalNavBtn" aria-label="Staff Portal Login" title="Staff Portal (Ctrl+Shift+L)" onclick="if(window.openStaffPortal){window.openStaffPortal()}else{document.getElementById('sp-login-overlay')?.classList.add('active')}">
+                        <i class="fas fa-user-shield"></i>
+                    </button>
+
                     <!-- Theme Toggle -->
                     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                         <i class="fas fa-moon"></i>
@@ -1444,6 +1449,9 @@
                     <a href="#" data-translate="footer_policy">Privacy Policy</a>
                     <a href="#" data-translate="footer_terms">Terms of Service</a>
                     <a href="#" data-translate="footer_warranty">Warranty</a>
+                    <a href="javascript:void(0)" id="staffLoginLink" onclick="if(window.openStaffPortal){window.openStaffPortal()}else{document.getElementById('sp-login-overlay')?.classList.add('active')};return false;" style="display:inline-flex;align-items:center;gap:4px;" title="Staff Portal (Ctrl+Shift+L or Ctrl+Shift+S)">
+                        <i class="fas fa-lock" style="font-size:0.75rem;"></i> <span>Staff Portal</span>
+                    </a>
                 </div>
             </div>
         </div>
