@@ -2,7 +2,7 @@
    SHIRO IT — Staff Portal (staff-portal.js)
    Triggers:
    - Click "Staff Portal" in footer or shield icon in navbar
-   - Keyboard shortcut: Ctrl + Shift + L or Ctrl + Shift + S
+   - Keyboard shortcut: Ctrl + Shift + L (L for Login)
    - Global function: window.openStaffPortal()
    ============================================================ */
 
@@ -45,7 +45,7 @@
           </div>
           <button class="sp-login-btn" id="sp-login-btn">Sign In</button>
           <div class="sp-login-error" id="sp-login-error"></div>
-          <div class="sp-shortcut-hint">Shortcut: <kbd>Ctrl+Shift+L</kbd> or <kbd>Ctrl+Shift+S</kbd></div>
+          <div class="sp-shortcut-hint">Shortcut: <kbd>Ctrl+Shift+L</kbd></div>
         </div>
       </div>
 
@@ -1530,19 +1530,20 @@
   function init() {
     injectDOM();
 
-    // Keyboard shortcuts:
-    // 1) Ctrl + Shift + L (recommended, avoids browser screenshot conflicts)
-    // 2) Ctrl + Shift + S (fixed for lowercase/CapsLock/Mac)
+    // Keyboard shortcut: Ctrl + Shift + L (L for Login / Lock)
+    // NOTE: We deliberately do NOT use Ctrl+Shift+S or Win+Shift+S
+    // because those are reserved by Windows Snipping Tool (Win+Shift+S)
+    // and Microsoft Edge / Firefox Screenshots (Ctrl+Shift+S).
     document.addEventListener('keydown', function(e) {
-      const isCmdOrCtrl = e.ctrlKey || e.metaKey;
+      const isMac = typeof navigator !== 'undefined' && navigator.platform && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      const isCmdOrCtrl = isMac ? e.metaKey : (e.ctrlKey && !e.metaKey);
       const isShift = e.shiftKey;
       const keyUpper = (e.key || '').toUpperCase();
       const code = e.code || '';
 
-      const isS = keyUpper === 'S' || code === 'KeyS';
       const isL = keyUpper === 'L' || code === 'KeyL';
 
-      if (isCmdOrCtrl && isShift && (isS || isL)) {
+      if (isCmdOrCtrl && isShift && isL) {
         e.preventDefault();
         e.stopPropagation();
         togglePortal();

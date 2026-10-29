@@ -15,12 +15,14 @@ Admin dashboard at http://localhost:5000/admin
 """
 
 import os
+# pyrefly: ignore[missing-import]
 from dotenv import load_dotenv
 
 # Load .env file if present (used on PythonAnywhere for secrets)
 # The .env file should NEVER be committed to Git
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
+# pyrefly: ignore[missing-import]
 from flask import Flask, send_from_directory, jsonify, make_response
 from flask_cors import CORS
 from config import Config
@@ -133,6 +135,7 @@ def create_app():
 
     # Ensure a default admin account always exists on startup
     with app.app_context():
+        # pyrefly: ignore[missing-import]
         from werkzeug.security import generate_password_hash
         DEFAULT_ADMIN_USERNAME = os.environ.get('DEFAULT_ADMIN_USERNAME', 'ShiroIT')
         DEFAULT_ADMIN_PASSWORD = os.environ.get('DEFAULT_ADMIN_PASSWORD', 'Sy@h1rul')
