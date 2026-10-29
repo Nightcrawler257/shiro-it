@@ -43,6 +43,7 @@ def create_app():
     # CORS — restrict to own domain only (prevents other sites sending credentialed requests)
     CORS(app, supports_credentials=True, resources={
         r"/api/*": {"origins": [
+            "https://hareshhh.pythonanywhere.com",
             "https://nightcrawler257.pythonanywhere.com",
             "http://localhost:5000",
             "http://127.0.0.1:5000",
@@ -52,6 +53,7 @@ def create_app():
             "http://127.0.0.1:3000"
         ]},
         r"/admin/*": {"origins": [
+            "https://hareshhh.pythonanywhere.com",
             "https://nightcrawler257.pythonanywhere.com",
             "http://localhost:5000",
             "http://127.0.0.1:5000",
